@@ -8,6 +8,7 @@ import RootLayoutMaster from "./layouts/RootLayoutMaster";
 // pages
 import Signin from "./pages/Auth/Signin";
 import ErrorPage from "./pages/Error/ErrorPage"
+import { Toaster } from "react-hot-toast";
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
 
   return (
     <div className="App">
+      <Toaster />
       <RouterProvider router={routes} />
     </div>
   );

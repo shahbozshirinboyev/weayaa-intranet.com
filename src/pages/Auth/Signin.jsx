@@ -1,4 +1,4 @@
-import toast, { Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useRef } from "react";
 
 //logo and background
@@ -11,13 +11,18 @@ function Signin({setAccess, setRefresh, setUserType}) {
   const loginInput = useRef(null);
   const passInput = useRef(null);
 
+ 
+
+    
+  
+
   const onSignin = (e) => {
     e.preventDefault();
     http.post('/token/', {
-      // weayaa_id: loginInput.current.value,
-      // password: passInput.current.value
-      weayaa_id: 'staff_user',
-      password: 'staff_user2024'
+      weayaa_id: loginInput.current.value,
+      password: passInput.current.value
+      // weayaa_id: 'staff_user',
+      // password: 'staff_user2024'
     })
     .then((res) => {
       setAccess(res.data.access);
@@ -26,6 +31,27 @@ function Signin({setAccess, setRefresh, setUserType}) {
       window.localStorage.setItem('access', res.data.access);
       window.localStorage.setItem('refresh', res.data.refresh);
       toast.success('You have successfully sign in!');
+
+      console.log('usertype ga yetib keldi')
+
+      const access = window.localStorage.getItem("access");
+        console.log(access)
+        http.get('/users/profile/', {
+          headers: {
+            'Authorization': `Bearer ${access}`
+          }
+        })
+        .then((response) => {
+          console.log('bu javob')
+          console.log(response);
+        })
+        .catch(() => {
+          toast.error('user turi topilmadi');
+        })
+
+      userType();
+      console.log('usertype dan otdi')
+
     })
     .catch(() => {
       toast.error('ID or Password went wrong!');
