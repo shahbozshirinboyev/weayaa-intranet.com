@@ -13,16 +13,14 @@ import { Toaster } from "react-hot-toast";
 function App() {
 
   const [access, setAccess] = useState(window.localStorage.getItem("access"));
-  const [refresh, setRefresh] = useState(window.localStorage.getItem("refresh"))
-
-  // const [userType, setUserType] = useState(window.localStorage.getItem("userType"));
-  const [userType, setUserType] = useState('123');
+  const [refresh, setRefresh] = useState(window.localStorage.getItem("refresh"));
+  const [userType, setUserType] = useState(window.localStorage.getItem("userType"));
 
 
   const routes = createBrowserRouter(
     [
       access && refresh ? (
-        userType === '123' ?
+        userType === 'master' ?
         {
           path: '/',
           element: <RootLayoutMaster />, // userType = master bo'lsa RootLayoutMaster ochiladi

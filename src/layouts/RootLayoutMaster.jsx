@@ -1,9 +1,7 @@
 function RootLayoutMaster() {
   return (
-    <>
-      <div>RootLayoutMaster</div>
-    </>
-  );
+    <div>Master</div>
+  )
 }
 
-export default RootLayoutMaster;
+export default RootLayoutMaster

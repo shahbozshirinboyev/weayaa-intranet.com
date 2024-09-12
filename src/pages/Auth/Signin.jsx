@@ -7,45 +7,42 @@ import logo from "../../../public/img/logo_long.png";
 
 import http from "../../services/http";
 
-function Signin({ setAccess, setRefresh }) {
+function Signin({ setAccess, setRefresh, setUserType }) {
   const loginInput = useRef(null);
   const passInput = useRef(null);
 
   const onSignin = (e) => {
     e.preventDefault();
-    http.post("/token/", {
+    http.post("token/", {
         weayaa_id: loginInput.current.value,
-        password: passInput.current.value,
-        // weayaa_id: 'staff_user',
-        // password: 'staff_user2024'
+        password: passInput.current.value
       })
       .then((res) => {
+        console.log(res)
         setAccess(res.data.access);
         setRefresh(res.data.refresh);
-        // setUserType(res.request.status);
         window.localStorage.setItem("access", res.data.access);
         window.localStorage.setItem("refresh", res.data.refresh);
         toast.success("You have successfully sign in!");
-
-        console.log("User turini topish funksiyasi boshlandi!");
+        // user_type start
         const access = window.localStorage.getItem("access");
-        http.get("/users/profile/", {
+        http.get("users/profile/", {
             headers: {
-              Authorization: `Bearer ${access}`,
+              'Authorization': `Bearer ${access}`,
+              'ngrok-skip-browser-warning': true
             },
           })
           .then((response) => {
-            console.log("response...");
-            console.log(response);
+            setUserType(response.data.user_type);
+            window.localStorage.setItem("userType", response.data.user_type);
           })
           .catch(() => {
-            toast.error("User turi topilmadi! (Master/Staff)");
+            toast.error("Foydalanuvchi turi topilmadi :(");
           });
-        console.log("User turini topish funksiyasi tugadi!");
+        // user_type end
       })
       .catch((error) => {
-        console.error("Xatolik:", error.response?.data || error.message);
-        toast.error("ID or Password went wrong!");
+        toast.error("ID or Password went wrong :(");
       });
   };
 

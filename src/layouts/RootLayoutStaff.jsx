@@ -1,7 +1,7 @@
 function RootLayoutStaff() {
   return (
     <>
-      <div>RootLayoutStaff</div>
+      <div>Staff</div>
     </>
   );
 }
