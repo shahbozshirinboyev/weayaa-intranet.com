@@ -74,9 +74,10 @@ function RootLayoutStaff() {
             {Menus.map((Menu, index) => 
             (
               <li key={index} className={`${Menu.gap ? "mt-9" : "mt-2"}`}>
-                <NavLink to={`${Menu.navLink}`} className={`${index === 0 && "bg-custom-green-dark text-white"} flex rounded-[10px] p-2 cursor-pointer bg-custom-green-30 hover:bg-custom-green-dark hover:text-white text-custom-green-dark font-semibold text-sm items-center gap-x-4`}>
+                <NavLink to={Menu.navLink} className={({ isActive }) => `${isActive ? "bg-custom-green-dark text-white" : "bg-custom-green-30 text-custom-green-dark"} flex rounded-[10px] p-2 cursor-pointer hover:bg-custom-green-dark hover:text-white font-semibold text-sm items-center gap-x-4 transition-all duration-200`}>
+                    {/* ${index === 0 && "bg-custom-green-dark text-white"} */}
                     <i className={`${Menu.src} text-[20px] mx-[2px]`}></i>
-                    <span className={`${!open && "hidden"} origin-left duration-200`} > {Menu.title}</span>
+                    <span className={`${!open && "hidden"} origin-left duration-200`}>{Menu.title}</span>
                 </NavLink>
               </li>
             ))}
@@ -87,6 +88,7 @@ function RootLayoutStaff() {
         <div className={`flex-1 p-7 ${ open ? "ml-[250px]" : "ml-[80px]" } transition-all duration-300`}>
           {/* Navbar START */}
           <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px]">
+            
             <div className="h-full w-full flex items-center mx-[10px]">
               <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
                 <i className="bi bi-calendar2-week font-medium"></i>
@@ -102,6 +104,7 @@ function RootLayoutStaff() {
                 <i className="bi bi-person font-medium"></i>
               </div>
             </div>
+
           </div>
           {/* Navbar END */}
           {/* Content START */}

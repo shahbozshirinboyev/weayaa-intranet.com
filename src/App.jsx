@@ -20,6 +20,10 @@ import StaffSettings from "./pages/Staff/Settings/StaffSettings";
 
 // master pages
 import MasterDashboard from "./pages/Master/Dashboard/MasterDashboard";
+import ControlStaffs from "./pages/Master/Staffs/ControlStaffs";
+import MasterProjects from "./pages/Master/Projects/MasterProjects";
+import MasterStatus from "./pages/Master/Status/MasterStatus";
+import MasterSettings from "./pages/Master/Settings/MasterSettings";
 
 function App() {
 
@@ -41,6 +45,26 @@ function App() {
             {
               index: true,
               element: <MasterDashboard />
+            }, 
+            {
+              path: 'staffs',
+              element: <ControlStaffs />
+            }, 
+            {
+              path: 'projects',
+              element: <MasterProjects />
+            }, 
+            {
+              path: 'status',
+              element: <MasterStatus />
+            }, 
+            {
+              path: 'settings',
+              element: <MasterSettings />
+            }, 
+            {
+              path: 'logout',
+              element: <Logout setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />
             }
           ]
         }
@@ -74,7 +98,7 @@ function App() {
             }, 
             {
               path: 'logout',
-              element: <Logout />
+              element: <Logout setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />
             }
           ]
         }
