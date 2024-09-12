@@ -8,7 +8,9 @@ export default {
     extend: {
       colors: {
         'custom-green-dark': '#2E6734',
+        'custom-green-5': 'rgba(46, 103, 52, 0.05)',
         'custom-green-15': 'rgba(46, 103, 52, 0.15)',
+        'custom-green-30': 'rgba(46, 103, 52, 0.30)',
         'custom-green-60': 'rgba(46, 103, 52, 0.60)',
         'custom-green-80': 'rgba(46, 103, 52, 0.80)',
       },

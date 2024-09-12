@@ -18,7 +18,6 @@ function Signin({ setAccess, setRefresh, setUserType }) {
         password: passInput.current.value
       })
       .then((res) => {
-        console.log(res)
         setAccess(res.data.access);
         setRefresh(res.data.refresh);
         window.localStorage.setItem("access", res.data.access);
