@@ -7,56 +7,47 @@ import logo from "../../../public/img/logo_long.png";
 
 import http from "../../services/http";
 
-function Signin({setAccess, setRefresh, setUserType}) {
+function Signin({ setAccess, setRefresh }) {
   const loginInput = useRef(null);
   const passInput = useRef(null);
 
- 
-
-    
-  
-
   const onSignin = (e) => {
     e.preventDefault();
-    http.post('/token/', {
-      weayaa_id: loginInput.current.value,
-      password: passInput.current.value
-      // weayaa_id: 'staff_user',
-      // password: 'staff_user2024'
-    })
-    .then((res) => {
-      setAccess(res.data.access);
-      setRefresh(res.data.refresh);
-      // setUserType(res.request.status);
-      window.localStorage.setItem('access', res.data.access);
-      window.localStorage.setItem('refresh', res.data.refresh);
-      toast.success('You have successfully sign in!');
+    http.post("/token/", {
+        weayaa_id: loginInput.current.value,
+        password: passInput.current.value,
+        // weayaa_id: 'staff_user',
+        // password: 'staff_user2024'
+      })
+      .then((res) => {
+        setAccess(res.data.access);
+        setRefresh(res.data.refresh);
+        // setUserType(res.request.status);
+        window.localStorage.setItem("access", res.data.access);
+        window.localStorage.setItem("refresh", res.data.refresh);
+        toast.success("You have successfully sign in!");
 
-      console.log('usertype ga yetib keldi')
-
-      const access = window.localStorage.getItem("access");
-        console.log(access)
-        http.get('/users/profile/', {
-          headers: {
-            'Authorization': `Bearer ${access}`
-          }
-        })
-        .then((response) => {
-          console.log('bu javob')
-          console.log(response);
-        })
-        .catch(() => {
-          toast.error('user turi topilmadi');
-        })
-
-      userType();
-      console.log('usertype dan otdi')
-
-    })
-    .catch(() => {
-      toast.error('ID or Password went wrong!');
-    })
-  }
+        console.log("User turini topish funksiyasi boshlandi!");
+        const access = window.localStorage.getItem("access");
+        http.get("/users/profile/", {
+            headers: {
+              Authorization: `Bearer ${access}`,
+            },
+          })
+          .then((response) => {
+            console.log("response...");
+            console.log(response);
+          })
+          .catch(() => {
+            toast.error("User turi topilmadi! (Master/Staff)");
+          });
+        console.log("User turini topish funksiyasi tugadi!");
+      })
+      .catch((error) => {
+        console.error("Xatolik:", error.response?.data || error.message);
+        toast.error("ID or Password went wrong!");
+      });
+  };
 
   return (
     <>
@@ -65,14 +56,15 @@ function Signin({setAccess, setRefresh, setUserType}) {
         style={{ backgroundImage: `url(${background})` }}
       >
         <div className="w-[370px] md:w-[480px]  lg:w-[600px]  h-[450px] md:h-[530px] lg:h-[680px] bg-white shadow-md">
-
           <div className="mt-[35px] md:mt-[50px] lg:mt-[80px] mb-[20px] md:mb-[40px] lg:mb-[80px] flex justify-center items-center">
             <img className="h-7 md:h-8 lg:h-11" src={logo} alt="" />
           </div>
 
-          <div className="text-center text-custom-green-80">
-            <h2 className="text-[18px] md:text-xl lg:text-2xl font-bold">Enter Your Account</h2>
-            <p className="text-[10px] md:text-[12px] lg:text-[14px] font-medium opacity-60">
+          <div className="text-center text-custom-green-dark">
+            <h2 className="text-[18px] md:text-xl lg:text-2xl font-bold">
+              Enter Your Account
+            </h2>
+            <p className="text-[10px] md:text-[12px] lg:text-[14px] font-medium opacity-80">
               Welcome Back, Please enter Your details
             </p>
           </div>
@@ -90,6 +82,7 @@ function Signin({setAccess, setRefresh, setUserType}) {
               </div>
 
               <div className="h-[38px] rounded-[1px] border-[1px] border-custom-green-15"></div>
+
 
               <div className="relative flex-auto">
                 <input
@@ -153,7 +146,7 @@ function Signin({setAccess, setRefresh, setUserType}) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Signin
+export default Signin;
