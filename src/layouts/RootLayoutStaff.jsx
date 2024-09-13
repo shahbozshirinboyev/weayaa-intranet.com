@@ -1,6 +1,9 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useState } from "react";
 
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+
 // img logo
 import logo from "../../public/img/logo.png";
 import logoLong from "../../public/img/logo_long.png";
@@ -8,7 +11,25 @@ import logoLong from "../../public/img/logo_long.png";
 // Date - Luxon
 import { DateTime } from "luxon";
 
-function RootLayoutStaff() {
+function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
+
+  // Logout section start
+  const navigate = useNavigate();
+  const deleteUserInfo = () => {
+    toast('Good Bye!', {icon: '👋',});
+    setAccess(null);
+    setRefresh(null);
+    setUserType(null);
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    localStorage.removeItem('userType');
+    navigate('/');
+  }
+  // Logout section end
+
+  // const capitalizeFirstLetter = (string) => { return string.charAt(0).toUpperCase() + string.slice(1);};
+  // const userType = capitalizeFirstLetter(localStorage.getItem("userType"));
+  
   const currentDate = DateTime.now();
   const formattedDate = currentDate.toFormat("d MMMM yyyy");
 
@@ -42,11 +63,11 @@ function RootLayoutStaff() {
       navLink: "/settings",
       gap: true,
     },
-    {
-      title: "Logout",
-      src: "bi bi-box-arrow-right",
-      navLink: "/logout",
-    },
+    // {
+    //   title: "Logout",
+    //   src: "bi bi-box-arrow-right",
+    //   navLink: "/logout",
+    // },
   ];
   return (
     <>
@@ -100,9 +121,60 @@ function RootLayoutStaff() {
               <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
                 <i className="bi bi-bell font-medium"></i>
               </div>
-              <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
-                <i className="bi bi-person font-medium"></i>
+
+            <div className="dropdown dropdown-bottom dropdown-end mx-[5px] w-[32px] h-[32px] text-custom-green-dark font-medium cursor-pointer">
+
+              <i tabIndex="0" role="button" className="bi bi-person font-medium w-[32px] h-[32px] rounded-[8px] bg-custom-green-30 hover:bg-custom-green-dark flex justify-center items-center hover:text-white transition-all duration-100 ease-in-out"></i>
+
+              <ul tabIndex="0" className="dropdown-content menu bg-base-100 rounded-box z-[1] w-[280px] p-2 shadow">
+                <li className="">
+                  <span>
+
+                    <span className="mr-[10px]">
+
+                    <i className="bi bi-person-circle text-[25px]"></i>
+
+                    </span>
+
+                  <span className="block">
+                      <p className="my-[0px] text-[16px] font-bold">Shahboz Shirinboyev</p>
+                      <p className="text-[14px]">{} | Designer</p>
+                  </span>
+
+                  </span>
+                </li>
+
+                <li className="">
+                  <span className="text-custom-green-dark hover:text-white hover:bg-custom-green-dark" onClick={()=>document.getElementById('my_modal_1').showModal()}>
+                  <i className="bi bi-box-arrow-right font-semibold text-[20px]"></i>
+                  <button className="text-left">Logout</button>
+                  </span>
+                </li>
+
+              </ul>
+
+            <dialog id="my_modal_1" className="modal overflow-hidden">
+              <div className="modal-box">
+                <h3 className="font-bold text-lg">Log Out</h3>
+                <p className="py-4">Are you sure you want to Logout?</p>
+                <div className="modal-action flex justify-center items-center">
+
+                  <button onClick={deleteUserInfo} className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark">Yes</button>
+
+                  <form method="dialog">
+                    <button className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark">No</button>
+                  </form>
+
+                </div>
               </div>
+            </dialog>
+
+            </div>
+
+              {/* <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
+                <i className="bi bi-person font-medium"></i>
+              </div> */}
+
             </div>
 
           </div>

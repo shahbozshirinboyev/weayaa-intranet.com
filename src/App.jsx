@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 
+import http from "./services/http";
 // layout
 import RootLayoutStaff from "./layouts/RootLayoutStaff";
 import RootLayoutMaster from "./layouts/RootLayoutMaster";
@@ -27,6 +29,30 @@ import MasterSettings from "./pages/Master/Settings/MasterSettings";
 
 function App() {
 
+  // Token refresh start
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const interval = setInterval(() => {
+        localStorage.getItem('access') ?
+        http.post("token/refresh/", {
+            'refresh' : localStorage.getItem('refresh')
+          })
+          .then((newtoken) => {
+            localStorage.setItem('access', newtoken.data.access)
+            console.log('yangi token olindi')
+          })
+          .catch(() => {
+            toast.error("Yangi 'token' olib bo'lmadi :(");
+          })
+          :
+          ''
+      }, 10000);
+      return () => clearInterval(interval);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, []);
+  // Token refresh start
+
   const [access, setAccess] = useState(window.localStorage.getItem("access"));
   const [refresh, setRefresh] = useState(window.localStorage.getItem("refresh"));
   const [userType, setUserType] = useState(window.localStorage.getItem("userType"));
@@ -39,7 +65,7 @@ function App() {
         // MasterRootLayouts START
         {
           path: '/',
-          element: <RootLayoutMaster />, // userType = master bo'lsa RootLayoutMaster ochiladi
+          element: <RootLayoutMaster setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />, // userType = master bo'lsa RootLayoutMaster ochiladi
           errorElement: <ErrorPage />,
           children: [
             {
@@ -73,7 +99,7 @@ function App() {
         // StaffRootLayouts START
         {
           path: '/',
-          element: <RootLayoutStaff />, // userType = staff bo'lsa RootLayoutStaff ochiladi
+          element: <RootLayoutStaff setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />, // userType = staff bo'lsa RootLayoutStaff ochiladi
           errorElement: <ErrorPage />,
           children: [
             {
@@ -110,7 +136,6 @@ function App() {
           errorElement: <ErrorPage />
         }
       )
-      
     ]
   );
 

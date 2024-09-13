@@ -16,5 +16,10 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+  ],
+  daisyui: {
+    darkTheme: false, // Disable dark mode - daisyUI - Tailwind CSS
+  },
 }

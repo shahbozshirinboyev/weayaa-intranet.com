@@ -5,9 +5,11 @@ import { useRef } from "react";
 import background from "../../../public/img/background.png";
 import logo from "../../../public/img/logo_long.png";
 
+// Base URL
 import http from "../../services/http";
 
 function Signin({ setAccess, setRefresh, setUserType }) {
+
   const loginInput = useRef(null);
   const passInput = useRef(null);
 
@@ -20,11 +22,11 @@ function Signin({ setAccess, setRefresh, setUserType }) {
       .then((res) => {
         setAccess(res.data.access);
         setRefresh(res.data.refresh);
-        window.localStorage.setItem("access", res.data.access);
-        window.localStorage.setItem("refresh", res.data.refresh);
+        localStorage.setItem("access", res.data.access);
+        localStorage.setItem("refresh", res.data.refresh);
         toast.success("You have successfully sign in!");
         // user_type start
-        const access = window.localStorage.getItem("access");
+        const access = localStorage.getItem("access");
         http.get("users/profile/", {
             headers: {
               'Authorization': `Bearer ${access}`,
@@ -32,8 +34,10 @@ function Signin({ setAccess, setRefresh, setUserType }) {
             },
           })
           .then((response) => {
+            console.log(response)
             setUserType(response.data.user_type);
-            window.localStorage.setItem("userType", response.data.user_type);
+            localStorage.setItem("userType", response.data.user_type);
+            console.log(response.data.user_type)
           })
           .catch(() => {
             toast.error("Foydalanuvchi turi topilmadi :(");
@@ -88,7 +92,7 @@ function Signin({ setAccess, setRefresh, setUserType }) {
                   className="block px-2.5 pb-2.5 pt-5 w-full text-[14px] font-bold  text-custom-green-dark appearance-none bg-transparent focus:bg-transparent focus:outline-none ring-none focus:ring-none peer"
                   placeholder=""
                   required
-                  autoComplete="off"
+                  autoComplete="on"
                 />
                 <label
                   htmlFor="floating_user"
