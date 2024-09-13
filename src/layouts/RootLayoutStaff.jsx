@@ -89,14 +89,14 @@ function RootLayoutStaff() {
           {/* Navbar START */}
           <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px]">
             
-            <div className="h-full w-full flex items-center mx-[10px]">
+            <div className="h-full w-full flex items-center ml-[10px]">
               <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
                 <i className="bi bi-calendar2-week font-medium"></i>
                 <p className="ml-[10px]">{formattedDate}</p>
               </div>
             </div>
 
-            <div className="flex justify-end items-center w-full">
+            <div className="flex justify-end items-center w-full mr-[10px]">
               <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
                 <i className="bi bi-bell font-medium"></i>
               </div>

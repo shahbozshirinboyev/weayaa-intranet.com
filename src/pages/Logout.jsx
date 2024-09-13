@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function Logout({ setAccess, setRefresh, setUserType }) {
 
   const navigate = useNavigate();
 
   const deleteUserInfo = () => {
+    toast('Good Bye!', {icon: '👋',});
     setAccess(null);
     setRefresh(null);
     setUserType(null);
