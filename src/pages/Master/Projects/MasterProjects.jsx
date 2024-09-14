@@ -2,7 +2,7 @@ import React from 'react'
 
 function MasterProjects() {
   return (
-    <div>MasterProjects</div>
+    <div>MasterProjects - Coming Soon ...</div>
   )
 }
 

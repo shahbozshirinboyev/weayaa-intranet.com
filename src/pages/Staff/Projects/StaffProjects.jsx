@@ -1,6 +1,6 @@
 function StaffProjects() {
   return (
-    <div>StaffProjects</div>
+    <div>StaffProjects - Coming Soon ...</div>
   )
 }
 

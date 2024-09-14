@@ -1,6 +1,6 @@
 function StaffStatus() {
   return (
-    <div>StaffStatus</div>
+    <div>StaffStatus - Coming Soon ...</div>
   )
 }
 

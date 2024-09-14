@@ -33,22 +33,22 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       const interval = setInterval(() => {
-        localStorage.getItem('access') ?
+        (localStorage.getItem('access')) ?
         http.post("token/refresh/", {
             'refresh' : localStorage.getItem('refresh')
           })
           .then((newtoken) => {
             localStorage.setItem('access', newtoken.data.access)
-            console.log('yangi token olindi')
+            console.log('Token yangilandi')
           })
           .catch(() => {
             toast.error("Yangi 'token' olib bo'lmadi :(");
           })
           :
-          ''
-      }, 10000);
+          toast.error("Token mavjud emas :(");
+      }, 200000);
       return () => clearInterval(interval);
-    }, 10000);
+    }, 1);
     return () => clearTimeout(timer);
   }, []);
   // Token refresh start
@@ -60,7 +60,7 @@ function App() {
 
   const routes = createBrowserRouter(
     [
-      access && refresh ? (
+      access && refresh && userType ? (
         userType === 'master' ?
         // MasterRootLayouts START
         {

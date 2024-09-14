@@ -13,41 +13,74 @@ function Signin({ setAccess, setRefresh, setUserType }) {
   const loginInput = useRef(null);
   const passInput = useRef(null);
 
+  // const onSignin = (e) => {
+  //   e.preventDefault();
+  //   http.post("token/", {
+  //       weayaa_id: loginInput.current.value,
+  //       password: passInput.current.value
+  //     })
+  //     .then((res) => {
+  //       setAccess(res.data.access);
+  //       setRefresh(res.data.refresh);
+  //       localStorage.setItem("access", res.data.access);
+  //       localStorage.setItem("refresh", res.data.refresh);
+  //       toast.success("You have successfully sign in!");
+  //       // user_type start
+  //       const access = localStorage.getItem("access");
+  //       http.get("users/profile/", {
+  //           headers: {
+  //             'Authorization': `Bearer ${access}`
+  //           }
+  //         })
+  //         .then((response) => {
+  //           setUserType(response.data.user_type);
+  //           localStorage.setItem("userType", response.data.user_type);
+  //         })
+  //         .catch(() => {
+  //           toast.error("Foydalanuvchi turi topilmadi :(");
+  //         });
+  //       // user_type end
+  //     })
+  //     .catch((error) => {
+  //       toast.error("ID or Password went wrong :(");
+  //     });
+  // };
+
   const onSignin = (e) => {
     e.preventDefault();
-    http.post("token/", {
-        weayaa_id: loginInput.current.value,
-        password: passInput.current.value
-      })
+    const loginPromise = http.post("token/", {
+      weayaa_id: loginInput.current.value,
+      password: passInput.current.value
+    });
+    // toast.promise yordamida yuklanish va'dasi boshqariladi
+    toast.promise(loginPromise,
+      {
+        loading: "Loading...", // API javobi kelguncha ko'rsatish
+        success: "You have successfully signed in!", // Muvaffaqiyatli javob
+        error: "ID or Password went wrong :(" // Xatolik holati
+      });
+    // Login API va user type ni olish
+    loginPromise
       .then((res) => {
+        // Access va refresh tokenlarni saqlash
         setAccess(res.data.access);
         setRefresh(res.data.refresh);
         localStorage.setItem("access", res.data.access);
         localStorage.setItem("refresh", res.data.refresh);
-        toast.success("You have successfully sign in!");
-        // user_type start
-        const access = localStorage.getItem("access");
-        http.get("users/profile/", {
-            headers: {
-              'Authorization': `Bearer ${access}`,
-              'ngrok-skip-browser-warning': true
-            },
-          })
-          .then((response) => {
-            console.log(response)
-            setUserType(response.data.user_type);
-            localStorage.setItem("userType", response.data.user_type);
-            console.log(response.data.user_type)
-          })
-          .catch(() => {
-            toast.error("Foydalanuvchi turi topilmadi :(");
-          });
-        // user_type end
+        // Foydalanuvchi turi (user_type) uchun API chaqiruv
+        return http.get("users/profile/", {
+          headers: {'Authorization': `Bearer ${res.data.access}`}
+        });
+      })
+      .then((response) => {
+        setUserType(response.data.user_type);
+        localStorage.setItem("userType", response.data.user_type);
       })
       .catch((error) => {
-        toast.error("ID or Password went wrong :(");
+        toast.error("User type not found :(");
       });
   };
+  
 
   return (
     <>

@@ -10,13 +10,14 @@ import logoLong from "../../public/img/logo_long.png";
 
 // Date - Luxon
 import { DateTime } from "luxon";
+import http from "../services/http";
 
 function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
 
   // Logout section start
   const navigate = useNavigate();
   const deleteUserInfo = () => {
-    toast('Good Bye!', {icon: '👋',});
+    toast('You are logged out!', {icon: '✌️',});
     setAccess(null);
     setRefresh(null);
     setUserType(null);
@@ -27,8 +28,27 @@ function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
   }
   // Logout section end
 
-  // const capitalizeFirstLetter = (string) => { return string.charAt(0).toUpperCase() + string.slice(1);};
-  // const userType = capitalizeFirstLetter(localStorage.getItem("userType"));
+  const capitalizeFirstLetter = (string) => {return string.charAt(0).toUpperCase() + string.slice(1)};
+  const userType = capitalizeFirstLetter(localStorage.getItem("userType"));
+
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [label, setLabel] = useState('')
+  const [image, setImage] = useState('')
+
+
+  http.get("users/profile/", {
+    headers: {'Authorization': `Bearer ${localStorage.getItem('access')}`}
+  })
+  .then((r) => {
+    setFirstName(r.data.first_name)
+    setLastName(r.data.last_name)
+    setLabel(r.data.label)
+    setImage(r.data.image)
+  })
+  .catch((error) => {
+    toast.error("Something went wrong :(");
+  });
   
   const currentDate = DateTime.now();
   const formattedDate = currentDate.toFormat("d MMMM yyyy");
@@ -132,13 +152,19 @@ function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
 
                     <span className="mr-[10px]">
 
-                    <i className="bi bi-person-circle text-[25px]"></i>
+                    { image === null 
+                    ? 
+                    <i className="bi bi-person-circle text-[25px]"></i> 
+                    : 
+                    '' 
+                    }
+                    
 
                     </span>
 
                   <span className="block">
-                      <p className="my-[0px] text-[16px] font-bold">Shahboz Shirinboyev</p>
-                      <p className="text-[14px]">{} | Designer</p>
+                      <p className="my-[0px] text-[16px] font-bold">{capitalizeFirstLetter(firstName)} {capitalizeFirstLetter(lastName)}</p>
+                      <p className="text-[14px]">{userType} | {label}</p>
                   </span>
 
                   </span>

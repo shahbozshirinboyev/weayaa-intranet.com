@@ -2,7 +2,7 @@ import React from 'react'
 
 function ControlStaffs() {
   return (
-    <div>ControlStaffs</div>
+    <div>ControlStaffs - Coming Soon ...</div>
   )
 }
 
