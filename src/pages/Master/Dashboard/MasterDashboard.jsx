@@ -12,7 +12,7 @@ function MasterDashboard() {
 
   const createNewDashboard = (e) => {
     e.preventDefault();
-    document.getElementById("add_new_news").showModal();
+    document.getElementById("add_new_news").close();
     http
       .post("users/announcements/", {
         "title": newDashboardTitle.current.value,
@@ -22,8 +22,22 @@ function MasterDashboard() {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       })
       .then((results) => {
+        newDashboardTitle.current.value = '';
+        newDashboardDescription.current.value = '';
         toast.success("Dashboard yuklandi :)");
-        console.log(results);
+        // console.log(results);
+        http
+      .get("users/announcements/", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+      })
+      .then((dashboads) => {
+        // toast.success("Dashboardga ma'lumotlar yuklandi!");
+        setDashboards(dashboads.data.results);
+      })
+      .catch((error) => {
+        // console.log(error);
+        toast.error("Dashboard ma'lumotlari olinmadi :(");
+      });
       })
       .catch((error) => {
         console.log(error);
