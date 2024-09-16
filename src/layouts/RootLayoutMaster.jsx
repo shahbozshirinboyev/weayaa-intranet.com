@@ -206,9 +206,9 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
           </div>
           {/* Navbar END */}
           {/* Content START */}
-          <main>
+          <>
             <Outlet />
-          </main>
+          </>
           {/* Content END */}
         </div>
       </div>

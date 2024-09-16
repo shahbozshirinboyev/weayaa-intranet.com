@@ -48,7 +48,7 @@ function App() {
           toast.error("Token mavjud emas :(");
       }, 200000);
       return () => clearInterval(interval);
-    }, 1);
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
   // Token refresh start
