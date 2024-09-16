@@ -33,7 +33,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
-  const [label, setLabel] = useState('')
+  const [email, setEmail] = useState('')
   const [image, setImage] = useState('')
 
 
@@ -43,7 +43,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
   .then((r) => {
     setFirstName(r.data.first_name)
     setLastName(r.data.last_name)
-    setLabel(r.data.label)
+    setEmail(r.data.email)
     setImage(r.data.image)
   })
   .catch((error) => {
@@ -146,27 +146,21 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
 
               <i tabIndex="0" role="button" className="bi bi-person font-medium w-[32px] h-[32px] rounded-[8px] bg-custom-green-30 hover:bg-custom-green-dark flex justify-center items-center hover:text-white transition-all duration-100 ease-in-out"></i>
 
-              <ul tabIndex="0" className="dropdown-content menu bg-base-100 rounded-box z-[1] w-[280px] p-2 shadow">
-                <li className="">
+              <ul tabIndex="0" className="dropdown-content menu bg-base-100 rounded-box z-[1] w-[330px] p-2 shadow">
+                <li>
                   <span>
-
-                    <span className="mr-[10px]">
-
+                    <span className="mr-[10px] flex justify-center items-center">
                     { image === null 
                     ? 
                     <i className="bi bi-person-circle text-[25px]"></i> 
                     : 
-                    '' 
+                    <img className="rounded-full w-[40px] h-[40px]" src={image} alt={firstName} />
                     }
-                    
-
                     </span>
-
                   <span className="block">
                       <p className="my-[0px] text-[16px] font-bold">{capitalizeFirstLetter(firstName)} {capitalizeFirstLetter(lastName)}</p>
-                      <p className="text-[14px]">{userType} | {label}</p>
+                      <p className="text-[14px]">{userType} | {email}</p>
                   </span>
-
                   </span>
                 </li>
 
