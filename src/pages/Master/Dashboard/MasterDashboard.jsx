@@ -1,19 +1,45 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 
 import http from "../../../services/http";
 
 function MasterDashboard() {
 
-  const [dashboard, setDashboard] = useState([]);
+  const [dashboards, setDashboards] = useState([]);
+
+  const newDashboardTitle = useRef(null);
+  const newDashboardDescription = useRef(null);
+
+  const createNewDashboard = (e) => {
+    e.preventDefault();
+    document.getElementById("add_new_news").showModal();
+    http
+      .post("users/announcements/", {
+        "title": newDashboardTitle.current.value,
+        "description": newDashboardDescription.current.value
+      },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+      })
+      .then((results) => {
+        toast.success("Dashboard yuklandi :)");
+        console.log(results);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Dashboardga yuklashda xatolik :(");
+        console.log(error)
+      });
+  }
+  
   useEffect(() => {
     http
       .get("users/announcements/", {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       })
-      .then((dashboad) => {
+      .then((dashboads) => {
         toast.success("Dashboardga ma'lumotlar yuklandi!");
-        setDashboard(dashboad.data.results);
+        setDashboards(dashboads.data.results);
       })
       .catch((error) => {
         console.log(error);
@@ -21,10 +47,40 @@ function MasterDashboard() {
       });
   }, []);
 
+  const deleteDashboard = (id) => {
+    http
+      .delete(`users/announcements/${id}/`,
+      { headers: { Authorization: `Bearer ${localStorage.getItem("access")}` }, })
+      .then((result) => {
+        toast.success("Ma'lumot o'chirib tashlandi");
+        toast('Delete!', { icon: '🗑️' });
+        // setDashboards(result);
+        console.log(result)
+        // kod takrorlanayabdi START
+        http
+        .get("users/announcements/", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+        })
+        .then((dashboads) => {
+          // toast.success("Dashboardga ma'lumotlar yuklandi!");
+          setDashboards(dashboads.data.results);
+        })
+        .catch((error) => {
+          console.log(error);
+          // toast.error("Dashboard ma'lumotlari olinmadi :(");
+        });
+        // kod takrorlanayabdi END
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Dashboardni o'chirishda muammo paydo bo'ldi :(");
+      });
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
       {/* Cards map START */}
-      {dashboard.map((dashboard) => (
+      {dashboards.map((dashboard) => (
         // {/* CARD 1 START */}
         <div key={dashboard.id} className="bg-custom-green-10 rounded-[20px] p-[15px] text-custom-green-dark relative border border-custom-green-30 group transition-all duration-300 ease-in-out">
           <h2 className="font-bold text-[18px]">
@@ -52,7 +108,7 @@ function MasterDashboard() {
               <span className="mr-[5px]">
                 <i className="bi bi-calendar-week text-[20px]"></i>
               </span>
-              <span className="tooltip" data-tip={dashboard.published_at.split('T')[1].slice(0, 5)}>
+              <span className="tooltip" data-tip={new Date(dashboard.published_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, })}>
                 {dashboard.published_at.split('T')[0]}
               </span>
             </div>
@@ -64,18 +120,13 @@ function MasterDashboard() {
               <i className="bi bi-pencil"></i>
             </button>
 
-            <button className="w-[70px] h-[70px] rounded-[10px] mx-[40px] bg-custom-green-dark text-[20px] hover:text-[25px] hover:border-[2px] transition-all duration-75 ease-in-out">
+            <button onClick={() => {deleteDashboard(dashboard.id)}} className="w-[70px] h-[70px] rounded-[10px] mx-[40px] bg-custom-green-dark text-[20px] hover:text-[25px] hover:border-[2px] transition-all duration-75 ease-in-out">
               <i className="bi bi-trash3"></i>
             </button>
           </div>
           </div>
           {/* Card Hover Section End */}
         </div>
-
-
-         
-
-
         // {/* CARD 1 END */}
       ))}
       {/* Cards map END */}
@@ -124,14 +175,16 @@ function MasterDashboard() {
             </div>
           </div>
 
+          <form action="" onSubmit={createNewDashboard}>
+
           <div className="mb-0 p-2">
             <label className="block text-custom-green-80 font-semibold mb-1" htmlFor="title">Title</label>
-            <input id="title" type="text" className="w-full border font-bold border-custom-green-dark rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark" />
+            <input ref={newDashboardTitle} id="title" type="text" required className="w-full border font-bold border-custom-green-dark rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark" />
           </div>
 
           <div className="mb-0 p-2">
             <label className="block text-custom-green-80 font-semibold mb-1" htmlFor="description">Description</label>
-            <textarea id="description" rows="4" className="w-full border border-custom-green-dark  rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"></textarea>
+            <textarea ref={newDashboardDescription} id="description" rows="4" required className="w-full border border-custom-green-dark  rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"></textarea>
           </div>
 
           <div className="flex justify-end p-2">
@@ -140,6 +193,7 @@ function MasterDashboard() {
               <span>Publish</span>
             </button>
           </div>
+          </form>
 
         </div>
       </dialog>

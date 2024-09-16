@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import http from "../../../services/http";
 
 function StaffDashboard() {
-  const [dashboard, setDashboard] = useState([]);
+  const [dashboards, setDashboards] = useState([]);
   useEffect(() => {
     http
       .get("users/announcements/", {
@@ -12,7 +12,7 @@ function StaffDashboard() {
       })
       .then((dashboad) => {
         toast.success("Dashboardga ma'lumotlar yuklandi!");
-        setDashboard(dashboad.data.results);
+        setDashboards(dashboad.data.results);
       })
       .catch((error) => {
         console.log(error);
@@ -24,7 +24,7 @@ function StaffDashboard() {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
 
       {/* Cards map START */}
-      {dashboard.map((dashboard) => (
+      {dashboards.map((dashboard) => (
         // {/* CARD 1 START */}
         <div key={dashboard.id} className="bg-custom-green-10 rounded-[20px] p-[15px] text-custom-green-dark relative border border-custom-green-30 group transition-all duration-300 ease-in-out">
           <h2 className="font-bold text-[18px]">
@@ -52,7 +52,7 @@ function StaffDashboard() {
               <span className="mr-[5px]">
                 <i className="bi bi-calendar-week text-[20px]"></i>
               </span>
-              <span className="tooltip" data-tip={dashboard.published_at.split('T')[1].slice(0, 5)}>
+              <span className="tooltip" data-tip={new Date(dashboard.published_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, })}>
                 {dashboard.published_at.split('T')[0]}
               </span>
             </div>
