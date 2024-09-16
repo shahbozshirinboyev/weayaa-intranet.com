@@ -14,6 +14,7 @@ export default {
         'custom-green-30': 'rgba(46, 103, 52, 0.30)',
         'custom-green-60': 'rgba(46, 103, 52, 0.60)',
         'custom-green-80': 'rgba(46, 103, 52, 0.80)',
+        'custom-green-90': 'rgba(46, 103, 52, 0.90)',
       },
     },
   },
