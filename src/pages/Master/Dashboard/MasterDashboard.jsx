@@ -87,29 +87,21 @@ function MasterDashboard() {
         toast.error("Dashboardni o'chirishda muammo paydo bo'ldi :(");
       });
   };
+  
+  const editDashboardId = useRef(null);
+  const editDashboardTitle = useRef(null);
+  const editDashboardDescription = useRef(null);
 
   const editDashboard = (e) => {
+
     e.preventDefault();
-    // document.getElementById("add_new_news").close();
-    // http
-    //   .post(
-    //     "users/announcements/",
-    //     {
-    //       title: newDashboardTitle.current.value,
-    //       description: newDashboardDescription.current.value,
-    //     },
-    //     { headers }
-    //   )
-    //   .then((response) => {
-    //     newDashboardTitle.current.value = "";
-    //     newDashboardDescription.current.value = "";
-    //     toast.success("Yangi dashboard yuklandi :)");
-    //     fetchDashboards();
-    //   })
-    //   .catch((error) => {
-    //     toast.error("Yangi dashboard yuklanmadi :(");
-    //   });
+
+    console.log(editDashboardId.current.value)
+    console.log(editDashboardTitle.current.value)
+    console.log(editDashboardDescription.current.value)
+
   };
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
@@ -181,6 +173,7 @@ function MasterDashboard() {
           </div>
           {/* Card Hover Section End */}
           <dialog id={`edit_news_${dashboard.id}`} className="modal">
+
             <Toaster />
 
             <div className="modal-box !p-0">
@@ -231,7 +224,10 @@ function MasterDashboard() {
                 </div>
               </div>
 
-              <form>
+              <form onSubmit={editDashboard}>
+
+                <input ref={editDashboardId} defaultValue={dashboard.id} type="text" className="text-black border"/>
+
                 <div className="mb-0 p-2">
                   <label
                     className="block text-custom-green-80 font-semibold mb-1"
@@ -240,7 +236,8 @@ function MasterDashboard() {
                     Title:
                   </label>
                   <input
-                    value={dashboard.title}
+                    ref={editDashboardTitle}
+                    defaultValue={dashboard.title}
                     id="title"
                     type="text"
                     required
@@ -256,7 +253,8 @@ function MasterDashboard() {
                     Description:
                   </label>
                   <textarea
-                  value={dashboard.description}
+                    ref={editDashboardDescription}
+                    defaultValue={dashboard.description}
                     id="description"
                     rows="4"
                     required
@@ -270,8 +268,11 @@ function MasterDashboard() {
                     <span>Republish</span>
                   </button>
                 </div>
+                
               </form>
+
             </div>
+
           </dialog>
         </div>
         // {/* CARD 1 END */}
@@ -330,7 +331,7 @@ function MasterDashboard() {
               <div>
                 <p className="text-xs text-custom-green-80">Publishing date:</p>
                 <p className="font-semibold text-custom-green-dark">
-                  Today: {DateTime.now().toFormat("d MMM yyyy")}
+                  {DateTime.now().toFormat("d MMM yyyy")}
                 </p>
               </div>
             </div>
