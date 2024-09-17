@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
+// API
 import http from "../../../services/http";
+
+// Date - Luxon
+import { DateTime } from "luxon";
 
 function MasterDashboard() {
 
@@ -9,6 +13,25 @@ function MasterDashboard() {
 
   const newDashboardTitle = useRef(null);
   const newDashboardDescription = useRef(null);
+
+  const [userFirstName, setUserFirstName] = useState(null)
+  const [userLastName, setUserLastName] = useState(null)
+  const [userImage, setUserImage] = useState(null)
+
+  const dashboardUserInfo = () =>  {
+    http.get("users/profile/", {
+      headers: {'Authorization': `Bearer ${localStorage.getItem('access')}`}
+    })
+    .then((r) => {
+      toast.success("Xabar yaratuvchi ma'lumotlari yuklandi :)");
+      setUserFirstName(r.data.first_name)
+      setUserLastName(r.data.last_name)
+      setUserImage(r.data.image)
+    })
+    .catch((error) => {
+      toast.error("Xabar yaratuvchi ma'lumotlari yuklanmadi :(");
+    });
+  }
 
   const createNewDashboard = (e) => {
     e.preventDefault();
@@ -38,11 +61,10 @@ function MasterDashboard() {
         // console.log(error);
         toast.error("Dashboard ma'lumotlari olinmadi :(");
       });
+
       })
       .catch((error) => {
-        console.log(error);
         toast.error("Dashboardga yuklashda xatolik :(");
-        console.log(error)
       });
   }
   
@@ -66,10 +88,8 @@ function MasterDashboard() {
       .delete(`users/announcements/${id}/`,
       { headers: { Authorization: `Bearer ${localStorage.getItem("access")}` }, })
       .then((result) => {
-        toast.success("Ma'lumot o'chirib tashlandi");
-        toast('Delete!', { icon: '🗑️' });
+        toast('Delete :(', { icon: '🗑️' });
         // setDashboards(result);
-        console.log(result)
         // kod takrorlanayabdi START
         http
         .get("users/announcements/", {
@@ -148,7 +168,7 @@ function MasterDashboard() {
       {/* Add new card start */}
       <button
         className="group bg-custom-green-10 hover:bg-custom-green-15 transition-all rounded-[20px] cursor-pointer border-[3px] border-dashed border-custom-green-60"
-        onClick={() => document.getElementById("add_new_news").showModal()}
+        onClick={() => {document.getElementById("add_new_news").showModal(); dashboardUserInfo()}}
       >
         <div className="flex items-center justify-center h-full w-full">
           <i className="bi bi-plus-circle text-[30px] group-hover:text-[35px] transition-all text-custom-green-60"></i>
@@ -156,6 +176,7 @@ function MasterDashboard() {
       </button>
 
       <dialog id="add_new_news" className="modal">
+        <Toaster />
         <div className="modal-box !p-0">
 
           <div className="bg-custom-green-10 w-full p-4 rounded-t-lg flex  items-center border-b border-custom-green-dark">
@@ -169,11 +190,18 @@ function MasterDashboard() {
 
           <div className=" mb-0 flex justify-between items-center my-4 gap-2 p-2">
             <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full" >
-            <i className="bi bi-person-circle text-[25px] text-custom-green-dark "></i> 
+              {
+                userImage === null
+                ?
+                <i className="bi bi-person-circle text-[25px] text-custom-green-dark "></i>
+                :
+                <img src={userImage} alt={userFirstName} className="w-[35px] h-[35px] rounded-full" />
+              }
+             
 
               <div>
-                <p className="text-xs text-custom-green-80 ">Publishing by</p>
-                <p className="font-semibold text-custom-green-dark">Tommy Kim</p>
+                <p className="text-xs text-custom-green-80 ">Publishing by:</p>
+                <p className="font-semibold text-custom-green-dark">{userFirstName} {userLastName}</p>
               </div>
 
             </div>
@@ -182,8 +210,8 @@ function MasterDashboard() {
             <i className="bi bi-calendar-week text-custom-green-dark text-[19px]  border  border-custom-green-dark rounded-full px-2 py-1 "></i>
 
               <div>
-                <p className="text-xs text-custom-green-80 ">Publishing data </p>
-                <p className="font-semibold text-custom-green-dark">19.08.2024</p>
+                <p className="text-xs text-custom-green-80">Publishing date:</p>
+                <p className="font-semibold text-custom-green-dark">Today: {DateTime.now().toFormat("d MMM yyyy")}</p>
               </div>
 
             </div>
@@ -192,12 +220,12 @@ function MasterDashboard() {
           <form action="" onSubmit={createNewDashboard}>
 
           <div className="mb-0 p-2">
-            <label className="block text-custom-green-80 font-semibold mb-1" htmlFor="title">Title</label>
+            <label className="block text-custom-green-80 font-semibold mb-1" htmlFor="title">Title:</label>
             <input ref={newDashboardTitle} id="title" type="text" required className="w-full border font-bold border-custom-green-dark rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark" />
           </div>
 
           <div className="mb-0 p-2">
-            <label className="block text-custom-green-80 font-semibold mb-1" htmlFor="description">Description</label>
+            <label className="block text-custom-green-80 font-semibold mb-1" htmlFor="description">Description:</label>
             <textarea ref={newDashboardDescription} id="description" rows="4" required className="w-full border border-custom-green-dark  rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"></textarea>
           </div>
 
