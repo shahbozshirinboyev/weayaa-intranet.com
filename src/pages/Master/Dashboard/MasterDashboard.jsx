@@ -110,8 +110,8 @@ function MasterDashboard() {
     setEditorDashDescription(editDash.description)
   };
 
-  const EditDashboardTitle = useRef(null);
-  const EditDashboardDescription = useRef(null);
+  const editDashboardTitle = useRef(null);
+  const editDashboardDescription = useRef(null);
 
   const editOldDashboard = (e) => {
     e.preventDefault();
@@ -120,14 +120,14 @@ function MasterDashboard() {
       .patch(
         `users/announcements/${editorDashAuthorId}/`,
         {
-          'title': EditDashboardTitle.current.value,
-          'description': EditDashboardDescription.current.value,
+          'title': editDashboardTitle.current.value,
+          'description': editDashboardDescription.current.value,
         },
         { headers }
       )
       .then((response) => {
-        // EditDashboardTitle.current.value ='';
-        // EditDashboardDescription.current.value ='';
+        // editDashboardTitle.current.value ='';
+        // editDashboardDescription.current.value ='';
         // fetchDashboards();
         toast.success("Dashboard yangilandi :)");
         window.location.reload();
@@ -362,7 +362,7 @@ function MasterDashboard() {
                 Title:
               </label>
               <input
-                ref={EditDashboardTitle}
+                ref={editDashboardTitle}
                 defaultValue={editorDashTitle}
                 id="title"
                 type="text"
@@ -379,7 +379,7 @@ function MasterDashboard() {
                 Description:
               </label>
               <textarea
-                ref={EditDashboardDescription}
+                ref={editDashboardDescription}
                 defaultValue={editorDashDescription}
                 id="description"
                 rows="4"
