@@ -88,9 +88,6 @@ function MasterDashboard() {
       });
   };
   
-  // const editDashboardTitle = useRef(null);
-  // const editDashboardDescription = useRef(null);
-
   const [editorDashAuthorId, setEditorDashAuthorId] = useState('')
   const [editorDashAuthorFirstName, setEditorDashAuthorFirstName] = useState('')
   const [editorDashAuthorLastName, setEditorDashAuthorLastName] = useState('')
@@ -137,6 +134,7 @@ function MasterDashboard() {
         toast.error("Dashboard yangilanmadi :(");
       });
   }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
       {/* Cards map START */}
@@ -192,7 +190,7 @@ function MasterDashboard() {
                 <i className="bi bi-pencil"></i>
               </button>
               <button 
-                onClick={() => { deleteDashboard(dashboard.id); }}
+                onClick={()=>document.getElementById(`my_modal_${dashboard.id}`).showModal()}
                 className="w-[70px] h-[70px] rounded-[10px] mx-[40px] bg-custom-green-dark text-[20px] hover:text-[25px] hover:border-[2px] transition-all duration-75 ease-in-out"
               >
                 <i className="bi bi-trash3"></i>
@@ -200,11 +198,24 @@ function MasterDashboard() {
             </div>
           </div>
           {/* Card Hover Section End */}
+          {/* Delete Dashboard Modal START */}
+          <dialog id={`my_modal_${dashboard.id}`} className="modal overflow-hidden">
+              <div className="modal-box">
+                <h3 className="font-bold text-lg">Delete</h3>
+                <p className="py-4">Are you sure you want to delete this news?</p>
+                <div className="modal-action flex justify-center items-center">
+                  <button onClick={() => { deleteDashboard(dashboard.id); }} className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark">Yes</button>
+                  <form method="dialog">
+                    <button className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark">No</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+              {/* Delete Dashboard Modal END */}
         </div>
         // {/* CARD 1 END */}
       ))}
       {/* Cards map END */}
-
       {/* Add new card start */}
       <button
         className="group bg-custom-green-10 hover:bg-custom-green-15 transition-all rounded-[20px] cursor-pointer border-[3px] border-dashed border-custom-green-60"
