@@ -432,7 +432,7 @@ function AddStaff() {
 
                   <div className="grid grid-cols-2 gap-2 border rounded-md">
                     <div>
-                      <label className="p-2 flex items-center">
+                      <label className="p-2 flex items-center justify-center">
                         <input
                           onChange={inputHandle}
                           type="radio"
@@ -445,7 +445,7 @@ function AddStaff() {
                     </div>
 
                     <div>
-                      <label className="p-2 flex items-center">
+                      <label className="p-2 flex items-center justify-center">
                         <input
                           onChange={inputHandle}
                           type="radio"
