@@ -2,18 +2,39 @@ import { Fragment, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 function AddStaff() {
+
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const [workTime, setWorkTime] = useState([false, false, false, false, false, false, false]);
+
+  // Function to handle checkbox change
+  const handleCheckboxChange = (index) => {
+    setWorkTime(prevWorkTime => {
+      // Create a copy of the current state
+      const newWorkTime = [...prevWorkTime];
+      // Toggle the value at the specific index
+      newWorkTime[index] = !newWorkTime[index];
+      return newWorkTime;
+    });
+  };
+
   // Add New Staff START
   const formArray = [1, 2, 3];
   const [formNo, setFormNo] = useState(formArray[0]);
   const [state, setState] = useState({
     firstName: "",
     lastName: "",
+    image: "",
     phone: "",
     email: "",
     specialist: "",
-    workTime: "",
+    specialistLabel: "",
+    workDays: "",
     address: "",
-    account_type: "",
+    accountType: "",
     userId: "",
     userPassword: "",
   });
@@ -26,7 +47,9 @@ function AddStaff() {
   // har bir inputga qo'shamiz
   // value={state.name}
   // onChange={inputHandle}
+  // name="name"
   const next = () => {
+    // formNo === 1 && state.firstName && state.lastName && state.specialist
     if (formNo === 1 && state.firstName && state.lastName && state.specialist) {
       setFormNo(formNo + 1);
     } else if (formNo === 2) {
@@ -39,8 +62,9 @@ function AddStaff() {
     setFormNo(formNo - 1);
   };
   const finalSubmit = () => {
-    if (state.district && state.thana && state.post) {
+    if (state.accountType && state.userId && state.userPassword) {
       console.log(state);
+      console.log(workTime);
       toast.success("form submit success");
     } else {
       toast.error("Please fillup all input field");
@@ -51,6 +75,10 @@ function AddStaff() {
   const [userImage, setUserImage] = useState(null);
 
   const handleFileUserImageChange = (e) => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.files[0],
+    });
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -63,6 +91,11 @@ function AddStaff() {
   const handleClearFileUserImage = () => {
     setUserImage(null);
     document.getElementById("user-image").value = "";
+    setState({
+        ...state,
+        image: "",
+      });
+   
   };
 
   return (
@@ -82,7 +115,7 @@ function AddStaff() {
       <dialog id="add_user_modal" className="modal">
         <Toaster />
 
-        <div className="modal-box max-w-3xl h-[700px] p-0">
+        <div className="modal-box max-w-3xl h-[735px] p-0">
           {/* Modal header Start */}
           <form
             method="dialog"
@@ -133,6 +166,7 @@ function AddStaff() {
               {formNo === 1 && (
                 <div>
                   <div className="grid grid-cols-1 mt-2">
+
                     <div className="flex mt-2 gap-4 items-center">
                       <div className="w-[100px] h-[100px] flex justify-center items-center">
                         {userImage === null ? (
@@ -157,17 +191,20 @@ function AddStaff() {
                             </button>
                           )}
                           <input
+                            // value={state.image.data}
+                            // textni rransparent qilib qo'ydim orqaga qaytganda file name ni qayta topa olmayabdi
+                            name="image"
+                            onChange={handleFileUserImageChange}
                             type="file"
                             id="user-image"
-                            className="text-[14px] text-custom-green-dark font-medium placeholder-custom-green-60
-                        file:mr-4 file:py-1 file:px-2 file:w-[100px]
-                        file:rounded-[10px] file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-custom-green-30 file:text-custom-green-dark
-                        hover:file:bg-custom-green-dark hover:file:text-white
-                        hover:file:transition-all
+                            className="text-[14px] text-transparent font-medium placeholder-custom-green-60
+                                      file:mr-4 file:py-1 file:px-2 file:w-[100px]
+                                      file:rounded-[10px] file:border-0
+                                      file:text-sm file:font-semibold
+                                      file:bg-custom-green-30 file:text-custom-green-dark
+                                      hover:file:bg-custom-green-dark hover:file:text-white
+                                      hover:file:transition-all
                         "
-                            onChange={handleFileUserImageChange}
                           />
                         </label>
                         <span className="block mt-[5px] text-custom-green-80">
@@ -185,7 +222,7 @@ function AddStaff() {
                       <div>
                         <label>
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            First Name
+                            First Name<span className="text-red-700 font-bold">*</span>
                           </span>
                           <input
                             value={state.firstName}
@@ -200,7 +237,7 @@ function AddStaff() {
                       <div>
                         <label>
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            Last Name
+                            Last Name<span className="text-red-700 font-bold">*</span>
                           </span>
                           <input
                             value={state.lastName}
@@ -218,7 +255,7 @@ function AddStaff() {
                       <div>
                         <label>
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            <i class="bi bi-telephone"></i> Phone Number
+                            <i className="bi bi-telephone"></i> Phone Number
                           </span>
                           <input
                             value={state.phone}
@@ -233,7 +270,7 @@ function AddStaff() {
                       <div>
                         <label>
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            <i class="bi bi-envelope"></i> Email Address
+                            <i className="bi bi-envelope"></i> Email Address
                           </span>
                           <input
                             value={state.email}
@@ -251,7 +288,7 @@ function AddStaff() {
                       <div>
                         <label>
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            Specialist Stuff
+                            Specialist Stuff<span className="text-red-700 font-bold">*</span>
                           </span>
                           <select
                             value={state.specialist}
@@ -259,9 +296,8 @@ function AddStaff() {
                             name="specialist"
                             id=""
                             placeholder="Select Specialist Stuff"
-                            className="text-custom-green-dark transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                          >
-                            <option selected>Select Specialist Stuff</option>
+                            className="text-custom-green-dark transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60">
+                            <option>Select Specialist Stuff</option>
                             <option value="coder">Coder</option>
                             <option value="designer">Designer</option>
                             <option value="manager">Manager</option>
@@ -276,10 +312,11 @@ function AddStaff() {
                         <div className="grid grid-cols-2 gap-2">
                           <label className="p-2 border rounded-md flex items-center">
                             <input
-                              value={state.workTime}
+                              checked={state.workDays === 'full time'}
                               onChange={inputHandle}
                               type="radio"
-                              name="workTime"
+                              name="workDays"
+                              value="full time"
                             />
                             <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                               Full Time
@@ -287,16 +324,35 @@ function AddStaff() {
                           </label>
                           <label className="p-2 border rounded-md flex items-center">
                             <input
-                              value={state.workTime}
+                              checked={state.workDays === 'part time'}
                               onChange={inputHandle}
                               type="radio"
-                              name="workTime"
+                              name="workDays"
+                              value="part time"
                             />
                             <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                               Part Time
                             </span>
                           </label>
                         </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 mt-2">
+                      <div>
+                        <label>
+                          <span className="block text-custom-green-dark font-semibold text-[14px]">
+                            Enter Specialist Stuff
+                          </span>
+                          <input
+                            value={state.specialistLabel}
+                            onChange={inputHandle}
+                            name="specialistLabel"
+                            type="text"
+                            placeholder="Example: 3D Designer | Frontend developer | Backend developer"
+                            className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                          />
+                        </label>
                       </div>
                     </div>
 
@@ -337,75 +393,25 @@ function AddStaff() {
                       <span className="text-custom-green-dark font-semibold text-[15px]">
                         Working days:
                       </span>
-                    </div>
+                    </div>                
 
-                    <div>
-                      <label className="mt-2 p-2 border-b-[2px] border-custom-green-80 flex items-center">
-                        <input
-                          onChange={inputHandle}
-                          type="radio"
-                          name="workTime"
-                        />
-                        <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
-                          Monday
-                        </span>
-                      </label>
-                    </div>
-
-                    <div>
-                      <label className="mt-2 p-2 border-b-[2px] border-custom-green-80 flex items-center">
-                        <input onChange={inputHandle} type="radio" name="" />
-                        <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
-                          Tuesday
-                        </span>
-                      </label>
-                    </div>
-
-                    <div>
-                      <label className="mt-2 p-2 border-b-[2px] border-custom-green-80 flex items-center">
-                        <input onChange={inputHandle} type="radio" name="" />
-                        <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
-                          Wednesday
-                        </span>
-                      </label>
-                    </div>
-
-                    <div>
-                      <label className="mt-2 p-2 border-b-[2px] border-custom-green-80 flex items-center">
-                        <input onChange={inputHandle} type="radio" name="" />
-                        <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
-                          Thursday
-                        </span>
-                      </label>
-                    </div>
-
-                    <div>
-                      <label className="mt-2 p-2 border-b-[2px] border-custom-green-80 flex items-center">
-                        <input onChange={inputHandle} type="radio" name="" />
-                        <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
-                          Friday
-                        </span>
-                      </label>
-                    </div>
-
-                    <div>
-                      <label className="mt-2 p-2 border-b-[2px] border-custom-green-60 flex items-center">
-                        <input onChange={inputHandle} type="radio" name="" />
-                        <span className="text-custom-green-60 font-semibold text-[15px] ml-[15px]">
-                          Saturday
-                        </span>
-                      </label>
-                    </div>
-
-                    <div>
-                      <label className="mt-2 p-2 border-b-[2px] border-custom-green-60 flex items-center">
-                        <input onChange={inputHandle} type="radio" name="" />
-                        <span className="text-custom-green-60 font-semibold text-[15px] ml-[15px]">
-                          Sunday
-                        </span>
-                      </label>
-                    </div>
-                  </div>
+                    {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => (
+                      <div key={index}>
+                        <label className={`mt-2 p-2 border-b-[2px] ${index < 5 ? 'border-custom-green-80' : 'border-custom-green-60'} flex items-center`}>
+                          <input
+                            type="checkbox"
+                            checked={workTime[index]}
+                            onChange={() => handleCheckboxChange(index)}
+                            name={`workTime${day}`}
+                          />
+                          <span className={`text-custom-green-${index < 5 ? 'dark' : '60'} font-semibold text-[15px] ml-[15px]`}>
+                            {day}
+                          </span>
+                        </label>
+                      </div>
+                    ))} 
+                                   
+                   </div>
 
                   <div className="gap-4 grid grid-cols-2 justify-center items-center absolute inset-x-0 bottom-[20px] mx-6">
                     <button
@@ -434,9 +440,11 @@ function AddStaff() {
                     <div>
                       <label className="p-2 flex items-center justify-center">
                         <input
+                          checked={state.accountType === 'staff'}
                           onChange={inputHandle}
                           type="radio"
                           name="accountType"
+                          value="staff"
                         />
                         <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                           Staff Account
@@ -447,9 +455,11 @@ function AddStaff() {
                     <div>
                       <label className="p-2 flex items-center justify-center">
                         <input
+                          checked={state.accountType === 'master'}
                           onChange={inputHandle}
                           type="radio"
                           name="accountType"
+                          value="master"
                         />
                         <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                           Master Account
@@ -462,14 +472,14 @@ function AddStaff() {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i class="bi bi-person-check"></i> WeaYaa ID
+                          <i className="bi bi-person-check"></i> WeaYaa ID
                         </span>
                         <input
-                          value={state.firstName}
+                          value={state.userId}
+                          name="userId"
                           onChange={inputHandle}
-                          name="firstName"
                           type="text"
-                          placeholder="Enter Staff First Name"
+                          placeholder="Enter WeaYaa ID"
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                         />
                       </label>
@@ -478,16 +488,21 @@ function AddStaff() {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i class="bi bi-key"></i> Password
+                          <i className="bi bi-key"></i> Password
                         </span>
+                        <div className="relative">
                         <input
-                          value={state.lastName}
+                          value={state.userPassword}
+                          name="userPassword"
                           onChange={inputHandle}
-                          name="lastName"
-                          type="password"
-                          placeholder="**********"
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder="Enter Password"
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                         />
+                          <button type="button" onClick={togglePasswordVisibility} className="absolute top-0 end-0 p-2.5 rounded-full w-[30px] font-medium flex justify-center items-center text-custom-green-60 hover:text-custom-green-dark">
+                          {showPassword ? <i className="bi bi-eye"></i> : <i className="bi bi-eye-slash"></i>}
+                          </button>
+                        </div>
                       </label>
                     </div>
                   </div>
