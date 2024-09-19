@@ -4,11 +4,11 @@ import http from "../../../services/http";
 function ControlStaffs() {
   
   const access = localStorage.getItem("access");
-
   // const array = [true, false, true, false, true, false, true];
   const array = [true];
 
   const newuser = () => {
+
     const formData = new FormData();
     formData.append("weayaa_id", "username123");
     formData.append("password", "user");
@@ -42,6 +42,7 @@ function ControlStaffs() {
         // aniq xatolikni ko'rish uchun doim shunday qiymaydan foydalanish kerak 
         // serverdan kelayotgan xatolik sizga tezroq muammoni to'g'irlashda yordam beradi
       });
+      
   };
 
   return (

@@ -7,26 +7,10 @@ import http from "../services/http";
 function AddStaff() {
 
   const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const [workTime, setWorkTime] = useState([false, false, false, false, false, false, false]);
-
-  // Function to handle checkbox change
-  const handleCheckboxChange = (index) => {
-    setWorkTime(prevWorkTime => {
-      // Create a copy of the current state
-      const newWorkTime = [...prevWorkTime];
-      // Toggle the value at the specific index
-      newWorkTime[index] = !newWorkTime[index];
-      return newWorkTime;
-    });
-  };
-
-  // Add New Staff START
+  const [workDays, setWorkDays] = useState([false, false, false, false, false, false, false]);
   const formArray = [1, 2, 3];
   const [formNo, setFormNo] = useState(formArray[0]);
+  const [userImage, setUserImage] = useState(null);
   const [state, setState] = useState({
     firstName: '',
     lastName: '',
@@ -34,85 +18,24 @@ function AddStaff() {
     phone: '',
     email: '',
     specialist: '',
-    specialistLabel: '',
-    workDays: '',
+    label: '',
+    workType: 'full_time',
     address: '',
-    accountType: '',
+    accountType: 'staff',
     userId: '',
     userPassword: '',
   });
+
+  // A function that keep changes in input START
   const inputHandle = (e) => {
     setState({
       ...state,
       [e.target.name]: e.target.value,
     });
   };
-  // har bir inputga qo'shamiz
-  // value={state.name}
-  // onChange={inputHandle}
-  // name="name"
-  const next = () => {
-    // formNo === 1 && state.firstName && state.lastName && state.specialist
-    if (formNo === 1 && state.firstName && state.lastName && state.specialist) {
-      setFormNo(formNo + 1);
-    } else if (formNo === 2) {
-      setFormNo(formNo + 1);
-    } else {
-      toast.error("Please fillup all input field");
-    }
-  };
-  const pre = () => {
-    setFormNo(formNo - 1);
-  };
+  // A function that keep changes in input START
 
-  const access = localStorage.getItem("access");
-  const headers = { Authorization: `Bearer ${access}` };
-
-  const formData = new FormData();
-    formData.append("weayaa_id", state.userId);
-    formData.append("password", state.userPassword);
-    formData.append("first_name", state.firstName);
-    formData.append("last_name", state.lastName);
-    formData.append("label", null);
-    formData.append("phone_number", null);
-    formData.append("email", null);
-    formData.append("speciality", { "name": '' });
-    formData.append("work_type", 'full_time');
-    formData.append("address", null);
-    formData.append("image", null); // Fayl sifatida rasmni qo'shish
-    formData.append("work_days", null);
-    formData.append("user_type", 'master');
-
-  const finalSubmit = () => {
-    if (state.accountType && state.userId && state.userPassword) {
-      // -------------
-      console.log(state);
-      console.log(workTime);
-      // -------------
-      http
-      .post("users/staff/", formData, {
-        headers: {
-          Authorization: `Bearer ${access}`,
-          "Content-Type": "multipart/form-data"
-        }
-      } )
-      .then((response) => {
-        console.log(response)
-        toast.success("Yangi user qo'shildi :)");
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Yangi user qo'shishda muammo bor :(");
-      });
-      
-    } else {
-      toast.error("Please fillup all input field");
-    }
-  };
-  // Add New Staff END
-
-  const [userImage, setUserImage] = useState(null);
-
+  // Choose IMG file and render for visible START
   const handleFileUserImageChange = (e) => {
     setState({
       ...state,
@@ -127,19 +50,109 @@ function AddStaff() {
       reader.readAsDataURL(file);
     }
   };
+  // Choose IMG file and render for visible END
 
+  // DELETE render ING file START
   const handleClearFileUserImage = () => {
     setUserImage(null);
     document.getElementById("user-image").value = "";
     setState({
-        ...state,
-        image: "",
-      });
+      ...state,
+      image: "",
+    });
   };
+  // DELETE render ING file END
+
+  // Password hide/show function START
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  // Password hide/show function END
+
+  // Function to handle checkbox change START
+  const handleCheckboxChange = (index) => {
+    setWorkDays(prevWorkDays => {
+      // Create a copy of the current state
+      const newWorkDays = [...prevWorkDays];
+      // Toggle the value at the specific index
+      newWorkDays[index] = !newWorkDays[index];
+      return newWorkDays;
+    });
+  };
+  // Function to handle checkbox change END
+
+  // Multi form next button START
+  const next = () => {
+    if (formNo === 1 && state.firstName && state.lastName && state.specialist) {
+      setFormNo(formNo + 1);
+    } else if (formNo === 2) {
+      setFormNo(formNo + 1);
+    } else {
+      toast.error("Please fillup all input field!");
+    }
+  };
+  // Multi form back button START
+  const pre = () => {
+    setFormNo(formNo - 1);
+  };
+  // Multi form next/back button END
+
+  const access = localStorage.getItem("access");
+
+  // const array = [true, false, true, false, true, false, true];
+  const array = [true];
+
+  // Submit Form START
+  const finalSubmit = () => {
+
+    console.log(state)
+
+    // speciality[name] ni to'g'irlash
+    // phone number ni to'g'irlash
+    // work_days ni to'g'irlash
+
+    if (state.accountType && state.userId && state.userPassword) {
+        const formData = new FormData();
+          formData.append("weayaa_id", state.userId);
+          formData.append("password", state.userPassword);
+          formData.append("first_name", state.firstName);
+          formData.append("last_name", state.lastName);
+          formData.append("label", state.label);
+          formData.append("phone_number", state.phone);
+          formData.append("email", state.email);
+          formData.append("speciality[name]", state.specialist);
+          formData.append("work_type", state.workType);
+          formData.append("address", state.address);
+          formData.append("image", state.image);
+          formData.append("work_days", array); // state.workDays
+          formData.append("user_type", state.accountType);
+
+        http
+          .post("users/staff/", formData, {
+            headers: {
+              Authorization: `Bearer ${access}`,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            toast.success("Save new user!")
+          })
+          .catch((error) => {
+            console.log(error.response.data);
+            // aniq xatolikni ko'rish uchun doim shunday qiymaydan foydalanish kerak 
+            // serverdan kelayotgan xatolik sizga tezroq muammoni to'g'irlashda yordam beradi
+            toast.error("Something went wrong!")
+          });
+      
+    } else {
+      toast.error("Please fillup all input field!");
+    }
+  };
+  // Submit Form END
 
   return (
     <section>
-      {/* You can open the modal using document.getElementById('ID').showModal() method */}
 
       {/* Modal Open Button START && Add New Staff*/}
       <button
@@ -153,7 +166,6 @@ function AddStaff() {
 
       <dialog id="add_user_modal" className="modal">
         <Toaster />
-
         <div className="modal-box max-w-3xl h-[735px] p-0">
           {/* Modal header Start */}
           <form
@@ -170,43 +182,44 @@ function AddStaff() {
             </div>
           </form>
           {/* Modal header End */}
-
           <section>
             <div className="p-6 ">
+
+            {/* Show Condition MULTI FORM 1 - 2 - 3 START */}
               <div className="flex justify-center items-center transition-all duration-300">
                 {formArray.map((v, i) => (
                   <Fragment key={i}>
                     <div
                       className={`w-[35px] my-3 font-semibold rounded-full h-[35px] flex justify-center items-center
-                      ${
-                        formNo - 1 === i ||
-                        formNo - 1 === i + 1 ||
-                        formNo === formArray.length
+                      ${formNo - 1 === i ||
+                          formNo - 1 === i + 1 ||
+                          formNo === formArray.length
                           ? "bg-custom-green-dark text-white"
                           : "bg-custom-green-15 text-custom-green-dark"
-                      }`}
+                        }`}
                     >
                       {v}
                     </div>
-
                     {i !== formArray.length - 1 && (
                       <div
-                        className={`w-[85px] h-[2px] ${
-                          formNo === i + 2 || formNo === formArray.length
+                        className={`w-[85px] h-[2px] ${formNo === i + 2 || formNo === formArray.length
                             ? "bg-custom-green-dark"
                             : "bg-custom-green-15"
-                        }`}
+                          }`}
                       ></div>
                     )}
                   </Fragment>
                 ))}
               </div>
-
+            {/* Show Condition MULTI FORM 1 - 2 - 3 START */}
+            
+              {/* START FORM 1 */}
               {formNo === 1 && (
                 <div>
                   <div className="grid grid-cols-1 mt-2">
 
                     <div className="flex mt-2 gap-4 items-center">
+                      
                       <div className="w-[100px] h-[100px] flex justify-center items-center">
                         {userImage === null ? (
                           <i className="bi bi-person-bounding-box text-[35px] text-custom-green-80"></i>
@@ -351,11 +364,11 @@ function AddStaff() {
                         <div className="grid grid-cols-2 gap-2">
                           <label className="p-2 border rounded-md flex items-center">
                             <input
-                              checked={state.workDays === 'full time'}
+                              checked={state.workType === 'full_time'}
                               onChange={inputHandle}
                               type="radio"
-                              name="workDays"
-                              value="full time"
+                              name="workType"
+                              value="full_time"
                             />
                             <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                               Full Time
@@ -363,11 +376,11 @@ function AddStaff() {
                           </label>
                           <label className="p-2 border rounded-md flex items-center">
                             <input
-                              checked={state.workDays === 'part time'}
+                              checked={state.workType === 'part_time'}
                               onChange={inputHandle}
                               type="radio"
-                              name="workDays"
-                              value="part time"
+                              name="workType"
+                              value="part_time"
                             />
                             <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                               Part Time
@@ -384,9 +397,9 @@ function AddStaff() {
                             Enter Specialist Stuff
                           </span>
                           <input
-                            value={state.specialistLabel}
+                            value={state.label}
                             onChange={inputHandle}
-                            name="specialistLabel"
+                            name="label"
                             type="text"
                             placeholder="Example: 3D Designer | Frontend developer | Backend developer"
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
@@ -424,7 +437,9 @@ function AddStaff() {
                   {/* Next Button End */}
                 </div>
               )}
+              {/* END FORM 1 */}
 
+              {/* START FORM 2 */}
               {formNo === 2 && (
                 <div>
                   <div className="grid grid-cols-1">
@@ -432,25 +447,25 @@ function AddStaff() {
                       <span className="text-custom-green-dark font-semibold text-[15px]">
                         Working days:
                       </span>
-                    </div>                
+                    </div>
 
                     {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => (
                       <div key={index}>
                         <label className={`mt-2 p-2 border-b-[2px] ${index < 5 ? 'border-custom-green-80' : 'border-custom-green-60'} flex items-center`}>
                           <input
                             type="checkbox"
-                            checked={workTime[index]}
+                            checked={workDays[index]}
                             onChange={() => handleCheckboxChange(index)}
-                            name={`workTime${day}`}
+                            name={`workDays${day}`}
                           />
                           <span className={`text-custom-green-${index < 5 ? 'dark' : '60'} font-semibold text-[15px] ml-[15px]`}>
                             {day}
                           </span>
                         </label>
                       </div>
-                    ))} 
-                                   
-                   </div>
+                    ))}
+
+                  </div>
 
                   <div className="gap-4 grid grid-cols-2 justify-center items-center absolute inset-x-0 bottom-[20px] mx-6">
                     <button
@@ -468,7 +483,9 @@ function AddStaff() {
                   </div>
                 </div>
               )}
+              {/* END FORM 2 */}
 
+              {/* START FORM 3 */}
               {formNo === 3 && (
                 <div>
                   <div className="text-custom-green-dark font-semibold text-[15px] mt-2">
@@ -530,16 +547,16 @@ function AddStaff() {
                           <i className="bi bi-key"></i> Password
                         </span>
                         <div className="relative">
-                        <input
-                          value={state.userPassword}
-                          name="userPassword"
-                          onChange={inputHandle}
-                          type={showPassword ? 'text' : 'password'}
-                          placeholder="Enter Password"
-                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                        />
+                          <input
+                            value={state.userPassword}
+                            name="userPassword"
+                            onChange={inputHandle}
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Enter Password"
+                            className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                          />
                           <button type="button" onClick={togglePasswordVisibility} className="absolute top-0 end-0 p-2.5 rounded-full w-[30px] font-medium flex justify-center items-center text-custom-green-60 hover:text-custom-green-dark">
-                          {showPassword ? <i className="bi bi-eye"></i> : <i className="bi bi-eye-slash"></i>}
+                            {showPassword ? <i className="bi bi-eye"></i> : <i className="bi bi-eye-slash"></i>}
                           </button>
                         </div>
                       </label>
@@ -562,8 +579,11 @@ function AddStaff() {
                   </div>
                 </div>
               )}
+              {/* END FORM 3 */}
+
             </div>
           </section>
+
         </div>
       </dialog>
     </section>
