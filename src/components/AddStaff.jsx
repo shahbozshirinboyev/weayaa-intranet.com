@@ -1,6 +1,9 @@
 import { Fragment, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
+// Base URL
+import http from "../services/http";
+
 function AddStaff() {
 
   const [showPassword, setShowPassword] = useState(false);
@@ -25,18 +28,18 @@ function AddStaff() {
   const formArray = [1, 2, 3];
   const [formNo, setFormNo] = useState(formArray[0]);
   const [state, setState] = useState({
-    firstName: "",
-    lastName: "",
-    image: "",
-    phone: "",
-    email: "",
-    specialist: "",
-    specialistLabel: "",
-    workDays: "",
-    address: "",
-    accountType: "",
-    userId: "",
-    userPassword: "",
+    firstName: '',
+    lastName: '',
+    image: '',
+    phone: '',
+    email: '',
+    specialist: '',
+    specialistLabel: '',
+    workDays: '',
+    address: '',
+    accountType: '',
+    userId: '',
+    userPassword: '',
   });
   const inputHandle = (e) => {
     setState({
@@ -61,11 +64,47 @@ function AddStaff() {
   const pre = () => {
     setFormNo(formNo - 1);
   };
+
+  const access = localStorage.getItem("access");
+  const headers = { Authorization: `Bearer ${access}` };
+
+  const formData = new FormData();
+    formData.append("weayaa_id", state.userId);
+    formData.append("password", state.userPassword);
+    formData.append("first_name", state.firstName);
+    formData.append("last_name", state.lastName);
+    formData.append("label", null);
+    formData.append("phone_number", null);
+    formData.append("email", null);
+    formData.append("speciality", { "name": '' });
+    formData.append("work_type", 'full_time');
+    formData.append("address", null);
+    formData.append("image", null); // Fayl sifatida rasmni qo'shish
+    formData.append("work_days", null);
+    formData.append("user_type", 'master');
+
   const finalSubmit = () => {
     if (state.accountType && state.userId && state.userPassword) {
+      // -------------
       console.log(state);
       console.log(workTime);
-      toast.success("form submit success");
+      // -------------
+      http
+      .post("users/staff/", formData, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+          "Content-Type": "multipart/form-data"
+        }
+      } )
+      .then((response) => {
+        console.log(response)
+        toast.success("Yangi user qo'shildi :)");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Yangi user qo'shishda muammo bor :(");
+      });
+      
     } else {
       toast.error("Please fillup all input field");
     }
@@ -88,6 +127,7 @@ function AddStaff() {
       reader.readAsDataURL(file);
     }
   };
+
   const handleClearFileUserImage = () => {
     setUserImage(null);
     document.getElementById("user-image").value = "";
@@ -95,7 +135,6 @@ function AddStaff() {
         ...state,
         image: "",
       });
-   
   };
 
   return (
