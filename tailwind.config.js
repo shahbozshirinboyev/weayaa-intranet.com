@@ -24,4 +24,5 @@ export default {
   daisyui: {
     darkTheme: false, // Disable dark mode - daisyUI - Tailwind CSS
   },
+  darkMode: 'class',
 }
