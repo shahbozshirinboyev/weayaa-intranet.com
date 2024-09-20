@@ -55,7 +55,7 @@ function ControlStaffs() {
                     </div>
 
                     <div className="flex justify-end items-center">
-                        <div className="relative z-50">
+                        <div>
                             <AddStaff />
                         </div>
                     </div>
