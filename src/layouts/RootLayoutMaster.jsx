@@ -33,7 +33,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
+  const [speciality, setSpeciality] = useState('')
   const [image, setImage] = useState('')
 
 
@@ -43,7 +43,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
   .then((r) => {
     setFirstName(r.data.first_name)
     setLastName(r.data.last_name)
-    setEmail(r.data.email)
+    setSpeciality(r.data.speciality[name])
     setImage(r.data.image)
   })
   .catch((error) => {
@@ -159,7 +159,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
                     </span>
                   <span className="block">
                       <p className="my-[0px] text-[16px] font-bold">{capitalizeFirstLetter(firstName)} {capitalizeFirstLetter(lastName)}</p>
-                      <p className="text-[14px]">{userType} | {email}</p>
+                      <p className="text-[14px]">{userType} | { speciality === undefined ? "undefined" : speciality }</p>
                   </span>
                   </span>
                 </li>
