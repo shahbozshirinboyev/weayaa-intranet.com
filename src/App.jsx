@@ -30,27 +30,27 @@ import MasterSettings from "./pages/Master/Settings/MasterSettings";
 function App() {
 
   // Token refresh start
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const interval = setInterval(() => {
-        (localStorage.getItem('access')) ?
-        http.post("token/refresh/", {
-            'refresh' : localStorage.getItem('refresh')
-          })
-          .then((newtoken) => {
-            localStorage.setItem('access', newtoken.data.access)
-            console.log('Token yangilandi')
-          })
-          .catch(() => {
-            toast.error("Yangi 'token' olib bo'lmadi :(");
-          })
-          :
-          toast.error("Token mavjud emas :(");
-      }, 200000);
-      return () => clearInterval(interval);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     const interval = setInterval(() => {
+  //       (localStorage.getItem('access')) ?
+  //       http.post("token/refresh/", {
+  //           'refresh' : localStorage.getItem('refresh')
+  //         })
+  //         .then((newtoken) => {
+  //           localStorage.setItem('access', newtoken.data.access)
+  //           console.log('Token yangilandi')
+  //         })
+  //         .catch(() => {
+  //           toast.error("Yangi 'token' olib bo'lmadi :(");
+  //         })
+  //         :
+  //         toast.error("Token mavjud emas :(");
+  //     }, 200000);
+  //     return () => clearInterval(interval);
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, []);
   // Token refresh start
 
   const [access, setAccess] = useState(window.localStorage.getItem("access"));
