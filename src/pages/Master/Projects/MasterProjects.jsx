@@ -1,8 +1,12 @@
 import React from 'react'
+// components
+import TaskManagement from '../../../components/TaskManagement'
 
 function MasterProjects() {
   return (
-    <div>MasterProjects - Coming Soon ...</div>
+    <>
+      <TaskManagement />
+    </>
   )
 }
 
