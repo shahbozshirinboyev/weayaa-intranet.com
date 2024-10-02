@@ -16,7 +16,7 @@ function MasterSettings() {
     <>
       {/* Top Header START */}
       <div className="font-semibold bg-custom-green-10 px-[10px] py-[10px] rounded-[5px]">
-        <div className="grid grid-cols-3 justify-center items-center gap-4 text-custom-green-dark transition-all duration-300">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 justify-center items-center gap-4 text-custom-green-dark transition-all duration-300">
           {/* <div
                 className={`w-[130px] h-[35px] bg-custom-green-dark absolute rounded-[8px] transition-all duration-300 ease-in-out transform ${
                   smlist === "staff"
