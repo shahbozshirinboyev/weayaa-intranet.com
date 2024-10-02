@@ -46,7 +46,22 @@ function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
     setImage(r.data.image)
   })
   .catch((error) =>{
-    toast.error("Something went wrong :(");
+    if (error.response.status === 401) {
+      http
+        .post("token/refresh/", {
+          refresh: localStorage.getItem("refresh"),
+        })
+        .then((newtoken) => {
+          localStorage.setItem("access", newtoken.data.access);
+          console.log("Token yangilandi");
+        })
+        .catch(() => {
+          toast.error("Yangi 'token' olib bo'lmadi :(");
+        });
+    } else {
+      console.log(error.response.data);
+      toast.error("Something went wrong :(");
+    }
   });
   
   const currentDate = DateTime.now();

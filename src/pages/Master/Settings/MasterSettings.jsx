@@ -103,11 +103,11 @@ function MasterSettings() {
               </div>
               <div>
                 <button className="border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
-                  <i class="bi bi-upload mr-2"></i>
+                  <i className="bi bi-upload mr-2"></i>
                   <span>Upload Image</span>
                 </button>
                 <button className="border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 text-red-500 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
-                  <i class="bi bi-trash3 mr-2"></i>
+                  <i className="bi bi-trash3 mr-2"></i>
                   <span>Delete Image</span>
                 </button>
               </div>
@@ -223,11 +223,11 @@ function MasterSettings() {
           </div>
           <div className="flex justify-center items-center m-2">
             <button className="border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
-              <i class="bi bi-upload mr-2"></i>
+              <i className="bi bi-upload mr-2"></i>
               <span>Upload Contract</span>
             </button>
             <button className="border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 text-red-500 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
-              <i class="bi bi-trash3 mr-2"></i>
+              <i className="bi bi-trash3 mr-2"></i>
               <span>Delete Contract</span>
             </button>
           </div>
@@ -264,7 +264,7 @@ function MasterSettings() {
                 BankName Card 1
               </p>
               <button className="justify-end flex py-1 px-2 rounded-[5px] h-full border font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300">
-                <i class="bi bi-pencil mr-2"></i>
+                <i className="bi bi-pencil mr-2"></i>
                 <span>Edit</span>
               </button>
             </div>
@@ -288,7 +288,7 @@ function MasterSettings() {
                 BankName Card 2
               </p>
               <button className="justify-end flex py-1 px-2 rounded-[5px] h-full border font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300">
-                <i class="bi bi-pencil mr-2"></i>
+                <i className="bi bi-pencil mr-2"></i>
                 <span>Edit</span>
               </button>
             </div>
@@ -312,7 +312,7 @@ function MasterSettings() {
                 BankName Card 3
               </p>
               <button className="justify-end flex py-1 px-2 rounded-[5px] h-full border font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300">
-                <i class="bi bi-pencil mr-2"></i>
+                <i className="bi bi-pencil mr-2"></i>
                 <span>Edit</span>
               </button>
             </div>
