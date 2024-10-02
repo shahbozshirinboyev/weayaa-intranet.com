@@ -145,7 +145,7 @@ function MasterSettings() {
                 Email Address
               </span>
               <p className="font-semibold text-[18px]">
-                ZerdaJursinova@gmail.com
+                jursinova@gmail.com
               </p>
             </div>
 
@@ -233,7 +233,7 @@ function MasterSettings() {
           </div>
         </div>
 
-        <div className="border-[2px] border-custom-green-60 bg-custom-green-30 mt-[25px] rounded-[5px] h-[500px] flex items-center justify-center">
+        <div className="border-[2px] border-custom-green-60 bg-custom-green-30 mt-[25px] rounded-[5px] h-[400px] flex items-center justify-center">
           <div className="grid grid-cols-1 text-center">
             <p className="text-[70px] font-bold">PDF</p>
             <span className="font-semibold opacity-70">PDF file open here</span>
@@ -257,11 +257,80 @@ function MasterSettings() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-[25px] gap-4">
-          <div className="border-[2px] border-custom-green-60 rounded-xl h-[250px]">
 
+          <div className="border-[2px] border-custom-green-60 rounded-[5px]">
+            <div className="flex p-4">
+              <p className="justify-start font-bold text-[24px] w-full">
+                BankName Card 1
+              </p>
+              <button className="justify-end flex py-1 px-2 rounded-[5px] h-full border font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300">
+                <i class="bi bi-pencil mr-2"></i>
+                <span>Edit</span>
+              </button>
+            </div>
+
+            <div className="flex p-4 h-[150px] items-end">
+              <div className="w-full">
+                <p className="font-bold text-[18px] text-custom-green-80">
+                  Zerda Jursinova
+                </p>
+                <span className="font-semibold">6789 6346 3426 3467</span>
+              </div>
+              <div>
+                <span className="font-semibold">03/12</span>
+              </div>
+            </div>
           </div>
-        </div>
 
+          <div className="border-[2px] border-custom-green-60 rounded-[5px] opacity-40">
+            <div className="flex p-4">
+              <p className="justify-start font-bold text-[24px] w-full">
+                BankName Card 2
+              </p>
+              <button className="justify-end flex py-1 px-2 rounded-[5px] h-full border font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300">
+                <i class="bi bi-pencil mr-2"></i>
+                <span>Edit</span>
+              </button>
+            </div>
+
+            <div className="flex p-4 h-[150px] items-end">
+              <div className="w-full">
+                <p className="font-bold text-[18px] text-custom-green-80">
+                  Zerda Jursinova
+                </p>
+                <span className="font-semibold">6789 6346 3426 3467</span>
+              </div>
+              <div>
+                <span className="font-semibold">03/12</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-[2px] border-custom-green-60 rounded-[5px] opacity-40">
+            <div className="flex p-4">
+              <p className="justify-start font-bold text-[24px] w-full">
+                BankName Card 3
+              </p>
+              <button className="justify-end flex py-1 px-2 rounded-[5px] h-full border font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300">
+                <i class="bi bi-pencil mr-2"></i>
+                <span>Edit</span>
+              </button>
+            </div>
+
+            <div className="flex p-4 h-[150px] items-end">
+              <div className="w-full">
+                <p className="font-bold text-[18px] text-custom-green-80">
+                  Zerda Jursinova
+                </p>
+                <span className="font-semibold">6789 6346 3426 3467</span>
+              </div>
+              <div>
+                <span className="font-semibold">03/12</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
       {/* My Payment END */}
     </>
