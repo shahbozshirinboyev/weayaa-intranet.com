@@ -54,25 +54,37 @@ function MasterDashboard() {
 
   const createNewDashboard = (e) => {
     e.preventDefault();
+
     document.getElementById("add_new_news").close();
-    http
-      .post(
+
+    toast.promise(
+      http.post(
         "users/announcements/",
         {
-          'title': newDashboardTitle.current.value,
-          'description': newDashboardDescription.current.value,
+          title: newDashboardTitle.current.value,
+          description: newDashboardDescription.current.value,
         },
         { headers }
-      )
-      .then((response) => {
-        newDashboardTitle.current.value = "";
-        newDashboardDescription.current.value = "";
-        toast.success("Yangi dashboard yuklandi :)");
-        fetchDashboards();
-      })
-      .catch((error) => {
-        toast.error("Yangi dashboard yuklanmadi :(");
-      });
+      ),
+
+      {
+        loading: "Yuklanayabdi...",
+
+        success: (response) => {
+          console.log(response);
+
+          newDashboardTitle.current.value = "";
+          newDashboardDescription.current.value = "";
+          fetchDashboards();
+
+          return <b>Yangi dashboard yuklandi :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Yangi dashboard yuklanmadi :(</b>;
+        },
+      }
+    );
   };
 
   const deleteDashboard = (id) => {
@@ -87,24 +99,25 @@ function MasterDashboard() {
         toast.error("Dashboardni o'chirishda muammo paydo bo'ldi :(");
       });
   };
-  
-  const [editorDashAuthorId, setEditorDashAuthorId] = useState('')
-  const [editorDashAuthorFirstName, setEditorDashAuthorFirstName] = useState('')
-  const [editorDashAuthorLastName, setEditorDashAuthorLastName] = useState('')
-  const [editorDashAuthorImage, setEditorDashAuthorImage] = useState('')
-  const [editorDashDate, setEditorDashDate] = useState('')
-  const [editorDashTitle, setEditorDashTitle] = useState('')
-  const [editorDashDescription, setEditorDashDescription] = useState('')
+
+  const [editorDashAuthorId, setEditorDashAuthorId] = useState("");
+  const [editorDashAuthorFirstName, setEditorDashAuthorFirstName] =
+    useState("");
+  const [editorDashAuthorLastName, setEditorDashAuthorLastName] = useState("");
+  const [editorDashAuthorImage, setEditorDashAuthorImage] = useState("");
+  const [editorDashDate, setEditorDashDate] = useState("");
+  const [editorDashTitle, setEditorDashTitle] = useState("");
+  const [editorDashDescription, setEditorDashDescription] = useState("");
 
   const editDashboard = (id) => {
-    const editDash = dashboards.find(item => item.id === id );
-    setEditorDashAuthorId(editDash.id)
-    setEditorDashAuthorFirstName(editDash.author.first_name)
-    setEditorDashAuthorLastName(editDash.author.last_name)
-    setEditorDashAuthorImage(editDash.author.image)
-    setEditorDashDate(editDash.published_at.split("T")[0])
-    setEditorDashTitle(editDash.title)
-    setEditorDashDescription(editDash.description)
+    const editDash = dashboards.find((item) => item.id === id);
+    setEditorDashAuthorId(editDash.id);
+    setEditorDashAuthorFirstName(editDash.author.first_name);
+    setEditorDashAuthorLastName(editDash.author.last_name);
+    setEditorDashAuthorImage(editDash.author.image);
+    setEditorDashDate(editDash.published_at.split("T")[0]);
+    setEditorDashTitle(editDash.title);
+    setEditorDashDescription(editDash.description);
   };
 
   const editDashboardTitle = useRef(null);
@@ -117,8 +130,8 @@ function MasterDashboard() {
       .patch(
         `users/announcements/${editorDashAuthorId}/`,
         {
-          'title': editDashboardTitle.current.value,
-          'description': editDashboardDescription.current.value,
+          title: editDashboardTitle.current.value,
+          description: editDashboardDescription.current.value,
         },
         { headers }
       )
@@ -133,7 +146,7 @@ function MasterDashboard() {
         console.log(error);
         toast.error("Dashboard yangilanmadi :(");
       });
-  }
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
@@ -184,13 +197,20 @@ function MasterDashboard() {
           <div className="absolute w-full h-full inset-x-0 top-0 rounded-[20px] bg-custom-green-60 text-center hidden group-hover:block transition-all duration-300 ease-in-out">
             <div className="flex justify-center items-center h-full text-white">
               <button
-                onClick={() => { editDashboard(dashboard.id); document.getElementById("edit_news").showModal(); }}
+                onClick={() => {
+                  editDashboard(dashboard.id);
+                  document.getElementById("edit_news").showModal();
+                }}
                 className="w-[70px] h-[70px] rounded-[10px] mx-[40px] bg-custom-green-dark text-[20px] hover:text-[25px] hover:border-[2px] transition-all duration-75 ease-in-out"
               >
                 <i className="bi bi-pencil"></i>
               </button>
-              <button 
-                onClick={()=>document.getElementById(`my_modal_${dashboard.id}`).showModal()}
+              <button
+                onClick={() =>
+                  document
+                    .getElementById(`my_modal_${dashboard.id}`)
+                    .showModal()
+                }
                 className="w-[70px] h-[70px] rounded-[10px] mx-[40px] bg-custom-green-dark text-[20px] hover:text-[25px] hover:border-[2px] transition-all duration-75 ease-in-out"
               >
                 <i className="bi bi-trash3"></i>
@@ -199,19 +219,31 @@ function MasterDashboard() {
           </div>
           {/* Card Hover Section End */}
           {/* Delete Dashboard Modal START */}
-          <dialog id={`my_modal_${dashboard.id}`} className="modal overflow-hidden">
-              <div className="modal-box">
-                <h3 className="font-bold text-lg">Delete</h3>
-                <p className="py-4">Are you sure you want to delete this news?</p>
-                <div className="modal-action flex justify-center items-center">
-                  <button onClick={() => { deleteDashboard(dashboard.id); }} className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark">Yes</button>
-                  <form method="dialog">
-                    <button className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark">No</button>
-                  </form>
-                </div>
+          <dialog
+            id={`my_modal_${dashboard.id}`}
+            className="modal overflow-hidden"
+          >
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">Delete</h3>
+              <p className="py-4">Are you sure you want to delete this news?</p>
+              <div className="modal-action flex justify-center items-center">
+                <button
+                  onClick={() => {
+                    deleteDashboard(dashboard.id);
+                  }}
+                  className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark"
+                >
+                  Yes
+                </button>
+                <form method="dialog">
+                  <button className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark">
+                    No
+                  </button>
+                </form>
               </div>
-            </dialog>
-              {/* Delete Dashboard Modal END */}
+            </div>
+          </dialog>
+          {/* Delete Dashboard Modal END */}
         </div>
         // {/* CARD 1 END */}
       ))}
@@ -334,7 +366,7 @@ function MasterDashboard() {
 
           <div className=" mb-0 flex justify-between items-center my-4 gap-2 p-2">
             <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full">
-              { editorDashAuthorImage === '' ? (
+              {editorDashAuthorImage === "" ? (
                 <i className="bi bi-person-circle text-[25px] text-custom-green-dark "></i>
               ) : (
                 <img

@@ -2,43 +2,33 @@ import React from "react";
 
 function Test() {
   toast.promise(
-    http.post("users/staff/", formData, {
-      headers: {
-        Authorization: `Bearer ${access}`,
-        "Content-Type": "multipart/form-data",
+    
+    http.post(
+      
+      "users/announcements/",
+      {
+        'title': newDashboardTitle.current.value,
+        'description': newDashboardDescription.current.value,
       },
-    }),
-
+      { headers }
+    )
+    
+    ,
     {
-      loading: "Adding...",
+      loading: "Yuklanayabdi...",
 
       success: (response) => {
         console.log(response);
 
-        setState({
-          firstName: "",
-          lastName: "",
-          image: "",
-          phone: "",
-          email: "",
-          specialist: "",
-          label: "",
-          workType: "full_time",
-          address: "",
-          accountType: "staff",
-          userId: "",
-          userPassword: "",
-        });
-        setWorkDays([true, true, true, true, true, false, false]);
-        document.getElementById("add_user_modal").close();
-        setFormNo(formArray[0]);
+        newDashboardTitle.current.value = "";
+        newDashboardDescription.current.value = "";
+        fetchDashboards();
 
-        return <b>Add new User!</b>;
+        return <b>Yangi dashboard yuklandi :)</b>;
       },
       error: (error) => {
         console.log(error.response.data);
-
-        return <b>Something went wrong :(</b>;
+        return <b>Yangi dashboard yuklanmadi :(</b>;
       },
     }
   );
