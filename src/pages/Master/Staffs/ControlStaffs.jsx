@@ -128,10 +128,10 @@ function ControlStaffs() {
             </tr>
           </thead>
 
-          {smlist === "staff" ? (
+          
             <tbody>
               {users
-                .filter((user) => user.user_type === "staff")
+                .filter((user) => user.user_type === smlist)
                 .map((user) => (
                   <tr
                     key={user.id}
@@ -271,150 +271,7 @@ function ControlStaffs() {
                   </tr>
                 ))}
             </tbody>
-          ) : (
-            <tbody>
-              {users
-                .filter((user) => user.user_type === "master")
-                .map((user) => (
-                  <tr
-                    key={user.id}
-                    className="bg-white border-b border-custom-green-30 hover:bg-custom-green-5"
-                  >
-                    <td
-                      scope="row"
-                      className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      <img
-                        className="w-10 h-10 rounded-full"
-                        src={
-                          user.image
-                            ? user.image
-                            : "https://e7.pngegg.com/pngimages/81/570/png-clipart-profile-logo-computer-icons-user-user-blue-heroes-thumbnail.png"
-                        }
-                        alt="Jese image"
-                      />
-                      <div className="ps-3">
-                        <div className="text-base font-semibold text-custom-green-dark">
-                          {user.first_name} {user.last_name}
-                        </div>
-                        <div className="font-normal text-custom-green-80">
-                          {user.label === null || user.label === ""
-                            ? "label.undefined"
-                            : user.label}
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell lg:table-cell">
-                      <div className="text-base font-semibold text-custom-green-dark">
-                        {user.phone_number === null || user.phone_number === ""
-                          ? "+998 (--) --- -- --"
-                          : user.phone_number}
-                      </div>
-                      <div className="font-normal text-custom-green-80">
-                        {user.email === null || user.email === ""
-                          ? "email.undefined"
-                          : user.email}
-                      </div>
-                    </td>
-
-                    <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
-                      <div className="flex">
-                        <div
-                          className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                            user.work_days[0]
-                              ? "bg-custom-green-dark text-white"
-                              : "bg-custom-green-30 text-custom-green-dark"
-                          }  font-semibold`}
-                        >
-                          M
-                        </div>
-                        <div
-                          className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                            user.work_days[1]
-                              ? "bg-custom-green-dark text-white"
-                              : "bg-custom-green-30 text-custom-green-dark"
-                          } font-semibold`}
-                        >
-                          T
-                        </div>
-                        <div
-                          className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                            user.work_days[2]
-                              ? "bg-custom-green-dark text-white"
-                              : "bg-custom-green-30 text-custom-green-dark"
-                          } font-semibold`}
-                        >
-                          W
-                        </div>
-                        <div
-                          className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                            user.work_days[3]
-                              ? "bg-custom-green-dark text-white"
-                              : "bg-custom-green-30 text-custom-green-dark"
-                          } font-semibold`}
-                        >
-                          T
-                        </div>
-                        <div
-                          className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                            user.work_days[4]
-                              ? "bg-custom-green-dark text-white"
-                              : "bg-custom-green-30 text-custom-green-dark"
-                          } font-semibold`}
-                        >
-                          F
-                        </div>
-                        <div
-                          className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                            user.work_days[5]
-                              ? "bg-custom-green-dark text-white"
-                              : "bg-custom-green-30 text-custom-green-dark"
-                          }  font-semibold`}
-                        >
-                          S
-                        </div>
-                        <div
-                          className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                            user.work_days[6]
-                              ? "bg-custom-green-dark text-white"
-                              : "bg-custom-green-30 text-custom-green-dark"
-                          } font-semibold`}
-                        >
-                          S
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="px-6 py-4">
-                      <div className="flex items-center text-custom-green-dark font-semibold">
-                        {user.speciality[name] === null ||
-                        user.speciality[name] === "" ||
-                        user.speciality[name] === undefined
-                          ? "no.position"
-                          : user.speciality[name]}
-                      </div>
-                    </td>
-
-                    <td className="px-6 py-4">
-                      <span className="bg-custom-green-30 text-custom-green-dark font-semibold px-2 py-1 rounded-full whitespace-nowrap">
-                        {user.work_type === "full_time"
-                          ? "FULL-TIME"
-                          : "PART-TIME"}
-                      </span>
-                    </td>
-
-                    <td>
-                      <div className="tooltip" data-tip="Edit">
-                        <button className="border btn btn-sm border-custom-green-30 px-[5px] py-[3px] rounded-full text-custom-green-dark font-bold hover:bg-custom-green-30">
-                          <i className="bi bi-person-gear text-[22px]"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          )}
+  
         </table>
       </div>
     </>
