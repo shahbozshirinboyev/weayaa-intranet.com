@@ -10,6 +10,17 @@ function ControlStaffs() {
   const [users, setUsers] = useState([]);
   const [usersCount, setUsersCount] = useState();
 
+  const[editUserId, setEditUserId] = useState('')
+
+  useEffect(() => {
+    if(editUserId !== '')
+    {
+      console.log(editUserId)
+      users.filter((user) => user.id === editUserId).map((user) => (console.log(user)))
+    }
+    
+  }, [editUserId])
+
   // Change Staff/Master list START
   const changeListToStaff = (e) => {
     setSmlist(e);
@@ -24,8 +35,8 @@ function ControlStaffs() {
       })
       .then((response) => {
         setUsers(response.data.results);
-        console.log(response.data.results);
-        console.log("User count:" + response.data.count)
+        // console.log(response.data.results);
+        // console.log("User count:" + response.data.count)
         setUsersCount(response.data.count);
       })
       .catch((error) => {
@@ -86,7 +97,7 @@ function ControlStaffs() {
 
           <div className="flex justify-end items-center">
             <div>
-              <AddStaff />
+              <AddStaff editUserId={editUserId} />
             </div>
           </div>
         </div>
@@ -263,7 +274,7 @@ function ControlStaffs() {
 
                     <td>
                       <div className="tooltip" data-tip="Edit">
-                        <button className="border btn btn-sm border-custom-green-30 px-[5px] py-[3px] rounded-full text-custom-green-dark font-bold hover:bg-custom-green-30">
+                        <button onClick={() => {setEditUserId(user.id)}} className="border btn btn-sm border-custom-green-30 px-[5px] py-[3px] rounded-full text-custom-green-dark font-bold hover:bg-custom-green-30">
                           <i className="bi bi-person-gear text-[22px]"></i>
                         </button>
                       </div>
