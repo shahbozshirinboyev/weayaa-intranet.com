@@ -1,12 +1,15 @@
 import { Fragment, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
+import InputMask from 'react-input-mask';
+
 // Base URL
 import http from "../services/http";
 
 function AddStaff() {
 
   const [showPassword, setShowPassword] = useState(false);
+
   const [workDays, setWorkDays] = useState([false, false, false, false, false, false, false]);
   const formArray = [1, 2, 3];
   const [formNo, setFormNo] = useState(formArray[0]);
@@ -100,12 +103,12 @@ function AddStaff() {
   const access = localStorage.getItem("access");
 
   // const array = [true, false, true, false, true, false, true];
-  const array = [true];
+  // const array = [true];
 
   // Submit Form START
   const finalSubmit = () => {
 
-    console.log(state)
+    console.log(state, workDays)
 
     // speciality[name] ni to'g'irlash
     // phone number ni to'g'irlash
@@ -113,19 +116,19 @@ function AddStaff() {
 
     if (state.accountType && state.userId && state.userPassword) {
         const formData = new FormData();
-          formData.append("weayaa_id", state.userId);
-          formData.append("password", state.userPassword);
-          formData.append("first_name", state.firstName);
-          formData.append("last_name", state.lastName);
-          formData.append("label", state.label);
-          formData.append("phone_number", state.phone);
-          formData.append("email", state.email);
-          formData.append("speciality[name]", state.specialist);
-          formData.append("work_type", state.workType);
-          formData.append("address", state.address);
-          formData.append("image", state.image);
-          formData.append("work_days", array); // state.workDays
-          formData.append("user_type", state.accountType);
+          formData.append("weayaa_id", state.userId);           //1
+          formData.append("password", state.userPassword);      //2
+          formData.append("first_name", state.firstName);       //3
+          formData.append("last_name", state.lastName);         //4
+          formData.append("label", state.label);                //5
+          formData.append("phone_number", state.phone);         //6
+          formData.append("email", state.email);                //7
+          formData.append("speciality", state.specialist);      //8
+          formData.append("work_type", state.workType);         //9
+          formData.append("address", state.address);            //10
+          formData.append("image", state.image);                //11
+          formData.append("work_days", workDays);               //12
+          formData.append("user_type", state.accountType);      //13
 
         http
           .post("users/staff/", formData, {
@@ -309,12 +312,14 @@ function AddStaff() {
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
                             <i className="bi bi-telephone"></i> Phone Number
                           </span>
-                          <input
+                          <InputMask
+                            mask="+999 (99) 999 99 99"
                             value={state.phone}
                             onChange={inputHandle}
                             name="phone"
                             type="text"
-                            placeholder="+998 90 123 45 67"
+                            placeholder="+998 (--) --- -- --"
+                            alwaysShowMask={true}
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                           />
                         </label>
@@ -350,10 +355,10 @@ function AddStaff() {
                             placeholder="Select Specialist Stuff"
                             className="text-custom-green-dark transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60">
                             <option>Select Specialist Stuff</option>
-                            <option value="coder">Coder</option>
-                            <option value="designer">Designer</option>
-                            <option value="manager">Manager</option>
-                            <option value="director">Director && Master</option>
+                            <option value="Coder">Coder</option>
+                            <option value="Designer">Designer</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Director">Director && Master</option>
                           </select>
                         </label>
                       </div>
@@ -585,6 +590,9 @@ function AddStaff() {
           </section>
 
         </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
       </dialog>
     </section>
   );

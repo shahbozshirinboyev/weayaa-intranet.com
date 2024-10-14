@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const http = axios.create({
-    baseURL: 'https://weayaaworks.com/api/'
+    baseURL: 'https://weayaa-intranet.com/api/'
   });
 
 export default http;
