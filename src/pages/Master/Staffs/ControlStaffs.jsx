@@ -25,13 +25,14 @@ function ControlStaffs() {
       .then((response) => {
         setUsers(response.data.results);
         console.log(response.data.results);
+        console.log("User count:" + response.data.count)
         setUsersCount(response.data.count);
       })
       .catch((error) => {
         toast.error("Something went wrong :(");
         console.log(error.response.data);
       });
-  }, []);
+  }, [toast]);
   // Get Users List END
 
   return (
