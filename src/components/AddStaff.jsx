@@ -3,6 +3,8 @@ import toast, { Toaster } from "react-hot-toast";
 
 import InputMask from 'react-input-mask';
 
+import MaskedInput from "react-text-mask";
+
 // Base URL
 import http from "../services/http";
 
@@ -10,7 +12,7 @@ function AddStaff() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [workDays, setWorkDays] = useState([false, false, false, false, false, false, false]);
+  const [workDays, setWorkDays] = useState([true, true, true, true, true, false, false]);
   const formArray = [1, 2, 3];
   const [formNo, setFormNo] = useState(formArray[0]);
   const [userImage, setUserImage] = useState(null);
@@ -116,19 +118,20 @@ function AddStaff() {
 
     if (state.accountType && state.userId && state.userPassword) {
         const formData = new FormData();
-          formData.append("weayaa_id", state.userId);           //1
-          formData.append("password", state.userPassword);      //2
-          formData.append("first_name", state.firstName);       //3
-          formData.append("last_name", state.lastName);         //4
-          formData.append("label", state.label);                //5
-          formData.append("phone_number", state.phone);         //6
-          formData.append("email", state.email);                //7
-          formData.append("speciality", state.specialist);      //8
-          formData.append("work_type", state.workType);         //9
-          formData.append("address", state.address);            //10
-          formData.append("image", state.image);                //11
-          formData.append("work_days", workDays);               //12
-          formData.append("user_type", state.accountType);      //13
+          formData.append("weayaa_id", state.userId);                               //1
+          formData.append("password", state.userPassword);                          //2
+          formData.append("first_name", state.firstName);                           //3
+          formData.append("last_name", state.lastName);                             //4
+          formData.append("label", state.label);                                    //5
+          formData.append("phone_number", state.phone.replace(/\s+/g, ''));         //6
+          formData.append("email", state.email);                                    //7
+          formData.append("speciality", state.specialist);                          //8
+          formData.append("work_type", state.workType);                             //9
+          formData.append("address", state.address);                                //10
+          formData.append("image", state.image);                                    //11
+          // formData.append("work_days", workDays);                                   //12
+          workDays.forEach((day, index) => { formData.append(`work_days[${index}]`, day); }); 
+          formData.append("user_type", state.accountType);                          //13
 
         http
           .post("users/staff/", formData, {
@@ -140,6 +143,23 @@ function AddStaff() {
           .then((response) => {
             console.log(response);
             toast.success("Save new user!")
+            setState ({
+              firstName: '',
+              lastName: '',
+              image: '',
+              phone: '',
+              email: '',
+              specialist: '',
+              label: '',
+              workType: 'full_time',
+              address: '',
+              accountType: 'staff',
+              userId: '',
+              userPassword: '',
+            });
+            setWorkDays([true, true, true, true, true, false, false]);
+            document.getElementById("add_user_modal").close();
+            setFormNo(formArray[0]);
           })
           .catch((error) => {
             console.log(error.response.data);
@@ -312,14 +332,34 @@ function AddStaff() {
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
                             <i className="bi bi-telephone"></i> Phone Number
                           </span>
-                          <InputMask
-                            mask="+999 (99) 999 99 99"
+                          <MaskedInput
+                            mask={[
+                              "+",
+                              "9",
+                              "9",
+                              "8",
+                              " ",
+                              "(",
+                              /\d/,
+                              /\d/,
+                              ")",
+                              " ",
+                              /\d/,
+                              /\d/,
+                              /\d/,
+                              " ",
+                              /\d/,
+                              /\d/,
+                              " ",
+                              /\d/,
+                              /\d/,
+                            ]}
                             value={state.phone}
                             onChange={inputHandle}
                             name="phone"
                             type="text"
                             placeholder="+998 (--) --- -- --"
-                            alwaysShowMask={true}
+                            // alwaysShowMask={true}
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                           />
                         </label>

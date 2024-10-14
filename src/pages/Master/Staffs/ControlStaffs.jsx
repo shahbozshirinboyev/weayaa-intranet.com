@@ -23,6 +23,7 @@ function ControlStaffs() {
         })
         .then((response) => {
             setUsers(response.data.results);
+            console.log(response.data.results)
             setUsersCount(response.data.count);
         })
         .catch((error) => {
@@ -148,25 +149,25 @@ function ControlStaffs() {
 
                                 <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
                                     <div className="flex">
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-dark text-white font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[0] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'}  font-semibold`} >
                                             M
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-dark text-white font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[1] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'} font-semibold`} >
                                             T
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-dark text-white font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[2] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'} font-semibold`}>
                                             W
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-dark text-white font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[3] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'} font-semibold`}>
                                             T
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-dark text-white font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[4] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'} font-semibold`}>
                                             F
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-30 text-custom-green-dark font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[5] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'}  font-semibold`}>
                                             S
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-30 text-custom-green-dark font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[6] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'} font-semibold`}>
                                             S
                                         </div>
                                     </div>
@@ -174,7 +175,7 @@ function ControlStaffs() {
 
                                 <td className="px-6 py-4">
                                     <div className="flex items-center text-custom-green-dark font-semibold">
-                                    {user.speciality[name] === null || user.speciality[name] === "" || user.speciality[name] === undefined ? "no.position" : user.speciality[name]}
+                                    {user.speciality === null || user.speciality === "" || user.speciality === undefined ? "no.position" : user.speciality}
                                     </div>
                                 </td>
 
@@ -224,26 +225,26 @@ function ControlStaffs() {
                                 </td>
 
                                 <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
-                                    <div className="flex">
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-dark text-white font-semibold">
+                                <div className="flex">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[0] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'}  font-semibold`} >
                                             M
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-dark text-white font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[1] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'} font-semibold`} >
                                             T
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-dark text-white font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[2] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'} font-semibold`}>
                                             W
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-dark text-white font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[3] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'} font-semibold`}>
                                             T
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-dark text-white font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[4] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'} font-semibold`}>
                                             F
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-30 text-custom-green-dark font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[5] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'}  font-semibold`}>
                                             S
                                         </div>
-                                        <div className=" mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center bg-custom-green-30 text-custom-green-dark font-semibold">
+                                        <div className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[6] ? 'bg-custom-green-dark text-white' : 'bg-custom-green-30 text-custom-green-dark'} font-semibold`}>
                                             S
                                         </div>
                                     </div>
