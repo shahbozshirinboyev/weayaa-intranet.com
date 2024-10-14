@@ -133,40 +133,47 @@ function AddStaff() {
           workDays.forEach((day, index) => { formData.append(`work_days[${index}]`, day); }); 
           formData.append("user_type", state.accountType);                          //13
 
-        http
-          .post("users/staff/", formData, {
-            headers: {
-              Authorization: `Bearer ${access}`,
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((response) => {
-            console.log(response);
-            toast.success("Save new user!")
-            setState ({
-              firstName: '',
-              lastName: '',
-              image: '',
-              phone: '',
-              email: '',
-              specialist: '',
-              label: '',
-              workType: 'full_time',
-              address: '',
-              accountType: 'staff',
-              userId: '',
-              userPassword: '',
-            });
-            setWorkDays([true, true, true, true, true, false, false]);
-            document.getElementById("add_user_modal").close();
-            setFormNo(formArray[0]);
-          })
-          .catch((error) => {
-            console.log(error.response.data);
-            // aniq xatolikni ko'rish uchun doim shunday qiymaydan foydalanish kerak 
-            // serverdan kelayotgan xatolik sizga tezroq muammoni to'g'irlashda yordam beradi
-            toast.error("Something went wrong!")
-          });
+          toast.promise(
+            http.post("users/staff/", formData, {
+              headers: {
+                Authorization: `Bearer ${access}`,
+                "Content-Type": "multipart/form-data",
+              },
+            }),
+        
+            {
+              loading: "Adding...",
+        
+              success: (response) => {
+                console.log(response);
+        
+                setState({
+                  firstName: "",
+                  lastName: "",
+                  image: "",
+                  phone: "",
+                  email: "",
+                  specialist: "",
+                  label: "",
+                  workType: "full_time",
+                  address: "",
+                  accountType: "staff",
+                  userId: "",
+                  userPassword: "",
+                });
+                setWorkDays([true, true, true, true, true, false, false]);
+                document.getElementById("add_user_modal").close();
+                setFormNo(formArray[0]);
+        
+                return <b>Add new User!</b>;
+              },
+              error: (error) => {
+                console.log(error.response.data);
+        
+                return <b>Something went wrong :(</b>;
+              },
+            }
+          );
       
     } else {
       toast.error("Please fillup all input field!");
