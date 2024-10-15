@@ -2,6 +2,9 @@ import { useState } from "react";
 
 // img
 import logo from "../../../../public/img/logo.png";
+import EditUserInfo from "./EditUserInfo";
+import EditCardInfo from "./EditCardInfo";
+import AddCard from "./AddCard";
 
 function MasterSettings() {
   const [smlist, setSmlist] = useState("profile");
@@ -115,8 +118,11 @@ function MasterSettings() {
           </div>
 
           <div className="grid grid-cols-2 border-[2px] border-custom-green-60 rounded-[5px] gap-4 mt-[25px] p-3 items-center">
-            <div className="col-span-2 text-[18px] font-bold">
+            <div className="col-span-2 text-[18px] font-bold grid grid-cols-2">
               <p>Personal Information</p>
+              <div className="flex justify-end">
+                <EditUserInfo />
+              </div>
             </div>
 
             <div className="px-6">
@@ -263,10 +269,9 @@ function MasterSettings() {
               <p className="justify-start font-bold text-[24px] w-full">
                 BankName Card 1
               </p>
-              <button className="justify-end flex py-1 px-2 rounded-[5px] h-full border font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300">
-                <i className="bi bi-pencil mr-2"></i>
-                <span>Edit</span>
-              </button>
+                        
+              <EditCardInfo />
+              
             </div>
 
             <div className="flex p-4 h-[150px] items-end">
@@ -282,53 +287,12 @@ function MasterSettings() {
             </div>
           </div>
 
-          <div className="border-[2px] border-custom-green-60 rounded-[5px] opacity-40">
-            <div className="flex p-4">
-              <p className="justify-start font-bold text-[24px] w-full">
-                BankName Card 2
-              </p>
-              <button className="justify-end flex py-1 px-2 rounded-[5px] h-full border font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300">
-                <i className="bi bi-pencil mr-2"></i>
-                <span>Edit</span>
-              </button>
-            </div>
 
-            <div className="flex p-4 h-[150px] items-end">
-              <div className="w-full">
-                <p className="font-bold text-[18px] text-custom-green-80">
-                  Zerda Jursinova
-                </p>
-                <span className="font-semibold">6789 6346 3426 3467</span>
-              </div>
-              <div>
-                <span className="font-semibold">03/12</span>
-              </div>
-            </div>
+          <div className="border-[2px] border-custom-green-60 rounded-[5px] flex justify-center items-center">
+            <AddCard />
           </div>
 
-          <div className="border-[2px] border-custom-green-60 rounded-[5px] opacity-40">
-            <div className="flex p-4">
-              <p className="justify-start font-bold text-[24px] w-full">
-                BankName Card 3
-              </p>
-              <button className="justify-end flex py-1 px-2 rounded-[5px] h-full border font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300">
-                <i className="bi bi-pencil mr-2"></i>
-                <span>Edit</span>
-              </button>
-            </div>
-
-            <div className="flex p-4 h-[150px] items-end">
-              <div className="w-full">
-                <p className="font-bold text-[18px] text-custom-green-80">
-                  Zerda Jursinova
-                </p>
-                <span className="font-semibold">6789 6346 3426 3467</span>
-              </div>
-              <div>
-                <span className="font-semibold">03/12</span>
-              </div>
-            </div>
-          </div>
+         
 
         </div>
       </div>
