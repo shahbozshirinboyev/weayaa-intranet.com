@@ -1,12 +1,9 @@
 import { useState } from "react";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import MaskedInput from "react-text-mask";
 
 export default function EditUserInfo() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [phone, setPhone] = useState("");
-
   const toggleModal = () => {
     if (isOpen) {
       setIsAnimating(false);
@@ -33,14 +30,14 @@ export default function EditUserInfo() {
 
       {isOpen && (
         <div
-          className={`bg-black bg-opacity-50 fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full max-h-full flex overflow-y-auto transition-all duration-300 ${
-            isAnimating ? "opacity-100" : "opacity-0"
-          }`}
+          onClick={toggleModal}
+          className={`bg-black bg-opacity-50 fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full max-h-full flex overflow-y-auto transition-all duration-300 ${isAnimating ? "opacity-100" : "opacity-0"
+            }`}
         >
           <div
-            className={`relative p-4 w-11/12 max-w-5xl transition-transform duration-300 transform ${
-              isAnimating ? "translate-y-0" : "translate-y-10"
-            }`}
+          onClick={(event) => {event.stopPropagation();}}
+            className={`relative p-4 w-11/12 max-w-5xl transition-transform duration-300 transform ${isAnimating ? "translate-y-0" : "translate-y-10"
+              }`}
           >
             <div className="bg-white rounded-lg shadow">
               <div className="bg-custom-green-5 rounded-lg">
@@ -59,119 +56,7 @@ export default function EditUserInfo() {
 
                 <div className="p-4 md:p-5">
                   <form className="space-y-4" action="#">
-                    {/* <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 
-                                            <div>
-                                                <label
-                                                    htmlFor="cardName"
-                                                    className="block mb-2 text-sm font-medium text-custom-green-dark" >
-                                                    First Name
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="FirstName"
-                                                    className="border border-custom-green-60 text-sm rounded-lg focus:border-custom-green-dark focus:outline-none block w-full p-2.5"
-                                                    placeholder="Zerda "
-                                                />
-                                            </div>
-
-                                            <div>
-                                                <label
-                                                    htmlFor="cardName"
-                                                    className="block mb-2 text-sm font-medium text-custom-green-dark"
-                                                >
-                                                    Last Name
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="LastName"
-                                                    className="border border-custom-green-60 text-sm rounded-lg focus:border-custom-green-dark focus:outline-none block w-full p-2.5"
-                                                    placeholder="Jursinova "
-                                                    required
-                                                />
-                                            </div>
-
-
-                                            <div>
-                                                <label
-                                                    htmlFor="phoneNumber"
-                                                    className="block mb-2 text-sm font-medium text-custom-green-dark"
-                                                >
-                                                    Phone Number
-                                                </label>
-                                                <PhoneInput
-                                                    onlyCountries={['uz']}
-                                                    masks={{ uz: '(..) ...-..-..' }}
-                                                    country={'uz'}
-                                                    value={phone}
-                                                    onChange={setPhone}
-                                                    inputStyle={{ width: "100%", height: "43px", border: "1px solid #A1C181", }}
-                                                    buttonStyle={{ border: "none", background: "none", }}
-                                                    inputClass="border border-custom-green-60 text-sm rounded-lg focus:border-custom-green-dark focus:outline-none block p-2.5"
-                                                    placeholder="+998 99 144 94 06"
-                                                    buttonClass="border border-custom-green-60 rounded-lg"
-                                                />
-                                            </div>
-
-                                            <div>
-                                                <label
-                                                    htmlFor="cardName"
-                                                    className="block mb-2 text-sm font-medium text-custom-green-dark" >
-                                                    Email Address
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="EmailAddress"
-                                                    className="border border-custom-green-60 text-sm rounded-lg focus:border-custom-green-dark focus:outline-none block w-full p-2.5"
-                                                    placeholder="karinajursinovs@gmail.com "
-                                                />
-                                            </div>
-
-                                            <div>
-                                                <label
-                                                    htmlFor="cardName"
-                                                    className="block mb-2 text-sm font-medium text-custom-green-dark" >
-                                                    Specialist
-                                                </label>
-                                                <select className="select  w-full border-custom-green-60 focus:border-custom-green-dark focus:outline-none ">
-                                                    <option>Coder</option>
-                                                    <option>Designer</option>
-                                                </select>
-                                            </div>
-
-                                            <div>
-                                                <label
-                                                    htmlFor="cardName"
-                                                    className="block mb-2 text-sm font-medium text-custom-green-dark" >
-                                                    Job Time
-                                                </label>
-                                                <select className="select  w-full border-custom-green-60 focus:border-custom-green-dark focus:outline-none ">
-                                                    <option>Part-Time</option>
-                                                    <option>Full-Time</option>
-                                                </select>
-                                            </div>
-
-                                            <div>
-                                                <label
-                                                    htmlFor="cardName"
-                                                    className="block mb-2 text-sm font-medium text-custom-green-dark" >
-                                                    Account Type
-                                                </label>
-                                                <select className="select  w-full border-custom-green-60 focus:border-custom-green-dark focus:outline-none ">
-                                                    <option>Master</option>
-                                                    <option>Staf</option>
-                                                </select>
-                                            </div>
-                                            <div className='flex flex-col justify-between '>
-                                                <button type="submit"
-                                                    className="w-full h-[50px] text-white bg-custom-green-60 hover:bg-custom-green-dark focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                                    Login to your account
-                                                </button>
-                                            </div>
-
-
-
-                                        </div> */}
 
                     <div>
                       <div className="grid grid-cols-1 mt-2">
@@ -216,10 +101,34 @@ export default function EditUserInfo() {
                               <span className="block text-custom-green-dark font-semibold text-[14px]">
                                 <i className="bi bi-telephone"></i> Phone Number
                               </span>
-                              <input
+                              <MaskedInput
+                                mask={[
+                                  "+",
+                                  "9",
+                                  "9",
+                                  "8",
+                                  " ",
+                                  "(",
+                                  /\d/,
+                                  /\d/,
+                                  ")",
+                                  " ",
+                                  /\d/,
+                                  /\d/,
+                                  /\d/,
+                                  " ",
+                                  /\d/,
+                                  /\d/,
+                                  " ",
+                                  /\d/,
+                                  /\d/,
+                                ]}
+                                // value={state.phone}
+                                // onChange={inputHandle}
                                 name="phone"
                                 type="text"
-                                placeholder="+998 90 123 45 67"
+                                placeholder="+998 (--) --- -- --"
+                                // alwaysShowMask={true}
                                 className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                               />
                             </label>

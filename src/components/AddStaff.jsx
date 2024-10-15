@@ -1,8 +1,6 @@
 import { Fragment, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-import InputMask from 'react-input-mask';
-
 import MaskedInput from "react-text-mask";
 
 // Base URL
