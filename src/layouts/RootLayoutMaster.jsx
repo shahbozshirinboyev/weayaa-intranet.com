@@ -44,7 +44,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
     .then((r) => {
       setFirstName(r.data.first_name);
       setLastName(r.data.last_name);
-      setSpeciality(r.data.speciality[name]);
+      setSpeciality(r.data.speciality);
       setImage(r.data.image);
     })
     .catch((error) => {

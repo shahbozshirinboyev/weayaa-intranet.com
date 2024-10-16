@@ -75,6 +75,7 @@ function Signin({ setAccess, setRefresh, setUserType }) {
       .then((response) => {
         setUserType(response.data.user_type);
         localStorage.setItem("userType", response.data.user_type);
+        localStorage.setItem("userId", response.data.id);
       })
       .catch((error) => {
         toast.error("User type not found :(");

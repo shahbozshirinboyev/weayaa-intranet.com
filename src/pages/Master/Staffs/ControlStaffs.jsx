@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import AddStaff from "../../../components/AddStaff";
 
 // Base URL
@@ -11,7 +11,6 @@ function ControlStaffs() {
   const [usersCount, setUsersCount] = useState();
 
   const[editUserId, setEditUserId] = useState('')
-
   useEffect(() => {
     if(editUserId !== '')
     {
@@ -43,13 +42,45 @@ function ControlStaffs() {
         toast.error("Something went wrong :(");
         console.log(error.response.data);
       });
-  }, [toast]);
+  }, []);
   // Get Users List END
+
+
+  // ===================================================================>
+  const [editUserInfo, setEditUserInfo] = useState([])
+
+  // set userInfo function
+  const getInfoUser = (id) => {
+
+    console.log(id);
+
+    toast.promise( 
+      http.get( `users/staff/${id}/`, { headers: { Authorization: `Bearer ${localStorage.getItem("access")}` }} ),
+      {
+        loading: "Loading ...",
+        success: (response) => {
+          console.log(response.data);
+
+          setEditUserInfo(response.data);
+          document.getElementById('editUserInfoModal').showModal();
+
+          return <b>Success :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+
+          return <b>Error :(</b>;
+        },
+      }
+    );
+  };
+// ===================================================================>
 
   return (
     <>
       <div className="font-semibold bg-white pb-[15px]">
         <div className="grid grid-cols-2">
+
           <div className="flex justify-start items-start">
             <div className="mr-[5px] rounded-[10px] w-[260px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark">
               <div
@@ -97,14 +128,16 @@ function ControlStaffs() {
 
           <div className="flex justify-end items-center">
             <div>
-              <AddStaff editUserId={editUserId} />
+              <AddStaff />
             </div>
           </div>
+
         </div>
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left">
+
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="text-[14px] text-custom-green-90 bg-custom-green-10">
               <th scope="col" className="px-6 py-3">
@@ -274,17 +307,54 @@ function ControlStaffs() {
 
                     <td>
                       <div className="tooltip" data-tip="Edit">
-                        <button onClick={() => {setEditUserId(user.id)}} className="border btn btn-sm border-custom-green-30 px-[5px] py-[3px] rounded-full text-custom-green-dark font-bold hover:bg-custom-green-30">
+                        <button onClick={ () => { getInfoUser(user.id) } } 
+                                className="border btn btn-sm border-custom-green-30 px-[5px] py-[3px] rounded-full text-custom-green-dark font-bold hover:bg-custom-green-30">
                           <i className="bi bi-person-gear text-[22px]"></i>
                         </button>
                       </div>
                     </td>
+
                   </tr>
                 ))}
             </tbody>
   
         </table>
       </div>
+
+      {/* Edit User Info Start */}
+      <>
+        <dialog id="editUserInfoModal" className="modal">
+          <Toaster />
+          <div className="modal-box w-11/12 max-w-5xl p-0">
+          {/* Modal header Start */}
+          <form method="dialog" className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10">
+            <span className="text-custom-green-dark font-bold">
+              Edit User Information
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">✕</button>
+            </div>
+          </form>
+          {/* Modal header End */}
+
+            <p className="p-6">
+              {/* {JSON.stringify(editUserInfo)} */}
+              {editUserInfo.id}
+              <br />
+              {editUserInfo.first_name}
+              <br />
+              {editUserInfo.last_name}
+            </p>
+      
+          </div>
+
+          <form method="dialog" className="modal-backdrop">
+            <button>close</button>
+          </form>
+        </dialog>
+      </>
+      {/* Edit User Info End */}
+
     </>
   );
 }
