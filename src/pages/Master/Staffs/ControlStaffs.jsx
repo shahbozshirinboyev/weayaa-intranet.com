@@ -27,7 +27,7 @@ function ControlStaffs() {
     setSmlist(e);
   };
   // Change Staff/Master list END
-
+const [count, setCount]= useState(0);
   // Get Users List START
   useEffect(() => {
     http
@@ -42,7 +42,7 @@ function ControlStaffs() {
         toast.error("Something went wrong :(");
         console.log(error.response.data);
       });
-  }, []);
+  }, [count]);
   // Get Users List END
 
   // =====================================================================================================================>
@@ -72,9 +72,9 @@ function ControlStaffs() {
     setEditUserImage(editUserInfo.image);
   }, [editUserInfo]);
 
+
   // set userInfo function
   const getInfoUser = (id) => {
-    // console.log(id);
 
     toast.promise(
       http.get(`users/staff/${id}/`, {
@@ -131,6 +131,9 @@ function ControlStaffs() {
   const inputHandle = (e) => {
     setEditUserInfo({ ...editUserInfo, [e.target.name]: e.target.value });
   };
+  const inputHandlePhone = (e) => {
+    setEditUserInfo({ ...editUserInfo, [e.target.name]: e.target.value.replace(/\s+/g, '') });
+  };
   const inputHandleWorkDays = (e) => {
     const index = parseInt(e.target.name.match(/\d+/)[0]); // indexni olish
     const updatedWorkDays = [...editUserInfo.work_days];
@@ -138,6 +141,32 @@ function ControlStaffs() {
     setEditUserInfo({ ...editUserInfo, work_days: updatedWorkDays });
   };
   
+  const editUserInfoSubmit = (e) => {
+    e.preventDefault();
+  
+    toast.promise(
+      http.patch(`users/staff/${editUserInfo.id}/`, editUserInfo, 
+        { 
+        headers: { 
+          Authorization: `Bearer ${localStorage.getItem("access")}`, 
+          'Content-Type': 'multipart/form-data', }, 
+        }),
+      {
+        loading: "Loading ...",
+        success: (response) => {
+          console.log(response.data);
+          document.getElementById("editUserInfoModal").close();
+          setCount(count + 1)
+          return <b>Save :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response);
+
+          return <b>Error :(</b>;
+        },
+      }
+    );
+  }
   // ===================================================================>
 
   return (
@@ -436,18 +465,11 @@ function ControlStaffs() {
                         onChange={handleFileUserImageChange}
                         type="file"
                         id="edit-user-image"
-                        className="text-[14px] text-transparent font-medium placeholder-custom-green-60
-                  file:mr-4 file:py-1 file:px-2 file:w-[100px]
-                  file:rounded-[10px] file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-custom-green-30 file:text-custom-green-dark
-                  hover:file:bg-custom-green-dark hover:file:text-white
-                  hover:file:transition-all"
+                        className="text-[14px] text-transparent font-medium placeholder-custom-green-60 file:mr-4 file:py-1 file:px-2 file:w-[100px] file:rounded-[10px] file:border-0 file:text-sm file:font-semibold file:bg-custom-green-30 file:text-custom-green-dark hover:file:bg-custom-green-dark hover:file:text-white hover:file:transition-all"
                       />
                     </label>
                     <span className="block mt-[5px] text-custom-green-80">
-                      An image of the person, it’s best if it has the same
-                      length and height.
+                      An image of the person, it’s best if it has the same length and height.
                       <br />
                       <span className="text-custom-green-dark font-medium">
                         Recommendation: 300x300px
@@ -604,8 +626,8 @@ function ControlStaffs() {
                           /\d/,
                           /\d/,
                         ]}
-                        value={"+" + editUserInfo.phone_number}
-                        onChange={inputHandle}
+                        value={editUserInfo.phone_number}
+                        onChange={inputHandlePhone}
                         name="phone_number"
                         type="text"
                         placeholder="+998 (--) --- -- --"
@@ -775,6 +797,7 @@ function ControlStaffs() {
                 <button
                   type="submit"
                   className="rounded-[5px] py-2 w-full my-4 bg-custom-green-30 text-custom-green-dark font-bold hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+                  onClick={editUserInfoSubmit}                  
                 >
                   Save
                 </button>
