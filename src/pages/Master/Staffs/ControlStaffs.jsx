@@ -51,7 +51,7 @@ const [count, setCount]= useState(0);
     email: "",
     first_name: "",
     id: "",
-    image: null,
+    image: "",
     label: "",
     last_name: "",
     phone_number: "",
@@ -63,6 +63,7 @@ const [count, setCount]= useState(0);
   });
   const [editUserImage, setEditUserImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [firstImageValue, setFirstImageValue] = useState('')
 
   useEffect(() => {
     console.log(editUserInfo)
@@ -97,6 +98,8 @@ const [count, setCount]= useState(0);
         },
       }
     );
+    console.log("bu obyekt:" + editUserInfo)
+    setFirstImageValue(editUserInfo.image)
   };
 
   // Password hide/show function START
@@ -107,8 +110,8 @@ const [count, setCount]= useState(0);
 
   // DELETE render ING file START
   const handleClearFileUserImage = () => {
-    document.getElementById("edit-user-image").value = null;
-    setEditUserInfo({ ...editUserInfo, image: null });
+    document.getElementById("edit-user-image").value = "";
+    setEditUserInfo({ ...editUserInfo, image: "" });
   };
   // DELETE render ING file END
 
@@ -143,6 +146,16 @@ const [count, setCount]= useState(0);
   
   const editUserInfoSubmit = (e) => {
     e.preventDefault();
+
+    if(firstImageValue === editUserInfo.image){
+      setEditUserInfo((prevState) => {
+        const { image, ...rest } = prevState; // image maydonini olib tashlaymiz
+        return rest; // image maydoni bo'lmagan yangi obyektni qaytaramiz
+      });
+    }
+    console.log("firstImageValue: " + firstImageValue)
+    console.log("editUserInfo.image: " + editUserInfo.image)
+    console.log(editUserInfo)
   
     toast.promise(
       http.patch(`users/staff/${editUserInfo.id}/`, editUserInfo, 
@@ -275,13 +288,13 @@ const [count, setCount]= useState(0);
                     className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
                   >
                     <img
-                      className="w-10 h-10 rounded-full"
+                      className="!w-12 !h-12 min-w-12 min-h-12 rounded-full object-cover border whitespace-nowrap"
                       src={
                         user.image
                           ? user.image
                           : "https://e7.pngegg.com/pngimages/81/570/png-clipart-profile-logo-computer-icons-user-user-blue-heroes-thumbnail.png"
                       }
-                      alt="Jese image"
+                      alt="user image"
                     />
                     <div className="ps-3">
                       <div className="text-base font-semibold text-custom-green-dark">
@@ -436,21 +449,21 @@ const [count, setCount]= useState(0);
             <form className="px-[24px]">
               <div className="grid grid-cols-1 mt-2">
                 <div className="flex mt-2 gap-4 items-center">
-                  <div className="w-[100px] h-[100px] flex justify-center items-center">
-                    {editUserImage === null ? (
+                  <div className="w-[100px] h-[100px] min-w-[100px] min-h-[100px] flex justify-center items-center">
+                    {editUserImage === "" || editUserImage === null ? (
                       <i className="bi bi-person-bounding-box text-[35px] text-custom-green-80"></i>
                     ) : (
                       <img
                         src={editUserImage}
                         alt="user-image"
-                        className="w-[100px] h-[100px] object-cover rounded-full"
+                        className="w-[100px] h-[100px] min-w-[100px] min-h-[100px] object-cover rounded-full border"
                       />
                     )}
                   </div>
 
                   <div className="w-full">
                     <label htmlFor="">
-                      {editUserImage !== null && (
+                      {!(editUserImage === null || editUserImage === "") && (
                         <button
                           type="button"
                           onClick={handleClearFileUserImage}
@@ -483,7 +496,7 @@ const [count, setCount]= useState(0);
                     <span>Account Type</span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 border rounded-md">
+                  <div className="grid grid-cols-2 gap-2 border rounded-md pointer-events-none cursor-not-allowed opacity-80">
                     <div>
                       <label className="p-2 flex items-center justify-center">
                         <input
@@ -532,7 +545,7 @@ const [count, setCount]= useState(0);
                       </label>
                     </div>
 
-                    <div className="pointer-events-none cursor-not-allowed opacity-30">
+                    <div className="pointer-events-none cursor-not-allowed opacity-80">
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
                           <i className="bi bi-key"></i> Password
