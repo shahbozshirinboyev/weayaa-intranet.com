@@ -3,6 +3,9 @@ import { useState } from "react";
 import { Board } from "../data/board";
 import { onDragEnd } from "../helpers/onDragEnd";
 import AddTaskModal from "../components/AddTaskModal";
+import Avatar from "./Avatar"
+import Days from "./Days";
+import Line from "./Line";
 
 function TaskManagement() {
   const [columns, setColumns] = useState(Board);
@@ -26,28 +29,35 @@ function TaskManagement() {
   return (
     <>
       <DragDropContext
+
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
-        <div className="w-full flex items-start justify-between px-5 bg-custom-green-10 rounded-[15px]">
-          {Object.entries(columns).map(([columnId, column]) => (
-            <div className="flex flex-col gap-2" key={columnId}>
+        <Line />
+        <div className=" 2xl:w-[1700px]  flex items-start px-5 bg-custom-green-10 rounded-[15px]  space-x-4"> 
+          {Object.entries(columns).map(([columnId, column], index) => (
+
+            <div className="flex flex-col gap-2 " key={columnId}>
               <Droppable droppableId={columnId} key={columnId}>
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className="flex flex-col md:w-[290px] w-[250px] gap-3 items-center py-5"
+                    className="flex flex-col w-[250px] md:w-[300px] lg:w-[320px] xl:w-[350px] 2xl:w-[400px] gap-3 items-center py-5"
                   >
-                    <div className="flex items-center justify-center py-[10px] w-full bg-white rounded-lg shadow-sm text-[#555] font-medium text-[15px]">
+                    <div className="flex justify-between p-2 py-[10px] w-full bg-white rounded-lg shadow-sm text-custom-green-dark  text-[15px] font-extrabold">
                       {column.name}
+                      <div className="bg-custom-green-30 w-5 text-center  text-custom-green-dark rounded ">3</div> 
                     </div>
-                    <div
-                      onClick={() => openModal(columnId)}
-                      className="flex cursor-pointer items-center md:w-[290px] w-[250px] justify-center gap-1 py-[10px] opacity-90 bg-white rounded-lg shadow-sm text-[#555] font-medium text-[15px]"
-                    >
-                      <i className="bi bi-plus-circle-dotted"></i>
-                      Add Task
-                    </div>
+                    {index === 0 && (
+                      <div
+                        onClick={() => openModal(columnId)}
+                        className="flex cursor-pointer items-center w-[250px] md:w-[300px] lg:w-[320px] xl:w-[350px] 2xl:w-[400px]  justify-center gap-1 py-[10px] opacity-90 bg-white rounded-lg shadow-sm text-[#555] font-medium text-[15px]"
+                      >
+                        <i className="bi bi-plus-circle-dotted"></i>
+                        Add Task
+                      </div>
+                    )}
+
                     {column.items.map((task, index) => (
                       <Draggable
                         key={task.id.toString()}
@@ -63,6 +73,10 @@ function TaskManagement() {
                               {...provided.dragHandleProps}
                               className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-3 items-start shadow-sm rounded-xl px-3 py-4"
                             >
+                         
+                                <Days />
+                
+
                               {task.image && task.alt && (
                                 <img
                                   src={task.image}
@@ -94,21 +108,28 @@ function TaskManagement() {
                               </div>
                               <div className="w-full border border-dashed"></div>
                               <div className="w-full flex items-center justify-between">
+
                                 <div className="flex items-center gap-1">
                                   <i className="bi bi-clock"></i>
                                   <span className="text-[13px] text-gray-700">
                                     {task.deadline} mins
                                   </span>
                                 </div>
+
+
                                 <div
-                                  className={`w-[60px] rounded-full h-[5px] ${
-                                    task.priority === "high"
+                                  className={`w-[60px] rounded-full h-[5px] ${task.priority === "high"
                                       ? "bg-red-500"
                                       : task.priority === "medium"
-                                      ? "bg-orange-500"
-                                      : "bg-blue-500"
-                                  }`}
+                                        ? "bg-orange-500"
+                                        : "bg-blue-500"
+                                    }`}
                                 ></div>
+                              </div>
+                              <div className="w-full border border-dashed"></div>
+
+                              <div className="w-full">
+                                <Avatar />
                               </div>
                             </div>
                           </>
@@ -123,7 +144,9 @@ function TaskManagement() {
             </div>
           ))}
         </div>
+
       </DragDropContext>
+
 
       <AddTaskModal
         isOpen={modalOpen}

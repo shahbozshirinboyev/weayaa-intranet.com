@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import AddSecondModal from "./AddSecondModal";
+
 
 const AddModal = ({ isOpen, onClose, setOpen, handleAddTask }) => {
 	const initialTaskData = {
@@ -16,6 +18,7 @@ const AddModal = ({ isOpen, onClose, setOpen, handleAddTask }) => {
 
 	const [taskData, setTaskData] = useState(initialTaskData);
 	const [tagTitle, setTagTitle] = useState("");
+	const [isSecondModalOpen, setSecondModalOpen] = useState(false);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -54,96 +57,84 @@ const AddModal = ({ isOpen, onClose, setOpen, handleAddTask }) => {
 		closeModal();
 	};
 
+	const [files, setFiles] = useState([]);
+
+	const handleFileChange = (e) => {
+		const selectedFiles = Array.from(e.target.files);
+		setFiles(selectedFiles);
+	};
+
+
+
 	return (
-		<div
-			className={`w-screen h-screen place-items-center fixed top-0 left-0 ${
-				isOpen ? "grid" : "hidden"
-			}`}>
-			<div
-				className="w-full h-full bg-black opacity-70 absolute left-0 top-0 z-20"
-				onClick={closeModal}
-			></div>
-			<div className="md:w-[30vw] w-[90%] bg-white rounded-lg shadow-md z-50 flex flex-col items-center gap-3 px-5 py-6">
-				<input
-					type="text"
-					name="title"
-					value={taskData.title}
-					onChange={handleChange}
-					placeholder="Title"
-					className="w-full h-12 px-3 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm font-medium"
-				/>
-				<input
-					type="text"
-					name="description"
-					value={taskData.description}
-					onChange={handleChange}
-					placeholder="Description"
-					className="w-full h-12 px-3 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm font-medium"
-				/>
-				<select
-					name="priority"
-					onChange={handleChange}
-					value={taskData.priority}
-					className="w-full h-12 px-2 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm"
-				>
-					<option value="">Priority</option>
-					<option value="low">Low</option>
-					<option value="medium">Medium</option>
-					<option value="high">High</option>
-				</select>
-				<input
-					type="number"
-					name="deadline"
-					value={taskData.deadline}
-					onChange={handleChange}
-					placeholder="Deadline"
-					className="w-full h-12 px-3 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm"
-				/>
-				<input
-					type="text"
-					value={tagTitle}
-					onChange={(e) => setTagTitle(e.target.value)}
-					placeholder="Tag Title"
-					className="w-full h-12 px-3 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm"
-				/>
-				<button
-					className="w-full rounded-md h-9 bg-slate-500 text-amber-50 font-medium"
-					onClick={handleAddTag}
-				>
-					Add Tag
-				</button>
-				<div className="w-full">
-					{taskData.tags.length > 0 && <span>Tags:</span>}
-					{taskData.tags.map((tag, index) => (
-						<div
-							key={index}
-							className="inline-block mx-1 px-[10px] py-[2px] text-[13px] font-medium rounded-md"
-							style={{ backgroundColor: tag.bg, color: tag.text }}
-						>
-							{tag.title}
-						</div>
-					))}
-				</div>
-				<div className="w-full flex items-center gap-4 justify-between">
+		<div className={`w-screen h-screen place-items-center fixed top-0 left-0 ${isOpen ? "grid" : "hidden"}`}>
+
+			<div className="w-full h-full bg-black opacity-70 absolute left-0 top-0 z-20  " onClick={closeModal}></div>
+
+			<div className="md:w-[45vw] w-[90%] bg-white rounded-lg shadow-md z-50 flex flex-col gap-3 px-5 py-6 ">
+				<span className="text-custom-green-dark"> Add new task</span>
+				<label className="w-full">
+					<span className="text-custom-green-60">Task title</span>
 					<input
 						type="text"
-						name="alt"
-						value={taskData.alt}
+						name="title"
+						value={taskData.title}
 						onChange={handleChange}
-						placeholder="Image Alt"
-						className="w-full h-12 px-3 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm"
+						className="w-full h-12 px-3 outline-none rounded-md bg-custo border border-border-custom-green-80  hover:border-green-600 focus:ring-0 text-sm font-medium"
 					/>
+				</label>
+
+				<label className="w-full ">
+					<span className="text-custom-green-60"> Task description</span>
+					<textarea className="w-full rounded-md border border-custom-green-80 focus:outline-none focus:ring-0" rows={5} id=""></textarea>
+				</label>
+
+				<label className="w-full">
+					<span className="text-custom-green-60">Task deadline</span>
 					<input
-						type="file"
-						name="image"
-						onChange={handleImageChange}
-						className="w-full"
+						type="date"
+						className="w-full h-12 px-3 outline-none rounded-md bg-custo border border-green-500 hover:border-green-600 focus:border-green-600 focus:ring-0 focus:outline-none text-sm font-medium"
 					/>
+				</label>
+
+
+				<div className="flex items-center w-full ">
+					<label className="w-full text-center border-2 border-dashed border-custom-green-60 rounded-lg cursor-pointer bg-custom-green-15  hover:bg-custom-green-30">
+						<div className=" p-1 flex flex-col w-full items-center justify-center">
+							<div> <i className="bi bi-cloud-arrow-up-fill text-xl text-custom-green-60 "></i></div>
+
+							<p className=" text-sm text-custom-green-60">
+								<span className="font-semibold">Drag & Drop or </span>Choose file to upload
+							</p>
+							<p className="text-[11px] text-custom-green-40">Supported formats: JPG, PNG, RAR, ZIP</p></div>
+
+						<input
+							id="file-upload"
+							type="file"
+							className="hidden"
+							multiple
+							accept=".jpg,.png,.rar,.zip"
+							onChange={handleFileChange} />
+
+						<div className="mt-4"> {files.length > 0 && (
+							<ul className="space-y-2">
+								{files.map((file, index) => (<li key={index} className="text-sm text-gray-700">{file.name}</li>))}
+							</ul>)}
+						</div>
+					</label>
+
+
 				</div>
+
+				<AddSecondModal />
+
+
+
+
+
 				<button
-					className="w-full mt-3 rounded-md h-9 bg-orange-400 text-blue-50 font-medium"
-					onClick={handleSubmit}
-				>
+					className="w-full mt-3 rounded-md h-9 bg-custom-green-dark text-blue-50 font-medium"
+					onClick={handleSubmit}>
 					Submit Task
 				</button>
 			</div>

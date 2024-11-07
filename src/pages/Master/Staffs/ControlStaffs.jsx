@@ -27,7 +27,7 @@ function ControlStaffs() {
     setSmlist(e);
   };
   // Change Staff/Master list END
-const [count, setCount]= useState(0);
+  const [count, setCount] = useState(0);
   // Get Users List START
   useEffect(() => {
     http
@@ -63,7 +63,7 @@ const [count, setCount]= useState(0);
   });
   const [editUserImage, setEditUserImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [firstImageValue, setFirstImageValue] = useState('')
+  const [firstImageValue, setFirstImageValue] = useState("");
 
   useEffect(() => {
     // console.log(editUserInfo)
@@ -73,10 +73,8 @@ const [count, setCount]= useState(0);
     setEditUserImage(editUserInfo.image);
   }, [editUserInfo]);
 
-
   // set userInfo function
   const getInfoUser = (id) => {
-
     toast.promise(
       http.get(`users/staff/${id}/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
@@ -98,8 +96,8 @@ const [count, setCount]= useState(0);
         },
       }
     );
-    console.log("bu obyekt:" + editUserInfo)
-    setFirstImageValue(editUserInfo.image)
+    console.log("bu obyekt:" + editUserInfo);
+    setFirstImageValue(editUserInfo.image);
   };
 
   // Password hide/show function START
@@ -135,7 +133,10 @@ const [count, setCount]= useState(0);
     setEditUserInfo({ ...editUserInfo, [e.target.name]: e.target.value });
   };
   const inputHandlePhone = (e) => {
-    setEditUserInfo({ ...editUserInfo, [e.target.name]: e.target.value.replace(/\s+/g, '') });
+    setEditUserInfo({
+      ...editUserInfo,
+      [e.target.name]: e.target.value.replace(/\s+/g, ""),
+    });
   };
   const inputHandleWorkDays = (e) => {
     const index = parseInt(e.target.name.match(/\d+/)[0]); // indexni olish
@@ -143,33 +144,33 @@ const [count, setCount]= useState(0);
     updatedWorkDays[index] = e.target.checked; // checked qiymatini qo'yish
     setEditUserInfo({ ...editUserInfo, work_days: updatedWorkDays });
   };
-  
+
   const editUserInfoSubmit = (e) => {
     e.preventDefault();
 
-    if(firstImageValue === editUserInfo.image){
+    if (firstImageValue === editUserInfo.image) {
       setEditUserInfo((prevState) => {
         const { image, ...rest } = prevState; // image maydonini olib tashlaymiz
         return rest; // image maydoni bo'lmagan yangi obyektni qaytaramiz
       });
     }
-    console.log("firstImageValue: " + firstImageValue)
-    console.log("editUserInfo.image: " + editUserInfo.image)
-    console.log(editUserInfo)
-  
+    console.log("firstImageValue: " + firstImageValue);
+    console.log("editUserInfo.image: " + editUserInfo.image);
+    console.log(editUserInfo);
+
     toast.promise(
-      http.patch(`users/staff/${editUserInfo.id}/`, editUserInfo, 
-        { 
-        headers: { 
-          Authorization: `Bearer ${localStorage.getItem("access")}`, 
-          'Content-Type': 'multipart/form-data', }, 
-        }),
+      http.patch(`users/staff/${editUserInfo.id}/`, editUserInfo, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }),
       {
         loading: "Loading ...",
         success: (response) => {
           console.log(response.data);
           document.getElementById("editUserInfoModal").close();
-          setCount(count + 1)
+          setCount(count + 1);
           return <b>Save :)</b>;
         },
         error: (error) => {
@@ -179,7 +180,7 @@ const [count, setCount]= useState(0);
         },
       }
     );
-  }
+  };
   // ===================================================================>
 
   return (
@@ -467,7 +468,8 @@ const [count, setCount]= useState(0);
                         <button
                           type="button"
                           onClick={handleClearFileUserImage}
-                          className="w-[100px] px-2 py-1 mr-2 rounded-[10px] text-[14px] bg-red-400 hover:bg-red-600 text-white font-medium transition-all">
+                          className="w-[100px] px-2 py-1 mr-2 rounded-[10px] text-[14px] bg-red-400 hover:bg-red-600 text-white font-medium transition-all"
+                        >
                           Delete
                         </button>
                       )}
@@ -482,7 +484,8 @@ const [count, setCount]= useState(0);
                       />
                     </label>
                     <span className="block mt-[5px] text-custom-green-80">
-                      An image of the person, it’s best if it has the same length and height.
+                      An image of the person, it’s best if it has the same
+                      length and height.
                       <br />
                       <span className="text-custom-green-dark font-medium">
                         Recommendation: 300x300px
@@ -810,7 +813,7 @@ const [count, setCount]= useState(0);
                 <button
                   type="submit"
                   className="rounded-[5px] py-2 w-full my-4 bg-custom-green-30 text-custom-green-dark font-bold hover:bg-custom-green-dark hover:text-white transition-all duration-300"
-                  onClick={editUserInfoSubmit}                  
+                  onClick={editUserInfoSubmit}
                 >
                   Save
                 </button>
