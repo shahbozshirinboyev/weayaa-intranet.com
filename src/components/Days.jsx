@@ -1,11 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Days = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleClickOutside = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -17,8 +32,11 @@ const Days = () => {
           </div>
         </div>
 
-        <div className="relative">
-          <button onClick={toggleDropdown} className="border h-full px-2">
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={toggleDropdown}
+            className="h-full px-2 text-custom-green-dark"
+          >
             <i
               className={`bi bi-three-dots-vertical flex justify-center items-center ${
                 isOpen ? "-rotate-90" : "rotate-0"
@@ -26,12 +44,21 @@ const Days = () => {
             ></i>
           </button>
           {isOpen && (
-            <ul className="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow absolute mt-2 right-0 border border-red-700">
+            <ul className="dropdown-content menu text-custom-green-dark bg-base-100 rounded-box z-[1] w-48 p-2 shadow-xl border border-custom-green-30 border-opacity-5 absolute mt-2 right-0">
               <li>
-                <a href="#">Item 1</a>
+                <button className="hover:bg-custom-green-30 hover:font-semibold">
+                  <i className="bi bi-fire"></i> Important Task
+                </button>
               </li>
               <li>
-                <a href="#">Item 2</a>
+                <button className="hover:bg-custom-green-30 hover:font-semibold">
+                  <i className="bi bi-pin-angle"></i> Pin
+                </button>
+              </li>
+              <li>
+                <button className="hover:bg-custom-green-30 hover:font-semibold">
+                  <i className="bi bi-journal-bookmark"></i> Remind
+                </button>
               </li>
             </ul>
           )}
