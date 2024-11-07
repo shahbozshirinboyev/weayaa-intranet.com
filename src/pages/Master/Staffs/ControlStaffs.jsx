@@ -66,7 +66,7 @@ const [count, setCount]= useState(0);
   const [firstImageValue, setFirstImageValue] = useState('')
 
   useEffect(() => {
-    console.log(editUserInfo)
+    // console.log(editUserInfo)
   }, [editUserInfo]);
 
   useEffect(() => {
