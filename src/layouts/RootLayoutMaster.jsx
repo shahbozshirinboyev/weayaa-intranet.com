@@ -107,11 +107,12 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
         <div
           className={`${
             open ? "w-[250px]" : "w-[80px]"
-          } fixed bg-custom-green-5 h-screen p-5 pt-7 duration-300`}
+          } fixed bg-custom-green-5 h-screen shadow-md duration-300 z-[99999]`}
         >
+          <div className="h-screen w-full p-5 pt-7 bg-white">
           {/* Button Sidebar width change start */}
           <div
-            className={`absolute cursor-pointer -right-3 top-[50px] ${
+            className={`absolute cursor-pointer -right-3 top-[50px] transition-all duration-300 z-[999999] ${
               !open && "rotate-180"
             }`}
             onClick={() => setOpen(!open)}
@@ -164,6 +165,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
             ))}
             {/* Menu list END */}
           </ul>
+          </div>
         </div>
         {/* Sidebar END */}
         <div
