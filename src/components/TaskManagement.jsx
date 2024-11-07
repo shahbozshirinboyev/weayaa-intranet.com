@@ -35,7 +35,7 @@ function TaskManagement() {
         <Line />
 
         {/* <div className="flex items-start px-4 bg-custom-green-10 rounded-[15px]  space-x-4 border border-red-700">  */}
-        <div className="grid grid-cols-4 px-4 bg-custom-green-10 rounded-[15px] gap-4 border border-red-700"> 
+        <div className="grid grid-cols-4 px-4 bg-custom-green-10 rounded-[15px] gap-4"> 
           {Object.entries(columns).map(([columnId, column], index) => (
 
             <div className="flex flex-col gap-2" key={columnId}>
