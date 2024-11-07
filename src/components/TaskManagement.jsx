@@ -33,25 +33,30 @@ function TaskManagement() {
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
         <Line />
-        <div className=" 2xl:w-[1700px]  flex items-start px-5 bg-custom-green-10 rounded-[15px]  space-x-4"> 
+
+        {/* <div className="flex items-start px-4 bg-custom-green-10 rounded-[15px]  space-x-4 border border-red-700">  */}
+        <div className="grid grid-cols-4 px-4 bg-custom-green-10 rounded-[15px] gap-4 border border-red-700"> 
           {Object.entries(columns).map(([columnId, column], index) => (
 
-            <div className="flex flex-col gap-2 " key={columnId}>
-              <Droppable droppableId={columnId} key={columnId}>
+            <div className="flex flex-col gap-2" key={columnId}>
+              <Droppable droppableId={columnId} key={columnId} >
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className="flex flex-col w-[250px] md:w-[300px] lg:w-[320px] xl:w-[350px] 2xl:w-[400px] gap-3 items-center py-5"
+                    className="grid grid-col gap-3 items-center py-4 w-full" //w-[250px] md:w-[300px] lg:w-[320px] xl:w-[350px] 2xl:w-[400px]
                   >
+
                     <div className="flex justify-between p-2 py-[10px] w-full bg-white rounded-lg shadow-sm text-custom-green-dark  text-[15px] font-extrabold">
                       {column.name}
                       <div className="bg-custom-green-30 w-5 text-center  text-custom-green-dark rounded ">3</div> 
                     </div>
+
                     {index === 0 && (
                       <div
                         onClick={() => openModal(columnId)}
-                        className="flex cursor-pointer items-center w-[250px] md:w-[300px] lg:w-[320px] xl:w-[350px] 2xl:w-[400px]  justify-center gap-1 py-[10px] opacity-90 bg-white rounded-lg shadow-sm text-[#555] font-medium text-[15px]"
+                        //w-[250px] md:w-[300px] lg:w-[320px] xl:w-[350px] 2xl:w-[400px]  
+                        className="flex cursor-pointer items-center justify-center gap-1 py-[10px] w-full opacity-90 bg-white rounded-lg shadow-sm text-[#555] font-medium text-[15px]"
                       >
                         <i className="bi bi-plus-circle-dotted"></i>
                         Add Task
@@ -138,6 +143,7 @@ function TaskManagement() {
                       </Draggable>
                     ))}
                     {provided.placeholder}
+
                   </div>
                 )}
               </Droppable>
