@@ -149,299 +149,323 @@ function MasterDashboard() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
-      {/* Cards map START */}
-      {dashboards.map((dashboard) => (
-        // {/* CARD 1 START */}
-        <div
-          key={dashboard.id}
-          className="bg-custom-green-10 rounded-[20px] p-[15px] text-custom-green-dark relative border border-custom-green-30 group transition-all duration-300 ease-in-out"
+    <>
+      <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px] justify-end">
+        {/* Add new card start */}
+        <button
+          className="bg-custom-green-15 text-custom-green-dark hover:bg-custom-green-dark hover:text-white transition-all duration-300 flex justify-center items-center px-2 py-1 rounded-[10px] cursor-pointer mx-2 my-2"
+          onClick={() => {
+            document.getElementById("add_new_news").showModal();
+            dashboardUserInfo();
+          }}
         >
-          <h2 className="font-bold text-[18px]">{dashboard.title}</h2>
-          <p className="text-justify text-[16px] opacity-90 font-medium pt-[25px] pb-[20px] mb-[25px]">
-            {dashboard.description}
-          </p>
-          <div className="grid grid-cols-2 text-[14px] font-bold absolute inset-x-0 bottom-[15px] mx-[15px]">
-            <div className="flex justify-start items-center">
-              <span className="mr-[5px]">
-                {dashboard.author.image === null ? (
-                  <i className="bi bi-person-circle text-[20px]"></i>
+          <i className="bi bi-plus-circle"></i> &nbsp; Add Dashboard
+        </button>
+
+        <dialog id="add_new_news" className="modal">
+          <Toaster />
+          <div className="modal-box !p-0">
+            <div className="bg-custom-green-10 w-full p-4 rounded-t-lg flex  items-center border-b border-custom-green-dark">
+              <h2 className="text-lg font-semibold text-custom-green-dark">
+                Add News
+              </h2>
+              <form method="dialog">
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-5 top-4 text-custom-green-dark">
+                  <i className="bi bi-x-lg"></i>
+                </button>
+              </form>
+            </div>
+
+            <div className=" mb-0 flex justify-between items-center my-4 gap-2 p-2">
+              <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full">
+                {userImage === null ? (
+                  <i className="bi bi-person-circle text-[25px] text-custom-green-dark "></i>
                 ) : (
                   <img
-                    src={dashboard.author.image}
-                    className="rounded-full w-[25px] h-[25px]"
-                    alt={dashboard.author.first_name}
+                    src={userImage}
+                    alt={userFirstName}
+                    className="w-[35px] h-[35px] rounded-full"
                   />
                 )}
-              </span>
-              <span>
-                {dashboard.author.first_name} {dashboard.author.last_name}
-              </span>
+
+                <div>
+                  <p className="text-xs text-custom-green-80 ">
+                    Publishing by:
+                  </p>
+                  <p className="font-semibold text-custom-green-dark">
+                    {userFirstName} {userLastName}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full ">
+                <i className="bi bi-calendar-week text-custom-green-dark text-[19px]  border  border-custom-green-dark rounded-full px-2 py-1 "></i>
+
+                <div>
+                  <p className="text-xs text-custom-green-80">
+                    Publishing date:
+                  </p>
+                  <p className="font-semibold text-custom-green-dark">
+                    {DateTime.now().toFormat("d MMM yyyy")}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="text-end flex justify-end items-center">
-              <span className="mr-[5px]">
-                <i className="bi bi-calendar-week text-[20px]"></i>
-              </span>
-              <span
-                className="tooltip"
-                data-tip={new Date(dashboard.published_at).toLocaleTimeString(
-                  [],
-                  { hour: "2-digit", minute: "2-digit", hour12: true }
-                )}
-              >
-                {dashboard.published_at.split("T")[0]}
-              </span>
-            </div>
+
+            <form onSubmit={createNewDashboard}>
+              <div className="mb-0 p-2">
+                <label
+                  className="block text-custom-green-80 font-semibold mb-1"
+                  htmlFor="title"
+                >
+                  Title:
+                </label>
+                <input
+                  ref={newDashboardTitle}
+                  id="title"
+                  type="text"
+                  required
+                  className="w-full border font-bold border-custom-green-dark rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"
+                />
+              </div>
+
+              <div className="mb-0 p-2">
+                <label
+                  className="block text-custom-green-80 font-semibold mb-1"
+                  htmlFor="description"
+                >
+                  Description:
+                </label>
+                <textarea
+                  ref={newDashboardDescription}
+                  id="description"
+                  rows="4"
+                  required
+                  className="w-full border border-custom-green-dark  rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"
+                ></textarea>
+              </div>
+
+              <div className="flex justify-end p-2">
+                <button className="text-white font-semibold py-3 w-full  rounded-lg bg-custom-green-90 hover:bg-custom-green-dark flex items-center justify-center space-x-2">
+                  <i className="bi bi-file-arrow-up text-[19px] "></i>
+                  <span>Publish</span>
+                </button>
+              </div>
+            </form>
           </div>
-          {/* Card Hover Section Start */}
-          <div className="absolute w-full h-full inset-x-0 top-0 rounded-[20px] bg-custom-green-60 text-center hidden group-hover:block transition-all duration-300 ease-in-out">
-            <div className="flex justify-center items-center h-full text-white">
-              <button
-                onClick={() => {
-                  editDashboard(dashboard.id);
-                  document.getElementById("edit_news").showModal();
-                }}
-                className="w-[70px] h-[70px] rounded-[10px] mx-[40px] bg-custom-green-dark text-[20px] hover:text-[25px] hover:border-[2px] transition-all duration-75 ease-in-out"
-              >
-                <i className="bi bi-pencil"></i>
-              </button>
-              <button
-                onClick={() =>
-                  document
-                    .getElementById(`my_modal_${dashboard.id}`)
-                    .showModal()
-                }
-                className="w-[70px] h-[70px] rounded-[10px] mx-[40px] bg-custom-green-dark text-[20px] hover:text-[25px] hover:border-[2px] transition-all duration-75 ease-in-out"
-              >
-                <i className="bi bi-trash3"></i>
-              </button>
-            </div>
-          </div>
-          {/* Card Hover Section End */}
-          {/* Delete Dashboard Modal START */}
-          <dialog
-            id={`my_modal_${dashboard.id}`}
-            className="modal overflow-hidden"
+          <form method="dialog" className="modal-backdrop">
+            <button>close</button>
+          </form>
+        </dialog>
+
+        {/* Add new card end */}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
+        {/* Cards map START */}
+        {dashboards.map((dashboard) => (
+          // {/* CARD 1 START */}
+          <div
+            key={dashboard.id}
+            className="bg-custom-green-10 rounded-[20px] p-[15px] text-custom-green-dark relative group transition-all duration-300 ease-in-out"
           >
-            <div className="modal-box">
-              <h3 className="font-bold text-lg">Delete</h3>
-              <p className="py-4">Are you sure you want to delete this news?</p>
-              <div className="modal-action flex justify-center items-center">
+            <h2 className="font-bold text-[18px]">{dashboard.title}</h2>
+            <p className="text-justify text-[16px] opacity-90 font-medium pt-[25px] pb-[20px] mb-[25px]">
+              {dashboard.description}
+            </p>
+            <div className="grid grid-cols-2 text-[14px] font-bold absolute inset-x-0 bottom-[15px] mx-[15px]">
+              <div className="flex justify-start items-center">
+                <span className="mr-[5px]">
+                  {dashboard.author.image === null ? (
+                    <i className="bi bi-person-circle text-[20px]"></i>
+                  ) : (
+                    <img
+                      src={dashboard.author.image}
+                      className="rounded-full w-[25px] h-[25px]"
+                      alt={dashboard.author.first_name}
+                    />
+                  )}
+                </span>
+                <span className="whitespace-nowrap">
+                  {dashboard.author.first_name} {dashboard.author.last_name}
+                </span>
+              </div>
+              <div className="text-end flex justify-end items-center">
+                <span className="mr-[5px]">
+                  <i className="bi bi-calendar-week text-[20px]"></i>
+                </span>
+                <span
+                  className="tooltip"
+                  data-tip={new Date(dashboard.published_at).toLocaleTimeString(
+                    [],
+                    { hour: "2-digit", minute: "2-digit", hour12: true }
+                  )}
+                >
+                  {dashboard.published_at.split("T")[0]}
+                </span>
+              </div>
+            </div>
+            {/* Card Hover Section Start */}
+            <div className="absolute w-full h-full inset-x-0 top-0 rounded-[20px] bg-custom-green-60 text-center hidden group-hover:block transition-all duration-300 ease-in-out">
+              <div className="flex justify-center items-center h-full text-white">
                 <button
                   onClick={() => {
-                    deleteDashboard(dashboard.id);
+                    editDashboard(dashboard.id);
+                    document.getElementById("edit_news").showModal();
                   }}
-                  className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark"
+                  className="w-[70px] h-[70px] rounded-[10px] mx-[40px] bg-custom-green-dark text-[20px] hover:text-[25px] hover:border-[2px] transition-all duration-75 ease-in-out"
                 >
-                  Yes
+                  <i className="bi bi-pencil"></i>
                 </button>
-                <form method="dialog">
-                  <button className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark">
-                    No
+                <button
+                  onClick={() =>
+                    document
+                      .getElementById(`my_modal_${dashboard.id}`)
+                      .showModal()
+                  }
+                  className="w-[70px] h-[70px] rounded-[10px] mx-[40px] bg-custom-green-dark text-[20px] hover:text-[25px] hover:border-[2px] transition-all duration-75 ease-in-out"
+                >
+                  <i className="bi bi-trash3"></i>
+                </button>
+              </div>
+            </div>
+            {/* Card Hover Section End */}
+            {/* Delete Dashboard Modal START */}
+            <dialog
+              id={`my_modal_${dashboard.id}`}
+              className="modal overflow-hidden"
+            >
+              <div className="modal-box">
+                <h3 className="font-bold text-lg">Delete</h3>
+                <p className="py-4">
+                  Are you sure you want to delete this news?
+                </p>
+                <div className="modal-action flex justify-center items-center">
+                  <button
+                    onClick={() => {
+                      deleteDashboard(dashboard.id);
+                    }}
+                    className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark"
+                  >
+                    Yes
                   </button>
-                </form>
+                  <form method="dialog">
+                    <button className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark">
+                      No
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <form method="dialog" className="modal-backdrop">
+                <button>close</button>
+              </form>
+            </dialog>
+            {/* Delete Dashboard Modal END */}
+          </div>
+          // {/* CARD 1 END */}
+        ))}
+        {/* Cards map END */}
+
+        {/* Edit Modal START */}
+        <dialog id="edit_news" className="modal">
+          <Toaster />
+          <div className="modal-box !p-0">
+            <div className="bg-custom-green-10 w-full p-4 rounded-t-lg flex  items-center border-b border-custom-green-dark">
+              <h2 className="text-lg font-semibold text-custom-green-dark">
+                Edit News
+              </h2>
+              <form method="dialog">
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-5 top-4 text-custom-green-dark">
+                  <i className="bi bi-x-lg"></i>
+                </button>
+              </form>
+            </div>
+
+            <div className=" mb-0 flex justify-between items-center my-4 gap-2 p-2">
+              <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full">
+                {editorDashAuthorImage === null ? (
+                  <i className="bi bi-person-circle text-[25px] text-custom-green-dark "></i>
+                ) : (
+                  <img
+                    src={editorDashAuthorImage}
+                    alt={editorDashAuthorFirstName}
+                    className="w-[35px] h-[35px] rounded-full"
+                  />
+                )}
+
+                <div>
+                  <p className="text-xs text-custom-green-80 ">
+                    Publishing by:
+                  </p>
+                  <p className="font-semibold text-custom-green-dark">
+                    {editorDashAuthorFirstName} {editorDashAuthorLastName}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full ">
+                <i className="bi bi-calendar-week text-custom-green-dark text-[19px]  border  border-custom-green-dark rounded-full px-2 py-1 "></i>
+
+                <div>
+                  <p className="text-xs text-custom-green-80">
+                    Publishing date:
+                  </p>
+                  <p className="font-semibold text-custom-green-dark">
+                    {editorDashDate}
+                  </p>
+                </div>
               </div>
             </div>
-          </dialog>
-          {/* Delete Dashboard Modal END */}
-        </div>
-        // {/* CARD 1 END */}
-      ))}
-      {/* Cards map END */}
-      {/* Add new card start */}
-      <button
-        className="group bg-custom-green-10 hover:bg-custom-green-15 transition-all rounded-[20px] cursor-pointer border-[3px] border-dashed border-custom-green-60"
-        onClick={() => {
-          document.getElementById("add_new_news").showModal();
-          dashboardUserInfo();
-        }}
-      >
-        <div className="flex items-center justify-center h-full w-full">
-          <i className="bi bi-plus-circle text-[30px] group-hover:text-[35px] transition-all text-custom-green-60"></i>
-        </div>
-      </button>
-      <dialog id="add_new_news" className="modal">
-        <Toaster />
-        <div className="modal-box !p-0">
-          <div className="bg-custom-green-10 w-full p-4 rounded-t-lg flex  items-center border-b border-custom-green-dark">
-            <h2 className="text-lg font-semibold text-custom-green-dark">
-              Add News
-            </h2>
-            <form method="dialog">
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-5 top-4 text-custom-green-dark">
-                <i className="bi bi-x-lg"></i>
-              </button>
+
+            <form onSubmit={editOldDashboard}>
+              <div className="mb-0 p-2">
+                <label
+                  className="block text-custom-green-80 font-semibold mb-1"
+                  htmlFor="title"
+                >
+                  Title:
+                </label>
+                <input
+                  ref={editDashboardTitle}
+                  defaultValue={editorDashTitle}
+                  id="title"
+                  type="text"
+                  required
+                  className="w-full border font-bold border-custom-green-dark rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"
+                />
+              </div>
+
+              <div className="mb-0 p-2">
+                <label
+                  className="block text-custom-green-80 font-semibold mb-1"
+                  htmlFor="description"
+                >
+                  Description:
+                </label>
+                <textarea
+                  ref={editDashboardDescription}
+                  defaultValue={editorDashDescription}
+                  id="description"
+                  rows="4"
+                  required
+                  className="w-full border border-custom-green-dark  rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"
+                ></textarea>
+              </div>
+
+              <div className="flex justify-end p-2">
+                <button className="text-white font-semibold py-3 w-full  rounded-lg bg-custom-green-90 hover:bg-custom-green-dark flex items-center justify-center space-x-2">
+                  <i className="bi bi-file-arrow-up text-[19px] "></i>
+                  <span>Republish</span>
+                </button>
+              </div>
             </form>
           </div>
-
-          <div className=" mb-0 flex justify-between items-center my-4 gap-2 p-2">
-            <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full">
-              {userImage === null ? (
-                <i className="bi bi-person-circle text-[25px] text-custom-green-dark "></i>
-              ) : (
-                <img
-                  src={userImage}
-                  alt={userFirstName}
-                  className="w-[35px] h-[35px] rounded-full"
-                />
-              )}
-
-              <div>
-                <p className="text-xs text-custom-green-80 ">Publishing by:</p>
-                <p className="font-semibold text-custom-green-dark">
-                  {userFirstName} {userLastName}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full ">
-              <i className="bi bi-calendar-week text-custom-green-dark text-[19px]  border  border-custom-green-dark rounded-full px-2 py-1 "></i>
-
-              <div>
-                <p className="text-xs text-custom-green-80">Publishing date:</p>
-                <p className="font-semibold text-custom-green-dark">
-                  {DateTime.now().toFormat("d MMM yyyy")}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <form onSubmit={createNewDashboard}>
-            <div className="mb-0 p-2">
-              <label
-                className="block text-custom-green-80 font-semibold mb-1"
-                htmlFor="title"
-              >
-                Title:
-              </label>
-              <input
-                ref={newDashboardTitle}
-                id="title"
-                type="text"
-                required
-                className="w-full border font-bold border-custom-green-dark rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"
-              />
-            </div>
-
-            <div className="mb-0 p-2">
-              <label
-                className="block text-custom-green-80 font-semibold mb-1"
-                htmlFor="description"
-              >
-                Description:
-              </label>
-              <textarea
-                ref={newDashboardDescription}
-                id="description"
-                rows="4"
-                required
-                className="w-full border border-custom-green-dark  rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"
-              ></textarea>
-            </div>
-
-            <div className="flex justify-end p-2">
-              <button className="text-white font-semibold py-3 w-full  rounded-lg bg-custom-green-90 hover:bg-custom-green-dark flex items-center justify-center space-x-2">
-                <i className="bi bi-file-arrow-up text-[19px] "></i>
-                <span>Publish</span>
-              </button>
-            </div>
+          <form method="dialog" className="modal-backdrop">
+            <button>close</button>
           </form>
-        </div>
-      </dialog>
-      {/* Add new card end */}
-      {/* Edit Modal START */}
-      <dialog id="edit_news" className="modal">
-        <Toaster />
-        <div className="modal-box !p-0">
-          <div className="bg-custom-green-10 w-full p-4 rounded-t-lg flex  items-center border-b border-custom-green-dark">
-            <h2 className="text-lg font-semibold text-custom-green-dark">
-              Edit News
-            </h2>
-            <form method="dialog">
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-5 top-4 text-custom-green-dark">
-                <i className="bi bi-x-lg"></i>
-              </button>
-            </form>
-          </div>
-
-          <div className=" mb-0 flex justify-between items-center my-4 gap-2 p-2">
-            <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full">
-              {editorDashAuthorImage === "" ? (
-                <i className="bi bi-person-circle text-[25px] text-custom-green-dark "></i>
-              ) : (
-                <img
-                  src={editorDashAuthorImage}
-                  alt={editorDashAuthorFirstName}
-                  className="w-[35px] h-[35px] rounded-full"
-                />
-              )}
-
-              <div>
-                <p className="text-xs text-custom-green-80 ">Publishing by:</p>
-                <p className="font-semibold text-custom-green-dark">
-                  {editorDashAuthorFirstName} {editorDashAuthorLastName}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full ">
-              <i className="bi bi-calendar-week text-custom-green-dark text-[19px]  border  border-custom-green-dark rounded-full px-2 py-1 "></i>
-
-              <div>
-                <p className="text-xs text-custom-green-80">Publishing date:</p>
-                <p className="font-semibold text-custom-green-dark">
-                  {editorDashDate}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <form onSubmit={editOldDashboard}>
-            <div className="mb-0 p-2">
-              <label
-                className="block text-custom-green-80 font-semibold mb-1"
-                htmlFor="title"
-              >
-                Title:
-              </label>
-              <input
-                ref={editDashboardTitle}
-                defaultValue={editorDashTitle}
-                id="title"
-                type="text"
-                required
-                className="w-full border font-bold border-custom-green-dark rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"
-              />
-            </div>
-
-            <div className="mb-0 p-2">
-              <label
-                className="block text-custom-green-80 font-semibold mb-1"
-                htmlFor="description"
-              >
-                Description:
-              </label>
-              <textarea
-                ref={editDashboardDescription}
-                defaultValue={editorDashDescription}
-                id="description"
-                rows="4"
-                required
-                className="w-full border border-custom-green-dark  rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"
-              ></textarea>
-            </div>
-
-            <div className="flex justify-end p-2">
-              <button className="text-white font-semibold py-3 w-full  rounded-lg bg-custom-green-90 hover:bg-custom-green-dark flex items-center justify-center space-x-2">
-                <i className="bi bi-file-arrow-up text-[19px] "></i>
-                <span>Republish</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </dialog>
-      {/* Edit Modal END */}
-    </div>
+        </dialog>
+        {/* Edit Modal END */}
+      </div>
+    </>
   );
 }
 
