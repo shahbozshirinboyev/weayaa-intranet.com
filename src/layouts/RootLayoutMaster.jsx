@@ -205,7 +205,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
                           <i className="bi bi-person-circle text-[25px]"></i>
                         ) : (
                           <img
-                            className="rounded-full w-[40px] h-[40px]"
+                            className="rounded-full w-[40px] h-[40px] object-cover"
                             src={image}
                             alt={firstName}
                           />
