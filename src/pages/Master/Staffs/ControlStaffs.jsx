@@ -4,6 +4,9 @@ import AddStaff from "../../../components/AddStaff";
 
 import MaskedInput from "react-text-mask";
 
+// nonuser img
+import noneuser from "/img/noneuser.png"
+
 // Base URL
 import http from "../../../services/http";
 
@@ -304,7 +307,7 @@ function ControlStaffs() {
                       src={
                         user.image
                           ? user.image
-                          : "https://e7.pngegg.com/pngimages/81/570/png-clipart-profile-logo-computer-icons-user-user-blue-heroes-thumbnail.png"
+                          : noneuser
                       }
                       alt="user image"
                     />
