@@ -63,10 +63,9 @@ function ControlStaffs() {
   });
   const [editUserImage, setEditUserImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [firstImageValue, setFirstImageValue] = useState("");
 
   useEffect(() => {
-    // console.log(editUserInfo)
+    console.log(JSON.stringify(editUserInfo, null, 2))
   }, [editUserInfo]);
 
   useEffect(() => {
@@ -147,19 +146,15 @@ function ControlStaffs() {
 
   const editUserInfoSubmit = (e) => {
     e.preventDefault();
-
-    if (firstImageValue === editUserInfo.image) {
-      setEditUserInfo((prevState) => {
-        const { image, ...rest } = prevState; // image maydonini olib tashlaymiz
-        return rest; // image maydoni bo'lmagan yangi obyektni qaytaramiz
-      });
-    }
-    console.log("firstImageValue: " + firstImageValue);
-    console.log("editUserInfo.image: " + editUserInfo.image);
-    console.log(editUserInfo);
-
+    const updatedUserInfo = 
+    (typeof editUserInfo.image === 'string' && editUserInfo.image !== "" && editUserInfo.image !== null && editUserInfo.image.startsWith("https://"))
+      ? (({ image, ...rest }) => rest)(editUserInfo) // image maydonini olib tashlaymiz
+      : editUserInfo;
+  
+    console.log("End of Data: ", updatedUserInfo);
+  
     toast.promise(
-      http.patch(`users/staff/${editUserInfo.id}/`, editUserInfo, {
+      http.patch(`users/staff/${updatedUserInfo.id}/`, updatedUserInfo, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access")}`,
           "Content-Type": "multipart/form-data",
@@ -169,18 +164,34 @@ function ControlStaffs() {
         loading: "Loading ...",
         success: (response) => {
           console.log(response.data);
+
           document.getElementById("editUserInfoModal").close();
           setCount(count + 1);
+          setEditUserInfo({
+            address: "",
+            email: "",
+            first_name: "",
+            id: "",
+            image: "",
+            label: "",
+            last_name: "",
+            phone_number: "",
+            speciality: "",
+            user_type: "",
+            weayaa_id: "",
+            work_days: [true, true, true, true, true, true, true],
+            work_type: "",
+          })
           return <b>Save :)</b>;
         },
         error: (error) => {
           console.log(error.response);
-
           return <b>Error :(</b>;
         },
       }
     );
   };
+  
   // ===================================================================>
 
   return (
