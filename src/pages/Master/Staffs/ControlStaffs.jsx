@@ -5,7 +5,7 @@ import AddStaff from "../../../components/AddStaff";
 import MaskedInput from "react-text-mask";
 
 // nonuser img
-import noneuser from "/img/noneuser.png"
+import noneuser from "/img/noneuser.png";
 
 // Base URL
 import http from "../../../services/http";
@@ -68,7 +68,7 @@ function ControlStaffs() {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    console.log(JSON.stringify(editUserInfo, null, 2))
+    console.log(JSON.stringify(editUserInfo, null, 2));
   }, [editUserInfo]);
 
   useEffect(() => {
@@ -149,13 +149,16 @@ function ControlStaffs() {
 
   const editUserInfoSubmit = (e) => {
     e.preventDefault();
-    const updatedUserInfo = 
-    (typeof editUserInfo.image === 'string' && editUserInfo.image !== "" && editUserInfo.image !== null && editUserInfo.image.startsWith("https://"))
-      ? (({ image, ...rest }) => rest)(editUserInfo) // image maydonini olib tashlaymiz
-      : editUserInfo;
-  
+    const updatedUserInfo =
+      typeof editUserInfo.image === "string" &&
+      editUserInfo.image !== "" &&
+      editUserInfo.image !== null &&
+      editUserInfo.image.startsWith("https://")
+        ? (({ image, ...rest }) => rest)(editUserInfo) // image maydonini olib tashlaymiz
+        : editUserInfo;
+
     console.log("End of Data: ", updatedUserInfo);
-  
+
     toast.promise(
       http.patch(`users/staff/${updatedUserInfo.id}/`, updatedUserInfo, {
         headers: {
@@ -184,7 +187,7 @@ function ControlStaffs() {
             weayaa_id: "",
             work_days: [true, true, true, true, true, true, true],
             work_type: "",
-          })
+          });
           return <b>Save :)</b>;
         },
         error: (error) => {
@@ -194,7 +197,7 @@ function ControlStaffs() {
       }
     );
   };
-  
+
   // ===================================================================>
 
   return (
@@ -304,11 +307,7 @@ function ControlStaffs() {
                   >
                     <img
                       className="!w-12 !h-12 min-w-12 min-h-12 rounded-full object-cover border whitespace-nowrap"
-                      src={
-                        user.image
-                          ? user.image
-                          : noneuser
-                      }
+                      src={user.image ? user.image : noneuser}
                       alt="user image"
                     />
                     <div className="ps-3">
@@ -517,7 +516,7 @@ function ControlStaffs() {
                     <div>
                       <label className="p-2 flex items-center justify-center">
                         <input
-                        className="accent-custom-green-dark"
+                          className="accent-custom-green-dark"
                           checked={editUserInfo.user_type === "staff"}
                           onChange={inputHandle}
                           type="radio"
@@ -533,7 +532,7 @@ function ControlStaffs() {
                     <div>
                       <label className="p-2 flex items-center justify-center">
                         <input
-                        className="accent-custom-green-dark"
+                          className="accent-custom-green-dark"
                           checked={editUserInfo.user_type === "master"}
                           onChange={inputHandle}
                           type="radio"
@@ -714,7 +713,7 @@ function ControlStaffs() {
                     <div className="grid grid-cols-2 gap-2">
                       <label className="p-2 border rounded-md flex items-center">
                         <input
-                        className="accent-custom-green-dark"
+                          className="accent-custom-green-dark"
                           checked={editUserInfo.work_type === "full_time"}
                           onChange={inputHandle}
                           type="radio"
@@ -727,7 +726,7 @@ function ControlStaffs() {
                       </label>
                       <label className="p-2 border rounded-md flex items-center">
                         <input
-                        className="accent-custom-green-dark"
+                          className="accent-custom-green-dark"
                           checked={editUserInfo.work_type === "part_time"}
                           onChange={inputHandle}
                           type="radio"
@@ -804,7 +803,7 @@ function ControlStaffs() {
                         } flex items-center`}
                       >
                         <input
-                        className="accent-custom-green-dark"
+                          className="accent-custom-green-dark"
                           type="checkbox"
                           checked={
                             editUserInfo.work_days &&
