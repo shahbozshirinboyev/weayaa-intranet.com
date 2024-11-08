@@ -439,7 +439,7 @@ function ControlStaffs() {
 
       {/* Edit User Info Start */}
       <>
-        <dialog id="editUserInfoModal" className="modal">
+        <dialog id="editUserInfoModal" className="modal text-custom-green-dark">
           <Toaster />
           <div className="modal-box w-11/12 max-w-5xl p-0">
             {/* Modal header Start */}
@@ -506,7 +506,7 @@ function ControlStaffs() {
                 </div>
 
                 <div>
-                  <div className="text-custom-green-dark font-semibold text-[15px] mt-2">
+                  <div className="text-custom-green-dark font-semibold opacity-80 text-[15px] mt-2">
                     <span>Account Type</span>
                   </div>
 
@@ -514,6 +514,7 @@ function ControlStaffs() {
                     <div>
                       <label className="p-2 flex items-center justify-center">
                         <input
+                        className="accent-custom-green-dark"
                           checked={editUserInfo.user_type === "staff"}
                           onChange={inputHandle}
                           type="radio"
@@ -529,6 +530,7 @@ function ControlStaffs() {
                     <div>
                       <label className="p-2 flex items-center justify-center">
                         <input
+                        className="accent-custom-green-dark"
                           checked={editUserInfo.user_type === "master"}
                           onChange={inputHandle}
                           type="radio"
@@ -543,7 +545,7 @@ function ControlStaffs() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mt-2">
-                    <div>
+                    <div className="pointer-events-none cursor-not-allowed opacity-80">
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
                           <i className="bi bi-person-check"></i> WeaYaa ID
@@ -570,7 +572,7 @@ function ControlStaffs() {
                             // value={state.userPassword}
                             // onChange={inputHandle}
                             type={showPassword ? "text" : "password"}
-                            placeholder="Enter Password"
+                            placeholder="* * * * * * * * * *"
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                           />
                           <button
@@ -709,6 +711,7 @@ function ControlStaffs() {
                     <div className="grid grid-cols-2 gap-2">
                       <label className="p-2 border rounded-md flex items-center">
                         <input
+                        className="accent-custom-green-dark"
                           checked={editUserInfo.work_type === "full_time"}
                           onChange={inputHandle}
                           type="radio"
@@ -721,6 +724,7 @@ function ControlStaffs() {
                       </label>
                       <label className="p-2 border rounded-md flex items-center">
                         <input
+                        className="accent-custom-green-dark"
                           checked={editUserInfo.work_type === "part_time"}
                           onChange={inputHandle}
                           type="radio"
@@ -797,6 +801,7 @@ function ControlStaffs() {
                         } flex items-center`}
                       >
                         <input
+                        className="accent-custom-green-dark"
                           type="checkbox"
                           checked={
                             editUserInfo.work_days &&
