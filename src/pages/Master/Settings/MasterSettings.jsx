@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 
 import toast from "react-hot-toast";
 
+// noneuser
+import noneuser from "/img/noneuser.png"
+
 // img
 import logo from "../../../../public/img/logo.png";
 import EditUserInfo from "./EditUserInfo";
@@ -125,7 +128,7 @@ function MasterSettings() {
             <div className="flex justify-center items-center w-[80px] h-[80px]">
               {/* <i className="bi bi-person-bounding-box text-[35px]"></i> */}
               <img
-                src={personalInfo.image}
+                src={personalInfo.image ? personalInfo.image : noneuser}
                 className="rounded-full w-[80px] h-[80px] object-cover p-1"
                 alt={personalInfo.speciality}
               />

@@ -308,7 +308,7 @@ function ControlStaffs() {
                     <img
                       className="!w-12 !h-12 min-w-12 min-h-12 rounded-full object-cover border whitespace-nowrap"
                       src={user.image ? user.image : noneuser}
-                      alt="user image"
+                      alt="user_image"
                     />
                     <div className="ps-3">
                       <div className="text-base font-semibold text-custom-green-dark">
