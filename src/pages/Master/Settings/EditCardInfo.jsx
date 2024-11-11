@@ -37,8 +37,8 @@ export default function EditCardInfo() {
           >
             <span className="text-custom-green-dark font-bold">Edit Card Info</span>
             <div className="text-end">
-              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                <span>✕</span>
+              <button className="btn btn-sm border-0 btn-circle text-center border-red-700 items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+              <i class="bi bi-x-lg"></i>
               </button>
             </div>
           </form>
@@ -50,57 +50,59 @@ export default function EditCardInfo() {
                   htmlFor="cardName"
                   className="block mb-2 text-sm font-medium text-custom-green-dark"
                 >
-                  Card Name
-                </label>
-                <input
+                  <span>Card Name</span>
+                  <input
                   type="text"
                   name="cardName"
                   id="cardName"
-                  className="border border-custom-green-60 text-sm rounded-lg focus:border-custom-green-dark focus:outline-none block w-full p-2.5"
+                  className="border placeholder:text-custom-green-60 border-custom-green-60 text-sm rounded-lg focus:border-custom-green-dark focus:outline-none block w-full p-2.5"
                   placeholder="Zerda Jursinova"
                   required
                 />
+                </label>
+                
               </div>
-              <div>
+              <div className="grid grid-cols-4">
                 <label
                   htmlFor="cardNumber"
-                  className="block mb-2 text-sm font-medium text-custom-green-dark"
+                  className="block mb-2 text-sm font-medium text-custom-green-dark col-span-3 mr-1"
                 >
-                  Card Number
-                </label>
-                <input
+                  <span>Card Number</span>
+                  <input
                   type="text"
                   name="cardNumber"
                   value={cardNumber}
                   onChange={handleCardNumberChange}
                   maxLength={19}
-                  className="border border-custom-green-60 text-sm rounded-lg focus:border-custom-green-dark focus:outline-none block w-full p-2.5"
+                  className="border placeholder:text-custom-green-60 border-custom-green-60 text-sm rounded-lg focus:border-custom-green-dark focus:outline-none block w-full p-2.5"
                   placeholder="0000 0000 0000 0000"
                   required
                 />
-              </div>
-              <div>
+                </label>
+                
+              
                 <label
                   htmlFor="expiryDate"
-                  className="block mb-2 text-sm font-medium text-custom-green-dark"
+                  className="block mb-2 text-sm font-medium text-custom-green-dark ml-1"
                 >
-                  Card Expiry Date
-                </label>
-                <input
+                  <span>Card Expiry Date</span>
+                  <input
                   type="text"
                   value={expiryDate}
                   onChange={handleExpiryDateChange}
                   maxLength={5}
-                  className="border border-custom-green-60 text-sm rounded-lg focus:border-custom-green-dark focus:outline-none block w-full p-2.5"
+                  className="border placeholder:text-custom-green-60 border-custom-green-60 text-sm rounded-lg focus:border-custom-green-dark focus:outline-none block w-full p-2.5"
                   placeholder="MM/YY"
                   required
                 />
+                </label>
+                
               </div>
               <button
                 type="submit"
-                className="w-full text-white bg-custom-green-60 hover:bg-custom-green-dark focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                className=" mt-4 w-full text-white bg-custom-green-60 hover:bg-custom-green-dark focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300"
               >
-                Login to your account
+                Save
               </button>
             </form>
           </section>
