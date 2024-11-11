@@ -40,8 +40,8 @@ export default function AddCard() {
           >
             <span className="text-custom-green-dark font-bold">Add Card</span>
             <div className="text-end">
-              <button className="btn btn-sm border-0 btn-circle text-center border-red-700 items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-              <i class="bi bi-x-lg"></i>
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+              <i className="bi bi-x-lg flex justify-center items-center"></i>
               </button>
             </div>
           </form>
