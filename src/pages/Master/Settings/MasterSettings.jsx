@@ -91,10 +91,18 @@ function MasterSettings() {
   };
 
   // Upload New User Profile IMG
-  const UploadNewUserImg = () => {
+  const  handleFileUpload = (event) => {
+    const file = event.target.files[0]; // Tanlangan fayl
+    if (file) {
+      // console.log("Tanlangan fayl:", file);
+      UploadNewUserImg(file);
+    }
+  }
+
+  const UploadNewUserImg = (file) => {
     // const userId = localStorage.getItem("userId");
     const formData = new FormData();
-    formData.append("image", ""); // Bo'sh qiymatni image maydoniga qo'shish
+    formData.append("image", file); // Bo'sh qiymatni image maydoniga qo'shish
 
     toast.promise(
       http.patch(`users/staff/${localStorage.getItem("userId")}/`, formData, {
@@ -104,11 +112,11 @@ function MasterSettings() {
         "Content-Type": "multipart/form-data",
       }),
       {
-        loading: "Deleting ...",
+        loading: "Uploading ...",
         success: (response) => {
-          document.getElementById("deleteUserImg").close();
+          // document.getElementById("deleteUserImg").close();
           getPersonalInfo();
-          return <b>Delete :)</b>;
+          return <b>Upload New IMG :)</b>;
         },
         error: (error) => {
           console.log(error.response.data);
@@ -209,10 +217,16 @@ function MasterSettings() {
                 </p>
               </div>
               <div>
-                <button className="border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
+                <form action="" className="inline-block">
+                  <label className=" flex border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
+                    <i className="bi bi-upload mr-2"></i> Upload Image
+                    <input type="file" className="hidden" onChange={handleFileUpload} />
+                  </label>
+                </form>
+                {/* <button className="border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
                   <i className="bi bi-upload mr-2"></i>
                   <span>Upload Image</span>
-                </button>
+                </button> */}
                 <button
                   onClick={() =>
                     document.getElementById("deleteUserImg").showModal()
