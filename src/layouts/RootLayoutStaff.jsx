@@ -67,7 +67,7 @@ function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
   const currentDate = DateTime.now();
   const formattedDate = currentDate.toFormat("d MMMM yyyy");
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const Menus = [
     {
