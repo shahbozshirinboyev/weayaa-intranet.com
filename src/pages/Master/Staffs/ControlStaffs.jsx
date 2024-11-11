@@ -61,7 +61,7 @@ function ControlStaffs() {
     speciality: "",
     user_type: "",
     weayaa_id: "",
-    work_days: [true, true, true, true, true, true, true],
+    work_days: [true, true, true, true, true, false, false],
     work_type: "",
   });
   const [editUserImage, setEditUserImage] = useState(null);
@@ -75,7 +75,7 @@ function ControlStaffs() {
     setEditUserImage(editUserInfo.image);
   }, [editUserInfo]);
 
-  // set userInfo function
+  // set userInfo functiontrue
   const getInfoUser = (id) => {
     toast.promise(
       http.get(`users/staff/${id}/`, {

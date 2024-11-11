@@ -184,7 +184,7 @@ function MasterDashboard() {
                   <img
                     src={userImage}
                     alt={userFirstName}
-                    className="w-[35px] h-[35px] rounded-full"
+                    className="w-[35px] h-[35px] object-cover rounded-full"
                   />
                 )}
 
@@ -280,7 +280,7 @@ function MasterDashboard() {
                   ) : (
                     <img
                       src={dashboard.author.image}
-                      className="rounded-full w-[25px] h-[25px]"
+                      className="rounded-full w-[25px] h-[25px] object-cover"
                       alt={dashboard.author.first_name}
                     />
                   )}
@@ -388,7 +388,7 @@ function MasterDashboard() {
                   <img
                     src={editorDashAuthorImage}
                     alt={editorDashAuthorFirstName}
-                    className="w-[35px] h-[35px] rounded-full"
+                    className="w-[35px] h-[35px] object-cover rounded-full"
                   />
                 )}
 
