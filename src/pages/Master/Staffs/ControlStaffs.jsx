@@ -445,20 +445,20 @@ function ControlStaffs() {
           <Toaster />
           <div className="modal-box w-11/12 max-w-5xl p-0">
             {/* Modal header Start */}
-            <form
-              method="dialog"
-              className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-            >
-              <span className="text-custom-green-dark font-bold">
-                Edit User Information
-              </span>
-              <div className="text-end">
-                <button className="btn btn-sm border-0 btn-circle text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                  ✕
-                </button>
-              </div>
-            </form>
-            {/* Modal header End */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Edit User Information
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+              <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
+            </div>
+          </form>
+          {/* Modal header End */}
 
             <form className="px-[24px]">
               <div className="grid grid-cols-1 mt-2">

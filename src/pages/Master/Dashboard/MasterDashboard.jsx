@@ -165,16 +165,21 @@ function MasterDashboard() {
         <dialog id="add_new_news" className="modal">
           <Toaster />
           <div className="modal-box !p-0">
-            <div className="bg-custom-green-10 w-full p-4 rounded-t-lg flex  items-center border-b border-custom-green-dark">
-              <h2 className="text-lg font-semibold text-custom-green-dark">
-                Add News
-              </h2>
-              <form method="dialog">
-                <button className="btn btn-sm btn-circle btn-ghost absolute right-5 top-4 text-custom-green-dark">
-                  <i className="bi bi-x-lg"></i>
-                </button>
-              </form>
+            {/* Modal header Start */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Add News
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+              <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
             </div>
+          </form>
+          {/* Modal header End */}
 
             <div className=" mb-0 flex justify-between items-center my-4 gap-2 p-2">
               <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full">
@@ -369,16 +374,21 @@ function MasterDashboard() {
         <dialog id="edit_news" className="modal">
           <Toaster />
           <div className="modal-box !p-0">
-            <div className="bg-custom-green-10 w-full p-4 rounded-t-lg flex  items-center border-b border-custom-green-dark">
-              <h2 className="text-lg font-semibold text-custom-green-dark">
-                Edit News
-              </h2>
-              <form method="dialog">
-                <button className="btn btn-sm btn-circle btn-ghost absolute right-5 top-4 text-custom-green-dark">
-                  <i className="bi bi-x-lg"></i>
-                </button>
-              </form>
+            {/* Modal header Start */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Edit News
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+              <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
             </div>
+          </form>
+          {/* Modal header End */}
 
             <div className=" mb-0 flex justify-between items-center my-4 gap-2 p-2">
               <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full">
