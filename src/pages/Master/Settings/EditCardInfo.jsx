@@ -22,13 +22,10 @@ export default function EditCardInfo() {
 
   return (
     <>
-      <button
-        onClick={() => document.getElementById("EditCardInfo").showModal()}
-        className="justify-end flex py-1 px-2 rounded-[5px] font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300"
-        type="button"
+      <button onClick={() => document.getElementById("EditCardInfo").showModal()}
+        className="flex justify-center items-center py-1 px-2 rounded-[5px] font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300"
       >
-        <i className="bi bi-pencil mr-2"></i>
-        Edit
+        <i className="bi bi-pencil mr-2"></i> Edit
       </button>
 
       <dialog id="EditCardInfo" className="modal">
