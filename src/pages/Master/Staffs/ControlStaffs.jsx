@@ -777,7 +777,7 @@ function ControlStaffs() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1">
+              <div className="grid grid-cols-1 pointer-events-none cursor-not-allowed select-none opacity-80">
                 <div className="mt-2">
                   <span className="text-custom-green-dark font-semibold text-[15px]">
                     Working days:
