@@ -382,7 +382,7 @@ function MasterSettings() {
           </div>
         </div>
 
-        <div className="border-[2px] border-custom-green-60 bg-custom-green-30 mt-[25px] rounded-[5px] h-[400px] flex items-center justify-center">
+        <div className="border-[2px] border-custom-green-60 bg-custom-green-30 mt-[25px] rounded-[5px] h-[200px] flex items-center justify-center">
           <div className="grid grid-cols-1 text-center">
             <p className="text-[70px] font-bold">PDF</p>
             <span className="font-semibold opacity-70">PDF file open here</span>
