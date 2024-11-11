@@ -96,7 +96,7 @@ const Line = () => {
             <form method="dialog" className="border-b-[2px] border-custom-green-80 h-[60px] flex items-center justify-between px-[20px] bg-custom-green-10 w-full">
               <span className="text-custom-green-dark font-bold">Project Users </span>
               <button className="btn btn-sm border-0 btn-circle text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">✕</button>
-              <span class="sr-only">Close modal</span>
+              <span className="sr-only">Close modal</span>
             </form>
 
             <div className="p-4">
