@@ -28,11 +28,14 @@ function TaskManagement() {
 
   return (
     <>
+
+    <Line />
+    
       <DragDropContext
 
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
-        <Line />
+        
 
         {/* <div className="flex items-start px-4 bg-custom-green-10 rounded-[15px]  space-x-4 border border-red-700">  */}
         <div className="grid grid-cols-4 px-4 bg-custom-green-10 rounded-[15px] gap-4"> 
