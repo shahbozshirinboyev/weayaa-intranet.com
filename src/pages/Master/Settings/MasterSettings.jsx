@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 // noneuser
-import noneuser from "/img/noneuser.png"
+import noneuser from "/img/noneuser.png";
 
 // img
 import logo from "../../../../public/img/logo.png";
@@ -27,16 +27,59 @@ function MasterSettings() {
 
   const getPersonalInfo = () => {
     const userId = localStorage.getItem("userId");
-    toast.promise(
-      http.get(`users/staff/${userId}/`, {
+    // toast.promise(
+    //   http.get(`users/staff/${userId}/`, {
+    //     headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+    //   }),
+    //   {
+    //     loading: "Loading ...",
+    //     success: (response) => {
+    //       console.log(response.data);
+    //       setPersonalInfo(response.data);
+    //       return <b>Success :)</b>;
+    //     },
+    //     error: (error) => {
+    //       console.log(error.response.data);
+
+    //       return <b>Error :(</b>;
+    //     },
+    //   }
+    // );
+    http
+      .get(`users/staff/${userId}/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+      })
+      .then((response) => {
+        setPersonalInfo(response.data); // response dan kelgan ma'lumotlarni setPersonalInfo ga yozish
+      })
+      .catch((error) => {
+        console.error("Get data error:", error); // Xatolik yuzaga kelgan holatda konsolga xabar chiqarish
+      });
+  };
+
+  useEffect(() => {
+    getPersonalInfo();
+  }, []);
+
+  // Delete User Profile IMG
+  const deleteUserProfileImg = () => {
+    // const userId = localStorage.getItem("userId");
+    const formData = new FormData();
+    formData.append("image", ""); // Bo'sh qiymatni image maydoniga qo'shish
+
+    toast.promise(
+      http.patch(`users/staff/${localStorage.getItem("userId")}/`, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+        "Content-Type": "multipart/form-data",
       }),
       {
-        loading: "Loading ...",
+        loading: "Deleting ...",
         success: (response) => {
-          console.log(response.data);
-          setPersonalInfo(response.data);
-          return <b>Success :)</b>;
+          document.getElementById("deleteUserImg").close();
+          getPersonalInfo();
+          return <b>Delete :)</b>;
         },
         error: (error) => {
           console.log(error.response.data);
@@ -47,9 +90,34 @@ function MasterSettings() {
     );
   };
 
-  useEffect(() => {
-    getPersonalInfo();
-  }, []);
+  // Upload New User Profile IMG
+  const UploadNewUserImg = () => {
+    // const userId = localStorage.getItem("userId");
+    const formData = new FormData();
+    formData.append("image", ""); // Bo'sh qiymatni image maydoniga qo'shish
+
+    toast.promise(
+      http.patch(`users/staff/${localStorage.getItem("userId")}/`, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+        "Content-Type": "multipart/form-data",
+      }),
+      {
+        loading: "Deleting ...",
+        success: (response) => {
+          document.getElementById("deleteUserImg").close();
+          getPersonalInfo();
+          return <b>Delete :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+
+          return <b>Error :(</b>;
+        },
+      }
+    );
+  };
 
   return (
     <>
@@ -145,7 +213,14 @@ function MasterSettings() {
                   <i className="bi bi-upload mr-2"></i>
                   <span>Upload Image</span>
                 </button>
-                <button className={`border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 text-red-500 hover:bg-custom-green-dark hover:text-white  transition-all duration-300 ${ personalInfo.image ? "" : "hidden" }`}>
+                <button
+                  onClick={() =>
+                    document.getElementById("deleteUserImg").showModal()
+                  }
+                  className={`border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 text-red-500 hover:bg-custom-green-dark hover:text-white  transition-all duration-300 ${
+                    personalInfo.image ? "" : "hidden"
+                  }`}
+                >
                   <i className="bi bi-trash3 mr-2"></i>
                   <span>Delete Image</span>
                 </button>
@@ -165,21 +240,27 @@ function MasterSettings() {
               <span className="font-semibold text-[14px] opacity-60">
                 First name
               </span>
-              <p className="font-semibold text-[18px]">{personalInfo.first_name}</p>
+              <p className="font-semibold text-[18px]">
+                {personalInfo.first_name}
+              </p>
             </div>
 
             <div className="px-6">
               <span className="font-semibold text-[14px] opacity-60">
                 Last name
               </span>
-              <p className="font-semibold text-[18px]">{personalInfo.last_name}</p>
+              <p className="font-semibold text-[18px]">
+                {personalInfo.last_name}
+              </p>
             </div>
 
             <div className="px-6">
               <span className="font-semibold text-[14px] opacity-60">
                 Phone number:
               </span>
-              <p className="font-semibold text-[18px]">{personalInfo.phone_number}</p>
+              <p className="font-semibold text-[18px]">
+                {personalInfo.phone_number}
+              </p>
             </div>
 
             <div className="px-6">
@@ -193,14 +274,22 @@ function MasterSettings() {
               <span className="font-semibold text-[14px] opacity-60">
                 Specialist
               </span>
-              <p className="font-semibold text-[18px]">{personalInfo.speciality}</p>
+              <p className="font-semibold text-[18px]">
+                {personalInfo.speciality}
+              </p>
             </div>
 
             <div className="px-6">
               <span className="font-semibold text-[14px] opacity-60">
                 Job time
               </span>
-              <p className="font-semibold text-[18px]">{ personalInfo.work_type === "part_time" ? "PART-TIME" : personalInfo.work_type === "full_time" ? "FULL-TIME" : "" }</p>
+              <p className="font-semibold text-[18px]">
+                {personalInfo.work_type === "part_time"
+                  ? "PART-TIME"
+                  : personalInfo.work_type === "full_time"
+                  ? "FULL-TIME"
+                  : ""}
+              </p>
             </div>
 
             <div className="px-6">
@@ -208,7 +297,11 @@ function MasterSettings() {
                 Account type
               </span>
               <p className="font-semibold text-[18px]">
-              {personalInfo.user_type ? personalInfo.user_type.replace(/^./, (char) => char.toUpperCase()) : ""}
+                {personalInfo.user_type
+                  ? personalInfo.user_type.replace(/^./, (char) =>
+                      char.toUpperCase()
+                    )
+                  : ""}
               </p>
             </div>
           </div>
@@ -328,7 +421,36 @@ function MasterSettings() {
       </div>
       {/* My Payment END */}
       {/* Delete IMG modal start */}
-      
+
+      <dialog id="deleteUserImg" className="modal">
+        <Toaster />
+        <div className="modal-box">
+          <h3 className="font-bold text-lg text-custom-green-dark">
+            Are you sure delete your profile IMG?
+          </h3>
+          {/* <p className="py-4">
+            Press ESC key or click the button below to close
+          </p> */}
+
+          <div className="flex justify-center items-center gap-12 py-8">
+            <button
+              onClick={deleteUserProfileImg}
+              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:bg-red-700 hover:text-white border-transparent"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => document.getElementById("deleteUserImg").close()}
+              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:bg-custom-green-dark hover:text-white border-transparent"
+            >
+              No
+            </button>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>No</button>
+        </form>
+      </dialog>
       {/* Delete IMG modal end */}
     </>
   );
