@@ -145,7 +145,7 @@ function MasterSettings() {
                   <i className="bi bi-upload mr-2"></i>
                   <span>Upload Image</span>
                 </button>
-                <button className="border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 text-red-500 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
+                <button className={`border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 text-red-500 hover:bg-custom-green-dark hover:text-white  transition-all duration-300 ${ personalInfo.image ? "" : "hidden" }`}>
                   <i className="bi bi-trash3 mr-2"></i>
                   <span>Delete Image</span>
                 </button>
@@ -200,14 +200,16 @@ function MasterSettings() {
               <span className="font-semibold text-[14px] opacity-60">
                 Job time
               </span>
-              <p className="font-semibold text-[18px]">{ personalInfo.work_type === "part_time" ? "PART-TIME" : "FULL-TIME" }</p>
+              <p className="font-semibold text-[18px]">{ personalInfo.work_type === "part_time" ? "PART-TIME" : personalInfo.work_type === "full_time" ? "FULL-TIME" : "" }</p>
             </div>
 
             <div className="px-6">
               <span className="font-semibold text-[14px] opacity-60">
                 Account type
               </span>
-              <p className="font-semibold text-[18px]">Master</p>
+              <p className="font-semibold text-[18px]">
+              {personalInfo.user_type ? personalInfo.user_type.replace(/^./, (char) => char.toUpperCase()) : ""}
+              </p>
             </div>
           </div>
         </div>
@@ -325,6 +327,9 @@ function MasterSettings() {
         </div>
       </div>
       {/* My Payment END */}
+      {/* Delete IMG modal start */}
+      
+      {/* Delete IMG modal end */}
     </>
   );
 }
