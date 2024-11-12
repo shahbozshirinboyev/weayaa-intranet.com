@@ -1,66 +1,10 @@
-import React, { useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 // http
 import http from "../services/http";
-
 // react hot toast
 import toast, { Toaster } from "react-hot-toast";
-
 // nonuser img
 import noneuser from "/img/noneuser.png";
-
-// ==================================================== >
-
-import Avatar1 from "../../public/img/background.png";
-import Avatar2 from "../../public/img/background.png";
-import Avatar3 from "../../public/img/background.png";
-import AddLineSecond from "./AddLineSecond";
-
-const usersData = [
-  {
-    name: "Zerda Jursinova",
-    role: "Front-end",
-    image: "https://picsum.photos/id/1/300/300",
-    id: 1,
-  },
-  {
-    name: "Shahboz Shirinboyev",
-    role: "Designer",
-    image: "https://picsum.photos/id/2/300/300",
-    id: 2,
-  },
-  {
-    name: "Subhiddin Nuriddinov",
-    role: "iOS Developer",
-    image: "https://picsum.photos/id/3/300/300",
-    id: 3,
-  },
-  {
-    name: "Subhiddin Ergasher",
-    role: "Designer",
-    image: "https://picsum.photos/id/4/300/300",
-    id: 4,
-  },
-  {
-    name: "Oktamjon Dilbarov",
-    role: "Back-End",
-    image: "https://picsum.photos/id/5/300/300",
-    id: 5,
-  },
-];
-
-const avatars = [
-  { id: 1, imgSrc: Avatar1 },
-  { id: 2, imgSrc: Avatar2 },
-  { id: 3, imgSrc: Avatar3 },
-  { id: 3, imgSrc: Avatar3 },
-  { id: 3, imgSrc: Avatar3 },
-  { id: 3, imgSrc: Avatar3 },
-  { id: 3, imgSrc: Avatar3 },
-  { id: 3, imgSrc: Avatar3 },
-  { id: 3, imgSrc: Avatar3 },
-  { id: 3, imgSrc: Avatar3 },
-];
 
 const Line = () => {
   const [projectsList, setProjectsList] = useState([]);
@@ -77,8 +21,6 @@ const Line = () => {
         loading: "Loading ...",
         success: (response) => {
           setProjectsList(response.data);
-          // setActiveProject(response.data[0]);
-          // console.log(response.data);
           return <b>Success :)</b>;
         },
         error: (error) => {
@@ -91,7 +33,6 @@ const Line = () => {
   };
   useEffect(() => {
     getProjectsList();
-    console.log(activeProject)
   }, []);
 
   const [formData, setFormData] = useState({
@@ -130,8 +71,8 @@ const Line = () => {
           setFormData({
             projectName: "",
             projectDeadline: "",
-          })
-          document.getElementById("new_project").close()
+          });
+          document.getElementById("new_project").close();
           return <b>Add :)</b>;
         },
         error: (error) => {
@@ -161,14 +102,6 @@ const Line = () => {
   }, []);
   // Get Users List END
 
-  // console.log(membersInfo);
-
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
-
   const [selectedUsers, setSelectedUsers] = useState(
     activeProject.members ? activeProject.members : ""
   );
@@ -184,44 +117,35 @@ const Line = () => {
     console.log(selectedUsers);
   }, [selectedUsers]);
 
-  const filteredUsers = usersData.filter((user) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const formattedDate = new Date().toLocaleDateString();
-
-
-    const submitSelectedUsers = (e) => {
-      e.preventDefault();
-      toast.promise(
-        http.patch(
-          `projects/${activeProject.id}/`, // URLni to‘g‘rilash
-          {
-            members: selectedUsers,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access")}`,
-            },
-          }
-        ),
+  const submitSelectedUsers = (e) => {
+    e.preventDefault();
+    toast.promise(
+      http.patch(
+        `projects/${activeProject.id}/`, // URLni to‘g‘rilash
         {
-          loading: "Adding ...",
-          success: (response) => {
-            console.log(response.data);
-            getProjectsList();
-            document.getElementById("adduser").close();
-            return <b>Add :)</b>;
-          },
-          error: (error) => {
-            console.log(error.response.data);
-            return <b>Error :(</b>;
+          members: selectedUsers,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
           },
         }
-      );
-    };
-    
-  
+      ),
+      {
+        loading: "Adding ...",
+        success: (response) => {
+          console.log(response.data);
+          getProjectsList();
+          document.getElementById("adduser").close();
+          return <b>Add :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Error :(</b>;
+        },
+      }
+    );
+  };
 
   return (
     <>
@@ -253,7 +177,7 @@ const Line = () => {
               >
                 <button>
                   <i className="bi bi-plus-lg flex justify-center items-center"></i>{" "}
-                  Add new project
+                  <span className="whitespace-nowrap">Add new project</span>
                 </button>
               </li>
               {/* All Project list ===============> start */}
@@ -387,7 +311,10 @@ const Line = () => {
                 ))}
               </div>
               <div className="px-4 pb-4">
-                <button type="submit" className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300">
+                <button
+                  type="submit"
+                  className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
+                >
                   Save
                 </button>
               </div>
@@ -437,7 +364,7 @@ const Line = () => {
                         <div className="flex">
                           {/* Display user image */}
                           <img
-                            src={user.image || ""}
+                            src={user.image || noneuser}
                             alt={`${user.first_name} ${user.last_name}`}
                             className="w-[45px] h-[45px] object-cover rounded-full"
                           />
@@ -472,7 +399,6 @@ const Line = () => {
 
       {/* New Project Modal */}
       <dialog id="new_project" className="modal text-custom-green-dark">
-
         <Toaster />
 
         <div className="modal-box p-0">
