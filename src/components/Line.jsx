@@ -4,7 +4,10 @@ import React, { useEffect, useState } from "react";
 import http from "../services/http";
 
 // react hot toast
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+
+// nonuser img
+import noneuser from "/img/noneuser.png";
 
 // ==================================================== >
 
@@ -61,7 +64,9 @@ const avatars = [
 
 const Line = () => {
   const [projectsList, setProjectsList] = useState([]);
-  const [activeProject, setActiveProject] = useState(JSON.parse(localStorage.getItem("activeProject")));
+  const [activeProject, setActiveProject] = useState(
+    JSON.parse(localStorage.getItem("activeProject"))
+  );
 
   const getProjectsList = () => {
     toast.promise(
@@ -132,25 +137,25 @@ const Line = () => {
     );
   };
 
-  const [membersInfo, setMembersInfo] = useState([])
-    // Get Users List START
-    useEffect(() => {
-      http
-        .get("users/staff/", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
-        })
-        .then((response) => {
-          setMembersInfo(response.data.results);
-          // setUsersCount(response.data.count);
-        })
-        .catch((error) => {
-          toast.error("Something went wrong :(");
-          console.log(error.response.data);
-        });
-    }, []);
-    // Get Users List END
+  const [membersInfo, setMembersInfo] = useState([]);
+  // Get Users List START
+  useEffect(() => {
+    http
+      .get("users/staff/", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+      })
+      .then((response) => {
+        setMembersInfo(response.data.results);
+        // setUsersCount(response.data.count);
+      })
+      .catch((error) => {
+        toast.error("Something went wrong :(");
+        console.log(error.response.data);
+      });
+  }, []);
+  // Get Users List END
 
-    console.log(membersInfo)
+  console.log(membersInfo);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -201,7 +206,8 @@ const Line = () => {
                 className="bg-custom-green-15 rounded-[10px] mb-[10px] text-custom-green-dark font-semibold hover:bg-custom-green-dark hover:text-white transition-all duration-300"
               >
                 <button>
-                  <i className="bi bi-plus-lg flex justify-center items-center"></i> Add new project
+                  <i className="bi bi-plus-lg flex justify-center items-center"></i>{" "}
+                  Add new project
                 </button>
               </li>
               {/* All Project list ===============> start */}
@@ -210,7 +216,10 @@ const Line = () => {
                   key={project.id}
                   onClick={() => {
                     setActiveProject(project);
-                    localStorage.setItem("activeProject", JSON.stringify(project))
+                    localStorage.setItem(
+                      "activeProject",
+                      JSON.stringify(project)
+                    );
                   }}
                 >
                   <button className="whitespace-nowrap hover:bg-custom-green-15">
@@ -232,20 +241,28 @@ const Line = () => {
             }
           >
             <div className="flex justify-end ">
-              <div className="flex -space-x-4 w-full">
-                {activeProject.members && activeProject.members.length !== 0 ? activeProject.members.map((member) => (
-                  <img
-                    key={member}
-                    src=""
-                    alt="User Avatar"
-                    className="w-8 h-8 rounded-full border-2 border-white"
-                  />
-                )) : 
-                <div className="w-8 h-8 bg-gray-200 rounded-full border-2 border-white flex justify-center items-center">
-                  <span className="text-[12px] font-semibold text-custom-green-80">
-                    <i className="bi bi-people text-[15px]"></i>
-                  </span>
-                </div>}
+              <div className="flex -space-x-4 w-full border border-red-700">
+                {activeProject.members && activeProject.members.length !== 0 ? (
+                  activeProject.members.map((memberId) => {
+                    const member = membersInfo.find((m) => m.id === memberId);
+
+                    return member ? (
+                      <div key={member.id} className="bg-white rounded-full">
+                        <img
+                          src={member.image ? member.image : noneuser} // Use the image URL from the member's info
+                          alt={`${member.first_name} ${member.last_name}`}
+                          className="w-8 h-8 rounded-full border-2 border-white object-cover"
+                        />
+                      </div>
+                    ) : null;
+                  })
+                ) : (
+                  <div className="w-8 h-8 bg-gray-200 rounded-full border-2 border-white flex justify-center items-center">
+                    <span className="text-[12px] font-semibold text-custom-green-80">
+                      <i className="bi bi-people text-[15px]"></i>
+                    </span>
+                  </div>
+                )}
                 {/* <div className="w-8 h-8 bg-gray-200 rounded-full border-2 border-white flex justify-center items-center">
                   <span className="text-[12px] font-semibold text-custom-green-80">
                     +2
@@ -365,9 +382,9 @@ const Line = () => {
                         />
                         <div className="ml-4">
                           <p className="font-bold text-custom-green-dark">
-                            shu
+                            first and last name
                           </p>
-                          <p className="text-custom-green-60">{user.role}</p>
+                          <p className="text-custom-green-60">user label</p>
                         </div>
                       </div>
                     </label>
@@ -376,7 +393,9 @@ const Line = () => {
               ) : (
                 <div className=" grid grid-cols-1 text-center p-10 text-custom-green-80 select-none">
                   <i className="bi bi-people text-[35px]"></i>
-                  <p className="text-[18px]">No Staff has been selected for Project yet.</p>
+                  <p className="text-[18px]">
+                    No Staff has been selected for Project yet.
+                  </p>
                 </div>
               )}
             </div>
@@ -389,6 +408,8 @@ const Line = () => {
 
       {/* New Project Modal */}
       <dialog id="new_project" className="modal text-custom-green-dark">
+        <Toaster />
+
         <div className="modal-box p-0">
           {/* Modal header Start */}
           <form
