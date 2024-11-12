@@ -146,6 +146,24 @@ const Line = () => {
       }
     );
   };
+  useEffect(() => {
+    const activeProjectCheck = JSON.parse(
+      localStorage.getItem("activeProject")
+    );
+    const projectId = activeProjectCheck ? activeProjectCheck.id : null;
+
+    if (projectId !== null) {
+      // projectsList ichidan projectId ga teng bo'lgan obyektni topish
+      const activeProject = projectsList.find(
+        (project) => project.id === projectId
+      );
+
+      // Agar topilsa, setActiveProject ga yozish
+      if (activeProject) {
+        setActiveProject(activeProject);
+      }
+    }
+  }, [projectsList]);
 
   return (
     <>
@@ -181,7 +199,7 @@ const Line = () => {
                 </button>
               </li>
               {/* All Project list ===============> start */}
-              {projectsList.map((project, index) => (
+              {projectsList.map((project) => (
                 <li
                   key={project.id}
                   onClick={() => {
