@@ -305,7 +305,7 @@ const Line = () => {
                     <label className="cursor-pointer label">
                       <div className="flex">
                         <img
-                          src={user.image}
+                          src={user.image || noneuser}
                           alt=""
                           className="w-[45px] h-[45px] object-cover rounded-full"
                         />
