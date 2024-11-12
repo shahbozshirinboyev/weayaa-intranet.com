@@ -91,6 +91,7 @@ const Line = () => {
   };
   useEffect(() => {
     getProjectsList();
+    console.log(activeProject)
   }, []);
 
   const [formData, setFormData] = useState({
@@ -129,8 +130,8 @@ const Line = () => {
           setFormData({
             projectName: "",
             projectDeadline: "",
-          });
-          document.getElementById("new_project").close();
+          })
+          document.getElementById("new_project").close()
           return <b>Add :)</b>;
         },
         error: (error) => {
@@ -189,36 +190,38 @@ const Line = () => {
 
   const formattedDate = new Date().toLocaleDateString();
 
-  const submitSelectedUsers = (e) => {
-    e.preventDefault();
-    toast.promise(
-      http.patch(
-        `projects/${activeProject.id}/`,
+
+    const submitSelectedUsers = (e) => {
+      e.preventDefault();
+      toast.promise(
+        http.patch(
+          `projects/${activeProject.id}/`, // URLni to‘g‘rilash
+          {
+            members: selectedUsers,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access")}`,
+            },
+          }
+        ),
         {
-          members: selectedUsers,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          loading: "Adding ...",
+          success: (response) => {
+            console.log(response.data);
+            getProjectsList();
+            document.getElementById("adduser").close();
+            return <b>Add :)</b>;
+          },
+          error: (error) => {
+            console.log(error.response.data);
+            return <b>Error :(</b>;
           },
         }
-      ),
-      {
-        loading: "Adding ...",
-        success: (response) => {
-          console.log(response.data);
-          getProjectsList();
-          document.getElementById("adduser").close();
-          return <b>Add :)</b>;
-        },
-        error: (error) => {
-          console.log(error.response.data);
-
-          return <b>Error :(</b>;
-        },
-      }
-    );
-  };
+      );
+    };
+    
+  
 
   return (
     <>
@@ -326,7 +329,7 @@ const Line = () => {
           </button>
         </div>
 
-        {/* Add User Modal for Project */}
+        {/* Add User Modal */}
         <dialog id="adduser" className="modal">
           <Toaster />
           <div className="modal-box p-0">
@@ -384,10 +387,7 @@ const Line = () => {
                 ))}
               </div>
               <div className="px-4 pb-4">
-                <button
-                  type="submit"
-                  className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
-                >
+                <button type="submit" className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300">
                   Save
                 </button>
               </div>
@@ -420,27 +420,39 @@ const Line = () => {
 
             <div className="p-3">
               {activeProject.members && activeProject.members.length !== 0 ? (
-                activeProject.members.map((member) => {
-                  <div key={member.id} className="bg-white">
-                    <label className="label">
-                      <div className="flex">
-                        {/* Display user image */}
-                        <img
-                          src={member.image}
-                          alt={`${member.full_name}`}
-                          className="w-[45px] h-[45px] object-cover rounded-full"
-                        />
-                        <div className="ml-4">
-                          {/* Display user first and last name */}
-                          <p className="font-bold text-custom-green-dark">
-                            {member.full_name}
-                          </p>
-                          {/* Display user label */}
-                          <p className="text-custom-green-60">{user.label}</p>
+                activeProject.members.map((userId, index) => {
+                  // Find the member info by matching the id
+                  const user = membersInfo.find((m) => m.id === userId);
+
+                  return user ? (
+                    <div
+                      key={index}
+                      className={`${
+                        selectedUsers.includes(user.id)
+                          ? "bg-white"
+                          : "bg-transparent"
+                      }`}
+                    >
+                      <label className="label">
+                        <div className="flex">
+                          {/* Display user image */}
+                          <img
+                            src={user.image || ""}
+                            alt={`${user.first_name} ${user.last_name}`}
+                            className="w-[45px] h-[45px] object-cover rounded-full"
+                          />
+                          <div className="ml-4">
+                            {/* Display user first and last name */}
+                            <p className="font-bold text-custom-green-dark">
+                              {user.first_name} {user.last_name}
+                            </p>
+                            {/* Display user label */}
+                            <p className="text-custom-green-60">{user.label}</p>
+                          </div>
                         </div>
-                      </div>
-                    </label>
-                  </div>;
+                      </label>
+                    </div>
+                  ) : null; // If user not found, return null
                 })
               ) : (
                 <div className="grid grid-cols-1 text-center p-10 text-custom-green-80 select-none">
@@ -460,6 +472,7 @@ const Line = () => {
 
       {/* New Project Modal */}
       <dialog id="new_project" className="modal text-custom-green-dark">
+
         <Toaster />
 
         <div className="modal-box p-0">
