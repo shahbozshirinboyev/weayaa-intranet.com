@@ -67,6 +67,7 @@ function Signin({ setAccess, setRefresh, setUserType }) {
         setRefresh(res.data.refresh);
         localStorage.setItem("access", res.data.access);
         localStorage.setItem("refresh", res.data.refresh);
+        localStorage.setItem("activeProject", JSON.stringify([]));
         // Foydalanuvchi turi (user_type) uchun API chaqiruv
         return http.get("users/profile/", {
           headers: {'Authorization': `Bearer ${res.data.access}`}

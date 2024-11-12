@@ -54,7 +54,7 @@ const avatars = [
 
 const Line = () => {
   const [projectsList, setProjectsList] = useState([]);
-  const [activeProject, setActiveProject] = useState([]);
+  const [activeProject, setActiveProject] = useState(JSON.parse(localStorage.getItem("activeProject")));
 
   const getProjectsList = () => {
     toast.promise(
@@ -65,7 +65,7 @@ const Line = () => {
         loading: "Loading ...",
         success: (response) => {
           setProjectsList(response.data);
-          setActiveProject(response.data[0]);
+          // setActiveProject(response.data[0]);
           console.log(response.data);
           return <b>Success :)</b>;
         },
@@ -80,6 +80,50 @@ const Line = () => {
   useEffect(() => {
     getProjectsList();
   }, []);
+
+  const [formData, setFormData] = useState({
+    projectName: "",
+    projectDeadline: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const createProject = (e) => {
+    e.preventDefault();
+    toast.promise(
+      http.post(
+        `projects/`,
+        {
+          name: formData.projectName,
+          deadline: formData.projectDeadline,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        }
+      ),
+      {
+        loading: "Adding ...",
+        success: (response) => {
+          console.log(response.data);
+          getProjectsList();
+          return <b>Add :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+
+          return <b>Error :(</b>;
+        },
+      }
+    );
+  };
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -103,7 +147,7 @@ const Line = () => {
 
   return (
     <>
-      <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px]">
+      <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px] text-[14px]">
         <div className="h-full w-full flex items-center ml-[10px] relative">
           <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
             <i className="bi bi-calendar2-week font-medium"></i>
@@ -116,7 +160,8 @@ const Line = () => {
               role="button"
               className="border bg-custom-green-30 text-custom-green-dark px-2 py-1 rounded-[10px] m-1"
             >
-              <i className="bi bi-folder"></i> &nbsp; Projects
+              <i className="bi bi-folder2-open"></i> &nbsp; {activeProject.name}{" "}
+              &nbsp; <i className="bi bi-caret-down"></i>
             </div>
             <ul
               tabIndex={0}
@@ -132,18 +177,32 @@ const Line = () => {
                   <i className="bi bi-plus"></i> New project
                 </button>
               </li>
-              {projectsList.map((project) => (
-                <li key={project.id}>
-                  <button className="whitespace-nowrap">{project.name}</button>
+              {/* All Project list ===============> start */}
+              {projectsList.map((project, index) => (
+                <li
+                  key={project.id}
+                  onClick={() => {
+                    setActiveProject(project);
+                    localStorage.setItem("activeProject", JSON.stringify(project))
+                  }}
+                >
+                  <button className="whitespace-nowrap hover:bg-custom-green-15">
+                    {" "}
+                    <i className="bi bi-folder flex justify-center items-center"></i>{" "}
+                    &nbsp; {project.name}
+                  </button>
                 </li>
               ))}
+              {/* All Project list ===============> end */}
             </ul>
           </div>
         </div>
 
         <div className="flex h-full w-full p-2 items-center justify-end">
           <button
-            onClick={() => document.getElementById("Seeuser").showModal()}
+            onClick={() =>
+              document.getElementById("addedUsersList").showModal()
+            }
           >
             <div className="flex justify-end ">
               <div className="flex -space-x-4 w-full">
@@ -236,45 +295,57 @@ const Line = () => {
         </dialog>
 
         {/* See User Modal */}
-        <dialog id="Seeuser" className="modal">
+        <dialog id="addedUsersList" className="modal">
           <div className="modal-box p-0">
+            {/* Modal header Start */}
             <form
               method="dialog"
-              className="border-b-[2px] border-custom-green-80 h-[60px] flex items-center justify-between px-[20px] bg-custom-green-10 w-full"
+              className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
             >
-              <span className="text-custom-green-dark font-bold">Users</span>
-              <button className="btn btn-sm border-0 btn-circle text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                ✕
-              </button>
+              <span className="text-custom-green-dark font-bold">
+                Added Users List
+              </span>
+              <div className="text-end">
+                <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                  <i className="bi bi-x-lg flex justify-center items-center"></i>
+                </button>
+              </div>
             </form>
+            {/* Modal header End */}
 
             <div className="p-3">
-              {filteredUsers.map((user) => (
-                <div
-                  key={user.id}
-                  className={`${
-                    selectedUsers.includes(user.id)
-                      ? "bg-custom-green-30"
-                      : "bg-transparent"
-                  }`}
-                >
-                  <label className="label">
-                    <div className="flex">
-                      <img
-                        src={user.image}
-                        alt=""
-                        className="w-[45px] h-[45px] object-cover rounded-full"
-                      />
-                      <div className="ml-4">
-                        <p className="font-bold text-custom-green-dark">
-                          {user.name}
-                        </p>
-                        <p className="text-custom-green-60">{user.role}</p>
+              {activeProject.members && activeProject.members.length !== 0 ? (
+                activeProject.members.map((user, index) => (
+                  <div
+                    key={index}
+                    className={`${
+                      selectedUsers.includes(user.id)
+                        ? "bg-custom-green-30"
+                        : "bg-transparent"
+                    }`}
+                  >
+                    <label className="label">
+                      <div className="flex">
+                        <img
+                          src=""
+                          alt=""
+                          className="w-[45px] h-[45px] object-cover rounded-full"
+                        />
+                        <div className="ml-4">
+                          <p className="font-bold text-custom-green-dark">
+                            shu
+                          </p>
+                          <p className="text-custom-green-60">{user.role}</p>
+                        </div>
                       </div>
-                    </div>
-                  </label>
+                    </label>
+                  </div>
+                ))
+              ) : (
+                <div className="">
+                  <p>No Staff has been selected for Project yet</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
           <form method="dialog" className="modal-backdrop">
@@ -284,7 +355,7 @@ const Line = () => {
       </div>
 
       {/* New Project Modal */}
-      <dialog id="new_project" className="modal">
+      <dialog id="new_project" className="modal text-custom-green-dark">
         <div className="modal-box p-0">
           {/* Modal header Start */}
           <form
@@ -292,36 +363,56 @@ const Line = () => {
             className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
           >
             <span className="text-custom-green-dark font-bold">
-              New Project
+              Add News Project
             </span>
             <div className="text-end">
-              <button className="btn btn-sm border-0 btn-circle text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                ✕
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
               </button>
             </div>
           </form>
           {/* Modal header End */}
 
           <div className="p-4">
-            <form action="">
-              <label className="form-control w-full">
-                <span className="label-text">Project name:</span>
-                <input
-                  type="text"
-                  placeholder="Title type here"
-                  className="input input-bordered w-full"
-                />
-              </label>
-              <label className="form-control w-full">
-                <span className="label-text">Project deadline:</span>
-                <input type="date" className="input input-bordered w-full" />
-              </label>
-              <button className="w-full bg-custom-green-15 mt-2 text-custom-green-dark py-2 rounded-[10px] hover:bg-custom-green-dark hover:text-white transition-all duration-300">
+            <form
+              action=""
+              onSubmit={createProject}
+              className="text-custom-green-dark"
+            >
+              <div className="mt-0">
+                <label className="w-full mt-2">
+                  <span className="">Project name:</span>
+                  <input
+                    type="text"
+                    name="projectName"
+                    value={formData.projectName}
+                    onChange={handleChange}
+                    placeholder="Title type here"
+                    className="border border-custom-green-30 px-3 py-2 w-full placeholder:text-custom-green-60 rounded-md"
+                  />
+                </label>
+              </div>
+              <div className="mt-2">
+                <label className="w-full">
+                  <span className="">Project deadline:</span>
+                  <input
+                    type="date"
+                    name="projectDeadline"
+                    value={formData.projectDeadline}
+                    onChange={handleChange}
+                    placeholder="Title type here"
+                    className="border border-custom-green-30 px-3 py-2 w-full placeholder:text-custom-green-60 rounded-md"
+                  />
+                </label>
+              </div>
+
+              <button className="w-full mt-6 bg-custom-green-15 font-bold text-custom-green-dark py-2 rounded-[10px] hover:bg-custom-green-dark hover:text-white transition-all duration-300">
                 Save
               </button>
             </form>
           </div>
         </div>
+
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
         </form>

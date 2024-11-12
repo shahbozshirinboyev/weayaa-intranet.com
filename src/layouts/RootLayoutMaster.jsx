@@ -23,6 +23,8 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
     localStorage.removeItem("userType");
+    localStorage.removeItem("activeProject");
+    localStorage.removeItem("userId");
     navigate("/");
   };
   // Logout section end
