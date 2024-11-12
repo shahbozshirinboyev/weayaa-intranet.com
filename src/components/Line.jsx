@@ -179,7 +179,7 @@ const Line = () => {
 
   return (
     <>
-      <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px] text-[14px]">
+      <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px]">
         <div className="h-full w-full flex items-center ml-[10px] relative">
           <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
             <i className="bi bi-calendar2-week font-medium"></i>
@@ -364,34 +364,42 @@ const Line = () => {
 
             <div className="p-3">
               {activeProject.members && activeProject.members.length !== 0 ? (
-                activeProject.members.map((user, index) => (
-                  <div
-                    key={index}
-                    className={`${
-                      selectedUsers.includes(user.id)
-                        ? "bg-custom-green-30"
-                        : "bg-transparent"
-                    }`}
-                  >
-                    <label className="label">
-                      <div className="flex">
-                        <img
-                          src=""
-                          alt=""
-                          className="w-[45px] h-[45px] object-cover rounded-full"
-                        />
-                        <div className="ml-4">
-                          <p className="font-bold text-custom-green-dark">
-                            first and last name
-                          </p>
-                          <p className="text-custom-green-60">user label</p>
+                activeProject.members.map((userId, index) => {
+                  // Find the member info by matching the id
+                  const user = membersInfo.find((m) => m.id === userId);
+
+                  return user ? (
+                    <div
+                      key={index}
+                      className={`${
+                        selectedUsers.includes(user.id)
+                          ? "bg-custom-green-30"
+                          : "bg-transparent"
+                      }`}
+                    >
+                      <label className="label">
+                        <div className="flex">
+                          {/* Display user image */}
+                          <img
+                            src={user.image || ""}
+                            alt={`${user.first_name} ${user.last_name}`}
+                            className="w-[45px] h-[45px] object-cover rounded-full"
+                          />
+                          <div className="ml-4">
+                            {/* Display user first and last name */}
+                            <p className="font-bold text-custom-green-dark">
+                              {user.first_name} {user.last_name}
+                            </p>
+                            {/* Display user label */}
+                            <p className="text-custom-green-60">{user.label}</p>
+                          </div>
                         </div>
-                      </div>
-                    </label>
-                  </div>
-                ))
+                      </label>
+                    </div>
+                  ) : null; // If user not found, return null
+                })
               ) : (
-                <div className=" grid grid-cols-1 text-center p-10 text-custom-green-80 select-none">
+                <div className="grid grid-cols-1 text-center p-10 text-custom-green-80 select-none">
                   <i className="bi bi-people text-[35px]"></i>
                   <p className="text-[18px]">
                     No Staff has been selected for Project yet.
