@@ -50,6 +50,13 @@ const avatars = [
   { id: 1, imgSrc: Avatar1 },
   { id: 2, imgSrc: Avatar2 },
   { id: 3, imgSrc: Avatar3 },
+  { id: 3, imgSrc: Avatar3 },
+  { id: 3, imgSrc: Avatar3 },
+  { id: 3, imgSrc: Avatar3 },
+  { id: 3, imgSrc: Avatar3 },
+  { id: 3, imgSrc: Avatar3 },
+  { id: 3, imgSrc: Avatar3 },
+  { id: 3, imgSrc: Avatar3 },
 ];
 
 const Line = () => {
@@ -174,7 +181,7 @@ const Line = () => {
                 className="bg-custom-green-15 rounded-[10px] mb-[10px] text-custom-green-dark font-semibold hover:bg-custom-green-dark hover:text-white transition-all duration-300"
               >
                 <button>
-                  <i className="bi bi-plus"></i> New project
+                  <i className="bi bi-plus-lg flex justify-center items-center"></i> Add new project
                 </button>
               </li>
               {/* All Project list ===============> start */}
@@ -206,19 +213,24 @@ const Line = () => {
           >
             <div className="flex justify-end ">
               <div className="flex -space-x-4 w-full">
-                {avatars.map((avatar) => (
+                {activeProject.members && activeProject.members.length !== 0 ? avatars.map((avatar) => (
                   <img
                     key={avatar.id}
                     src={avatar.imgSrc}
                     alt="User Avatar"
                     className="w-8 h-8 rounded-full border-2 border-white"
                   />
-                ))}
+                )) : 
                 <div className="w-8 h-8 bg-gray-200 rounded-full border-2 border-white flex justify-center items-center">
+                  <span className="text-[12px] font-semibold text-custom-green-80">
+                    <i className="bi bi-people text-[15px]"></i>
+                  </span>
+                </div>}
+                {/* <div className="w-8 h-8 bg-gray-200 rounded-full border-2 border-white flex justify-center items-center">
                   <span className="text-[12px] font-semibold text-custom-green-80">
                     +2
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </button>
@@ -342,8 +354,9 @@ const Line = () => {
                   </div>
                 ))
               ) : (
-                <div className="">
-                  <p>No Staff has been selected for Project yet</p>
+                <div className=" grid grid-cols-1 text-center p-10 text-custom-green-80 select-none">
+                  <i className="bi bi-people text-[35px]"></i>
+                  <p className="text-[18px]">No Staff has been selected for Project yet.</p>
                 </div>
               )}
             </div>
