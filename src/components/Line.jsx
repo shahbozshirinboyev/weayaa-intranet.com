@@ -132,6 +132,26 @@ const Line = () => {
     );
   };
 
+  const [membersInfo, setMembersInfo] = useState([])
+    // Get Users List START
+    useEffect(() => {
+      http
+        .get("users/staff/", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+        })
+        .then((response) => {
+          setMembersInfo(response.data.results);
+          // setUsersCount(response.data.count);
+        })
+        .catch((error) => {
+          toast.error("Something went wrong :(");
+          console.log(error.response.data);
+        });
+    }, []);
+    // Get Users List END
+
+    console.log(membersInfo)
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -213,10 +233,10 @@ const Line = () => {
           >
             <div className="flex justify-end ">
               <div className="flex -space-x-4 w-full">
-                {activeProject.members && activeProject.members.length !== 0 ? avatars.map((avatar) => (
+                {activeProject.members && activeProject.members.length !== 0 ? activeProject.members.map((member) => (
                   <img
-                    key={avatar.id}
-                    src={avatar.imgSrc}
+                    key={member}
+                    src=""
                     alt="User Avatar"
                     className="w-8 h-8 rounded-full border-2 border-white"
                   />
