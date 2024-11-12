@@ -78,7 +78,7 @@ const Line = () => {
         success: (response) => {
           setProjectsList(response.data);
           // setActiveProject(response.data[0]);
-          console.log(response.data);
+          // console.log(response.data);
           return <b>Success :)</b>;
         },
         error: (error) => {
@@ -126,6 +126,11 @@ const Line = () => {
         success: (response) => {
           console.log(response.data);
           getProjectsList();
+          setFormData({
+            projectName: "",
+            projectDeadline: "",
+          })
+          document.getElementById("new_project").close()
           return <b>Add :)</b>;
         },
         error: (error) => {
@@ -155,13 +160,17 @@ const Line = () => {
   }, []);
   // Get Users List END
 
-  console.log(membersInfo);
+  // console.log(membersInfo);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+
+  const [selectedUsers, setSelectedUsers] = useState(
+    activeProject.members ? activeProject.members : ""
+  );
 
   const handleUserSelect = (userId) => {
     setSelectedUsers((prevSelected) =>
@@ -170,12 +179,19 @@ const Line = () => {
         : [...prevSelected, userId]
     );
   };
+  useEffect(() => {
+    console.log(selectedUsers);
+  }, [selectedUsers]);
 
   const filteredUsers = usersData.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const formattedDate = new Date().toLocaleDateString();
+
+  const submitSelectedUsers = (e) =>{
+
+  }
 
   return (
     <>
@@ -216,6 +232,7 @@ const Line = () => {
                   key={project.id}
                   onClick={() => {
                     setActiveProject(project);
+                    setSelectedUsers(project.members);
                     localStorage.setItem(
                       "activeProject",
                       JSON.stringify(project)
@@ -241,7 +258,7 @@ const Line = () => {
             }
           >
             <div className="flex justify-end ">
-              <div className="flex -space-x-4 w-full border border-red-700">
+              <div className="flex -space-x-4 w-full">
                 {activeProject.members && activeProject.members.length !== 0 ? (
                   activeProject.members.map((memberId) => {
                     const member = membersInfo.find((m) => m.id === memberId);
@@ -284,59 +301,67 @@ const Line = () => {
 
         {/* Add User Modal */}
         <dialog id="adduser" className="modal">
+          <Toaster />
           <div className="modal-box p-0">
+            {/* Modal header Start */}
             <form
               method="dialog"
-              className="border-b-[2px] border-custom-green-80 h-[60px] flex items-center justify-between px-[20px] bg-custom-green-10 w-full"
+              className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
             >
               <span className="text-custom-green-dark font-bold">
-                Project Users{" "}
+                Add Staff for this Project
               </span>
-              <button className="btn btn-sm border-0 btn-circle text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                ✕
-              </button>
-              <span className="sr-only">Close modal</span>
+              <div className="text-end">
+                <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                  <i className="bi bi-x-lg flex justify-center items-center"></i>
+                </button>
+              </div>
             </form>
+            {/* Modal header End */}
 
-            <div className="p-4">
-              {filteredUsers.map((user) => (
-                <div
-                  key={user.id}
-                  className={`form-control rounded-md px-1 my-2 ${
-                    selectedUsers.includes(user.id)
-                      ? "bg-custom-green-30"
-                      : "bg-transparent"
-                  }`}
-                >
-                  <label className="cursor-pointer label">
-                    <div className="flex">
-                      <img
-                        src={user.image}
-                        alt=""
-                        className="w-[45px] h-[45px] object-cover rounded-full"
-                      />
-                      <div className="ml-4">
-                        <p className="font-bold text-custom-green-dark">
-                          {user.name}
-                        </p>
-                        <p className="text-custom-green-60">{user.role}</p>
+            <form action="">
+              <div className="p-4">
+                {membersInfo.map((user) => (
+                  <div
+                    key={user.id}
+                    className={`form-control rounded-md px-1 my-2 ${
+                      selectedUsers.includes(user.id)
+                        ? "bg-custom-green-15"
+                        : "bg-transparent"
+                    }`}
+                  >
+                    <label className="cursor-pointer label">
+                      <div className="flex">
+                        <img
+                          src={user.image}
+                          alt=""
+                          className="w-[45px] h-[45px] object-cover rounded-full"
+                        />
+                        <div className="ml-4">
+                          <p className="font-bold text-custom-green-dark">
+                            {user.first_name} {user.last_name}
+                          </p>
+                          <p className="text-custom-green-60">
+                            {user.speciality}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <input
-                      type="checkbox"
-                      className="checkbox checkbox-success"
-                      onChange={() => handleUserSelect(user.id)}
-                      checked={selectedUsers.includes(user.id)}
-                    />
-                  </label>
-                </div>
-              ))}
-            </div>
-            <div className="px-4 pb-4">
-              <button className=" w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300">
-                Save
-              </button>
-            </div>
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-success"
+                        onChange={() => handleUserSelect(user.id)}
+                        checked={selectedUsers.includes(user.id)}
+                      />
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <div className="px-4 pb-4">
+                <button ty className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300">
+                  Save
+                </button>
+              </div>
+            </form>
           </div>
           <form method="dialog" className="modal-backdrop">
             <button>close</button>
@@ -345,6 +370,7 @@ const Line = () => {
 
         {/* See User Modal */}
         <dialog id="addedUsersList" className="modal">
+          <Toaster />
           <div className="modal-box p-0">
             {/* Modal header Start */}
             <form
@@ -373,7 +399,7 @@ const Line = () => {
                       key={index}
                       className={`${
                         selectedUsers.includes(user.id)
-                          ? "bg-custom-green-30"
+                          ? "bg-white"
                           : "bg-transparent"
                       }`}
                     >
@@ -416,6 +442,7 @@ const Line = () => {
 
       {/* New Project Modal */}
       <dialog id="new_project" className="modal text-custom-green-dark">
+
         <Toaster />
 
         <div className="modal-box p-0">
