@@ -3,7 +3,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 import MaskedInput from "react-text-mask";
 
-// Base URL
+// http
 import http from "../services/http";
 
 function AddStaff() {

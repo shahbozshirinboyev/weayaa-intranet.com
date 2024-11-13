@@ -1,10 +1,11 @@
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useEffect, useState } from "react";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Board } from "../data/board";
 import { onDragEnd } from "../helpers/onDragEnd";
-import AddTaskModal from "../components/AddTaskModal";
 import Avatar from "./Avatar";
 import Days from "./Days";
+// components
+import CreateTask from "../components/CreateTask";
 // http
 import http from "../services/http";
 // react hot toast
@@ -658,7 +659,7 @@ function TaskManagement() {
         </DragDropContext>
       )}
 
-      <AddTaskModal
+      <CreateTask
         isOpen={modalOpen}
         onClose={closeModal}
         setOpen={setModalOpen}

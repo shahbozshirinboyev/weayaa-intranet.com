@@ -1,13 +1,12 @@
-import React from 'react'
 // components
-import TaskManagement from '../../../components/TaskManagement'
+import TaskManagement from "../../../components/TaskManagement";
 
 function MasterProjects() {
   return (
     <>
       <TaskManagement />
     </>
-  )
+  );
 }
 
-export default MasterProjects
+export default MasterProjects;

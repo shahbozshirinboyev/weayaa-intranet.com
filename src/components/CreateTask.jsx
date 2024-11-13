@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import AddSecondModal from "./AddSecondModal";
 
-const AddModal = ({ isOpen, onClose, setOpen, handleAddTask }) => {
+const CreateTask = ({ isOpen, onClose, setOpen, handleAddTask }) => {
   const initialTaskData = {
     id: uuidv4(),
     title: "",
@@ -171,4 +171,4 @@ const AddModal = ({ isOpen, onClose, setOpen, handleAddTask }) => {
   );
 };
 
-export default AddModal;
+export default CreateTask;
