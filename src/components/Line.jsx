@@ -8,37 +8,25 @@ import noneuser from "/img/noneuser.png";
 
 const Line = () => {
   const [projectsList, setProjectsList] = useState([]);
-  const [activeProject, setActiveProject] = useState(
-    JSON.parse(localStorage.getItem("activeProject"))
-  );
-
+  const [activeProject, setActiveProject] = useState(JSON.parse(localStorage.getItem("activeProject")));
+  const [formData, setFormData] = useState({ projectName: "", projectDeadline: "", });
+  const [membersInfo, setMembersInfo] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState( activeProject.members ? activeProject.members : "" );
+  
   const getProjectsList = () => {
-    toast.promise(
-      http.get(`projects/`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
-      }),
-      {
-        loading: "Loading ...",
-        success: (response) => {
-          setProjectsList(response.data);
-          return <b>Success :)</b>;
-        },
-        error: (error) => {
-          console.log(error.response.data);
-
-          return <b>Error :(</b>;
-        },
-      }
-    );
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}` };
+    http
+      .get(`projects/`, { headers })
+      .then((response) => {
+        setProjectsList(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
   useEffect(() => {
     getProjectsList();
   }, []);
-
-  const [formData, setFormData] = useState({
-    projectName: "",
-    projectDeadline: "",
-  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +38,7 @@ const Line = () => {
 
   const createProject = (e) => {
     e.preventDefault();
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}` };
     toast.promise(
       http.post(
         `projects/`,
@@ -57,11 +46,7 @@ const Line = () => {
           name: formData.projectName,
           deadline: formData.projectDeadline,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-          },
-        }
+        { headers }
       ),
       {
         loading: "Adding ...",
@@ -84,27 +69,16 @@ const Line = () => {
     );
   };
 
-  const [membersInfo, setMembersInfo] = useState([]);
-  // Get Users List START
   useEffect(() => {
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}` }
     http
-      .get("users/staff/", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
-      })
-      .then((response) => {
-        setMembersInfo(response.data.results);
-        // setUsersCount(response.data.count);
-      })
+      .get("users/staff/", { headers })
+      .then((response) => { setMembersInfo(response.data.results); })
       .catch((error) => {
         toast.error("Something went wrong :(");
         console.log(error.response.data);
       });
   }, []);
-  // Get Users List END
-
-  const [selectedUsers, setSelectedUsers] = useState(
-    activeProject.members ? activeProject.members : ""
-  );
 
   const handleUserSelect = (userId) => {
     setSelectedUsers((prevSelected) =>
@@ -113,23 +87,15 @@ const Line = () => {
         : [...prevSelected, userId]
     );
   };
-  useEffect(() => {
-    console.log(selectedUsers);
-  }, [selectedUsers]);
 
   const submitSelectedUsers = (e) => {
     e.preventDefault();
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`}
     toast.promise(
       http.patch(
-        `projects/${activeProject.id}/`, // URLni to‘g‘rilash
-        {
-          members: selectedUsers,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-          },
-        }
+        `projects/${activeProject.id}/`,
+        { members: selectedUsers, },
+        { headers }
       ),
       {
         loading: "Adding ...",
@@ -153,12 +119,9 @@ const Line = () => {
     const projectId = activeProjectCheck ? activeProjectCheck.id : null;
 
     if (projectId !== null) {
-      // projectsList ichidan projectId ga teng bo'lgan obyektni topish
       const activeProject = projectsList.find(
         (project) => project.id === projectId
       );
-
-      // Agar topilsa, setActiveProject ga yozish
       if (activeProject) {
         setActiveProject(activeProject);
       }
