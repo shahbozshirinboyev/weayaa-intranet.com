@@ -1,10 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 
-import taskImage1 from "./images/task1.jpg";
-import taskImage2 from "./images/task2.jpg";
-import taskImage3 from "./images/task3.jpg";
-import taskImage4 from "./images/task4.jpg";
-
 export const Board = {
   to_do: {
     name: "To Do",
@@ -15,7 +10,7 @@ export const Board = {
         description: "Lorem ipsum dolor sit amet ..",
         priority: "medium",
         deadline: 50,
-        image: taskImage1,
+        image: "./images/task1.jpg",
         alt: "task image",
         tags: [
           { title: "Back", bg: "#ccffcc", text: "#008000" },
@@ -44,7 +39,7 @@ export const Board = {
         description: "Lorem ipsum dolor sit amet ..",
         priority: "medium",
         deadline: 50,
-        image: taskImage2,
+        image: "./images/task2.jpg",
         alt: "task image",
         tags: [
           { title: "Back", bg: "#ccffcc", text: "#008000" },
@@ -73,7 +68,7 @@ export const Board = {
         description: "Lorem ipsum dolor sit amet ..",
         priority: "medium",
         deadline: 50,
-        image: taskImage3,
+        image: "./images/task3.jpg",
         alt: "task image",
         tags: [
           { title: "Back", bg: "#ccffcc", text: "#008000" },
@@ -102,7 +97,7 @@ export const Board = {
         description: "Lorem ipsum dolor sit amet ..",
         priority: "medium",
         deadline: 50,
-        image: taskImage4,
+        image: "./images/task4.jpg",
         alt: "task image",
         tags: [
           { title: "Back", bg: "#ccffcc", text: "#008000" },
