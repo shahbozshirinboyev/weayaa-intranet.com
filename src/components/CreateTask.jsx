@@ -1,37 +1,89 @@
 import { useState, useEffect } from "react";
 // http
 import http from "../services/http";
+// react hot toast
+import toast, { Toaster } from "react-hot-toast";
 
 const CreateTask = () => {
-  const initialTaskData = {
-    title: "",
+  const activeProjectInfo = JSON.parse(localStorage.getItem("activeProject"));
+  const activeProjectId = activeProjectInfo ? activeProjectInfo.id : null;
+  const [taskData, setTaskData] = useState({
+    name: "",
+    project: activeProjectId,
     description: "",
     deadline: "",
-    file: "",
     status: "todo",
-  };
-  const [taskData, setTaskData] = useState(initialTaskData);
+    file: [],
+    members: [10],
+  });
+
+  useEffect(() => {
+    console.log(taskData);
+  }, [taskData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTaskData({ ...taskData, [name]: value });
   };
 
-  const handleSubmit = () => {
-    handleAddTask(taskData);
-  };
-
   const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    setTaskData({ ...taskData, file: files });
+  }, [files]);
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setFiles(selectedFiles);
   };
+  const createNewTask = (e) => {
+    e.preventDefault();
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
+    const formData = new FormData();
+
+    // Oddiy matn maydonlarini qo'shish
+    Object.keys(taskData).forEach((key) => {
+      formData.append(key, taskData[key]);
+    });
+
+    files.forEach((file) => {
+      formData.append("file", file); // "file[]" yoki server kutgan boshqa nomni ishlating
+    });
+
+    toast.promise(http.post(`projects/tasks/`, formData, { headers }), {
+      loading: "Adding ...",
+      success: (response) => {
+        console.log(response.data);
+        setTaskData({
+          name: "",
+          project: activeProjectId,
+          description: "",
+          deadline: "",
+          status: "todo",
+          file: [],
+          members: [10],
+        });
+        setFiles([]);
+        document.getElementById("createTask").close();
+        return <b>Add New Task :)</b>;
+      },
+      error: (error) => {
+        console.log(error.response.data);
+
+        return <b>Error :(</b>;
+      },
+    });
+  };
 
   return (
     <>
       {/* Button ===> START */}
-      <div onClick={ () => {document.getElementById("createTask").showModal();} }
+      <div
+        onClick={() => {
+          document.getElementById("createTask").showModal();
+        }}
         className="flex cursor-pointer items-center justify-center gap-1 py-[10px] w-full opacity-90 bg-white rounded-lg shadow-sm text-[#555] font-medium text-[15px]"
       >
         <i className="bi bi-plus-circle-dotted"></i>
@@ -40,6 +92,7 @@ const CreateTask = () => {
       {/* Button ===> END */}
 
       <dialog id="createTask" className="modal">
+        <Toaster />
         <div className="modal-box p-0 max-w-2xl">
           {/* Modal header Start */}
           <form
@@ -58,7 +111,7 @@ const CreateTask = () => {
           {/* Modal header End */}
 
           <>
-            <form action="">
+            <form action="" onSubmit={createNewTask}>
               <div className="rounded-md shadow-md z-50 flex flex-col gap-3 px-5 py-4 text-custom-green-dark">
                 <label className="w-full">
                   <span className="text-custom-green-80 font-medium text-[14px]">
@@ -66,8 +119,8 @@ const CreateTask = () => {
                   </span>
                   <input
                     type="text"
-                    name="title"
-                    value={taskData.title}
+                    name="name"
+                    value={taskData.name}
                     onChange={handleChange}
                     className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
                   />
@@ -78,6 +131,9 @@ const CreateTask = () => {
                     Task description
                   </span>
                   <textarea
+                    name="description"
+                    value={taskData.description}
+                    onChange={handleChange}
                     className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
                     rows={4}
                   ></textarea>
@@ -89,6 +145,9 @@ const CreateTask = () => {
                   </span>
                   <input
                     type="date"
+                    name="deadline"
+                    value={taskData.deadline}
+                    onChange={handleChange}
                     className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
                   />
                 </label>
@@ -127,8 +186,8 @@ const CreateTask = () => {
                   </label>
                 </div>
                 <button
+                  type="submit"
                   className="w-full rounded-md h-9 bg-custom-green-dark text-blue-50 font-medium"
-                  onClick={handleSubmit}
                 >
                   Submit Task
                 </button>
