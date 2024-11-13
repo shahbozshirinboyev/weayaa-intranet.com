@@ -4,7 +4,7 @@ import http from "../services/http";
 // react hot toast
 import toast, { Toaster } from "react-hot-toast";
 
-const CreateTask = () => {
+const CreateTask = ({ getActiveProjectTasks }) => {
   const activeProjectInfo = JSON.parse(localStorage.getItem("activeProject"));
   const activeProjectId = activeProjectInfo ? activeProjectInfo.id : null;
   const [taskData, setTaskData] = useState({
@@ -66,6 +66,7 @@ const CreateTask = () => {
           members: [10],
         });
         setFiles([]);
+        getActiveProjectTasks();
         document.getElementById("createTask").close();
         return <b>Add New Task :)</b>;
       },

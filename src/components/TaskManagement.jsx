@@ -173,6 +173,24 @@ function TaskManagement() {
 
   // ===========> Get ActiveProjectTasks List START <=========== //
   const [activeProjectTasks, setActiveProjectTasks] = useState([]);
+  const [board, setBoard] = useState({
+    to_do: {
+      name: "To Do",
+      items: [],
+    },
+    in_progress: {
+      name: "In Progress",
+      items: [],
+    },
+    review: {
+      name: "Review",
+      items: [],
+    },
+    complete: {
+      name: "Complete",
+      items: [],
+    },
+  })
   const getActiveProjectTasks = () => {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
@@ -529,7 +547,7 @@ function TaskManagement() {
           <div className="grid grid-cols-1 justify-center items-center h-full">
             <p className="text-center">Proyektga task qo'shilmagan</p>
             <div className="w-[200px] border mx-auto">
-              <CreateTask />
+              <CreateTask getActiveProjectTasks={getActiveProjectTasks} />
             </div>
           </div>
         </>
