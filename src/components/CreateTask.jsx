@@ -17,9 +17,9 @@ const CreateTask = ({ getActiveProjectTasks }) => {
     members: [10],
   });
 
-  useEffect(() => {
-    console.log(taskData);
-  }, [taskData]);
+  // useEffect(() => {
+  //   console.log(taskData);
+  // }, [taskData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

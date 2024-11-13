@@ -190,7 +190,7 @@ function TaskManagement() {
       name: "Complete",
       items: [],
     },
-  })
+  });
   const getActiveProjectTasks = () => {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
@@ -201,8 +201,33 @@ function TaskManagement() {
       http
         .get(`projects/${activeProjectId}/tasks/`, { headers })
         .then((response) => {
-          console.log(response.data);
-          setActiveProjectTasks(response.data);
+          const tasks = response.data;
+          console.log(response.data)
+
+          // board obyektini yangilash
+          const updatedBoard = {
+            to_do: { ...board.to_do, items: [] },
+            in_progress: { ...board.in_progress, items: [] },
+            review: { ...board.review, items: [] },
+            complete: { ...board.complete, items: [] },
+          };
+
+          // Har bir task ni statusiga qarab to'g'ri joylashtirish
+          tasks.forEach((task) => {
+            if (task.status === "todo") {
+              updatedBoard.to_do.items.push(task);
+            } else if (task.status === "in_progress") {
+              updatedBoard.in_progress.items.push(task);
+            } else if (task.status === "verification") {
+              updatedBoard.review.items.push(task);
+            } else if (task.status === "completed") {
+              updatedBoard.complete.items.push(task);
+            }
+          });
+
+          // Yangilangan boardni set qilish
+          setBoard(updatedBoard);
+          setActiveProjectTasks(tasks); // Yangi tasklar ro'yxatini set qilish
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -214,6 +239,10 @@ function TaskManagement() {
     getActiveProjectTasks();
   }, [activeProject]);
   // ===========> Get ActiveProjectTasks List END <=========== //
+
+  useEffect(() => {
+    console.log(board);
+  }, [board]);
 
   return (
     <>
