@@ -659,12 +659,7 @@ function TaskManagement() {
         </DragDropContext>
       )}
 
-      <CreateTask
-        isOpen={modalOpen}
-        onClose={closeModal}
-        setOpen={setModalOpen}
-        handleAddTask={handleAddTask}
-      />
+      <CreateTask handleAddTask={handleAddTask} />
     </>
   );
 }
