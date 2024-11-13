@@ -526,16 +526,11 @@ function TaskManagement() {
         </div>
       ) : activeProjectTasks.length === 0 ? (
         <>
-          <div className="grid grid-cols-1 justify-center items-center text-center h-full">
-            <p>Proyektga task qo'shilmagan</p>
-            <button
-              onClick={() => {
-                document.getElementById("createTask").showModal();
-              }}
-              className="btn mx-auto w-[200px]"
-            >
-              + Add task
-            </button>
+          <div className="grid grid-cols-1 justify-center items-center h-full">
+            <p className="text-center">Proyektga task qo'shilmagan</p>
+            <div className="w-[200px] border mx-auto">
+              <CreateTask />
+            </div>
           </div>
         </>
       ) : (
@@ -560,18 +555,7 @@ function TaskManagement() {
                         </div>
                       </div>
 
-                      {index === 0 && (
-                        <div
-                        onClick={() => {
-                          document.getElementById("createTask").showModal();
-                        }}
-                          //w-[250px] md:w-[300px] lg:w-[320px] xl:w-[350px] 2xl:w-[400px]
-                          className="flex cursor-pointer items-center justify-center gap-1 py-[10px] w-full opacity-90 bg-white rounded-lg shadow-sm text-[#555] font-medium text-[15px]"
-                        >
-                          <i className="bi bi-plus-circle-dotted"></i>
-                          Add Task
-                        </div>
-                      )}
+                      {index === 0 && <CreateTask />}
 
                       {column.items.map((task, index) => (
                         <Draggable
@@ -658,8 +642,6 @@ function TaskManagement() {
           </div>
         </DragDropContext>
       )}
-
-      <CreateTask handleAddTask={handleAddTask} />
     </>
   );
 }
