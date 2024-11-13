@@ -524,10 +524,19 @@ function TaskManagement() {
           <p>please select project</p>
         </div>
       ) : activeProjectTasks.length === 0 ? (
-        <div className="grid grid-cols-1 justify-center items-center text-center h-full">
-          <p>Proyektga task qo'shilmagan</p>
-          <button onClick={() => {setModalOpen(true)}} className="btn mx-auto w-[200px]" >+ Add task</button>
-        </div>
+        <>
+          <div className="grid grid-cols-1 justify-center items-center text-center h-full">
+            <p>Proyektga task qo'shilmagan</p>
+            <button
+              onClick={() => {
+                document.getElementById("createTask").showModal();
+              }}
+              className="btn mx-auto w-[200px]"
+            >
+              + Add task
+            </button>
+          </div>
+        </>
       ) : (
         <DragDropContext
           onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
@@ -552,7 +561,9 @@ function TaskManagement() {
 
                       {index === 0 && (
                         <div
-                          onClick={() => openModal(columnId)}
+                        onClick={() => {
+                          document.getElementById("createTask").showModal();
+                        }}
                           //w-[250px] md:w-[300px] lg:w-[320px] xl:w-[350px] 2xl:w-[400px]
                           className="flex cursor-pointer items-center justify-center gap-1 py-[10px] w-full opacity-90 bg-white rounded-lg shadow-sm text-[#555] font-medium text-[15px]"
                         >
