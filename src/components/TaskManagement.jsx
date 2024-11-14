@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Board } from "../data/board";
 import { onDragEnd } from "../helpers/onDragEnd";
 import Avatar from "./Avatar";
-import Days from "./Days";
+import TaskHeader from "./TaskHeader";
 // components
 import CreateTask from "../components/CreateTask";
 // http
@@ -626,7 +626,7 @@ function TaskManagement() {
                                 {...provided.dragHandleProps}
                                 className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-3 items-start shadow-sm rounded-xl px-3 py-4"
                               >
-                                <Days />
+                                <TaskHeader task={task} />
 
                                 {task.file && (
                                   <img

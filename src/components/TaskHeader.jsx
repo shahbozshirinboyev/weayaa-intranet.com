@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const Days = () => {
+const TaskHeader = ({task}) => {
 
 
   
@@ -16,6 +16,10 @@ const Days = () => {
       setIsOpen(false);
     }
   };
+  const showTaskId = () => {
+    console.log("task ID: " + task.id)
+    console.log(task)
+  }
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -31,13 +35,13 @@ const Days = () => {
         <div className="flex items-center space-x-2">
           <div className="flex items-center bg-green-700 text-white text-sm font-semibold px-2 py-1 rounded-full">
             <i className="bi bi-calendar-week mr-2"></i>
-            <span>5 Days</span>
+            <span>{task.deadline}</span>
           </div>
         </div>
 
         <div className="relative" ref={dropdownRef}>
           <button
-            onClick={toggleDropdown}
+            onClick={ toggleDropdown }
             className="h-full px-2 text-custom-green-dark"
           >
             <i
@@ -47,9 +51,9 @@ const Days = () => {
             ></i>
           </button>
           {isOpen && (
-            <ul className="dropdown-content menu text-custom-green-dark bg-base-100 rounded-box z-[1] w-48 p-2 shadow-xl border border-custom-green-30 border-opacity-5 absolute mt-2 right-0">
+            <ul className="dropdown-content text-[14px] menu text-custom-green-dark bg-base-100 rounded-box z-[1] w-48 p-1 shadow-xl border border-custom-green-30 border-opacity-5 absolute mt-2 right-0">
               <li>
-                <button className="hover:bg-custom-green-30 hover:font-semibold">
+                <button onClick={ showTaskId } className="hover:bg-custom-green-30 hover:font-semibold">
                   <i className="bi bi-fire"></i> Important Task
                 </button>
               </li>
@@ -71,4 +75,4 @@ const Days = () => {
   );
 };
 
-export default Days;
+export default TaskHeader;
