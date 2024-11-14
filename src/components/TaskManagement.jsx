@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { onDragEnd } from "../helpers/onDragEnd";
-import Avatar from "./Avatar";
+import TaskFoother from "./TaskFoother";
 import TaskHeader from "./TaskHeader";
 // components
 import CreateTask from "../components/CreateTask";
@@ -677,8 +677,8 @@ function TaskManagement() {
                                 </div>
                                 <div className="w-full border border-dashed"></div>
 
-                                <div className="w-full">
-                                  <Avatar />
+                                <div className="w-full border border-red-700">
+                                  <TaskFoother task={task} />
                                 </div>
                               </div>
                             </>

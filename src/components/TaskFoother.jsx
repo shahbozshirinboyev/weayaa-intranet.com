@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Avatar1 from "../../public/img/background.png";
 import Avatar2 from "../../public/img/background.png";
 import Avatar3 from "../../public/img/background.png";
 
-const TaskUsers = () => {
+const TaskFoother = () => {
   const users = [
     { id: 1, imgSrc: Avatar1 },
     { id: 2, imgSrc: Avatar2 },
@@ -153,4 +153,4 @@ const TaskUsers = () => {
   );
 };
 
-export default TaskUsers;
+export default TaskFoother;
