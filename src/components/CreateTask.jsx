@@ -38,24 +38,19 @@ const CreateTask = ({ getActiveProjectTasks }) => {
   };
   const createNewTask = (e) => {
     e.preventDefault();
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access")}`,
-    };
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`};
     const formData = new FormData();
 
-    // Oddiy matn maydonlarini qo'shish
     Object.keys(taskData).forEach((key) => {
       formData.append(key, taskData[key]);
     });
 
-    files.forEach((file) => {
-      formData.append("file", file); // "file[]" yoki server kutgan boshqa nomni ishlating
-    });
+    files.forEach((file) => { formData.append("file", file) });
 
     toast.promise(http.post(`projects/tasks/`, formData, { headers }), {
       loading: "Adding ...",
       success: (response) => {
-        console.log(response.data);
+        console.log(response);
         setTaskData({
           name: "",
           project: activeProjectId,
@@ -71,8 +66,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
         return <b>Add New Task :)</b>;
       },
       error: (error) => {
-        console.log(error.response.data);
-
+        console.log(error);
         return <b>Error :(</b>;
       },
     });

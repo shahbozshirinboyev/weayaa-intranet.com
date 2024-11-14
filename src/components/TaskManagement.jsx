@@ -14,6 +14,8 @@ import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 
 function TaskManagement() {
+
+  // Tasl menubar start
   // line variables start
   const [projectsList, setProjectsList] = useState([]);
   const [activeProject, setActiveProject] = useState(
@@ -27,9 +29,12 @@ function TaskManagement() {
   const [selectedUsers, setSelectedUsers] = useState(
     activeProject.members ? activeProject.members : ""
   );
-  const [columns, setColumns] = useState(Board);
+
+  // const [columns, setColumns] = useState(Board);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedColumn, setSelectedColumn] = useState("");
+  useEffect(()=>{console.log(columns)},[])
   // line variables end
   //line functions start
   const getProjectsList = () => {
@@ -173,7 +178,9 @@ function TaskManagement() {
 
   // ===========> Get ActiveProjectTasks List START <=========== //
   const [activeProjectTasks, setActiveProjectTasks] = useState([]);
-  const [board, setBoard] = useState({
+  // const [columns, setColumns] = useState(Board);
+
+  const [columns, setColumns] = useState({
     to_do: {
       name: "To Do",
       items: [],
@@ -206,10 +213,10 @@ function TaskManagement() {
 
           // board obyektini yangilash
           const updatedBoard = {
-            to_do: { ...board.to_do, items: [] },
-            in_progress: { ...board.in_progress, items: [] },
-            review: { ...board.review, items: [] },
-            complete: { ...board.complete, items: [] },
+            to_do: { ...columns.to_do, items: [] },
+            in_progress: { ...columns.in_progress, items: [] },
+            review: { ...columns.review, items: [] },
+            complete: { ...columns.complete, items: [] },
           };
 
           // Har bir task ni statusiga qarab to'g'ri joylashtirish
@@ -226,7 +233,7 @@ function TaskManagement() {
           });
 
           // Yangilangan boardni set qilish
-          setBoard(updatedBoard);
+          setColumns(updatedBoard);
           setActiveProjectTasks(tasks); // Yangi tasklar ro'yxatini set qilish
         })
         .catch((error) => {
@@ -241,8 +248,8 @@ function TaskManagement() {
   // ===========> Get ActiveProjectTasks List END <=========== //
 
   useEffect(() => {
-    console.log(board);
-  }, [board]);
+    console.log(columns);
+  }, [columns]);
 
   return (
     <>
@@ -602,9 +609,9 @@ function TaskManagement() {
                         </div>
                       </div>
 
-                      {index === 0 && <CreateTask />}
+                      {index === 0 && <CreateTask getActiveProjectTasks={getActiveProjectTasks} />}
 
-                      {column.items.map((task, index) => (
+                      {column.items && column.items.map((task, index) => (
                         <Draggable
                           key={task.id.toString()}
                           draggableId={task.id.toString()}
@@ -621,14 +628,14 @@ function TaskManagement() {
                               >
                                 <Days />
 
-                                {task.image && task.alt && (
+                                {task.file && (
                                   <img
-                                    src={task.image}
-                                    alt={task.alt}
-                                    className="w-full h-[170px] rounded-lg"
+                                    src={task.file}
+                                    alt={task.id}
+                                    className="w-full h-[170px] rounded-lg object-cover"
                                   />
                                 )}
-                                <div className="flex items-center gap-2">
+                                {/* <div className="flex items-center gap-2">
                                   {task.tags.map((tag) => (
                                     <span
                                       key={tag.title}
@@ -641,10 +648,10 @@ function TaskManagement() {
                                       {tag.title}
                                     </span>
                                   ))}
-                                </div>
+                                </div> */}
                                 <div className="w-full flex items-start flex-col gap-0">
                                   <span className="text-[15.5px] font-medium text-[#555]">
-                                    {task.title}
+                                    {task.name}
                                   </span>
                                   <span className="text-[13.5px] text-gray-500">
                                     {task.description}
@@ -655,11 +662,11 @@ function TaskManagement() {
                                   <div className="flex items-center gap-1">
                                     <i className="bi bi-clock"></i>
                                     <span className="text-[13px] text-gray-700">
-                                      {task.deadline} mins
+                                      {task.deadline}
                                     </span>
                                   </div>
 
-                                  <div
+                                  {/* <div
                                     className={`w-[60px] rounded-full h-[5px] ${
                                       task.priority === "high"
                                         ? "bg-red-500"
@@ -667,7 +674,7 @@ function TaskManagement() {
                                         ? "bg-orange-500"
                                         : "bg-blue-500"
                                     }`}
-                                  ></div>
+                                  ></div> */}
                                 </div>
                                 <div className="w-full border border-dashed"></div>
 
