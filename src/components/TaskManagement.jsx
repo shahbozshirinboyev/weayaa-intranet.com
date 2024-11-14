@@ -626,7 +626,7 @@ function TaskManagement() {
                                 {...provided.dragHandleProps}
                                 className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-3 items-start shadow-sm rounded-xl px-3 py-4"
                               >
-                                <TaskHeader task={task} />
+                                <TaskHeader task={task} getActiveProjectTasks={getActiveProjectTasks} />
 
                                 {task.file && (
                                   <img
