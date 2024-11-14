@@ -39,12 +39,12 @@ export const onDragEnd = (result, columns, setColumns) => {
         loading: "Change status ...",
         success: (response) => {
           console.log(response);
-          // return <b>Add :)</b>;
+          return "Add :)";
         },
         error: (error) => {
           console.log(error.response);
 
-          // return <b>Error :(</b>;
+          return "Error :(";
         },
       }
     );
