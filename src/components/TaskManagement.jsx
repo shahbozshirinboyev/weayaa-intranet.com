@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { Board } from "../data/board";
 import { onDragEnd } from "../helpers/onDragEnd";
 import Avatar from "./Avatar";
 import TaskHeader from "./TaskHeader";
