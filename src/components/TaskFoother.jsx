@@ -219,7 +219,7 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
                     </div>
                     <input
                       type="checkbox"
-                      className="checkbox checkbox-success"
+                      className="checkbox border-custom-green-80 [--chkbg:theme(colors.custom-green-dark)] [--chkfg:white] checked:border-border-custom-green-dark"
                       onChange={() => handleUserSelectForTask(user.id)}
                       checked={selectedUsersForTask.includes(user.id)}
                     />

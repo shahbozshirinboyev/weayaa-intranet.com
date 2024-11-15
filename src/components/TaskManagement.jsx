@@ -356,7 +356,7 @@ function TaskManagement() {
                         </div>
                         <input
                           type="checkbox"
-                          className="checkbox checkbox-success"
+                          className="checkbox border-custom-green-80 [--chkbg:theme(colors.custom-green-dark)] [--chkfg:white] checked:border-border-custom-green-dark"
                           onChange={() => handleUserSelect(user.id)}
                           checked={selectedUsers.includes(user.id)}
                         />
