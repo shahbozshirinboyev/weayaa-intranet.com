@@ -73,13 +73,12 @@ const CreateTask = ({ getActiveProjectTasks }) => {
     <>
       {/* Button ===> START */}
       <div
-        onClick={() => {
-          document.getElementById("createTask").showModal();
-        }}
-        className="flex cursor-pointer items-center justify-center gap-1 py-[10px] w-full opacity-90 bg-white rounded-lg shadow-sm text-[#555] font-medium text-[15px]"
+        onClick={() => { document.getElementById("createTask").showModal(); }}
+        className="flex cursor-pointer items-center justify-center text-custom-green-dark hover:bg-custom-green-dark hover:text-white transition-all duration-300 gap-1 py-[10px] w-full bg-white rounded-lg shadow-sm font-medium text-[15px]"
       >
-        <i className="bi bi-plus-circle-dotted"></i>
-        Add Task
+        <i className="bi bi-plus-lg flex justify-center items-center"></i>
+        &nbsp;
+        <span className="flex justify-center items-center">Add Task</span>
       </div>
       {/* Button ===> END */}
 

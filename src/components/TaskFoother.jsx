@@ -75,7 +75,7 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
                   key={user.id}
                   src={user.image || noneuser}
                   alt="Avatar пользователя"
-                  className="w-8 h-8 rounded-full border-2 border-white"
+                  className="w-8 h-8 rounded-full border-2 object-cover border-white"
                 />
               ))}
           </div>
