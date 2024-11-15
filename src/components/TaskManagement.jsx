@@ -570,7 +570,7 @@ function TaskManagement() {
                                 {...provided.dragHandleProps}
                                 className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-3 items-start shadow-sm rounded-xl px-3 py-4"
                               >
-                                <div className="w-full border border-red-600">
+                                <div className="w-full">
                                 <TaskHeader task={task} getActiveProjectTasks={getActiveProjectTasks} />
                                 </div>
 
