@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { onDragEnd } from "../helpers/onDragEnd";
+// components
 import TaskFoother from "./TaskFoother";
 import TaskHeader from "./TaskHeader";
 // components
@@ -14,32 +15,16 @@ import noneuser from "/img/noneuser.png";
 
 function TaskManagement() {
 
-  // Tasl menubar start
   // line variables start
   const [projectsList, setProjectsList] = useState([]);
-  const [activeProject, setActiveProject] = useState(
-    JSON.parse(localStorage.getItem("activeProject"))
-  );
-  const [formData, setFormData] = useState({
-    projectName: "",
-    projectDeadline: "",
-  });
+  const [activeProject, setActiveProject] = useState( JSON.parse(localStorage.getItem("activeProject")));
+  const [formData, setFormData] = useState({ projectName: "", projectDeadline: "", });
   const [membersInfo, setMembersInfo] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState(
-    activeProject.members ? activeProject.members : ""
-  );
-
-  // const [columns, setColumns] = useState(Board);
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedColumn, setSelectedColumn] = useState("");
-  useEffect(()=>{console.log(columns)},[])
+  const [selectedUsers, setSelectedUsers] = useState( activeProject.members ? activeProject.members : [] );
   // line variables end
-  //line functions start
+
   const getProjectsList = () => {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access")}`,
-    };
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`,};
     http
       .get(`projects/`, { headers })
       .then((response) => {
@@ -49,23 +34,17 @@ function TaskManagement() {
         console.log(error.response.data);
       });
   };
-  useEffect(() => {
-    getProjectsList();
-  }, []);
+
+  useEffect(() => { getProjectsList(); }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prevData) => ({ ...prevData, [name]: value, }));
   };
 
   const createProject = (e) => {
     e.preventDefault();
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access")}`,
-    };
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`,};
     toast.promise(
       http.post(
         `projects/`,
@@ -80,16 +59,12 @@ function TaskManagement() {
         success: (response) => {
           console.log(response.data);
           getProjectsList();
-          setFormData({
-            projectName: "",
-            projectDeadline: "",
-          });
+          setFormData({ projectName: "", projectDeadline: "", });
           document.getElementById("new_project").close();
           return <b>Add :)</b>;
         },
         error: (error) => {
           console.log(error.response.data);
-
           return <b>Error :(</b>;
         },
       }
@@ -97,19 +72,19 @@ function TaskManagement() {
   };
 
   useEffect(() => {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access")}`,
-    };
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`,};
     http
       .get("users/staff/", { headers })
       .then((response) => {
-        setMembersInfo(response.data.results);
+        const results = response.data.results;
+        const staffMembers = results.filter(member => member.user_type === "staff");
+        setMembersInfo(staffMembers);
       })
       .catch((error) => {
         toast.error("Something went wrong :(");
         console.log(error.response.data);
       });
-  }, []);
+  }, [activeProject]);
 
   const handleUserSelect = (userId) => {
     setSelectedUsers((prevSelected) =>
@@ -121,9 +96,7 @@ function TaskManagement() {
 
   const submitSelectedUsers = (e) => {
     e.preventDefault();
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access")}`,
-    };
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
     toast.promise(
       http.patch(
         `projects/${activeProject.id}/`,
@@ -145,12 +118,10 @@ function TaskManagement() {
       }
     );
   };
-  useEffect(() => {
-    const activeProjectCheck = JSON.parse(
-      localStorage.getItem("activeProject")
-    );
-    const projectId = activeProjectCheck ? activeProjectCheck.id : null;
 
+  useEffect(() => {
+    const activeProjectCheck = JSON.parse( localStorage.getItem("activeProject"));
+    const projectId = activeProjectCheck ? activeProjectCheck.id : null;
     if (projectId !== null) {
       const activeProject = projectsList.find(
         (project) => project.id === projectId
@@ -161,24 +132,10 @@ function TaskManagement() {
     }
   }, [projectsList]);
   // line functios end
-  const openModal = (columnId) => {
-    setSelectedColumn(columnId);
-    setModalOpen(true);
-  };
 
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  const handleAddTask = (taskData) => {
-    const newBoard = { ...columns };
-    newBoard[selectedColumn].items.push(taskData);
-  };
 
   // ===========> Get ActiveProjectTasks List START <=========== //
   const [activeProjectTasks, setActiveProjectTasks] = useState([]);
-  // const [columns, setColumns] = useState(Board);
-
   const [columns, setColumns] = useState({
     to_do: {
       name: "To Do",
@@ -209,16 +166,12 @@ function TaskManagement() {
         .then((response) => {
           const tasks = response.data;
           console.log(response.data)
-
-          // board obyektini yangilash
           const updatedBoard = {
             to_do: { ...columns.to_do, items: [] },
             in_progress: { ...columns.in_progress, items: [] },
             review: { ...columns.review, items: [] },
             complete: { ...columns.complete, items: [] },
           };
-
-          // Har bir task ni statusiga qarab to'g'ri joylashtirish
           tasks.forEach((task) => {
             if (task.status === "todo") {
               updatedBoard.to_do.items.push(task);
@@ -230,10 +183,8 @@ function TaskManagement() {
               updatedBoard.complete.items.push(task);
             }
           });
-
-          // Yangilangan boardni set qilish
           setColumns(updatedBoard);
-          setActiveProjectTasks(tasks); // Yangi tasklar ro'yxatini set qilish
+          setActiveProjectTasks(tasks);
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -241,14 +192,10 @@ function TaskManagement() {
     }
   };
 
-  useEffect(() => {
-    getActiveProjectTasks();
-  }, [activeProject]);
+  useEffect(() => { getActiveProjectTasks(); }, [activeProject]);
   // ===========> Get ActiveProjectTasks List END <=========== //
 
-  useEffect(() => {
-    console.log(columns);
-  }, [columns]);
+  useEffect(() => { console.log(columns); }, [columns]);
 
   return (
     <>
@@ -256,6 +203,7 @@ function TaskManagement() {
       <>
         <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px]">
           <div className="h-full w-full flex items-center ml-[10px] relative">
+
             <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
               <i className="bi bi-calendar2-week font-medium"></i>
               <p className="ml-[10px]">{activeProject.deadline}</p>

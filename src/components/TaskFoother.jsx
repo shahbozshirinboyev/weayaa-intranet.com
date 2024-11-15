@@ -6,14 +6,14 @@ import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 
 const TaskFoother = ({ task, membersInfo }) => {
-  console.log(task.members);
-  console.log(membersInfo);
+  // console.log(task.members);
+  // console.log(membersInfo);
 
   const filteredMembersInfo = membersInfo.filter((member) =>
     task.members.includes(member.id)
   );
 
-  console.log(filteredMembersInfo);
+  // console.log(filteredMembersInfo);
 
   const [messages, setMessages] = useState([
     {
@@ -286,7 +286,7 @@ const TaskFoother = ({ task, membersInfo }) => {
               </form>
               {/* Modal header End */}
 
-              <form action="" onSubmit>
+              <form action="">
                 <div className="p-4">
                   {membersInfo.map((user) => (
                     <div
