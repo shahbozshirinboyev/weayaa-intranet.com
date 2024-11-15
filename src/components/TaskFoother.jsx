@@ -1,61 +1,11 @@
-import { useState } from "react";
-import Avatar1 from "../../public/img/background.png";
-import Avatar2 from "../../public/img/background.png";
-import Avatar3 from "../../public/img/background.png";
 import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 
 const TaskFoother = ({ task, membersInfo }) => {
-  // console.log(task.members);
-  // console.log(membersInfo);
 
   const filteredMembersInfo = membersInfo.filter((member) =>
     task.members.includes(member.id)
   );
-
-  // console.log(filteredMembersInfo);
-
-  const [messages, setMessages] = useState([
-    {
-      sender: "Obi-Wan Kenobi",
-      text: "You were the Chosen One!",
-      time: "12:45",
-      align: "start",
-    },
-    { sender: "Anakin", text: "I hate you!", time: "12:46", align: "end" },
-  ]);
-  const users = [
-    { id: 1, imgSrc: Avatar1 },
-    { id: 2, imgSrc: Avatar2 },
-    { id: 3, imgSrc: Avatar3 },
-  ];
-  const [newMessage, setNewMessage] = useState("");
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-
-  const handleSendMessage = () => {
-    if (newMessage.trim()) {
-      setMessages([
-        ...messages,
-        {
-          sender: "You",
-          text: newMessage,
-          time: new Date().toLocaleTimeString().slice(0, 5),
-          align: "end",
-        },
-      ]);
-      setNewMessage("");
-    }
-  };
-
-  const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files).map((file) => {
-      return {
-        file,
-        url: file.type.startsWith("image/") ? URL.createObjectURL(file) : null,
-      };
-    });
-    setUploadedFiles([...uploadedFiles, ...files]);
-  };
 
   return (
     <>
@@ -116,90 +66,11 @@ const TaskFoother = ({ task, membersInfo }) => {
           </form>
           {/* Modal header End */}
 
-          <div className="p-4 overflow-y-auto flex-grow">
-            {messages.map((msg, index) => (
-              <div key={index} className={`chat  chat-${msg.align} mb-4 `}>
-                <div className="chat-image avatar ">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Avatar"
-                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                    />
-                  </div>
-                </div>
-                <div className="chat-header">
-                  {msg.sender}
-                  <time className="text-xs opacity-50">{msg.time}</time>
-                </div>
-                <div
-                  className={`chat-bubble text-white ${
-                    msg.align === "end"
-                      ? "bg-custom-green-dark"
-                      : "bg-custom-green-90"
-                  }`}
-                >
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-
-            {uploadedFiles.length > 0 && (
-              <div className="uploaded-files mt-4">
-                <ul>
-                  {uploadedFiles.map((file, index) => (
-                    <li
-                      key={index}
-                      className={`chat chat-end bg-custom-green-dark h-28`}
-                    >
-                      {file.url ? (
-                        <img
-                          src={file.url}
-                          alt="Uploaded"
-                          className="w-26 h-24 object-cover rounded  "
-                        />
-                      ) : (
-                        <span>{file.file.name}</span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+          <div>
+            <p>Bu CHAT !!!</p>
           </div>
 
-          {/* Форма отправки сообщения (footer) */}
-          <form
-            className="p-3 flex items-center border-custom-green-80"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <input
-              type="text"
-              placeholder="Введите сообщение..."
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              className="input border border-custom-green-60 w-full mr-2 focus:border-custom-green-dark"
-            />
-            <input
-              type="file"
-              onChange={handleFileUpload}
-              className="file-input hidden"
-              id="fileUpload"
-              multiple
-            />
-            <label
-              htmlFor="fileUpload"
-              className="btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300 cursor-pointer mr-2"
-            >
-              📎
-            </label>
-            <button
-              type="button"
-              onClick={handleSendMessage}
-              className="btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
-            >
-              Отправить
-            </button>
-          </form>
+         
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
