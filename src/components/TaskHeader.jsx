@@ -60,7 +60,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={toggleDropdown}
-            className="h-full px-2 text-custom-green-dark"
+            className="h-full px-0 text-custom-green-dark"
           >
             <i
               className={`bi bi-three-dots-vertical flex justify-center items-center ${

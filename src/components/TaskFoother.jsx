@@ -3,7 +3,7 @@ import Avatar1 from "../../public/img/background.png";
 import Avatar2 from "../../public/img/background.png";
 import Avatar3 from "../../public/img/background.png";
 
-const TaskFoother = () => {
+const TaskFoother = ({ task }) => {
   const users = [
     { id: 1, imgSrc: Avatar1 },
     { id: 2, imgSrc: Avatar2 },
@@ -11,19 +11,29 @@ const TaskFoother = () => {
   ];
 
   const [messages, setMessages] = useState([
-    { sender: 'Obi-Wan Kenobi', text: 'You were the Chosen One!', time: '12:45', align: 'start' },
-    { sender: 'Anakin', text: 'I hate you!', time: '12:46', align: 'end' },
+    {
+      sender: "Obi-Wan Kenobi",
+      text: "You were the Chosen One!",
+      time: "12:45",
+      align: "start",
+    },
+    { sender: "Anakin", text: "I hate you!", time: "12:46", align: "end" },
   ]);
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       setMessages([
         ...messages,
-        { sender: 'You', text: newMessage, time: new Date().toLocaleTimeString().slice(0, 5), align: 'end' },
+        {
+          sender: "You",
+          text: newMessage,
+          time: new Date().toLocaleTimeString().slice(0, 5),
+          align: "end",
+        },
       ]);
-      setNewMessage('');
+      setNewMessage("");
     }
   };
 
@@ -39,7 +49,7 @@ const TaskFoother = () => {
 
   return (
     <div className="grid grid-cols-[0.3fr_1fr] items-center">
-      <button onClick={() => document.getElementById('modal_chat').showModal()}>
+      <button onClick={() => document.getElementById("modal_chat").showModal()}>
         <div className="flex">
           <div className="relative">
             <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center">
@@ -52,11 +62,17 @@ const TaskFoother = () => {
 
       <dialog id="modal_chat" className="modal">
         <div className="modal-box h-full max-h-[700px] p-0 flex flex-col">
-
           {/* Заголовок */}
-          <form method="dialog" className="border-b-[2px] border-custom-green-80 h-[60px] flex items-center justify-between px-[20px] bg-custom-green-10 w-full">
-            <span className="text-custom-green-dark font-bold">Project Users</span>
-            <button className="btn btn-sm border-0 btn-circle text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">✕</button>
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] flex items-center justify-between px-[20px] bg-custom-green-10 w-full"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Project Users
+            </span>
+            <button className="btn btn-sm border-0 btn-circle text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+              ✕
+            </button>
           </form>
 
           <div className="p-4 overflow-y-auto flex-grow">
@@ -64,14 +80,23 @@ const TaskFoother = () => {
               <div key={index} className={`chat  chat-${msg.align} mb-4 `}>
                 <div className="chat-image avatar ">
                   <div className="w-10 rounded-full">
-                    <img alt="Avatar" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    <img
+                      alt="Avatar"
+                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    />
                   </div>
                 </div>
                 <div className="chat-header">
                   {msg.sender}
                   <time className="text-xs opacity-50">{msg.time}</time>
                 </div>
-                <div className={`chat-bubble text-white ${msg.align === 'end' ? 'bg-custom-green-dark' : 'bg-custom-green-90'}`}>
+                <div
+                  className={`chat-bubble text-white ${
+                    msg.align === "end"
+                      ? "bg-custom-green-dark"
+                      : "bg-custom-green-90"
+                  }`}
+                >
                   {msg.text}
                 </div>
               </div>
@@ -81,11 +106,16 @@ const TaskFoother = () => {
               <div className="uploaded-files mt-4">
                 <ul>
                   {uploadedFiles.map((file, index) => (
-                    <li key={index} className={`chat chat-end bg-custom-green-dark h-28`}>
+                    <li
+                      key={index}
+                      className={`chat chat-end bg-custom-green-dark h-28`}
+                    >
                       {file.url ? (
-                   
-                        <img src={file.url} alt="Uploaded" className="w-26 h-24 object-cover rounded  " />
-
+                        <img
+                          src={file.url}
+                          alt="Uploaded"
+                          className="w-26 h-24 object-cover rounded  "
+                        />
                       ) : (
                         <span>{file.file.name}</span>
                       )}
@@ -97,7 +127,10 @@ const TaskFoother = () => {
           </div>
 
           {/* Форма отправки сообщения (footer) */}
-          <form className="p-3 flex items-center border-custom-green-80" onSubmit={(e) => e.preventDefault()}>
+          <form
+            className="p-3 flex items-center border-custom-green-80"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <input
               type="text"
               placeholder="Введите сообщение..."
@@ -112,7 +145,10 @@ const TaskFoother = () => {
               id="fileUpload"
               multiple
             />
-            <label htmlFor="fileUpload" className="btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300 cursor-pointer mr-2">
+            <label
+              htmlFor="fileUpload"
+              className="btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300 cursor-pointer mr-2"
+            >
               📎
             </label>
             <button
@@ -125,7 +161,7 @@ const TaskFoother = () => {
           </form>
         </div>
       </dialog>
-
+      {/* task user list START */}
       <div className="flex justify-end">
         <div className="flex -space-x-4">
           {users.map((user) => (
@@ -138,17 +174,21 @@ const TaskFoother = () => {
           ))}
           <div>
             <div className="w-8 h-8 bg-gray-200 rounded-full border-2 border-white flex justify-center items-center">
-              <span className="text-[12px] font-semibold text-custom-green-80"> +13 </span>
+              <span className="text-[12px] font-semibold text-custom-green-80">
+                {" "}
+                +13{" "}
+              </span>
             </div>
           </div>
         </div>
 
-        <div className="w-0.5 h-6 bg-custom-green-60 mx-1.5 mt-1"></div>
+        <div className="w-0.5 rounded-full bg-custom-green-60 mx-1.5 my-[5px]"></div>
 
         <button className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center right-3">
-          <i className="bi bi-plus text-[24px] text-custom-green-80"></i>
+          <i className="bi bi-plus text-custom-green-80 flex text-[24px] justify-center items-center"></i>
         </button>
       </div>
+      {/* task user list END */}
     </div>
   );
 };

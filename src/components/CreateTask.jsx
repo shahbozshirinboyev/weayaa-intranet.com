@@ -14,13 +14,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
     deadline: "",
     status: "todo",
     file: [],
-    members: [10],
   });
-
-  // useEffect(() => {
-  //   console.log(taskData);
-  // }, [taskData]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTaskData({ ...taskData, [name]: value });
@@ -38,14 +32,18 @@ const CreateTask = ({ getActiveProjectTasks }) => {
   };
   const createNewTask = (e) => {
     e.preventDefault();
-    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`};
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
     const formData = new FormData();
 
     Object.keys(taskData).forEach((key) => {
       formData.append(key, taskData[key]);
     });
 
-    files.forEach((file) => { formData.append("file", file) });
+    files.forEach((file) => {
+      formData.append("file", file);
+    });
 
     toast.promise(http.post(`projects/tasks/`, formData, { headers }), {
       loading: "Adding ...",
@@ -58,7 +56,6 @@ const CreateTask = ({ getActiveProjectTasks }) => {
           deadline: "",
           status: "todo",
           file: [],
-          members: [10],
         });
         setFiles([]);
         getActiveProjectTasks();
@@ -66,7 +63,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
         return <b>Add New Task :)</b>;
       },
       error: (error) => {
-        console.log(error);
+        console.log(error.response.data);
         return <b>Error :(</b>;
       },
     });

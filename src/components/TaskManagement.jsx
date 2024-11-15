@@ -349,13 +349,13 @@ function TaskManagement() {
               </div>
             </button>
 
-            <div className="w-0.5 h-6 bg-custom-green-60 mx-1"></div>
+            <div className="w-0.5 h-6 rounded-full bg-custom-green-60 mx-1"></div>
 
             <button
               className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center right-3 p-2"
               onClick={() => document.getElementById("adduser").showModal()}
             >
-              <i className="bi bi-plus text-[24px] text-custom-green-80"></i>
+              <i className="bi bi-plus text-[24px] text-custom-green-80 flex justify-center items-center"></i>
             </button>
           </div>
 
@@ -625,7 +625,9 @@ function TaskManagement() {
                                 {...provided.dragHandleProps}
                                 className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-3 items-start shadow-sm rounded-xl px-3 py-4"
                               >
+                                <div className="w-full border border-red-600">
                                 <TaskHeader task={task} getActiveProjectTasks={getActiveProjectTasks} />
+                                </div>
 
                                 {task.file && (
                                   <img
@@ -656,8 +658,8 @@ function TaskManagement() {
                                     {task.description}
                                   </span>
                                 </div>
-                                <div className="w-full border border-dashed"></div>
-                                <div className="w-full flex items-center justify-between">
+                                {/* <div className="w-full border border-dashed"></div> */}
+                                {/* <div className="w-full flex items-center justify-between">
                                   <div className="flex items-center gap-1">
                                     <i className="bi bi-clock"></i>
                                     <span className="text-[13px] text-gray-700">
@@ -665,7 +667,7 @@ function TaskManagement() {
                                     </span>
                                   </div>
 
-                                  {/* <div
+                                  <div
                                     className={`w-[60px] rounded-full h-[5px] ${
                                       task.priority === "high"
                                         ? "bg-red-500"
@@ -673,9 +675,9 @@ function TaskManagement() {
                                         ? "bg-orange-500"
                                         : "bg-blue-500"
                                     }`}
-                                  ></div> */}
-                                </div>
-                                <div className="w-full border border-dashed"></div>
+                                  ></div>
+                                </div> */}
+                                {/* <div className="w-full border border-dashed"></div> */}
 
                                 <div className="w-full border border-red-700">
                                   <TaskFoother task={task} />
