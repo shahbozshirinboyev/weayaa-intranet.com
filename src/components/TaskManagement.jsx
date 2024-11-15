@@ -535,10 +535,7 @@ function TaskManagement() {
           </div>
         </>
       ) : (
-        <DragDropContext
-          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
-        >
-          {/* <div className="flex items-start px-4 bg-custom-green-10 rounded-[15px]  space-x-4 border border-red-700">  */}
+        <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)} >
           <div className="grid grid-cols-4 px-4 bg-custom-green-10 rounded-[15px] gap-4">
             {Object.entries(columns).map(([columnId, column], index) => (
               <div className="flex flex-col gap-2" key={columnId}>
@@ -627,7 +624,7 @@ function TaskManagement() {
                                 </div> */}
                                 {/* <div className="w-full border border-dashed"></div> */}
 
-                                <div className="w-full border border-red-700">
+                                <div className="w-full">
                                   <TaskFoother getProjectsList={getProjectsList} selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
                                 </div>
                               </div>
