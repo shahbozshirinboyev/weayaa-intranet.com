@@ -1,11 +1,15 @@
 import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 
-const TaskFoother = ({ task, membersInfo }) => {
-
-  const filteredMembersInfo = membersInfo.filter((member) =>
+const TaskFoother = ({ task, membersInfo, selectedUsers }) => {
+  const activeProjectUsersInfo = membersInfo.filter((member) =>
+    selectedUsers.includes(member.id)
+  );
+  const activeTaskUsersInfo = activeProjectUsersInfo.filter((member) =>
     task.members.includes(member.id)
   );
+
+  console.log(activeProjectUsersInfo);
 
   return (
     <>
@@ -29,8 +33,8 @@ const TaskFoother = ({ task, membersInfo }) => {
             className="flex -space-x-4 cursor-pointer"
             onClick={() => document.getElementById("showAddedUser").showModal()}
           >
-            {filteredMembersInfo.length !== 0 &&
-              filteredMembersInfo.map((user) => (
+            {activeTaskUsersInfo.length !== 0 &&
+              activeTaskUsersInfo.map((user) => (
                 <img
                   key={user.id}
                   src={user.image || noneuser}
@@ -39,16 +43,22 @@ const TaskFoother = ({ task, membersInfo }) => {
                 />
               ))}
           </div>
-          {filteredMembersInfo.length !== 0 && (
+          {activeTaskUsersInfo.length !== 0 && (
             <div className="w-0.5 rounded-full bg-custom-green-60 mx-1.5 my-[5px]"></div>
           )}
 
-          <button onClick={() => document.getElementById("addusersfortask").showModal()} className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3">
+          <button
+            onClick={() =>
+              document.getElementById("addusersfortask").showModal()
+            }
+            className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3"
+          >
             <i className="bi bi-plus flex text-[24px] justify-center items-center"></i>
           </button>
         </div>
         {/* task user list END */}
       </div>
+
       {/* TASK => Chat START */}
       <dialog id="task_chat" className="modal">
         <div className="modal-box h-full max-h-[700px] p-0 flex flex-col">
@@ -69,8 +79,6 @@ const TaskFoother = ({ task, membersInfo }) => {
           <div>
             <p>Bu CHAT !!!</p>
           </div>
-
-         
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
@@ -99,36 +107,25 @@ const TaskFoother = ({ task, membersInfo }) => {
           {/* Modal header End */}
 
           <div className="p-3">
-            {filteredMembersInfo.length !== 0 ? (
-              filteredMembersInfo.map((user) => {
-                return user ? (
-                  <div key={user.id}>
-                    <label className="label">
-                      <div className="flex">
-                        <img
-                          src={user.image || noneuser}
-                          alt={`${user.first_name} ${user.last_name}`}
-                          className="w-[45px] h-[45px] object-cover rounded-full"
-                        />
-                        <div className="ml-4">
-                          <p className="font-bold text-custom-green-dark">
-                            {user.first_name} {user.last_name}
-                          </p>
-                          <p className="text-custom-green-60">{user.label}</p>
-                        </div>
-                      </div>
-                    </label>
+            {activeTaskUsersInfo.map((user) => (
+              <div key={user.id}>
+                <label className="label">
+                  <div className="flex">
+                    <img
+                      src={user.image || noneuser}
+                      alt={`${user.first_name} ${user.last_name}`}
+                      className="w-[45px] h-[45px] object-cover rounded-full"
+                    />
+                    <div className="ml-4">
+                      <p className="font-bold text-custom-green-dark">
+                        {user.first_name} {user.last_name}
+                      </p>
+                      <p className="text-custom-green-60">{user.label}</p>
+                    </div>
                   </div>
-                ) : null;
-              })
-            ) : (
-              <div className="grid grid-cols-1 text-center p-10 text-custom-green-80 select-none">
-                <i className="bi bi-people text-[35px]"></i>
-                <p className="text-[18px]">
-                  No Staff has been selected for Project yet.
-                </p>
+                </label>
               </div>
-            )}
+            ))}
           </div>
         </div>
         <form method="dialog" className="modal-backdrop">
@@ -139,75 +136,75 @@ const TaskFoother = ({ task, membersInfo }) => {
 
       {/* Add User Modal */}
       <dialog id="addusersfortask" className="modal">
-            <Toaster />
-            <div className="modal-box p-0">
-              {/* Modal header Start */}
-              <form
-                method="dialog"
-                className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-              >
-                <span className="text-custom-green-dark font-bold">
-                  Add Staff for this Task
-                </span>
-                <div className="text-end">
-                  <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                    <i className="bi bi-x-lg flex justify-center items-center"></i>
-                  </button>
-                </div>
-              </form>
-              {/* Modal header End */}
-
-              <form action="">
-                <div className="p-4">
-                  {membersInfo.map((user) => (
-                    <div
-                      key={user.id}
-                      // className={`form-control rounded-md px-1 my-2 ${
-                      //   selectedUsers.includes(user.id)
-                      //     ? "bg-custom-green-15"
-                      //     : "bg-transparent"
-                      // }`}
-                    >
-                      <label className="cursor-pointer label">
-                        <div className="flex">
-                          <img
-                            src={user.image || noneuser}
-                            alt=""
-                            className="w-[45px] h-[45px] object-cover rounded-full"
-                          />
-                          <div className="ml-4">
-                            <p className="font-bold text-custom-green-dark">
-                              {user.first_name} {user.last_name}
-                            </p>
-                            <p className="text-custom-green-60">
-                              {user.speciality}
-                            </p>
-                          </div>
-                        </div>
-                        <input
-                          type="checkbox"
-                          className="checkbox checkbox-success"
-                          // onChange={() => handleUserSelect(user.id)}
-                          // checked={selectedUsers.includes(user.id)}
-                        />
-                      </label>
-                    </div>
-                  ))}
-                </div>
-                <div className="px-4 pb-4">
-                  <button
-                    type="submit"
-                    className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
-                  >
-                    Save
-                  </button>
-                </div>
-              </form>
+        <Toaster />
+        <div className="modal-box p-0">
+          {/* Modal header Start */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Add Staff for this Task
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
             </div>
-            <form method="dialog" className="modal-backdrop">
-              <button>close</button>
-            </form>
-          </dialog>
+          </form>
+          {/* Modal header End */}
+
+          <form action="">
+            <div className="p-4">
+              {activeProjectUsersInfo.map((user) => (
+                <div
+                  key={user.id}
+                  // className={`form-control rounded-md px-1 my-2 ${
+                  //   selectedUsers.includes(user.id)
+                  //     ? "bg-custom-green-15"
+                  //     : "bg-transparent"
+                  // }`}
+                >
+                  <label className="cursor-pointer label">
+                    <div className="flex">
+                      <img
+                        src={user.image || noneuser}
+                        alt=""
+                        className="w-[45px] h-[45px] object-cover rounded-full"
+                      />
+                      <div className="ml-4">
+                        <p className="font-bold text-custom-green-dark">
+                          {user.first_name} {user.last_name}
+                        </p>
+                        <p className="text-custom-green-60">
+                          {user.speciality}
+                        </p>
+                      </div>
+                    </div>
+                    <input
+                      type="checkbox"
+                      className="checkbox checkbox-success"
+                      // onChange={() => handleUserSelect(user.id)}
+                      // checked={selectedUsers.includes(user.id)}
+                    />
+                  </label>
+                </div>
+              ))}
+            </div>
+            <div className="px-4 pb-4">
+              <button
+                type="submit"
+                className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
     </>
   );
 };

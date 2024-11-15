@@ -165,7 +165,7 @@ function TaskManagement() {
         .get(`projects/${activeProjectId}/tasks/`, { headers })
         .then((response) => {
           const tasks = response.data;
-          console.log(response.data)
+          // console.log(response.data)
           const updatedBoard = {
             to_do: { ...columns.to_do, items: [] },
             in_progress: { ...columns.in_progress, items: [] },
@@ -195,7 +195,7 @@ function TaskManagement() {
   useEffect(() => { getActiveProjectTasks(); }, [activeProject]);
   // ===========> Get ActiveProjectTasks List END <=========== //
 
-  useEffect(() => { console.log(columns); }, [columns]);
+  // useEffect(() => { console.log(columns); }, [columns]);
 
   return (
     <>
@@ -628,7 +628,7 @@ function TaskManagement() {
                                 {/* <div className="w-full border border-dashed"></div> */}
 
                                 <div className="w-full border border-red-700">
-                                  <TaskFoother task={task} membersInfo={membersInfo} />
+                                  <TaskFoother selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
                                 </div>
                               </div>
                             </>
