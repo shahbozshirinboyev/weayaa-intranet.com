@@ -1,13 +1,49 @@
+import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
+import http from "../services/http";
 
-const TaskFoother = ({ task, membersInfo, selectedUsers }) => {
+const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
   const activeProjectUsersInfo = membersInfo.filter((member) =>
     selectedUsers.includes(member.id)
   );
   const activeTaskUsersInfo = activeProjectUsersInfo.filter((member) =>
     task.members.includes(member.id)
   );
+  const [selectedUsersForTask, setSelectedUsersForTask] = useState( task.members ? task.members : [] );
+
+  const handleUserSelectForTask = (userId) => {
+    setSelectedUsersForTask((prevSelected) =>
+      prevSelected.includes(userId)
+        ? prevSelected.filter((id) => id !== userId)
+        : [...prevSelected, userId]
+    );
+  };
+
+  const submitSelectedUsersForTask = (e) => {
+    e.preventDefault();
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
+    toast.promise(
+      http.patch(
+        `projects/tasks/${task.id}/`,
+        { members: selectedUsersForTask },
+        { headers }
+      ),
+      {
+        loading: "Adding ...",
+        success: (response) => {
+          console.log(response.data);
+          getProjectsList();
+          document.getElementById("addusersfortask").close();
+          return <b>Add :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Error :(</b>;
+        },
+      }
+    );
+  };
 
   console.log(activeProjectUsersInfo);
 
@@ -154,16 +190,16 @@ const TaskFoother = ({ task, membersInfo, selectedUsers }) => {
           </form>
           {/* Modal header End */}
 
-          <form action="">
+          <form action="" onSubmit={submitSelectedUsersForTask}>
             <div className="p-4">
               {activeProjectUsersInfo.map((user) => (
                 <div
                   key={user.id}
-                  // className={`form-control rounded-md px-1 my-2 ${
-                  //   selectedUsers.includes(user.id)
-                  //     ? "bg-custom-green-15"
-                  //     : "bg-transparent"
-                  // }`}
+                  className={`form-control rounded-md px-1 my-2 ${
+                    selectedUsersForTask.includes(user.id)
+                      ? "bg-custom-green-15"
+                      : "bg-transparent"
+                  }`}
                 >
                   <label className="cursor-pointer label">
                     <div className="flex">
@@ -184,8 +220,8 @@ const TaskFoother = ({ task, membersInfo, selectedUsers }) => {
                     <input
                       type="checkbox"
                       className="checkbox checkbox-success"
-                      // onChange={() => handleUserSelect(user.id)}
-                      // checked={selectedUsers.includes(user.id)}
+                      onChange={() => handleUserSelectForTask(user.id)}
+                      checked={selectedUsersForTask.includes(user.id)}
                     />
                   </label>
                 </div>

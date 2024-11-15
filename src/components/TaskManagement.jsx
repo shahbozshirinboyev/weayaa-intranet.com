@@ -628,7 +628,7 @@ function TaskManagement() {
                                 {/* <div className="w-full border border-dashed"></div> */}
 
                                 <div className="w-full border border-red-700">
-                                  <TaskFoother selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
+                                  <TaskFoother getProjectsList={getProjectsList} selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
                                 </div>
                               </div>
                             </>
