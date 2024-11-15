@@ -352,10 +352,10 @@ function TaskManagement() {
             <div className="w-0.5 h-6 rounded-full bg-custom-green-60 mx-1"></div>
 
             <button
-              className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center right-3 p-2"
+              className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3 p-2"
               onClick={() => document.getElementById("adduser").showModal()}
             >
-              <i className="bi bi-plus text-[24px] text-custom-green-80 flex justify-center items-center"></i>
+              <i className="bi bi-plus text-[24px] flex justify-center items-center"></i>
             </button>
           </div>
 
@@ -680,7 +680,7 @@ function TaskManagement() {
                                 {/* <div className="w-full border border-dashed"></div> */}
 
                                 <div className="w-full border border-red-700">
-                                  <TaskFoother task={task} />
+                                  <TaskFoother task={task} membersInfo={membersInfo} />
                                 </div>
                               </div>
                             </>
