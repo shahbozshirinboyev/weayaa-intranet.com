@@ -52,12 +52,14 @@ export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     };
+    const sanitizedPhoneNumber = editPersonalInfo.phone_number.replace(/\s+/g, "");
+    // console.log(sanitizedPhoneNumber)
   
     // FormData obyektini yaratamiz
     const formData = new FormData();
     formData.append("first_name", editPersonalInfo.first_name);
     formData.append("last_name", editPersonalInfo.last_name);
-    formData.append("phone_number", editPersonalInfo.phone_number);
+    formData.append("phone_number", sanitizedPhoneNumber);
     formData.append("address", editPersonalInfo.address);
     formData.append("email", editPersonalInfo.email);
     formData.append("label", editPersonalInfo.label);
