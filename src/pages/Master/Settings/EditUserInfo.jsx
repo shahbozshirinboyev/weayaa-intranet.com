@@ -1,6 +1,21 @@
+import { useState, useEffect } from "react";
 import MaskedInput from "react-text-mask";
 
-export default function EditUserInfo() {
+export default function EditUserInfo({personalInfo}) {
+  const [editPersonalInfo, setEditPersonalInfo] = useState([])
+
+  useEffect(() => {
+    if (personalInfo) {
+      setEditPersonalInfo(personalInfo);
+    }
+  }, [personalInfo]);
+
+  console.log(editPersonalInfo)
+
+  const inputHandle = (e) => {
+    setEditPersonalInfo({ ...editPersonalInfo, [e.target.name]: e.target.value });
+  };
+
   return (
     <>
       <button
@@ -41,8 +56,10 @@ export default function EditUserInfo() {
                             <span className="text-red-700 font-bold">*</span>
                           </span>
                           <input
-                            name="firstName"
                             type="text"
+                            name="first_name"
+                            value={editPersonalInfo.first_name}
+                            onChange={inputHandle}
                             placeholder="Enter Staff First Name"
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                           />
@@ -55,7 +72,9 @@ export default function EditUserInfo() {
                             <span className="text-red-700 font-bold">*</span>
                           </span>
                           <input
-                            name="lastName"
+                            name="last_name"
+                            value={editPersonalInfo.last_name}
+                            onChange={inputHandle}
                             type="text"
                             placeholder="Enter Staff Last Name"
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
@@ -92,9 +111,9 @@ export default function EditUserInfo() {
                               /\d/,
                               /\d/,
                             ]}
-                            // value={state.phone}
-                            // onChange={inputHandle}
-                            name="phone"
+                            value={editPersonalInfo.phone_number}
+                            onChange={inputHandle}
+                            name="phone_number"
                             type="text"
                             placeholder="+998 (--) --- -- --"
                             // alwaysShowMask={true}
@@ -109,6 +128,8 @@ export default function EditUserInfo() {
                           </span>
                           <input
                             name="email"
+                            value={editPersonalInfo.email}
+                            onChange={inputHandle}
                             type="email"
                             placeholder="example@gmail.com"
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
@@ -125,16 +146,17 @@ export default function EditUserInfo() {
                             <span className="text-red-700 font-bold">*</span>
                           </span>
                           <select
-                            name="specialist"
-                            id=""
+                            name="speciality"
+                            value={editPersonalInfo.speciality}
+                            onChange={inputHandle}
                             placeholder="Select Specialist Stuff"
                             className="text-custom-green-dark bg-transparent transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                           >
                             <option>Select Specialist Stuff</option>
-                            <option value="coder">Coder</option>
-                            <option value="designer">Designer</option>
-                            <option value="manager">Manager</option>
-                            <option value="director">Director && Master</option>
+                            <option value="Coder">Coder</option>
+                            <option value="Designer">Designer</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Director">Director && Master</option>
                           </select>
                         </label>
                       </div>
@@ -146,8 +168,10 @@ export default function EditUserInfo() {
                           <label className="p-2 border rounded-md flex items-center">
                             <input
                               type="radio"
-                              name="workType"
+                              name="work_type"
+                              checked={editPersonalInfo.work_type === "full_time"}
                               value="full_time"
+                              onChange={inputHandle}
                               className="accent-custom-green-dark"
                             />
                             <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
@@ -157,8 +181,10 @@ export default function EditUserInfo() {
                           <label className="p-2 border rounded-md flex items-center">
                             <input
                               type="radio"
-                              name="workType"
+                              checked={editPersonalInfo.work_type === "part_time"}
+                              name="work_type"
                               value="part_time"
+                              onChange={inputHandle}
                               className="accent-custom-green-dark"
                             />
                             <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
@@ -176,8 +202,10 @@ export default function EditUserInfo() {
                             Enter Specialist Stuff
                           </span>
                           <input
-                            name="label"
                             type="text"
+                            name="label"
+                            value={editPersonalInfo.label}
+                            onChange={inputHandle}
                             placeholder="Example: 3D Designer | Frontend developer | Backend developer"
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                           />
@@ -192,7 +220,8 @@ export default function EditUserInfo() {
                         </span>
                         <textarea
                           name="address"
-                          id=""
+                          value={editPersonalInfo.address}
+                          onChange={inputHandle}
                           rows="3"
                           placeholder="Enter Staff Address here ..."
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"

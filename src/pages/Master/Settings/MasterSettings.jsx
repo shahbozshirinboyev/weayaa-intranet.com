@@ -27,33 +27,16 @@ function MasterSettings() {
 
   const getPersonalInfo = () => {
     const userId = localStorage.getItem("userId");
-    // toast.promise(
-    //   http.get(`users/staff/${userId}/`, {
-    //     headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
-    //   }),
-    //   {
-    //     loading: "Loading ...",
-    //     success: (response) => {
-    //       console.log(response.data);
-    //       setPersonalInfo(response.data);
-    //       return <b>Success :)</b>;
-    //     },
-    //     error: (error) => {
-    //       console.log(error.response.data);
-
-    //       return <b>Error :(</b>;
-    //     },
-    //   }
-    // );
     http
       .get(`users/staff/${userId}/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       })
       .then((response) => {
-        setPersonalInfo(response.data); // response dan kelgan ma'lumotlarni setPersonalInfo ga yozish
+        console.log(response.data)
+        setPersonalInfo(response.data);
       })
       .catch((error) => {
-        console.error("Get data error:", error); // Xatolik yuzaga kelgan holatda konsolga xabar chiqarish
+        console.error("Get data error:", error);
       });
   };
 
@@ -91,13 +74,13 @@ function MasterSettings() {
   };
 
   // Upload New User Profile IMG
-  const  handleFileUpload = (event) => {
+  const handleFileUpload = (event) => {
     const file = event.target.files[0]; // Tanlangan fayl
     if (file) {
       // console.log("Tanlangan fayl:", file);
       UploadNewUserImg(file);
     }
-  }
+  };
 
   const UploadNewUserImg = (file) => {
     // const userId = localStorage.getItem("userId");
@@ -132,14 +115,7 @@ function MasterSettings() {
       {/* Top Header START */}
       <div className="font-semibold bg-custom-green-10 px-[10px] py-[10px] rounded-[5px]">
         <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 justify-center items-center gap-4 text-custom-green-dark transition-all duration-300">
-          {/* <div
-                className={`w-[130px] h-[35px] bg-custom-green-dark absolute rounded-[8px] transition-all duration-300 ease-in-out transform ${
-                  smlist === "staff"
-                    ? "translate-x-[-65px]"
-                    : "translate-x-[65px]"
-                }`}
-              ></div> */}
-
+          
           <button
             onClick={() => {
               changeListToStaff("profile");
@@ -220,7 +196,11 @@ function MasterSettings() {
                 <form action="" className="inline-block">
                   <label className=" flex border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
                     <i className="bi bi-upload mr-2"></i> Upload Image
-                    <input type="file" className="hidden" onChange={handleFileUpload} />
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={handleFileUpload}
+                    />
                   </label>
                 </form>
                 {/* <button className="border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
@@ -246,7 +226,7 @@ function MasterSettings() {
             <div className="col-span-2 text-[18px] font-bold grid grid-cols-2">
               <p>Personal Information</p>
               <div className="flex justify-end">
-                <EditUserInfo />
+                <EditUserInfo personalInfo={personalInfo} />
               </div>
             </div>
 
@@ -434,18 +414,14 @@ function MasterSettings() {
         </div>
       </div>
       {/* My Payment END */}
-      {/* Delete IMG modal start */}
 
+      {/* Delete IMG modal start */}
       <dialog id="deleteUserImg" className="modal">
         <Toaster />
         <div className="modal-box">
           <h3 className="font-bold text-lg text-custom-green-dark">
             Are you sure delete your profile IMG?
           </h3>
-          {/* <p className="py-4">
-            Press ESC key or click the button below to close
-          </p> */}
-
           <div className="flex justify-center items-center gap-12 py-8">
             <button
               onClick={deleteUserProfileImg}
@@ -466,6 +442,7 @@ function MasterSettings() {
         </form>
       </dialog>
       {/* Delete IMG modal end */}
+
     </>
   );
 }
