@@ -50,8 +50,70 @@ function TaskManagement() {
 
   // Delete Project function
   const [selectProjectInfo, setSelectProjectInfo] = useState([]);
+
   const handleDeleteProject = (id) => {
     console.log(id);
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
+    toast.promise(http.delete(`projects/${id}/`, { headers }), {
+      loading: "Deleting ...",
+      success: (response) => {
+        console.log(response.data);
+        getProjectsList();
+        document.getElementById("deleteProjectModal").close();
+        return <b>Delete :)</b>;
+      },
+      error: (error) => {
+        console.log(error.response.data);
+        return <b>Error :(</b>;
+      },
+    });
+  };
+  const [editProjectInfo, setEditProjectInfo] = useState({
+    name: "",
+    deadline: "",
+  });
+  useEffect(() => {
+    setEditProjectInfo({
+      name: selectProjectInfo.name || "",
+      deadline: selectProjectInfo.deadline || "",
+    });
+  }, [selectProjectInfo]);
+  const inputHandleProjectInfo = (e) => {
+    setEditProjectInfo({
+      ...editProjectInfo,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const ProjectInfoEdit = (e) => {
+    e.preventDefault();
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
+    toast.promise(
+      http.patch(
+        `projects/${selectProjectInfo.id}/`,
+        {
+          name: editProjectInfo.name,
+          deadline: editProjectInfo.deadline,
+        },
+        { headers }
+      ),
+      {
+        loading: "Changing ...",
+        success: (response) => {
+          // console.log(response.data);
+          getProjectsList();
+          document.getElementById("edit_project").close();
+          return <b>Done :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Error :(</b>;
+        },
+      }
+    );
   };
 
   const handleChange = (e) => {
@@ -280,7 +342,13 @@ function TaskManagement() {
                         &nbsp; {project.name}
                       </button>
                     </li>
-                    <button className="border border-custom-green-30 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300">
+                    <button
+                      onClick={() => {
+                        document.getElementById("edit_project").showModal();
+                        setSelectProjectInfo(project);
+                      }}
+                      className="border border-custom-green-30 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+                    >
                       <i className="bi bi-pencil flex justify-center items-center"></i>
                     </button>
                     <button
@@ -728,6 +796,70 @@ function TaskManagement() {
             </button>
           </div>
         </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
+      <dialog id="edit_project" className="modal text-custom-green-dark">
+        <Toaster />
+
+        <div className="modal-box p-0">
+          {/* Modal header Start */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Edit Project Info
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
+            </div>
+          </form>
+          {/* Modal header End */}
+
+          <div className="p-4">
+            <form onSubmit={ProjectInfoEdit} className="text-custom-green-dark">
+              <div className="mt-0">
+                <label className="w-full mt-2">
+                  <span className="">Project name:</span>
+                  <input
+                    type="text"
+                    name="name"
+                    value={editProjectInfo.name}
+                    onChange={inputHandleProjectInfo}
+                    placeholder="Title type here"
+                    className="border border-custom-green-30 px-3 py-2 w-full placeholder:text-custom-green-60 rounded-md"
+                  />
+                </label>
+              </div>
+              <div className="mt-2">
+                <label className="w-full">
+                  <span className="">Project deadline:</span>
+                  <input
+                    type="date"
+                    name="deadline"
+                    value={editProjectInfo.deadline}
+                    onChange={inputHandleProjectInfo}
+                    placeholder="Title type here"
+                    className="border border-custom-green-30 px-3 py-2 w-full placeholder:text-custom-green-60 rounded-md"
+                  />
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full mt-6 bg-custom-green-15 font-bold text-custom-green-dark py-2 rounded-[10px] hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+              >
+                Save
+              </button>
+            </form>
+          </div>
+        </div>
+
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
         </form>
