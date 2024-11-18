@@ -32,7 +32,6 @@ function MasterSettings() {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       })
       .then((response) => {
-        console.log(response.data)
         setPersonalInfo(response.data);
       })
       .catch((error) => {

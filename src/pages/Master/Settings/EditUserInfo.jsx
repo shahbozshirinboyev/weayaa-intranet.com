@@ -38,8 +38,6 @@ export default function EditUserInfo({ personalInfo }) {
     }
   }, [personalInfo]);
 
-  console.log(editPersonalInfo);
-
   const inputHandle = (e) => {
     setEditPersonalInfo({
       ...editPersonalInfo,
