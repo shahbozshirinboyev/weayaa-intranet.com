@@ -336,7 +336,7 @@ function TaskManagement() {
                       }}
                       className="flex-auto"
                     >
-                      <button className="whitespace-nowrap hover:bg-custom-green-15">
+                      <button className={`whitespace-nowrap border border-custom-green-10 hover:bg-custom-green-15 my-[2px] ${project.id === activeProject.id ? "bg-custom-green-15" :""}`}>
                         {" "}
                         <i className="bi bi-folder flex justify-center items-center"></i>{" "}
                         &nbsp; {project.name}
@@ -347,7 +347,7 @@ function TaskManagement() {
                         document.getElementById("edit_project").showModal();
                         setSelectProjectInfo(project);
                       }}
-                      className="border border-custom-green-30 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+                      className="border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300"
                     >
                       <i className="bi bi-pencil flex justify-center items-center"></i>
                     </button>
@@ -358,7 +358,7 @@ function TaskManagement() {
                           .showModal();
                         setSelectProjectInfo(project);
                       }}
-                      className="border border-custom-green-30 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300"
+                      className="border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300"
                     >
                       <i className="bi bi-trash flex justify-center items-center"></i>
                     </button>
