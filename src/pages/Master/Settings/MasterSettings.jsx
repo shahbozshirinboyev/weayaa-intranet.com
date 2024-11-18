@@ -114,7 +114,6 @@ function MasterSettings() {
       {/* Top Header START */}
       <div className="font-semibold bg-custom-green-10 px-[10px] py-[10px] rounded-[5px]">
         <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 justify-center items-center gap-4 text-custom-green-dark transition-all duration-300">
-          
           <button
             onClick={() => {
               changeListToStaff("profile");
@@ -418,19 +417,19 @@ function MasterSettings() {
       <dialog id="deleteUserImg" className="modal">
         <Toaster />
         <div className="modal-box">
-          <h3 className="font-bold text-lg text-custom-green-dark">
+          <h3 className="font-bold text-lg text-custom-green-dark text-center">
             Are you sure delete your profile IMG?
           </h3>
-          <div className="flex justify-center items-center gap-12 py-8">
+          <div className="flex justify-center items-center gap-12 pt-10">
             <button
               onClick={deleteUserProfileImg}
-              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:bg-red-700 hover:text-white border-transparent"
+              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-red-700 hover:text-white border-transparent"
             >
               Yes
             </button>
             <button
               onClick={() => document.getElementById("deleteUserImg").close()}
-              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:bg-custom-green-dark hover:text-white border-transparent"
+              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-custom-green-dark hover:text-white border-transparent"
             >
               No
             </button>
@@ -441,7 +440,6 @@ function MasterSettings() {
         </form>
       </dialog>
       {/* Delete IMG modal end */}
-
     </>
   );
 }

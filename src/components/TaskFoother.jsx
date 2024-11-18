@@ -45,7 +45,7 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
     );
   };
 
-  console.log(activeProjectUsersInfo);
+  // console.log(activeProjectUsersInfo);
 
   return (
     <>

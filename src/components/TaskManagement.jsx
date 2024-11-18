@@ -14,37 +14,56 @@ import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 
 function TaskManagement() {
-
   // line variables start
   const [projectsList, setProjectsList] = useState([]);
-  const [activeProject, setActiveProject] = useState( JSON.parse(localStorage.getItem("activeProject")));
-  const [formData, setFormData] = useState({ projectName: "", projectDeadline: "", });
+  const [activeProject, setActiveProject] = useState(
+    JSON.parse(localStorage.getItem("activeProject"))
+  );
+  const [formData, setFormData] = useState({
+    projectName: "",
+    projectDeadline: "",
+  });
   const [membersInfo, setMembersInfo] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState( activeProject.members ? activeProject.members : [] );
+  const [selectedUsers, setSelectedUsers] = useState(
+    activeProject.members ? activeProject.members : []
+  );
   // line variables end
 
   const getProjectsList = () => {
-    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`,};
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
     http
       .get(`projects/`, { headers })
       .then((response) => {
         setProjectsList(response.data);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.log(error.response.data);
       });
   };
 
-  useEffect(() => { getProjectsList(); }, []);
+  useEffect(() => {
+    getProjectsList();
+  }, []);
+
+  // Delete Project function
+  const [selectProjectInfo, setSelectProjectInfo] = useState([]);
+  const handleDeleteProject = (id) => {
+    console.log(id);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value, }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const createProject = (e) => {
     e.preventDefault();
-    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`,};
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
     toast.promise(
       http.post(
         `projects/`,
@@ -59,7 +78,7 @@ function TaskManagement() {
         success: (response) => {
           console.log(response.data);
           getProjectsList();
-          setFormData({ projectName: "", projectDeadline: "", });
+          setFormData({ projectName: "", projectDeadline: "" });
           document.getElementById("new_project").close();
           return <b>Add :)</b>;
         },
@@ -72,12 +91,16 @@ function TaskManagement() {
   };
 
   useEffect(() => {
-    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`,};
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
     http
       .get("users/staff/", { headers })
       .then((response) => {
         const results = response.data.results;
-        const staffMembers = results.filter(member => member.user_type === "staff");
+        const staffMembers = results.filter(
+          (member) => member.user_type === "staff"
+        );
         setMembersInfo(staffMembers);
       })
       .catch((error) => {
@@ -96,7 +119,9 @@ function TaskManagement() {
 
   const submitSelectedUsers = (e) => {
     e.preventDefault();
-    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
     toast.promise(
       http.patch(
         `projects/${activeProject.id}/`,
@@ -120,7 +145,9 @@ function TaskManagement() {
   };
 
   useEffect(() => {
-    const activeProjectCheck = JSON.parse( localStorage.getItem("activeProject"));
+    const activeProjectCheck = JSON.parse(
+      localStorage.getItem("activeProject")
+    );
     const projectId = activeProjectCheck ? activeProjectCheck.id : null;
     if (projectId !== null) {
       const activeProject = projectsList.find(
@@ -132,7 +159,6 @@ function TaskManagement() {
     }
   }, [projectsList]);
   // line functios end
-
 
   // ===========> Get ActiveProjectTasks List START <=========== //
   const [activeProjectTasks, setActiveProjectTasks] = useState([]);
@@ -192,7 +218,9 @@ function TaskManagement() {
     }
   };
 
-  useEffect(() => { getActiveProjectTasks(); }, [activeProject]);
+  useEffect(() => {
+    getActiveProjectTasks();
+  }, [activeProject]);
   // ===========> Get ActiveProjectTasks List END <=========== //
 
   // useEffect(() => { console.log(columns); }, [columns]);
@@ -203,7 +231,6 @@ function TaskManagement() {
       <>
         <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px]">
           <div className="h-full w-full flex items-center ml-[10px] relative">
-
             <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
               <i className="bi bi-calendar2-week font-medium"></i>
               <p className="ml-[10px]">{activeProject.deadline}</p>
@@ -235,23 +262,39 @@ function TaskManagement() {
                 </li>
                 {/* All Project list ===============> start */}
                 {projectsList.map((project) => (
-                  <li
-                    key={project.id}
-                    onClick={() => {
-                      setActiveProject(project);
-                      setSelectedUsers(project.members);
-                      localStorage.setItem(
-                        "activeProject",
-                        JSON.stringify(project)
-                      );
-                    }}
-                  >
-                    <button className="whitespace-nowrap hover:bg-custom-green-15">
-                      {" "}
-                      <i className="bi bi-folder flex justify-center items-center"></i>{" "}
-                      &nbsp; {project.name}
+                  <div className="flex" key={project.id}>
+                    <li
+                      onClick={() => {
+                        setActiveProject(project);
+                        setSelectedUsers(project.members);
+                        localStorage.setItem(
+                          "activeProject",
+                          JSON.stringify(project)
+                        );
+                      }}
+                      className="flex-auto"
+                    >
+                      <button className="whitespace-nowrap hover:bg-custom-green-15">
+                        {" "}
+                        <i className="bi bi-folder flex justify-center items-center"></i>{" "}
+                        &nbsp; {project.name}
+                      </button>
+                    </li>
+                    <button className="border border-custom-green-30 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300">
+                      <i className="bi bi-pencil flex justify-center items-center"></i>
                     </button>
-                  </li>
+                    <button
+                      onClick={() => {
+                        document
+                          .getElementById("deleteProjectModal")
+                          .showModal();
+                        setSelectProjectInfo(project);
+                      }}
+                      className="border border-custom-green-30 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300"
+                    >
+                      <i className="bi bi-trash flex justify-center items-center"></i>
+                    </button>
+                  </div>
                 ))}
                 {/* All Project list ===============> end */}
               </ul>
@@ -535,7 +578,9 @@ function TaskManagement() {
           </div>
         </>
       ) : (
-        <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)} >
+        <DragDropContext
+          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+        >
           <div className="grid grid-cols-4 px-4 bg-custom-green-10 rounded-[15px] gap-4">
             {Object.entries(columns).map(([columnId, column], index) => (
               <div className="flex flex-col gap-2" key={columnId}>
@@ -553,35 +598,45 @@ function TaskManagement() {
                         </div>
                       </div>
 
-                      {index === 0 && <CreateTask getActiveProjectTasks={getActiveProjectTasks} />}
+                      {index === 0 && (
+                        <CreateTask
+                          getActiveProjectTasks={getActiveProjectTasks}
+                        />
+                      )}
 
-                      {column.items && column.items.map((task, index) => (
-                        <Draggable
-                          key={task.id.toString()}
-                          draggableId={task.id.toString()}
-                          index={index}
-                        >
-                          {(provided) => (
-                            // Task START
-                            <>
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-3 items-start shadow-sm rounded-xl px-3 py-4"
-                              >
-                                <div className="w-full">
-                                <TaskHeader task={task} getActiveProjectTasks={getActiveProjectTasks} />
-                                </div>
+                      {column.items &&
+                        column.items.map((task, index) => (
+                          <Draggable
+                            key={task.id.toString()}
+                            draggableId={task.id.toString()}
+                            index={index}
+                          >
+                            {(provided) => (
+                              // Task START
+                              <>
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-3 items-start shadow-sm rounded-xl px-3 py-4"
+                                >
+                                  <div className="w-full">
+                                    <TaskHeader
+                                      task={task}
+                                      getActiveProjectTasks={
+                                        getActiveProjectTasks
+                                      }
+                                    />
+                                  </div>
 
-                                {task.file && (
-                                  <img
-                                    src={task.file}
-                                    alt={task.id}
-                                    className="w-full h-[170px] rounded-lg object-cover"
-                                  />
-                                )}
-                                {/* <div className="flex items-center gap-2">
+                                  {task.file && (
+                                    <img
+                                      src={task.file}
+                                      alt={task.id}
+                                      className="w-full h-[170px] rounded-lg object-cover"
+                                    />
+                                  )}
+                                  {/* <div className="flex items-center gap-2">
                                   {task.tags.map((tag) => (
                                     <span
                                       key={tag.title}
@@ -595,16 +650,16 @@ function TaskManagement() {
                                     </span>
                                   ))}
                                 </div> */}
-                                <div className="w-full flex items-start flex-col gap-0">
-                                  <span className="text-[15.5px] font-medium text-[#555]">
-                                    {task.name}
-                                  </span>
-                                  <span className="text-[13.5px] text-gray-500">
-                                    {task.description}
-                                  </span>
-                                </div>
-                                {/* <div className="w-full border border-dashed"></div> */}
-                                {/* <div className="w-full flex items-center justify-between">
+                                  <div className="w-full flex items-start flex-col gap-0">
+                                    <span className="text-[15.5px] font-medium text-[#555]">
+                                      {task.name}
+                                    </span>
+                                    <span className="text-[13.5px] text-gray-500">
+                                      {task.description}
+                                    </span>
+                                  </div>
+                                  {/* <div className="w-full border border-dashed"></div> */}
+                                  {/* <div className="w-full flex items-center justify-between">
                                   <div className="flex items-center gap-1">
                                     <i className="bi bi-clock"></i>
                                     <span className="text-[13px] text-gray-700">
@@ -622,17 +677,22 @@ function TaskManagement() {
                                     }`}
                                   ></div>
                                 </div> */}
-                                {/* <div className="w-full border border-dashed"></div> */}
+                                  {/* <div className="w-full border border-dashed"></div> */}
 
-                                <div className="w-full">
-                                  <TaskFoother getProjectsList={getProjectsList} selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
+                                  <div className="w-full">
+                                    <TaskFoother
+                                      getProjectsList={getProjectsList}
+                                      selectedUsers={selectedUsers}
+                                      task={task}
+                                      membersInfo={membersInfo}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                            </>
-                            // Task END
-                          )}
-                        </Draggable>
-                      ))}
+                              </>
+                              // Task END
+                            )}
+                          </Draggable>
+                        ))}
                       {provided.placeholder}
                     </div>
                   )}
@@ -642,6 +702,36 @@ function TaskManagement() {
           </div>
         </DragDropContext>
       )}
+
+      <dialog id="deleteProjectModal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg text-custom-green-dark text-center">
+            Are you sure delete{" "}
+            <span className="text-red-700">{selectProjectInfo.name}</span>?
+          </h3>
+          <div className="flex justify-center items-center gap-12 pt-10">
+            <button
+              onClick={() => {
+                handleDeleteProject(selectProjectInfo.id);
+              }}
+              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-red-700 hover:text-white border-transparent"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() =>
+                document.getElementById("deleteProjectModal").close()
+              }
+              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-custom-green-dark hover:text-white border-transparent"
+            >
+              No
+            </button>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
     </>
   );
 }
