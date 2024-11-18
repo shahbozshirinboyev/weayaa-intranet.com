@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import MaskedInput from "react-text-mask";
+import http from "../../../services/http";
 
-export default function EditUserInfo({ personalInfo }) {
+export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
   const [editPersonalInfo, setEditPersonalInfo] = useState({
     address: "",
     email: "",
@@ -44,6 +46,59 @@ export default function EditUserInfo({ personalInfo }) {
       [e.target.name]: e.target.value,
     });
   };
+  const EditPersonalInformation = (e) => {
+    e.preventDefault();
+  
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
+  
+    // FormData obyektini yaratamiz
+    const formData = new FormData();
+    formData.append("first_name", editPersonalInfo.first_name);
+    formData.append("last_name", editPersonalInfo.last_name);
+    formData.append("phone_number", editPersonalInfo.phone_number);
+    formData.append("address", editPersonalInfo.address);
+    formData.append("email", editPersonalInfo.email);
+    formData.append("label", editPersonalInfo.label);
+    formData.append("speciality", editPersonalInfo.speciality);
+    formData.append("work_type", editPersonalInfo.work_type);
+  
+    toast.promise(
+      http.patch(`users/profile/`, formData, { headers }),
+      {
+        loading: "Edit Your Personal Info ...",
+        success: (response) => {
+          // console.log(response.data);
+          document.getElementById("editPersonalInfo").close();
+          getPersonalInfo();
+          setEditPersonalInfo({
+            address: "",
+            email: "",
+            first_name: "",
+            id: "",
+            image: "",
+            label: "",
+            last_name: "",
+            phone_number: "",
+            speciality: "",
+            user_type: "",
+            weayaa_id: "",
+            work_days: "",
+            work_type: "",
+          })
+          return <b>Done :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Error :(</b>;
+        },
+      }
+    );
+  };
+  
+  
+  
 
   return (
     <>
@@ -56,6 +111,7 @@ export default function EditUserInfo({ personalInfo }) {
       </button>
 
       <dialog id="editPersonalInfo" className="modal">
+        <Toaster />
         <div className="modal-box max-w-3xl p-0">
           {/* Modal header Start */}
           <form
@@ -74,7 +130,7 @@ export default function EditUserInfo({ personalInfo }) {
           {/* Modal header End */}
           <section className="text-[14px]">
             <div className="p-4 md:p-5">
-              <form className="space-y-4" action="#">
+              <form className="space-y-4" action="#" onSubmit={EditPersonalInformation}>
                 <div>
                   <div className="grid grid-cols-1 mt-2">
                     <div className="grid grid-cols-2 gap-2 mt-2">

@@ -224,7 +224,7 @@ function MasterSettings() {
             <div className="col-span-2 text-[18px] font-bold grid grid-cols-2">
               <p>Personal Information</p>
               <div className="flex justify-end">
-                <EditUserInfo personalInfo={personalInfo} />
+                <EditUserInfo personalInfo={personalInfo} getPersonalInfo={getPersonalInfo} />
               </div>
             </div>
 
