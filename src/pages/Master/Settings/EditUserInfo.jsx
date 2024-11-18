@@ -1,19 +1,50 @@
 import { useState, useEffect } from "react";
 import MaskedInput from "react-text-mask";
 
-export default function EditUserInfo({personalInfo}) {
-  const [editPersonalInfo, setEditPersonalInfo] = useState([])
+export default function EditUserInfo({ personalInfo }) {
+  const [editPersonalInfo, setEditPersonalInfo] = useState({
+    address: "",
+    email: "",
+    first_name: "",
+    id: "",
+    image: "",
+    label: "",
+    last_name: "",
+    phone_number: "",
+    speciality: "",
+    user_type: "",
+    weayaa_id: "",
+    work_days: "",
+    work_type: "",
+  });
 
   useEffect(() => {
     if (personalInfo) {
-      setEditPersonalInfo(personalInfo);
+      setEditPersonalInfo({
+        address: personalInfo.address || "",
+        email: personalInfo.email || "",
+        first_name: personalInfo.first_name || "",
+        id: personalInfo.id || "",
+        image: personalInfo.image || "",
+        label: personalInfo.label || "",
+        last_name: personalInfo.last_name || "",
+        phone_number: personalInfo.phone_number || "",
+        speciality: personalInfo.speciality || "",
+        user_type: personalInfo.user_type || "",
+        weayaa_id: personalInfo.weayaa_id || "",
+        work_days: personalInfo.work_days || "",
+        work_type: personalInfo.work_type || "",
+      });
     }
   }, [personalInfo]);
 
-  console.log(editPersonalInfo)
+  console.log(editPersonalInfo);
 
   const inputHandle = (e) => {
-    setEditPersonalInfo({ ...editPersonalInfo, [e.target.name]: e.target.value });
+    setEditPersonalInfo({
+      ...editPersonalInfo,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
@@ -38,7 +69,7 @@ export default function EditUserInfo({personalInfo}) {
             </span>
             <div className="text-end">
               <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-              <i className="bi bi-x-lg flex justify-center items-center"></i>
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
               </button>
             </div>
           </form>
@@ -169,7 +200,9 @@ export default function EditUserInfo({personalInfo}) {
                             <input
                               type="radio"
                               name="work_type"
-                              checked={editPersonalInfo.work_type === "full_time"}
+                              checked={
+                                editPersonalInfo.work_type === "full_time"
+                              }
                               value="full_time"
                               onChange={inputHandle}
                               className="accent-custom-green-dark"
@@ -181,7 +214,9 @@ export default function EditUserInfo({personalInfo}) {
                           <label className="p-2 border rounded-md flex items-center">
                             <input
                               type="radio"
-                              checked={editPersonalInfo.work_type === "part_time"}
+                              checked={
+                                editPersonalInfo.work_type === "part_time"
+                              }
                               name="work_type"
                               value="part_time"
                               onChange={inputHandle}
