@@ -246,6 +246,11 @@ function TaskManagement() {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     };
+     // `activeProject` mavjudligini tekshirish
+  if (!activeProject || !activeProject.id) {
+    // console.error("Active project is not selected or invalid.");
+    return; // Agar `activeProject` noto'g'ri bo'lsa, funksiyani to'xtatish
+  }
     const activeProjectId = activeProject ? activeProject.id : null;
 
     if (activeProjectId !== null) {
