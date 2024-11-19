@@ -4,7 +4,7 @@ import noneuser from "/img/noneuser.png";
 import http from "../services/http";
 
 const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
-  console.log(selectedUsers)
+  console.log(selectedUsers);
   const activeProjectUsersInfo = membersInfo.filter((member) =>
     selectedUsers.includes(member.id)
   );
@@ -217,62 +217,67 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
           </form>
           {/* Modal header End */}
 
-          {selectedUsers.length !== 0 && <form action="" onSubmit={submitSelectedUsersForTask}>
-            <div className="p-4">
-              {activeProjectUsersInfo.map((user) => (
-                <div
-                  key={user.id}
-                  className={`form-control rounded-md px-1 my-2 ${
-                    selectedUsersForTask.includes(user.id)
-                      ? "bg-custom-green-15"
-                      : "bg-transparent"
-                  }`}
-                >
-                  <label className="cursor-pointer label">
-                    <div className="flex">
-                      <img
-                        src={user.image || noneuser}
-                        alt=""
-                        className="w-[45px] h-[45px] object-cover rounded-full"
-                      />
-                      <div className="ml-4">
-                        <p className="font-bold text-custom-green-dark">
-                          {user.first_name} {user.last_name}
-                        </p>
-                        <p className="text-custom-green-60">
-                          {user.speciality}
-                        </p>
+          {selectedUsers.length !== 0 ? (
+            <form action="" onSubmit={submitSelectedUsersForTask}>
+              <div className="p-4">
+                {activeProjectUsersInfo.map((user) => (
+                  <div
+                    key={user.id}
+                    className={`form-control rounded-md px-1 my-2 ${
+                      selectedUsersForTask.includes(user.id)
+                        ? "bg-custom-green-15"
+                        : "bg-transparent"
+                    }`}
+                  >
+                    <label className="cursor-pointer label">
+                      <div className="flex">
+                        <img
+                          src={user.image || noneuser}
+                          alt=""
+                          className="w-[45px] h-[45px] object-cover rounded-full"
+                        />
+                        <div className="ml-4">
+                          <p className="font-bold text-custom-green-dark">
+                            {user.first_name} {user.last_name}
+                          </p>
+                          <p className="text-custom-green-60">
+                            {user.speciality}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <input
-                      type="checkbox"
-                      className="checkbox border-custom-green-80 [--chkbg:theme(colors.custom-green-dark)] [--chkfg:white] checked:border-border-custom-green-dark"
-                      onChange={() => handleUserSelectForTask(user.id)}
-                      checked={selectedUsersForTask.includes(user.id)}
-                    />
-                  </label>
-                </div>
-              ))}
-            </div>
-            <div className="px-4 pb-4">
-              <button
-                type="submit"
-                className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
-              >
-                Save
-              </button>
-            </div>
-          </form>}
-
-          {selectedUsers.length === 0 && <div className="grid grid-cols-1 text-center p-10 text-custom-green-80 select-none">
-                    <i className="bi bi-people text-[35px]"></i>
-                    <p className="md:text-lg">
-                    No staff has been added for this Project.
-                    </p>
-                    <p className="text-[12px] md:text-[14px] text-red-700">First add staffs to the Project, then you can assign them to the task.</p>
+                      <input
+                        type="checkbox"
+                        className="checkbox border-custom-green-80 [--chkbg:theme(colors.custom-green-dark)] [--chkfg:white] checked:border-border-custom-green-dark"
+                        onChange={() => handleUserSelectForTask(user.id)}
+                        checked={selectedUsersForTask.includes(user.id)}
+                      />
+                    </label>
                   </div>
-}
-
+                ))}
+              </div>
+              <div className="px-4 pb-4">
+                <button
+                  type="submit"
+                  className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          ) :
+          (
+            <div className="grid grid-cols-1 text-center p-10 text-custom-green-80 select-none">
+            <i className="bi bi-people text-[35px]"></i>
+            <p className="md:text-lg">
+              No staff has been added for this Project.
+            </p>
+            <p className="text-[12px] md:text-[14px] text-red-700">
+              First add staffs to the Project, then you can assign them to the
+              task.
+            </p>
+          </div>
+          )
+        }
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
