@@ -25,9 +25,8 @@ function StaffSettings() {
   const [personalInfo, setPersonalInfo] = useState([]);
 
   const getPersonalInfo = () => {
-    const userId = localStorage.getItem("userId");
     http
-      .get(`users/staff/${userId}/`, {
+      .get(`users/profile/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       })
       .then((response) => {
@@ -44,12 +43,11 @@ function StaffSettings() {
 
   // Delete User Profile IMG
   const deleteUserProfileImg = () => {
-    // const userId = localStorage.getItem("userId");
     const formData = new FormData();
     formData.append("image", ""); // Bo'sh qiymatni image maydoniga qo'shish
 
     toast.promise(
-      http.patch(`users/staff/${localStorage.getItem("userId")}/`, formData, {
+      http.patch(`users/profile/`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access")}`,
         },
@@ -86,7 +84,7 @@ function StaffSettings() {
     formData.append("image", file); // Bo'sh qiymatni image maydoniga qo'shish
 
     toast.promise(
-      http.patch(`users/staff/${localStorage.getItem("userId")}/`, formData, {
+      http.patch(`users/profile/`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access")}`,
         },
