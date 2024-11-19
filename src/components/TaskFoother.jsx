@@ -4,7 +4,7 @@ import noneuser from "/img/noneuser.png";
 import http from "../services/http";
 
 const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
-  console.log(selectedUsers);
+  const userType = localStorage.getItem("userType")
   const activeProjectUsersInfo = membersInfo.filter((member) =>
     selectedUsers.includes(member.id)
   );
@@ -84,7 +84,7 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
                 />
               ))}
           </div>
-          {activeTaskUsersInfo.length !== 0 && (
+          {activeTaskUsersInfo.length !== 0 && userType !== "staff" && (
             <div className="w-0.5 rounded-full bg-custom-green-60 mx-1.5 my-[5px]"></div>
           )}
 
@@ -92,7 +92,7 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
             onClick={() =>
               document.getElementById("addusersfortask").showModal()
             }
-            className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3"
+            className={`w-8 h-8 ${ userType === "staff" ? "hidden" : ""} bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3`}
           >
             <i className="bi bi-plus flex text-[24px] justify-center items-center"></i>
           </button>

@@ -7,6 +7,7 @@ import http from "../services/http";
 const TaskHeader = ({ task, getActiveProjectTasks }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const userType = localStorage.getItem("userType")
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -84,7 +85,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                   onClick={() => {
                     deleteTask(task.id);
                   }}
-                  className="hover:bg-red-700 hover:text-white"
+                  className={`hover:bg-red-700 hover:text-white ${ userType === "staff" ? "hidden" : "" }`}
                 >
                   <i className="bi bi-trash flex justify-center items-center"></i>{" "}
                   Delete

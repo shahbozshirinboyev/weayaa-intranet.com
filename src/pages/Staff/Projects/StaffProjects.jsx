@@ -1,6 +1,10 @@
+import TaskManagement from "../../../components/TaskManagement";
+
 function StaffProjects() {
   return (
-    <div>StaffProjects - Coming Soon ...</div>
+    <>
+      <TaskManagement />
+    </>
   )
 }
 

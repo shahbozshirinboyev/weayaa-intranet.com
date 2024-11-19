@@ -14,7 +14,7 @@ import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 
 function TaskManagement() {
-  // line variables start
+  const userType = localStorage.getItem("userType")
   const [projectsList, setProjectsList] = useState([]);
   const [activeProject, setActiveProject] = useState(
     JSON.parse(localStorage.getItem("activeProject"))
@@ -322,7 +322,7 @@ function TaskManagement() {
                   onClick={() =>
                     document.getElementById("new_project").showModal()
                   }
-                  className="bg-custom-green-15 rounded-[10px] mb-[10px] text-custom-green-dark font-semibold hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+                  className={`${ userType === "staff" ? "hidden" : ""} bg-custom-green-15 rounded-[10px] mb-[10px] text-custom-green-dark font-semibold hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
                 >
                   <button>
                     <i className="bi bi-plus-lg flex justify-center items-center"></i>{" "}
@@ -360,7 +360,7 @@ function TaskManagement() {
                         document.getElementById("edit_project").showModal();
                         setSelectProjectInfo(project);
                       }}
-                      className="border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+                      className={`${ userType === "staff" ? "hidden" : ""} border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
                     >
                       <i className="bi bi-pencil flex justify-center items-center"></i>
                     </button>
@@ -371,7 +371,7 @@ function TaskManagement() {
                           .showModal();
                         setSelectProjectInfo(project);
                       }}
-                      className="border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300"
+                      className={`${ userType === "staff" ? "hidden" : ""} border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
                     >
                       <i className="bi bi-trash flex justify-center items-center"></i>
                     </button>
@@ -409,11 +409,11 @@ function TaskManagement() {
               </div>
             )}
 
-            {activeProject.members && activeProject.members.length !== 0 && (
+            {activeProject.members && activeProject.members.length !== 0 && userType !== "staff" && (
               <div className="w-0.5 h-6 rounded-full bg-custom-green-60 mx-1"></div>
             )}
 
-            {activeProject.name && (
+            {activeProject.members && activeProject.members.length !== 0 && userType !== "staff" && (
               <button
                 className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3 p-2"
                 onClick={() => document.getElementById("adduser").showModal()}
@@ -640,12 +640,12 @@ function TaskManagement() {
       {activeProject.length === 0 ? (
         <>
           <div className="h-full grid grid-cols-1 justify-center items-center text-custom-green-dark">
-            <p className="text-center text-2xl">Please, select project!</p>
+            <p className={`text-center text-2xl ${ userType === "staff" ? "py-12" : ""}`}>Please, select project!</p>
 
             <div className="flex flex-wrap justify-center items-center px-12 gap-4">
               {projectsList.map((project) => (
                 <div
-                  className="flex border border-custom-green-10 px-2 justify-center items-center rounded-lg hover:bg-custom-green-15"
+                  className={`flex border border-custom-green-10 px-2 ${ userType === "staff" ? "py-2" : "py-0"} justify-center items-center rounded-lg hover:bg-custom-green-15`}
                   key={project.id}
                 >
                   <div
@@ -676,7 +676,7 @@ function TaskManagement() {
                       document.getElementById("edit_project").showModal();
                       setSelectProjectInfo(project);
                     }}
-                    className="border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+                    className={`${ userType === "staff" ? "hidden" : ""} border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
                   >
                     <i className="bi bi-pencil flex justify-center items-center"></i>
                   </button>
@@ -685,7 +685,7 @@ function TaskManagement() {
                       document.getElementById("deleteProjectModal").showModal();
                       setSelectProjectInfo(project);
                     }}
-                    className="border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center m-1 mr-0 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300"
+                    className={`${ userType === "staff" ? "hidden" : ""} border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center m-1 mr-0 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
                   >
                     <i className="bi bi-trash flex justify-center items-center"></i>
                   </button>
@@ -700,7 +700,7 @@ function TaskManagement() {
             <p className="text-center text-custom-green-dark font-medium text-lg">
               No tasks have been added to the project yet.
             </p>
-            <div className="w-[200px] border border-custom-green-10 rounded-md mx-auto mt-4">
+            <div className={`${ userType === "staff" ? "hidden" : ""} w-[200px] border border-custom-green-10 rounded-md mx-auto mt-4`}>
               <CreateTask getActiveProjectTasks={getActiveProjectTasks} />
             </div>
           </div>
@@ -726,7 +726,7 @@ function TaskManagement() {
                         </div>
                       </div>
 
-                      {index === 0 && (
+                      {index === 0 && userType !== "staff" && (
                         <CreateTask
                           getActiveProjectTasks={getActiveProjectTasks}
                         />
