@@ -4,6 +4,7 @@ import noneuser from "/img/noneuser.png";
 import http from "../services/http";
 
 const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
+  console.log(selectedUsers)
   const activeProjectUsersInfo = membersInfo.filter((member) =>
     selectedUsers.includes(member.id)
   );
@@ -216,7 +217,7 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
           </form>
           {/* Modal header End */}
 
-          <form action="" onSubmit={submitSelectedUsersForTask}>
+          {selectedUsers.length !== 0 && <form action="" onSubmit={submitSelectedUsersForTask}>
             <div className="p-4">
               {activeProjectUsersInfo.map((user) => (
                 <div
@@ -261,7 +262,17 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
                 Save
               </button>
             </div>
-          </form>
+          </form>}
+
+          {selectedUsers.length === 0 && <div className="grid grid-cols-1 text-center p-10 text-custom-green-80 select-none">
+                    <i className="bi bi-people text-[35px]"></i>
+                    <p className="md:text-lg">
+                    No staff has been added for this Project.
+                    </p>
+                    <p className="text-[12px] md:text-[14px] text-red-700">First add staffs to the Project, then you can assign them to the task.</p>
+                  </div>
+}
+
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
