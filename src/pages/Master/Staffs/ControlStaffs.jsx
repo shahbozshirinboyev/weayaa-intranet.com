@@ -251,7 +251,7 @@ function ControlStaffs() {
 
           <div className="flex justify-end items-center">
             <div>
-              <AddStaff />
+              <AddStaff setCount={setCount} />
             </div>
           </div>
         </div>

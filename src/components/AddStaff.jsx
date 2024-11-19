@@ -6,27 +6,34 @@ import MaskedInput from "react-text-mask";
 // http
 import http from "../services/http";
 
-function AddStaff() {
-
+function AddStaff({ setCount }) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [workDays, setWorkDays] = useState([true, true, true, true, true, false, false]);
+  const [workDays, setWorkDays] = useState([
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+  ]);
   const formArray = [1, 2, 3];
   const [formNo, setFormNo] = useState(formArray[0]);
   const [userImage, setUserImage] = useState(null);
   const [state, setState] = useState({
-    firstName: '',
-    lastName: '',
-    image: '',
-    phone: '',
-    email: '',
-    specialist: '',
-    label: '',
-    workType: 'full_time',
-    address: '',
-    accountType: 'staff',
-    userId: '',
-    userPassword: '',
+    firstName: "",
+    lastName: "",
+    image: "",
+    phone: "",
+    email: "",
+    specialist: "",
+    label: "",
+    workType: "full_time",
+    address: "",
+    accountType: "staff",
+    userId: "",
+    userPassword: "",
   });
 
   // A function that keep changes in input START
@@ -74,7 +81,7 @@ function AddStaff() {
 
   // Function to handle checkbox change START
   const handleCheckboxChange = (index) => {
-    setWorkDays(prevWorkDays => {
+    setWorkDays((prevWorkDays) => {
       // Create a copy of the current state
       const newWorkDays = [...prevWorkDays];
       // Toggle the value at the specific index
@@ -107,72 +114,75 @@ function AddStaff() {
 
   // Submit Form START
   const finalSubmit = () => {
-
-    console.log(state, workDays)
+    console.log(state, workDays);
 
     // speciality[name] ni to'g'irlash
     // phone number ni to'g'irlash
     // work_days ni to'g'irlash
 
     if (state.accountType && state.userId && state.userPassword) {
-        const formData = new FormData();
-          formData.append("weayaa_id", state.userId);                               //1
-          formData.append("password", state.userPassword);                          //2
-          formData.append("first_name", state.firstName);                           //3
-          formData.append("last_name", state.lastName);                             //4
-          formData.append("label", state.label);                                    //5
-          formData.append("phone_number", state.phone.replace(/\s+/g, ''));         //6
-          formData.append("email", state.email);                                    //7
-          formData.append("speciality", state.specialist);                          //8
-          formData.append("work_type", state.workType);                             //9
-          formData.append("address", state.address);                                //10
-          formData.append("image", state.image);                                    //11
-          // formData.append("work_days", workDays);                                   //12
-          workDays.forEach((day, index) => { formData.append(`work_days[${index}]`, day); }); 
-          formData.append("user_type", state.accountType);                          //13
+      const formData = new FormData();
+      formData.append("weayaa_id", state.userId); //1
+      formData.append("password", state.userPassword); //2
+      formData.append("first_name", state.firstName); //3
+      formData.append("last_name", state.lastName); //4
+      formData.append("label", state.label); //5
+      formData.append("phone_number", state.phone.replace(/\s+/g, "")); //6
+      formData.append("email", state.email); //7
+      formData.append("speciality", state.specialist); //8
+      formData.append("work_type", state.workType); //9
+      formData.append("address", state.address); //10
+      formData.append("image", state.image); //11
+      // formData.append("work_days", workDays);                                   //12
+      workDays.forEach((day, index) => {
+        formData.append(`work_days[${index}]`, day);
+      });
+      formData.append("user_type", state.accountType); //13
 
-          toast.promise(
-            http.post("users/staff/", formData, {
-              headers: {
-                Authorization: `Bearer ${access}`,
-                "Content-Type": "multipart/form-data",
-              },
-            }),
-        
-            {
-              loading: "Adding...",
-        
-              success: (response) => {
-                console.log(response);
-        
-                setState({
-                  firstName: "",
-                  lastName: "",
-                  image: "",
-                  phone: "",
-                  email: "",
-                  specialist: "",
-                  label: "",
-                  workType: "full_time",
-                  address: "",
-                  accountType: "staff",
-                  userId: "",
-                  userPassword: "",
-                });
-                setWorkDays([true, true, true, true, true, false, false]);
-                document.getElementById("add_user_modal").close();
-                setFormNo(formArray[0]);
-        
-                return <b>Add new User!</b>;
-              },
-              error: (error) => {
-                console.log(error.response.data);
-        
-                return <b>Something went wrong :(</b>;
-              },
-            }
-          );
-      
+      toast.promise(
+        http.post("users/staff/", formData, {
+          headers: {
+            Authorization: `Bearer ${access}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }),
+
+        {
+          loading: "Adding...",
+
+          success: (response) => {
+            console.log(response);
+
+            setState({
+              firstName: "",
+              lastName: "",
+              image: "",
+              phone: "",
+              email: "",
+              specialist: "",
+              label: "",
+              workType: "full_time",
+              address: "",
+              accountType: "staff",
+              userId: "",
+              userPassword: "",
+            });
+            setWorkDays([true, true, true, true, true, false, false]);
+            document.getElementById("add_user_modal").close();
+            setFormNo(formArray[0]);
+            
+            const randomNum = Math.floor(Math.random() * 100); // 0 dan 99 gacha bo'lgan random son
+            setCount(randomNum);
+
+            return <b>Add new User!</b>;
+          },
+          error: (error) => {
+            console.log(error.response.data);
+
+            return <b>Something went wrong :(</b>;
+          },
+        }
+      );
     } else {
       toast.error("Please fillup all input field!");
     }
@@ -181,7 +191,6 @@ function AddStaff() {
 
   return (
     <section>
-
       {/* Modal Open Button START && Add New Staff*/}
       <button
         className="rounded-[10px] w-[125px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark transition-all duration-150"
@@ -205,49 +214,48 @@ function AddStaff() {
             </span>
             <div className="text-end">
               <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-              <i className="bi bi-x-lg flex justify-center items-center"></i>
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
               </button>
             </div>
           </form>
           {/* Modal header End */}
           <section>
             <div className="p-6 ">
-
-            {/* Show Condition MULTI FORM 1 - 2 - 3 START */}
+              {/* Show Condition MULTI FORM 1 - 2 - 3 START */}
               <div className="flex justify-center items-center transition-all duration-300">
                 {formArray.map((v, i) => (
                   <Fragment key={i}>
                     <div
                       className={`w-[35px] my-3 font-semibold rounded-full h-[35px] flex justify-center items-center
-                      ${formNo - 1 === i ||
-                          formNo - 1 === i + 1 ||
-                          formNo === formArray.length
+                      ${
+                        formNo - 1 === i ||
+                        formNo - 1 === i + 1 ||
+                        formNo === formArray.length
                           ? "bg-custom-green-dark text-white"
                           : "bg-custom-green-15 text-custom-green-dark"
-                        }`}
+                      }`}
                     >
                       {v}
                     </div>
                     {i !== formArray.length - 1 && (
                       <div
-                        className={`w-[85px] h-[2px] ${formNo === i + 2 || formNo === formArray.length
+                        className={`w-[85px] h-[2px] ${
+                          formNo === i + 2 || formNo === formArray.length
                             ? "bg-custom-green-dark"
                             : "bg-custom-green-15"
-                          }`}
+                        }`}
                       ></div>
                     )}
                   </Fragment>
                 ))}
               </div>
-            {/* Show Condition MULTI FORM 1 - 2 - 3 START */}
-            
+              {/* Show Condition MULTI FORM 1 - 2 - 3 START */}
+
               {/* START FORM 1 */}
               {formNo === 1 && (
                 <div>
                   <div className="grid grid-cols-1 mt-2">
-
                     <div className="flex mt-2 gap-4 items-center">
-                      
                       <div className="w-[100px] h-[100px] flex justify-center items-center">
                         {userImage === null ? (
                           <i className="bi bi-person-bounding-box text-[35px] text-custom-green-80"></i>
@@ -302,7 +310,8 @@ function AddStaff() {
                       <div>
                         <label>
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            First Name<span className="text-red-700 font-bold">*</span>
+                            First Name
+                            <span className="text-red-700 font-bold">*</span>
                           </span>
                           <input
                             value={state.firstName}
@@ -317,7 +326,8 @@ function AddStaff() {
                       <div>
                         <label>
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            Last Name<span className="text-red-700 font-bold">*</span>
+                            Last Name
+                            <span className="text-red-700 font-bold">*</span>
                           </span>
                           <input
                             value={state.lastName}
@@ -390,7 +400,8 @@ function AddStaff() {
                       <div>
                         <label>
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            Specialist Stuff<span className="text-red-700 font-bold">*</span>
+                            Specialist Stuff
+                            <span className="text-red-700 font-bold">*</span>
                           </span>
                           <select
                             value={state.specialist}
@@ -398,7 +409,8 @@ function AddStaff() {
                             name="specialist"
                             id=""
                             placeholder="Select Specialist Stuff"
-                            className="text-custom-green-dark transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60">
+                            className="text-custom-green-dark transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                          >
                             <option>Select Specialist Stuff</option>
                             <option value="Coder">Coder</option>
                             <option value="Designer">Designer</option>
@@ -414,7 +426,7 @@ function AddStaff() {
                         <div className="grid grid-cols-2 gap-2">
                           <label className="p-2 border rounded-md flex items-center">
                             <input
-                              checked={state.workType === 'full_time'}
+                              checked={state.workType === "full_time"}
                               onChange={inputHandle}
                               type="radio"
                               name="workType"
@@ -426,7 +438,7 @@ function AddStaff() {
                           </label>
                           <label className="p-2 border rounded-md flex items-center">
                             <input
-                              checked={state.workType === 'part_time'}
+                              checked={state.workType === "part_time"}
                               onChange={inputHandle}
                               type="radio"
                               name="workType"
@@ -499,22 +511,39 @@ function AddStaff() {
                       </span>
                     </div>
 
-                    {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => (
+                    {[
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday",
+                      "Saturday",
+                      "Sunday",
+                    ].map((day, index) => (
                       <div key={index}>
-                        <label className={`mt-2 p-2 border-b-[2px] ${index < 5 ? 'border-custom-green-80' : 'border-custom-green-60'} flex items-center`}>
+                        <label
+                          className={`mt-2 p-2 border-b-[2px] ${
+                            index < 5
+                              ? "border-custom-green-80"
+                              : "border-custom-green-60"
+                          } flex items-center`}
+                        >
                           <input
                             type="checkbox"
                             checked={workDays[index]}
                             onChange={() => handleCheckboxChange(index)}
                             name={`workDays${day}`}
                           />
-                          <span className={`text-custom-green-${index < 5 ? 'dark' : '60'} font-semibold text-[15px] ml-[15px]`}>
+                          <span
+                            className={`text-custom-green-${
+                              index < 5 ? "dark" : "60"
+                            } font-semibold text-[15px] ml-[15px]`}
+                          >
                             {day}
                           </span>
                         </label>
                       </div>
                     ))}
-
                   </div>
 
                   <div className="gap-4 grid grid-cols-2 justify-center items-center absolute inset-x-0 bottom-[20px] mx-6">
@@ -546,7 +575,7 @@ function AddStaff() {
                     <div>
                       <label className="p-2 flex items-center justify-center">
                         <input
-                          checked={state.accountType === 'staff'}
+                          checked={state.accountType === "staff"}
                           onChange={inputHandle}
                           type="radio"
                           name="accountType"
@@ -561,7 +590,7 @@ function AddStaff() {
                     <div>
                       <label className="p-2 flex items-center justify-center">
                         <input
-                          checked={state.accountType === 'master'}
+                          checked={state.accountType === "master"}
                           onChange={inputHandle}
                           type="radio"
                           name="accountType"
@@ -601,12 +630,20 @@ function AddStaff() {
                             value={state.userPassword}
                             name="userPassword"
                             onChange={inputHandle}
-                            type={showPassword ? 'text' : 'password'}
+                            type={showPassword ? "text" : "password"}
                             placeholder="Enter Password"
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                           />
-                          <button type="button" onClick={togglePasswordVisibility} className="absolute top-0 end-0 p-2.5 rounded-full w-[30px] font-medium flex justify-center items-center text-custom-green-60 hover:text-custom-green-dark">
-                            {showPassword ? <i className="bi bi-eye"></i> : <i className="bi bi-eye-slash"></i>}
+                          <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className="absolute top-0 end-0 p-2.5 rounded-full w-[30px] font-medium flex justify-center items-center text-custom-green-60 hover:text-custom-green-dark"
+                          >
+                            {showPassword ? (
+                              <i className="bi bi-eye"></i>
+                            ) : (
+                              <i className="bi bi-eye-slash"></i>
+                            )}
                           </button>
                         </div>
                       </label>
@@ -630,10 +667,8 @@ function AddStaff() {
                 </div>
               )}
               {/* END FORM 3 */}
-
             </div>
           </section>
-
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
