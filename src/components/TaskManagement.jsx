@@ -293,19 +293,26 @@ function TaskManagement() {
       <>
         <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px]">
           <div className="h-full w-full flex items-center ml-[10px] relative">
-            <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
+            <div className="flex px-[8px] py-[4px] mx-[5px] rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
               <i className="bi bi-calendar2-week font-medium"></i>
-              <p className="ml-[10px]">{activeProject.deadline}</p>
+              <p
+                className={`${
+                  activeProject.deadline ? "ml-[10px]" : ""
+                } transition-all duration-300`}
+              >
+                {activeProject.deadline}
+              </p>
             </div>
 
             <div className="dropdown text-custom-green-dark">
               <div
                 tabIndex={0}
                 role="button"
-                className="border bg-custom-green-30 text-custom-green-dark px-2 py-1 rounded-[10px] m-1"
+                className="bg-custom-green-30 text-custom-green-dark font-medium px-2 py-1 rounded-md m-1 transition-all duration-300"
               >
                 <i className="bi bi-folder2-open"></i> &nbsp;{" "}
-                {activeProject.name} &nbsp; <i className="bi bi-caret-down"></i>
+                {activeProject.name || "Projects list"}&nbsp;{" "}
+                <i className="bi bi-caret-down"></i>
               </div>
               <ul
                 tabIndex={0}
@@ -336,7 +343,13 @@ function TaskManagement() {
                       }}
                       className="flex-auto"
                     >
-                      <button className={`whitespace-nowrap border border-custom-green-10 hover:bg-custom-green-15 my-[2px] ${project.id === activeProject.id ? "bg-custom-green-15" :""}`}>
+                      <button
+                        className={`whitespace-nowrap border font-medium border-custom-green-10 hover:bg-custom-green-15 my-[2px] ${
+                          project.id === activeProject.id
+                            ? "bg-custom-green-15"
+                            : ""
+                        }`}
+                      >
                         {" "}
                         <i className="bi bi-folder flex justify-center items-center"></i>{" "}
                         &nbsp; {project.name}
@@ -370,16 +383,15 @@ function TaskManagement() {
           </div>
 
           <div className="flex h-full w-full p-2 items-center justify-end">
-            <button
-              onClick={() =>
-                document.getElementById("addedUsersList").showModal()
-              }
-            >
-              <div className="flex justify-end ">
-                <div className="flex -space-x-4 w-full">
-                  {activeProject.members &&
-                  activeProject.members.length !== 0 ? (
-                    activeProject.members.map((memberId) => {
+            {activeProject.members && activeProject.members.length !== 0 && (
+              <div
+                onClick={() =>
+                  document.getElementById("addedUsersList").showModal()
+                }
+              >
+                <div className="flex justify-end items-center">
+                  <div className="flex -space-x-4 w-full transition-all duration-300">
+                  {activeProject.members.map((memberId) => {
                       const member = membersInfo.find((m) => m.id === memberId);
 
                       return member ? (
@@ -391,31 +403,24 @@ function TaskManagement() {
                           />
                         </div>
                       ) : null;
-                    })
-                  ) : (
-                    <div className="w-8 h-8 bg-gray-200 rounded-full border-2 border-white flex justify-center items-center">
-                      <span className="text-[12px] font-semibold text-custom-green-80">
-                        <i className="bi bi-people text-[15px]"></i>
-                      </span>
-                    </div>
-                  )}
-                  {/* <div className="w-8 h-8 bg-gray-200 rounded-full border-2 border-white flex justify-center items-center">
-                  <span className="text-[12px] font-semibold text-custom-green-80">
-                    +2
-                  </span>
-                </div> */}
+                    })}
+                  </div>
                 </div>
               </div>
-            </button>
+            )}
 
-            <div className="w-0.5 h-6 rounded-full bg-custom-green-60 mx-1"></div>
+            {activeProject.members && activeProject.members.length !== 0 && (
+              <div className="w-0.5 h-6 rounded-full bg-custom-green-60 mx-1"></div>
+            )}
 
-            <button
-              className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3 p-2"
-              onClick={() => document.getElementById("adduser").showModal()}
-            >
-              <i className="bi bi-plus text-[24px] flex justify-center items-center"></i>
-            </button>
+            {activeProject.name && (
+              <button
+                className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3 p-2"
+                onClick={() => document.getElementById("adduser").showModal()}
+              >
+                <i className="bi bi-plus text-[24px] flex justify-center items-center"></i>
+              </button>
+            )}
           </div>
 
           {/* Add User Modal */}
@@ -633,14 +638,69 @@ function TaskManagement() {
       {/* <Line /> END */}
 
       {activeProject.length === 0 ? (
-        <div>
-          <p>please select project</p>
-        </div>
+        <>
+          <div className="h-full grid grid-cols-1 justify-center items-center text-custom-green-dark">
+            <p className="text-center text-2xl">Please, select project!</p>
+
+            <div className="flex flex-wrap justify-center items-center px-12 gap-4">
+              {projectsList.map((project) => (
+                <div
+                  className="flex border border-custom-green-10 px-2 justify-center items-center rounded-lg hover:bg-custom-green-15"
+                  key={project.id}
+                >
+                  <div
+                    onClick={() => {
+                      setActiveProject(project);
+                      setSelectedUsers(project.members);
+                      localStorage.setItem(
+                        "activeProject",
+                        JSON.stringify(project)
+                      );
+                    }}
+                    className="flex-auto font-medium"
+                  >
+                    <button
+                      className={`whitespace-nowrap flex justify-center items-center my-[2px] ${
+                        project.id === activeProject.id
+                          ? "bg-custom-green-15"
+                          : ""
+                      }`}
+                    >
+                      {" "}
+                      <i className="bi bi-folder flex justify-center items-center"></i>{" "}
+                      &nbsp; {project.name}
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => {
+                      document.getElementById("edit_project").showModal();
+                      setSelectProjectInfo(project);
+                    }}
+                    className="border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+                  >
+                    <i className="bi bi-pencil flex justify-center items-center"></i>
+                  </button>
+                  <button
+                    onClick={() => {
+                      document.getElementById("deleteProjectModal").showModal();
+                      setSelectProjectInfo(project);
+                    }}
+                    className="border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center m-1 mr-0 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300"
+                  >
+                    <i className="bi bi-trash flex justify-center items-center"></i>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
       ) : activeProjectTasks.length === 0 ? (
         <>
-          <div className="grid grid-cols-1 justify-center items-center h-full">
-            <p className="text-center">Proyektga task qo'shilmagan</p>
-            <div className="w-[200px] border mx-auto">
+          <div className="grid grid-cols-1 justify-center items-center mt-12">
+            <p className="text-center text-custom-green-dark font-medium text-lg">
+              No tasks have been added to the project yet.
+            </p>
+            <div className="w-[200px] border border-custom-green-10 rounded-md mx-auto mt-4">
               <CreateTask getActiveProjectTasks={getActiveProjectTasks} />
             </div>
           </div>
