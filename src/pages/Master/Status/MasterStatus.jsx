@@ -1,6 +1,29 @@
-import React from 'react';
+import { useEffect, useState } from "react";
+import http from "../../../services/http";
 
 const MasterStatus = () => {
+  const [projects, setProjects] = useState([]);
+  const [activeProjectInfo, setActiveProjectInfo] = useState([]);
+
+  const getProjects = () => {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
+    http
+      .get(`projects/`, { headers })
+      .then((response) => {
+        setProjects(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+  getProjects();
+
+  useEffect(() => {
+    console.log(activeProjectInfo);
+  }, [activeProjectInfo]);
+
   const totalProgress = 65; // Общий прогресс
   const blueProgress = 10; // Процент синего прогресса
   const greenProgress = 30; // Процент зеленого прогресса
@@ -10,12 +33,36 @@ const MasterStatus = () => {
       {/* 1 */}
       <div className="bg-custom-green-5 rounded-md p-6 shadow-md shadow-custom-green-5 w-full h-96 flex flex-col justify-between">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-custom-green-dark">Project progress</h2>
+          <h2 className="text-xl font-semibold text-custom-green-dark">
+            Project progress
+          </h2>
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="text-custom-green-dark m-1">Website WeaYaa</div>
-            <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-              <li><a>Item 1</a></li>
-              <li><a>Item 2</a></li>
+            <div
+              tabIndex={0}
+              role="button"
+              className="text-custom-green-dark m-1 flex justify-center items-center px-2 py-1 rounded-md border border-custom-green-15 transition-all duration-300 hover:bg-custom-green-dark hover:text-white"
+            >
+              <span>{activeProjectInfo.name || "Select Project"}</span>
+              <i className="bi bi-caret-down flex justify-center items-center ml-2"></i>
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow"
+            >
+              {projects.map((project, index) => (
+                <li
+                  key={project.id}
+                  className="w-full flex flex-nowrap my-[1px]"
+                  onClick={() => {
+                    setActiveProjectInfo(project);
+                  }}
+                >
+                  <div>
+                    <i className="bi bi-caret-right"></i>
+                    <span className="whitespace-nowrap">{project.name}</span>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -61,8 +108,12 @@ const MasterStatus = () => {
             />
           </svg>
           <div className="absolute text-center">
-            <p className="text-3xl font-bold text-green-800">{totalProgress}%</p>
-            <p className="text-[10px] text-custom-green-80">Project Completed</p>
+            <p className="text-3xl font-bold text-green-800">
+              {totalProgress}%
+            </p>
+            <p className="text-[10px] text-custom-green-80">
+              Project Completed
+            </p>
           </div>
         </div>
 
@@ -102,29 +153,7 @@ const MasterStatus = () => {
         
       </div> */}
     </div>
-
   );
 };
 
 export default MasterStatus;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
