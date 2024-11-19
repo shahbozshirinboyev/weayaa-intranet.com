@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import noneuser from "/img/noneuser.png"
 
 // img logo
 import logo from "../../public/img/logo.png";
@@ -166,12 +167,7 @@ function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
               <li>
                   <span>
                     <span className="mr-[10px] flex justify-center items-center">
-                    { image === null 
-                    ? 
-                    <i className="bi bi-person-circle text-[25px]"></i> 
-                    : 
-                    <img className="rounded-full w-[40px] h-[40px]" src={image} alt={firstName} />
-                    }
+                    <img className="rounded-full w-[40px] h-[40px] object-cover" src={image || noneuser} alt={firstName} />
                     </span>
                   <span className="block">
                       <p className="my-[0px] text-[16px] font-bold">{capitalizeFirstLetter(firstName)} {capitalizeFirstLetter(lastName)}</p>
@@ -203,6 +199,9 @@ function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
 
                 </div>
               </div>
+              <form method="dialog" className="modal-backdrop">
+    <button>close</button>
+  </form>
             </dialog>
 
             </div>
