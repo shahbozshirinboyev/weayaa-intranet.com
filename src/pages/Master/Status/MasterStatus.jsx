@@ -6,7 +6,7 @@ const MasterStatus = () => {
   const greenProgress = 30; // Процент зеленого прогресса
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {/* 1 */}
       <div className="bg-custom-green-5 rounded-md p-6 shadow-md shadow-custom-green-5 w-full h-96 flex flex-col justify-between">
         <div className="flex justify-between items-center mb-4">
@@ -92,15 +92,15 @@ const MasterStatus = () => {
         </div>
       </div>
 
-      <div className="bg-custom-green-5 rounded-md p-6 shadow-md shadow-custom-green-5 w-full h-96 flex flex-col justify-center items-center">
-        {/* Content for second box */}
+      {/* <div className="bg-custom-green-5 rounded-md p-6 shadow-md shadow-custom-green-5 w-full h-96 flex flex-col justify-center items-center">
+        
       </div>
       <div className="bg-custom-green-5 rounded-md p-6 shadow-md shadow-custom-green-5 w-full h-96 flex flex-col justify-center items-center">
-        {/* Content for third box */}
+        
       </div>
       <div className="bg-custom-green-5 rounded-md p-6 shadow-md shadow-custom-green-5 w-full h-96 flex flex-col justify-center items-center">
-        {/* Content for fourth box */}
-      </div>
+        
+      </div> */}
     </div>
 
   );

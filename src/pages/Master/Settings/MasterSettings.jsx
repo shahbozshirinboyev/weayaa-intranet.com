@@ -132,7 +132,8 @@ function MasterSettings() {
             onClick={() => {
               changeListToStaff("contract");
             }}
-            className={`flex justify-center items-center w-full rounded-[5px] transform transition-all duration-300 bg-custom-green-30
+            // flex
+            className={`hidden justify-center items-center w-full rounded-[5px] transform transition-all duration-300 bg-custom-green-30
               ${smlist === "contract" ? "text-white bg-custom-green-dark" : ""}
             `}
           >
@@ -146,7 +147,8 @@ function MasterSettings() {
             onClick={() => {
               changeListToStaff("payment");
             }}
-            className={`flex justify-center items-center w-full rounded-[5px] transform transition-all duration-300 bg-custom-green-30
+            // flex
+            className={`hidden justify-center items-center w-full rounded-[5px] transform transition-all duration-300 bg-custom-green-30
               ${smlist === "payment" ? "text-white bg-custom-green-dark" : ""}
             `}
           >
@@ -224,7 +226,10 @@ function MasterSettings() {
             <div className="col-span-2 text-[18px] font-bold grid grid-cols-2">
               <p>Personal Information</p>
               <div className="flex justify-end">
-                <EditUserInfo personalInfo={personalInfo} getPersonalInfo={getPersonalInfo} />
+                <EditUserInfo
+                  personalInfo={personalInfo}
+                  getPersonalInfo={getPersonalInfo}
+                />
               </div>
             </div>
 
