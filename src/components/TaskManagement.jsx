@@ -721,8 +721,10 @@ function TaskManagement() {
                     >
                       <div className="flex justify-between p-2 py-[10px] w-full bg-white rounded-lg shadow-sm text-custom-green-dark  text-[15px] font-extrabold">
                         {column.name}
-                        <div className="bg-custom-green-30 w-5 text-center  text-custom-green-dark rounded ">
-                          3
+                        <div className="bg-custom-green-30 text-center  text-custom-green-dark rounded-md">
+                          <span className="px-2 py-1">
+                            {column.items.length}
+                          </span>
                         </div>
                       </div>
 
