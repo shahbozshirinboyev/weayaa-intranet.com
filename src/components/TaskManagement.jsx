@@ -159,7 +159,7 @@ function TaskManagement() {
     http
       .get("users/staff/", { headers })
       .then((response) => {
-        const results = response.data.results;
+        const results = response.data;
         const staffMembers = results.filter(
           (member) => member.user_type === "staff"
         );
