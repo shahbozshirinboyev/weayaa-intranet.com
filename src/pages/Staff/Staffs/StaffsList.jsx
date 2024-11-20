@@ -24,8 +24,8 @@ function StaffsList() {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       })
       .then((response) => {
-        setUsers(response.data.results);
-        setUsersCount(response.data.count);
+        setUsers(response.data);
+        setUsersCount(response.data.length);
       })
       .catch((error) => {
         toast.error("Something went wrong :(");
