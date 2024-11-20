@@ -38,8 +38,9 @@ function ControlStaffs() {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       })
       .then((response) => {
-        setUsers(response.data.results);
-        setUsersCount(response.data.count);
+        console.log(response.data)
+        setUsers(response.data);
+        setUsersCount(response.data.length);
       })
       .catch((error) => {
         toast.error("Something went wrong :(");
