@@ -11,12 +11,12 @@ function StaffDashboard() {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       })
       .then((dashboad) => {
-        toast.success("Dashboardga ma'lumotlar yuklandi!");
+        // toast.success("Dashboardga ma'lumotlar yuklandi!");
         setDashboards(dashboad.data.results);
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Dashboard ma'lumotlari olinmadi :(");
+        toast.error("Error :(");
       });
   }, []);
 
