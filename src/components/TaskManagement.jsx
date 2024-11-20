@@ -301,7 +301,7 @@ function TaskManagement() {
             <div className="flex px-[8px] py-[4px] mx-[5px] rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
               <i className="bi bi-calendar2-week font-medium"></i>
               <p
-                className={`${
+                className={`whitespace-nowrap ${
                   activeProject.deadline ? "ml-[10px]" : ""
                 } transition-all duration-300`}
               >
@@ -313,7 +313,7 @@ function TaskManagement() {
               <div
                 tabIndex={0}
                 role="button"
-                className="bg-custom-green-30 text-custom-green-dark font-medium px-2 py-1 rounded-md m-1 transition-all duration-300"
+                className="bg-custom-green-30 text-custom-green-dark whitespace-nowrap font-medium px-2 py-1 rounded-md m-1 transition-all duration-300"
               >
                 <i className="bi bi-folder2-open"></i> &nbsp;{" "}
                 {activeProject.name || "Projects list"}&nbsp;{" "}
@@ -327,7 +327,7 @@ function TaskManagement() {
                   onClick={() =>
                     document.getElementById("new_project").showModal()
                   }
-                  className={`${ userType === "staff" ? "hidden" : ""} bg-custom-green-15 rounded-[10px] mb-[10px] text-custom-green-dark font-semibold hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
+                  className={`${ userType === "staff" ? "hidden" : ""} bg-custom-green-15 rounded-[10px] text-custom-green-dark font-semibold hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
                 >
                   <button>
                     <i className="bi bi-plus-lg flex justify-center items-center"></i>{" "}
@@ -346,7 +346,7 @@ function TaskManagement() {
                           JSON.stringify(project)
                         );
                       }}
-                      className="flex-auto"
+                      className="flex-auto mt-1"
                     >
                       <button
                         className={`whitespace-nowrap border font-medium border-custom-green-10 hover:bg-custom-green-15 my-[2px] ${
@@ -418,7 +418,7 @@ function TaskManagement() {
               <div className="w-0.5 h-6 rounded-full bg-custom-green-60 mx-1"></div>
             )}
 
-            {activeProject.members && activeProject.members.length !== 0 && userType !== "staff" && (
+            { userType !== "staff" && (
               <button
                 className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3 p-2"
                 onClick={() => document.getElementById("adduser").showModal()}
@@ -645,7 +645,13 @@ function TaskManagement() {
       {activeProject.length === 0 ? (
         <>
           <div className="h-full grid grid-cols-1 justify-center items-center text-custom-green-dark">
-            <p className={`text-center text-2xl ${ userType === "staff" ? "py-12" : ""}`}>Please, select project!</p>
+            <p className={`text-center text-2xl ${ userType === "staff" ? "py-12" : ""}`}>
+              Please, select project!
+              <br />
+              <span className={`text-red-700 text-[16px] ${ userType === "staff" ? "hidden" : ""}`}>
+                If you don't see any projects, you need to add a new project.
+              </span>
+              </p>
 
             <div className="flex flex-wrap justify-center items-center px-12 gap-4">
               {projectsList.map((project) => (
