@@ -36,6 +36,7 @@ export const onDragEnd = (result, columns, setColumns) => {
         { headers }
       ),
       {
+        
         loading: "Change status ...",
         success: (response) => {
           console.log(response);
@@ -43,8 +44,7 @@ export const onDragEnd = (result, columns, setColumns) => {
         },
         error: (error) => {
           console.log(error.response);
-
-          return "Error :(";
+          return `${error.response.data.non_field_errors[0]} :(`;
         },
       }
     );
