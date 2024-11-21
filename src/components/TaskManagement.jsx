@@ -33,7 +33,6 @@ function TaskManagement() {
       .get(`projects/`, { headers })
       .then((response) => {
         setProjectsList(response.data);
-        // console.log(response.data);
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -850,7 +849,7 @@ function TaskManagement() {
 
                                   <div className="w-full">
                                     <TaskFoother
-                                      getProjectsList={getProjectsList}
+                                      getActiveProjectTasks={getActiveProjectTasks}
                                       selectedUsers={selectedUsers}
                                       task={task}
                                       membersInfo={membersInfo}

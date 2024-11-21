@@ -3,7 +3,8 @@ import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 import http from "../services/http";
 
-const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
+const TaskFoother = ({ task, membersInfo, selectedUsers, getActiveProjectTasks }) => {
+
   const userType = localStorage.getItem("userType")
   const activeProjectUsersInfo = membersInfo.filter((member) => selectedUsers.includes(member.id));
   const activeTaskUsersInfo = activeProjectUsersInfo.filter((member) => task.members.includes(member.id));  
@@ -31,7 +32,7 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
       {
         loading: "Adding ...",
         success: (response) => {
-          getProjectsList();
+          getActiveProjectTasks();
           document.getElementById(`addUsersForTask${task.id}`).close();
           return <b>Add :)</b>;
         },

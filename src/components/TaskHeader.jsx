@@ -1,43 +1,32 @@
 import { useState, useEffect, useRef } from "react";
-// react hot toast
 import toast from "react-hot-toast";
-// http
 import http from "../services/http";
 
 const TaskHeader = ({ task, getActiveProjectTasks }) => {
+
+  const userType = localStorage.getItem("userType")
+  const toggleDropdown = () => { setIsOpen(!isOpen); };
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const userType = localStorage.getItem("userType")
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
 
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setIsOpen(false);
     }
   };
-  const showTaskId = () => {
-    console.log("task ID: " + task.id);
-    console.log(task);
-  };
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  // Delete Task
   const deleteTask = (id) => {
     const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`};
     toast.promise(http.delete(`projects/tasks/${id}/`, { headers }), {
       loading: "Deleting...",
       success: (response) => {
-        console.log(response.data);
         getActiveProjectTasks();
         return <b>Delete :)</b>;
       },
@@ -47,6 +36,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
       },
     });
   };
+
+  const showTaskId = () => { console.log("task ID: " + task.id); console.log(task); };
 
   return (
     <>
@@ -59,10 +50,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
         </div>
 
         <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={toggleDropdown}
-            className="h-full px-0 text-custom-green-dark"
-          >
+          <button onClick={toggleDropdown} className="h-full px-0 text-custom-green-dark">
             <i
               className={`bi bi-three-dots-vertical flex justify-center items-center ${
                 isOpen ? "-rotate-90" : "rotate-0"
@@ -82,9 +70,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
               </li>
               <li>
                 <button
-                  onClick={() => {
-                    deleteTask(task.id);
-                  }}
+                  onClick={ () => { deleteTask(task.id); }}
                   className={`hover:bg-red-700 hover:text-white ${ userType === "staff" ? "hidden" : "" }`}
                 >
                   <i className="bi bi-trash flex justify-center items-center"></i>{" "}
@@ -94,6 +80,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
             </ul>
           )}
         </div>
+
       </div>
     </>
   );
