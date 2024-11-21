@@ -48,7 +48,7 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getActiveProjectTasks }
     <>
       <div className="grid grid-cols-[0.3fr_1fr] items-center">
         <button
-          onClick={() => document.getElementById("task_chat").showModal()}
+          onClick={() => document.getElementById(`task_chat${task.id}`).showModal()}
         >
           <div className="flex">
             <div className="relative">
