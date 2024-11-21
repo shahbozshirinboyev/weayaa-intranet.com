@@ -323,23 +323,16 @@ function MasterDashboard() {
                   <i className="bi bi-pencil"></i>
                 </button>
                 <button
-                  onClick={() =>
-                    document
-                      .getElementById(`my_modal_${dashboard.id}`)
-                      .showModal()
-                  }
+                  onClick={() => document.getElementById(`my_delete_${dashboard.id}`).showModal()}
                   className="w-[70px] h-[70px] rounded-[10px] mx-[40px] bg-custom-green-dark text-[20px] hover:text-[25px] hover:border-[2px] transition-all duration-75 ease-in-out"
                 >
-                  <i className="bi bi-trash3"></i>
+                  <i className="bi bi-trash3 flex justify-center items-center"></i>
                 </button>
               </div>
             </div>
             {/* Card Hover Section End */}
             {/* Delete Dashboard Modal START */}
-            <dialog
-              id={`my_modal_${dashboard.id}`}
-              className="modal overflow-hidden"
-            >
+            <dialog id={`my_delete_${dashboard.id}`} className="modal overflow-hidden">
               <div className="modal-box">
                 <h3 className="font-bold text-lg">Delete</h3>
                 <p className="py-4">
