@@ -286,8 +286,6 @@ function TaskManagement() {
   }, [activeProject]);
   // ===========> Get ActiveProjectTasks List END <=========== //
 
-  // useEffect(() => { console.log(columns); }, [columns]);
-
   return (
     <>
       {/* <Line /> START */}
@@ -422,7 +420,7 @@ function TaskManagement() {
                 <div className="w-0.5 h-6 rounded-full bg-custom-green-60 mx-1"></div>
               )}
 
-            {userType !== "staff" && (
+            {userType !== "staff" && activeProject.length !== 0 && (
               <button
                 className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3 p-2"
                 onClick={() => document.getElementById("adduser").showModal()}
@@ -525,9 +523,9 @@ function TaskManagement() {
               {/* Modal header End */}
 
               <div className="p-3">
-                {activeProject.members && activeProject.members.length !== 0 ? (
+                {
                   activeProject.members.map((userId, index) => {
-                    // Find the member info by matching the id
+
                     const user = membersInfo.find((m) => m.id === userId);
 
                     return user ? (
@@ -560,16 +558,9 @@ function TaskManagement() {
                           </div>
                         </label>
                       </div>
-                    ) : null; // If user not found, return null
+                    ) : null;
                   })
-                ) : (
-                  <div className="grid grid-cols-1 text-center p-10 text-custom-green-80 select-none">
-                    <i className="bi bi-people text-[35px]"></i>
-                    <p className="text-[18px]">
-                      No Staff has been selected for Project yet.
-                    </p>
-                  </div>
-                )}
+                }
               </div>
             </div>
             <form method="dialog" className="modal-backdrop">
@@ -648,9 +639,9 @@ function TaskManagement() {
 
       {activeProject.length === 0 ? (
         <>
-          <div className="h-full grid grid-cols-1 justify-center items-center text-custom-green-dark">
+          <div className=" grid grid-cols-1 justify-center items-center text-custom-green-dark">
             <p
-              className={`text-center text-2xl ${
+              className={`text-center text-2xl p-4 ${
                 userType === "staff" ? "py-12" : ""
               }`}
             >
@@ -665,7 +656,7 @@ function TaskManagement() {
               </span>
             </p>
 
-            <div className="flex flex-wrap justify-center items-center px-12 gap-4">
+            <div className="flex flex-wrap justify-center items-start px-12 gap-4">
               {projectsList.map((project) => (
                 <div
                   className={`flex border border-custom-green-10 px-2 ${
@@ -726,16 +717,18 @@ function TaskManagement() {
       ) : activeProjectTasks.length === 0 ? (
         <>
           <div className="grid grid-cols-1 justify-center items-center mt-12">
+
+            <p className="text-center text-[65px] text-custom-green-60">
+              <i className="bi bi-list-task"></i>
+            </p>
             <p className="text-center text-custom-green-dark font-medium text-lg">
               No tasks have been added to the project yet.
             </p>
-            <div
-              className={`${
-                userType === "staff" ? "hidden" : ""
-              } w-[200px] border border-custom-green-10 rounded-md mx-auto mt-4`}
-            >
+
+            <div className={`${ userType === "staff" ? "hidden" : "" } w-[200px] rounded-lg border border-custom-green-10 mx-auto mt-4`}>
               <CreateTask getActiveProjectTasks={getActiveProjectTasks} />
             </div>
+
           </div>
         </>
       ) : (
@@ -750,7 +743,7 @@ function TaskManagement() {
                     <div
                       ref={provided.innerRef}
                       {...provided.droppableProps}
-                      className="grid grid-col gap-3 items-center py-4 w-full" //w-[250px] md:w-[300px] lg:w-[320px] xl:w-[350px] 2xl:w-[400px]
+                      className="grid grid-col gap-3 items-center py-4 w-full"
                     >
                       <div className="flex justify-between p-2 py-[10px] w-full bg-white rounded-lg shadow-sm text-custom-green-dark  text-[15px] font-extrabold">
                         {column.name}
@@ -761,14 +754,9 @@ function TaskManagement() {
                         </div>
                       </div>
 
-                      {index === 0 && userType !== "staff" && (
-                        <CreateTask
-                          getActiveProjectTasks={getActiveProjectTasks}
-                        />
-                      )}
+                      {index === 0 && userType !== "staff" && ( <CreateTask getActiveProjectTasks={getActiveProjectTasks} />)}
 
-                      {column.items &&
-                        column.items.map((task, index) => (
+                      {column.items && column.items.map((task, index) => (
                           <Draggable
                             key={task.id.toString()}
                             draggableId={task.id.toString()}
@@ -781,7 +769,7 @@ function TaskManagement() {
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-3 items-start shadow-sm rounded-xl px-3 py-4"
+                                  className="w-full cursor-grab bg-white flex flex-col justify-between gap-3 items-start shadow-sm rounded-lg px-3 py-4"
                                 >
                                   <div className="w-full">
                                     <TaskHeader
@@ -791,33 +779,7 @@ function TaskManagement() {
                                       }
                                     />
                                   </div>
-
-                                  {/* {task.file && (
-                                    <img
-                                    src={task.file}
-                                    alt={task.id}
-                                    className="w-full h-[170px] rounded-lg object-cover"
-                                    />
-                                  )} */}
-
-                                  {/* ============= Task file Control ============= */}
-                                  <TaskFileControl fileUrl={task.file} />
-                                  {/* ============= Task file Control ============= */}
-
-                                  {/* <div className="flex items-center gap-2">
-                                  {task.tags.map((tag) => (
-                                    <span
-                                      key={tag.title}
-                                      className="px-[10px] py-[2px] text-[13px] font-semibold rounded-md"
-                                      style={{
-                                        backgroundColor: tag.bg,
-                                        color: tag.text,
-                                      }}
-                                    >
-                                      {tag.title}
-                                    </span>
-                                  ))}
-                                </div> */}
+                                    
                                   <div className="w-full flex items-start flex-col gap-0">
                                     <span className="text-[15.5px] font-medium text-[#555]">
                                       {task.name}
@@ -826,26 +788,14 @@ function TaskManagement() {
                                       {task.description}
                                     </span>
                                   </div>
-                                  {/* <div className="w-full border border-dashed"></div> */}
-                                  {/* <div className="w-full flex items-center justify-between">
-                                  <div className="flex items-center gap-1">
-                                    <i className="bi bi-clock"></i>
-                                    <span className="text-[13px] text-gray-700">
-                                      {task.deadline}
-                                    </span>
-                                  </div>
 
-                                  <div
-                                    className={`w-[60px] rounded-full h-[5px] ${
-                                      task.priority === "high"
-                                        ? "bg-red-500"
-                                        : task.priority === "medium"
-                                        ? "bg-orange-500"
-                                        : "bg-blue-500"
-                                    }`}
-                                  ></div>
-                                </div> */}
-                                  {/* <div className="w-full border border-dashed"></div> */}
+                                  {/* <div className={`w-full border border-dashed border-custom-green-60 ${ !task.file ? "hidden" : "" }`}></div> */}
+
+                                  {/* ============= Task file Control ============= */}
+                                    <TaskFileControl fileUrl={task.file} />
+                                  {/* ============= Task file Control ============= */}
+
+                                  {/* <div className="w-full border border-dashed border-custom-green-60"></div> */}
 
                                   <div className="w-full">
                                     <TaskFoother
@@ -855,6 +805,7 @@ function TaskManagement() {
                                       membersInfo={membersInfo}
                                     />
                                   </div>
+
                                 </div>
                               </>
                               // Task END
@@ -964,6 +915,7 @@ function TaskManagement() {
           <button>close</button>
         </form>
       </dialog>
+
     </>
   );
 }

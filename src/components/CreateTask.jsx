@@ -48,7 +48,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
     toast.promise(http.post(`projects/tasks/`, formData, { headers }), {
       loading: "Adding ...",
       success: (response) => {
-        console.log(response);
+        // console.log(response);
         setTaskData({
           name: "",
           project: activeProjectId,
