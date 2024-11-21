@@ -158,8 +158,9 @@ const CreateTask = ({ getActiveProjectTasks }) => {
                       id="file-upload"
                       type="file"
                       className="hidden"
-                      multiple
-                      accept=".jpg,.png,.rar,.zip"
+                      // multiple
+                      // accept=".jpg,.png,.rar,.zip"
+                      accept="*/*"
                       onChange={handleFileChange}
                     />
 
