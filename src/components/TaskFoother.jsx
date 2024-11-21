@@ -5,15 +5,9 @@ import http from "../services/http";
 
 const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
   const userType = localStorage.getItem("userType")
-  const activeProjectUsersInfo = membersInfo.filter((member) =>
-    selectedUsers.includes(member.id)
-  );
-  const activeTaskUsersInfo = activeProjectUsersInfo.filter((member) =>
-    task.members.includes(member.id)
-  );
-  const [selectedUsersForTask, setSelectedUsersForTask] = useState(
-    task.members ? task.members : []
-  );
+  const activeProjectUsersInfo = membersInfo.filter((member) => selectedUsers.includes(member.id));
+  const activeTaskUsersInfo = activeProjectUsersInfo.filter((member) => task.members.includes(member.id));  
+  const [selectedUsersForTask, setSelectedUsersForTask] = useState( task.members ? task.members : [] );
 
   const handleUserSelectForTask = (userId) => {
     setSelectedUsersForTask((prevSelected) =>
@@ -37,9 +31,8 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
       {
         loading: "Adding ...",
         success: (response) => {
-          console.log(response.data);
           getProjectsList();
-          document.getElementById("addusersfortask").close();
+          document.getElementById(`addUsersForTask${task.id}`).close();
           return <b>Add :)</b>;
         },
         error: (error) => {
@@ -49,8 +42,6 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
       }
     );
   };
-
-  // console.log(activeProjectUsersInfo);
 
   return (
     <>
@@ -68,14 +59,10 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
           </div>
         </button>
 
-        {/* task user list START */}
+        {/* Task users list START */}
         <div className="flex justify-end">
-          <div
-            className="flex -space-x-4 cursor-pointer"
-            onClick={() => document.getElementById("showAddedUser").showModal()}
-          >
-            {activeTaskUsersInfo.length !== 0 &&
-              activeTaskUsersInfo.map((user) => (
+          <div className="flex -space-x-4 cursor-pointer" onClick={() => document.getElementById(`showAddedUsers${task.id}`).showModal()}>
+            {activeTaskUsersInfo.length !== 0 && activeTaskUsersInfo.map((user) => (
                 <img
                   key={user.id}
                   src={user.image || noneuser}
@@ -84,73 +71,23 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
                 />
               ))}
           </div>
-          {activeTaskUsersInfo.length !== 0 && userType !== "staff" && (
-            <div className="w-0.5 rounded-full bg-custom-green-60 mx-1.5 my-[5px]"></div>
-          )}
 
-          <button
-            onClick={() =>
-              document.getElementById("addusersfortask").showModal()
-            }
+          {/* Line ------ START */}
+          {activeTaskUsersInfo.length !== 0 && userType !== "staff" && ( <div className="w-0.5 rounded-full bg-custom-green-60 mx-1.5 my-[5px]"></div>)}
+          {/* Line ------ END */}
+
+          <button onClick={() => document.getElementById(`addUsersForTask${task.id}`).showModal()}
             className={`w-8 h-8 ${ userType === "staff" ? "hidden" : ""} bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3`}
           >
             <i className="bi bi-plus flex text-[24px] justify-center items-center"></i>
           </button>
+          
         </div>
-        {/* task user list END */}
+        {/* Task users list END */}
       </div>
 
-      {/* TASK => Chat START */}
-      <dialog id="task_chat" className="modal">
-        <div className="modal-box h-full max-h-[700px] p-0 flex flex-col">
-          {/* Modal header Start */}
-          <form
-            method="dialog"
-            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-          >
-            <span className="text-custom-green-dark font-bold">Task Chat</span>
-            <div className="text-end">
-              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                <i className="bi bi-x-lg flex justify-center items-center"></i>
-              </button>
-            </div>
-          </form>
-          {/* Modal header End */}
-
-          <div className="flex justify-center items-center w-full h-full bg-gray-900">
-            <div
-              aria-label="Orange and tan hamster running in a metal wheel"
-              role="img"
-              className="wheel-and-hamster"
-            >
-              <div className="wheel"></div>
-              <div className="hamster">
-                <div className="hamster__body">
-                  <div className="hamster__head">
-                    <div className="hamster__ear"></div>
-                    <div className="hamster__eye"></div>
-                    <div className="hamster__nose"></div>
-                  </div>
-                  <div className="hamster__limb hamster__limb--fr"></div>
-                  <div className="hamster__limb hamster__limb--fl"></div>
-                  <div className="hamster__limb hamster__limb--br"></div>
-                  <div className="hamster__limb hamster__limb--bl"></div>
-                  <div className="hamster__tail"></div>
-                </div>
-              </div>
-              <div className="spoke"></div>
-            </div>
-          </div>
-          <p className="text-center bg-custom-green-15 p-2">Loading...</p>
-        </div>
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
-      {/* TASK => Chat END */}
-
       {/* Show Added User List START */}
-      <dialog id="showAddedUser" className="modal">
+      <dialog id={`showAddedUsers${task.id}`} className="modal">
         <Toaster />
         <div className="modal-box p-0">
           {/* Modal header Start */}
@@ -197,8 +134,8 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
       </dialog>
       {/* Show Added User List END */}
 
-      {/* Add User Modal */}
-      <dialog id="addusersfortask" className="modal">
+      {/* Add Users for Task START */}
+      <dialog id={`addUsersForTask${task.id}`} className="modal">
         <Toaster />
         <div className="modal-box p-0">
           {/* Modal header Start */}
@@ -283,6 +220,57 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getProjectsList }) => {
           <button>close</button>
         </form>
       </dialog>
+      {/* Add Users for Task END */}
+
+      {/* TASK => Chat START */}
+      <dialog id={`task_chat${task.id}`} className="modal">
+        <div className="modal-box h-full max-h-[700px] p-0 flex flex-col">
+          {/* Modal header Start */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">Task Chat</span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
+            </div>
+          </form>
+          {/* Modal header End */}
+
+          <div className="flex justify-center items-center w-full h-full bg-gray-900">
+            <div
+              aria-label="Orange and tan hamster running in a metal wheel"
+              role="img"
+              className="wheel-and-hamster"
+            >
+              <div className="wheel"></div>
+              <div className="hamster">
+                <div className="hamster__body">
+                  <div className="hamster__head">
+                    <div className="hamster__ear"></div>
+                    <div className="hamster__eye"></div>
+                    <div className="hamster__nose"></div>
+                  </div>
+                  <div className="hamster__limb hamster__limb--fr"></div>
+                  <div className="hamster__limb hamster__limb--fl"></div>
+                  <div className="hamster__limb hamster__limb--br"></div>
+                  <div className="hamster__limb hamster__limb--bl"></div>
+                  <div className="hamster__tail"></div>
+                </div>
+              </div>
+              <div className="spoke"></div>
+            </div>
+          </div>
+          <p className="text-center bg-custom-green-15 p-2">Loading...</p>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+      {/* TASK => Chat END */}
+
     </>
   );
 };
