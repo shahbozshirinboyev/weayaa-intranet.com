@@ -6,7 +6,7 @@ function TaskFileControl({ fileUrl }) {
   const fileName = fileUrl.split("/").pop();
   const fileType = fileUrl.split(".").pop().toUpperCase();
 
-  console.log(fileType, fileName);
+  // console.log(fileType, fileName);
   return (
     <>
       {fileUrl && fileUrl.endsWith(".jpg") && (
@@ -29,7 +29,7 @@ function TaskFileControl({ fileUrl }) {
         <img
           src={fileUrl}
           alt=""
-          className="w-full max-h-[250px] rounded-lg object-cover"
+          className="w-full max-h-[200px] rounded-lg object-cover"
         />
       )}
 

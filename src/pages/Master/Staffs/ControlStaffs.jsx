@@ -38,7 +38,7 @@ function ControlStaffs() {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       })
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         setUsers(response.data);
         setUsersCount(response.data.length);
       })
@@ -69,7 +69,7 @@ function ControlStaffs() {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    console.log(JSON.stringify(editUserInfo, null, 2));
+    // console.log(JSON.stringify(editUserInfo, null, 2));
   }, [editUserInfo]);
 
   useEffect(() => {
@@ -576,6 +576,7 @@ function ControlStaffs() {
                             // onChange={inputHandle}
                             type={showPassword ? "text" : "password"}
                             placeholder="* * * * * * * * * *"
+                            autoComplete="username"
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                           />
                           <button

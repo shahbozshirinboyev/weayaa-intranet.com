@@ -272,7 +272,7 @@ function TaskManagement() {
               updatedBoard.complete.items.push(task);
             }
           });
-          console.log(updatedBoard);
+          // console.log(updatedBoard);
           setColumns(updatedBoard);
           setActiveProjectTasks(tasks);
         })
