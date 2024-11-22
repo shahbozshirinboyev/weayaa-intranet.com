@@ -26,6 +26,10 @@ function TaskManagement() {
       .get(`projects/`, { headers })
       .then((response) => {
         setProjectsList(response.data);
+        if(response.data.length === 0){
+          setActiveProject([])
+          localStorage.setItem("activeProject", JSON.stringify([]))
+        }
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -34,6 +38,7 @@ function TaskManagement() {
 
   useEffect(() => {
     getProjectsList();
+    // console.log(projectsList)
   }, []);
 
   // Delete Project function
@@ -328,6 +333,11 @@ function TaskManagement() {
                   </button>
                 </li>
                 {/* All Project list ===============> start */}
+                
+                  <li className={`${projectsList.length === 0 && userType === "staff"  ? "" : "hidden"}`}>
+                    <p className="whitespace-nowrap">You have no projects!</p>
+                  </li>
+                
                 {projectsList.map((project) => (
                   <div className="flex" key={project.id}>
                     <li
@@ -636,13 +646,14 @@ function TaskManagement() {
 
       {activeProject.length === 0 ? (
         <>
-          <div className=" grid grid-cols-1 justify-center items-center text-custom-green-dark">
+          <div className="grid grid-cols-1 justify-center items-center text-custom-green-dark">
             <p
               className={`text-center text-2xl p-4 ${
                 userType === "staff" ? "py-12" : ""
               }`}
             >
-              Please, select project!
+              <span className={`${projectsList.length === 0 ? "hidden" : ""}`}>Please, select project!</span>
+              <span className={`${projectsList.length !== 0 ? "hidden" : ""}`}>You have no projects!</span>
               <br />
               <span
                 className={`text-red-700 text-[16px] ${
@@ -778,10 +789,10 @@ function TaskManagement() {
                                   </div>
                                     
                                   <div className="w-full flex items-start flex-col gap-0">
-                                    <span className="text-[15.5px] font-medium text-[#555]">
+                                    <span className="text-[15.5px] font-medium text-custom-green-90">
                                       {task.name}
                                     </span>
-                                    <span className="text-[13.5px] text-gray-500">
+                                    <span className="text-[13.5px] text-custom-green-80">
                                       {task.description}
                                     </span>
                                   </div>
