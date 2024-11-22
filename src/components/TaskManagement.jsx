@@ -325,7 +325,7 @@ function TaskManagement() {
                   }
                   className={`${
                     userType === "staff" ? "hidden" : ""
-                  } bg-custom-green-15 rounded-[10px] text-custom-green-dark font-semibold hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
+                  } bg-custom-green-15 rounded-[10px] text-custom-green-dark mb-1 font-semibold hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
                 >
                   <button>
                     <i className="bi bi-plus-lg flex justify-center items-center"></i>{" "}
@@ -349,7 +349,7 @@ function TaskManagement() {
                           JSON.stringify(project)
                         );
                       }}
-                      className="flex-auto mt-1"
+                      className="flex-auto"
                     >
                       <button
                         className={`whitespace-nowrap border font-medium border-custom-green-10 hover:bg-custom-green-15 my-[2px] ${
@@ -652,8 +652,14 @@ function TaskManagement() {
                 userType === "staff" ? "py-12" : ""
               }`}
             >
-              <span className={`${projectsList.length === 0 ? "hidden" : ""}`}>Please, select project!</span>
-              <span className={`${projectsList.length !== 0 ? "hidden" : ""}`}>You have no projects!</span>
+              <span className={`${projectsList.length === 0 ? "hidden" : ""}`}>
+                <i class="bi bi-folder2-open block text-[65px] mb-2 text-custom-green-80"></i>
+                <span>Please, select project.</span>  
+              </span>
+              <span className={`${projectsList.length !== 0 ? "hidden" : ""}`}> 
+                <i className="bi bi-folder-x block text-[65px] mb-2 text-custom-green-80"></i>
+                <span>You have no projects.</span>
+              </span>
               <br />
               <span
                 className={`text-red-700 text-[16px] ${
@@ -726,7 +732,7 @@ function TaskManagement() {
         <>
           <div className="grid grid-cols-1 justify-center items-center mt-12">
 
-            <p className="text-center text-[65px] text-custom-green-60">
+            <p className="text-center text-[65px] text-custom-green-80">
               <i className="bi bi-list-task"></i>
             </p>
             <p className="text-center text-custom-green-dark font-medium text-lg">
