@@ -732,7 +732,7 @@ function TaskManagement() {
         <DragDropContext
           onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
         >
-          <div className="grid grid-cols-4 px-4 bg-custom-green-10 rounded-[15px] gap-4">
+          <div className="grid grid-cols-4 px-4 bg-custom-green-10 rounded-[15px] gap-4 min-w-[1400px]">
             {Object.entries(columns).map(([columnId, column], index) => (
               <div className="flex flex-col gap-2" key={columnId}>
                 <Droppable droppableId={columnId} key={columnId}>
