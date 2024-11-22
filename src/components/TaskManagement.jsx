@@ -36,11 +36,6 @@ function TaskManagement() {
     getProjectsList();
   }, []);
 
-  const clearActPro = () => {
-          setActiveProject([])
-          localStorage.setItem("activeProject", JSON.stringify([]))
-  }
-
   // Delete Project function
   const [selectProjectInfo, setSelectProjectInfo] = useState([]);
 
@@ -55,10 +50,10 @@ function TaskManagement() {
         console.log(response);
         getProjectsList();
         document.getElementById("deleteProjectModal").close(); 
-        // if(id === activeProject.id){
-        //   setActiveProject([])
-        //   localStorage.set("activeProject", JSON.stringify([]))
-        // }
+        if(id === activeProject.id){
+          setActiveProject([])
+          localStorage.setItem("activeProject", JSON.stringify([]))
+        }
         return <b>Delete :)</b>;
       },
       error: (error) => {
@@ -726,7 +721,6 @@ function TaskManagement() {
             <p className="text-center text-custom-green-dark font-medium text-lg">
               No tasks have been added to the project yet.
             </p>
-            <button className="btn" onClick={clearActPro}>Clear active Project</button>
 
             <div className={`${ userType === "staff" ? "hidden" : "" } w-[200px] rounded-lg border border-custom-green-10 mx-auto mt-4`}>
               <CreateTask getActiveProjectTasks={getActiveProjectTasks} />
