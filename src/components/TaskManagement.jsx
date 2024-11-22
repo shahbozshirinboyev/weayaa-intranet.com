@@ -12,17 +12,10 @@ import TaskFileControl from "./TaskFileControl";
 function TaskManagement() {
   const userType = localStorage.getItem("userType");
   const [projectsList, setProjectsList] = useState([]);
-  const [activeProject, setActiveProject] = useState(
-    JSON.parse(localStorage.getItem("activeProject"))
-  );
-  const [formData, setFormData] = useState({
-    projectName: "",
-    projectDeadline: "",
-  });
+  const [activeProject, setActiveProject] = useState( JSON.parse(localStorage.getItem("activeProject")));
+  const [formData, setFormData] = useState({ projectName: "", projectDeadline: "", });
   const [membersInfo, setMembersInfo] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState(
-    activeProject.members ? activeProject.members : []
-  );
+  const [selectedUsers, setSelectedUsers] = useState( activeProject.members ? activeProject.members : [] );
   // line variables end
 
   const getProjectsList = () => {
@@ -43,20 +36,29 @@ function TaskManagement() {
     getProjectsList();
   }, []);
 
+  const clearActPro = () => {
+          setActiveProject([])
+          localStorage.setItem("activeProject", JSON.stringify([]))
+  }
+
   // Delete Project function
   const [selectProjectInfo, setSelectProjectInfo] = useState([]);
 
   const handleDeleteProject = (id) => {
-    console.log(id);
+    // console.log(id);
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     };
     toast.promise(http.delete(`projects/${id}/`, { headers }), {
       loading: "Deleting ...",
       success: (response) => {
-        console.log(response.data);
+        console.log(response);
         getProjectsList();
-        document.getElementById("deleteProjectModal").close();
+        document.getElementById("deleteProjectModal").close(); 
+        // if(id === activeProject.id){
+        //   setActiveProject([])
+        //   localStorage.set("activeProject", JSON.stringify([]))
+        // }
         return <b>Delete :)</b>;
       },
       error: (error) => {
@@ -133,7 +135,7 @@ function TaskManagement() {
       {
         loading: "Adding ...",
         success: (response) => {
-          console.log(response.data);
+          // console.log(response.data);
           getProjectsList();
           setFormData({ projectName: "", projectDeadline: "" });
           document.getElementById("new_project").close();
@@ -524,7 +526,7 @@ function TaskManagement() {
 
               <div className="p-3">
                 {
-                  activeProject.members.map((userId, index) => {
+                  activeProject.length !== 0 && activeProject.members.map((userId, index) => {
 
                     const user = membersInfo.find((m) => m.id === userId);
 
@@ -724,6 +726,7 @@ function TaskManagement() {
             <p className="text-center text-custom-green-dark font-medium text-lg">
               No tasks have been added to the project yet.
             </p>
+            <button className="btn" onClick={clearActPro}>Clear active Project</button>
 
             <div className={`${ userType === "staff" ? "hidden" : "" } w-[200px] rounded-lg border border-custom-green-10 mx-auto mt-4`}>
               <CreateTask getActiveProjectTasks={getActiveProjectTasks} />
