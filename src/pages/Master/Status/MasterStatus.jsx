@@ -104,7 +104,7 @@ const MasterStatus = () => {
               tabIndex={0}
               className="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow"
             >
-              {projects.map((project) => (
+              {projects.length !== 0 ? projects.map((project) => (
                 <li
                   key={project.id}
                   className="w-full flex flex-nowrap my-[1px]"
@@ -117,7 +117,7 @@ const MasterStatus = () => {
                     <span className="whitespace-nowrap">{project.name}</span>
                   </div>
                 </li>
-              ))}
+              )) : <li className="my-1 whitespace-nowrap text-custom-green-dark">You have no projects!</li>}
             </ul>
           </div>
         </div>
