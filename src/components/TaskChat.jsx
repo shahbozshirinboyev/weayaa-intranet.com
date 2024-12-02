@@ -6,13 +6,32 @@ function TaskChat({ task }) {
   };
 
   const [fileName, setFileName] = useState("");
+  const [message, setMessage] = useState({
+    message: "",
+  });
+
+  const inputHandle = (e) => {
+    setMessage({
+      ...message,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleFileChange = (event) => {
     if (event.target.files.length > 0) {
-      setFileName(event.target.files[0].name); // Tanlangan fayl nomi
+      setFileName(event.target.files[0].name);
     } else {
-      setFileName("Hech qanday fayl tanlanmagan");
+      setFileName("");
     }
+  };
+  const handleClearFile = () => {
+    setFileName("");
+    document.getElementById("fileInput").value = "";
+  };
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    console.log(message);
   };
 
   return (
@@ -39,7 +58,7 @@ function TaskChat({ task }) {
           {/* Modal header Start */}
           <form
             method="dialog"
-            className="border-b-[2px] w-full sticky top-0 z-[999] border-custom-green-80 min-h-[60px] grid grid-cols-2 items-center px-[24px] bg-white"
+            className="border-b-[2px] w-full sticky top-0 border-custom-green-80 min-h-[60px] grid grid-cols-2 items-center px-[24px] bg-white"
           >
             <span className="text-custom-green-dark font-bold">Task Chat</span>
             <div className="text-end">
@@ -202,24 +221,27 @@ function TaskChat({ task }) {
           {/* Chat Input START */}
 
           <div
-            className={`flex justify-between items-center px-3 py-1 ${
+            className={`flex justify-between items-center px-3 py-1 transition-all duration-300 ${
               fileName === "" ? "hidden" : ""
             } bg-custom-green-15`}
           >
-            <span className="text-gray-700">{fileName}</span>
-            <button className="btn btn-sm">
+            <span className="text-custom-green-dark">{fileName}</span>
+            <button
+              className="btn btn-sm bg-white hover:bg-custom-green-dark hover:text-white"
+              onClick={handleClearFile}
+            >
               <i className="bi bi-x flex justify-center items-center"></i>
             </button>
           </div>
 
-          <div className="h-[60px] py-2 px-3">
-            <form action="" className="flex gap-2">
+          <div className="h-[60px] py-2 px-3 border-t-[2px] border-custom-green-80">
+            <form onSubmit={sendMessage} action="" className="flex gap-2">
               <div className="flex items-center gap-4">
                 <label
                   htmlFor="fileInput"
-                  className="px-2 py-1 border cursor-pointer"
+                  className="px-2 py-1 h-full cursor-pointer"
                 >
-                  <i className="bi bi-paperclip flex justify-center items-center text-[20px]"></i>
+                  <i className="bi bi-paperclip flex justify-center text-custom-green-dark items-center h-full text-[20px]"></i>
                 </label>
                 <input
                   type="file"
@@ -231,11 +253,20 @@ function TaskChat({ task }) {
 
               <input
                 type="text"
-                className="border w-full px-2 py-1 outline-none text-custom-green-dark"
+                name="message"
+                value={message.message}
+                onChange={inputHandle}
+                className="w-full px-2 py-1 outline-none text-custom-green-dark placeholder:text-custom-green-60"
                 placeholder="Write a message..."
               />
-              <button className="px-2 py-1 border cursor-pointer">
-                <i className="bi bi-send flex justify-center items-center  text-[20px]"></i>
+              <button className="px-2 py-1 cursor-pointer">
+                <i
+                  className={`bi ${
+                    message.message === ""
+                      ? "bi-send"
+                      : "bi-send-fill rotate-45"
+                  } transition-all duration-300 flex justify-center items-center text-custom-green-dark  text-[20px]`}
+                ></i>
               </button>
             </form>
           </div>
