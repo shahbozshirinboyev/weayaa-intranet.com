@@ -2,6 +2,7 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 import http from "../services/http";
+import TaskChat from "./TaskChat";
 
 const TaskFoother = ({ task, membersInfo, selectedUsers, getActiveProjectTasks }) => {
 
@@ -46,22 +47,12 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getActiveProjectTasks }
 
   return (
     <>
-      <div className="grid grid-cols-[0.3fr_1fr] items-center">
-        <button
-          onClick={() => document.getElementById(`task_chat${task.id}`).showModal()}
-        >
-          <div className="flex">
-            <div className="relative">
-              <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center">
-                <i className="bi bi-chat-dots"></i>
-              </div>
-              <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
-            </div>
-          </div>
-        </button>
+      <div className="flex items-center">
+
+        <TaskChat task={task} />
 
         {/* Task users list START */}
-        <div className="flex justify-end">
+        <div className="flex justify-end w-full">
           <div className="flex -space-x-4 cursor-pointer" onClick={() => document.getElementById(`showAddedUsers${task.id}`).showModal()}>
             {activeTaskUsersInfo.length !== 0 && activeTaskUsersInfo.map((user) => (
                 <img
@@ -223,54 +214,7 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getActiveProjectTasks }
       </dialog>
       {/* Add Users for Task END */}
 
-      {/* TASK => Chat START */}
-      <dialog id={`task_chat${task.id}`} className="modal">
-        <div className="modal-box h-full max-h-[700px] p-0 flex flex-col">
-          {/* Modal header Start */}
-          <form
-            method="dialog"
-            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-          >
-            <span className="text-custom-green-dark font-bold">Task Chat</span>
-            <div className="text-end">
-              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                <i className="bi bi-x-lg flex justify-center items-center"></i>
-              </button>
-            </div>
-          </form>
-          {/* Modal header End */}
-
-          <div className="flex justify-center items-center w-full h-full bg-gray-900">
-            <div
-              aria-label="Orange and tan hamster running in a metal wheel"
-              role="img"
-              className="wheel-and-hamster"
-            >
-              <div className="wheel"></div>
-              <div className="hamster">
-                <div className="hamster__body">
-                  <div className="hamster__head">
-                    <div className="hamster__ear"></div>
-                    <div className="hamster__eye"></div>
-                    <div className="hamster__nose"></div>
-                  </div>
-                  <div className="hamster__limb hamster__limb--fr"></div>
-                  <div className="hamster__limb hamster__limb--fl"></div>
-                  <div className="hamster__limb hamster__limb--br"></div>
-                  <div className="hamster__limb hamster__limb--bl"></div>
-                  <div className="hamster__tail"></div>
-                </div>
-              </div>
-              <div className="spoke"></div>
-            </div>
-          </div>
-          <p className="text-center bg-custom-green-15 p-2">Loading...</p>
-        </div>
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
-      {/* TASK => Chat END */}
+      
 
     </>
   );
