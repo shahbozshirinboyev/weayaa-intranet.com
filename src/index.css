@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-body { user-select: none; }
+body {
+  user-select: none;
+}
 
 /* Change Autocomplete styles in Chrome*/
 input:-webkit-autofill,
@@ -17,4 +19,11 @@ select:-webkit-autofill:focus {
   -webkit-text-fill-color: #2e6734;
   -webkit-box-shadow: 0 0 0px 1000px #fffefe inset;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Firefox uchun */
+.chatcss {
+  scrollbar-width: thin;
+  scrollbar-color: #2e673498 #fff;
+  scroll-behavior: smooth;
 }
