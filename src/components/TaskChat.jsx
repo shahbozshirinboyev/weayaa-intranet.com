@@ -32,6 +32,9 @@ function TaskChat({ task }) {
   const sendMessage = (e) => {
     e.preventDefault();
     console.log(message);
+    setFileName("");
+    document.getElementById("fileInput").value = "";
+    setMessage({ message: "" });
   };
 
   return (
@@ -53,21 +56,21 @@ function TaskChat({ task }) {
       </button>
 
       {/* TASK => Chat START */}
-      <dialog id={`task_chat${task.id}`} className="modal">
+      <dialog id={`task_chat${task.id}`} className="modal z-50 border-red-700">
         <div className="modal-box h-full max-h-[700px] p-0 flex flex-col rounded-none">
           {/* Modal header Start */}
           <form
             method="dialog"
-            className="border-b-[2px] w-full sticky top-0 border-custom-green-80 min-h-[60px] grid grid-cols-2 items-center px-[24px] bg-white"
+            className="border-b-[2px] border-custom-green-80 h-[75px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
           >
-            <span className="text-custom-green-dark font-bold">Task Chat</span>
+            <span className="text-custom-green-dark font-bold">
+              Add News Staff
+            </span>
             <div className="text-end">
               <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
                 <i className="bi bi-x-lg flex justify-center items-center"></i>
               </button>
             </div>
-
-            <div className="min-w-full h-hull absolute h-[60px] bg-custom-green-10"></div>
           </form>
           {/* Modal header End */}
           {/* Task Chat Body START */}
@@ -85,7 +88,9 @@ function TaskChat({ task }) {
                 Obi-Wan Kenobi
                 <time className="text-xs opacity-50">12:45</time>
               </div>
-              <div className="chat-bubble">You were the Chosen One!</div>
+              <div className="chat-bubble bg-custom-green-30 text-black">
+                You were the Chosen One!
+              </div>
               <div className="chat-footer opacity-50">Delivered</div>
             </div>
             <div className="chat chat-start">
@@ -101,7 +106,9 @@ function TaskChat({ task }) {
                 Obi-Wan Kenobi
                 <time className="text-xs opacity-50">12:45</time>
               </div>
-              <div className="chat-bubble">You were the Chosen One!</div>
+              <div className="chat-bubble bg-custom-green-30 text-black">
+                You were the Chosen One!
+              </div>
               <div className="chat-footer opacity-50">Delivered</div>
             </div>
             <div className="chat chat-end">
@@ -117,7 +124,9 @@ function TaskChat({ task }) {
                 Anakin
                 <time className="text-xs opacity-50">12:46</time>
               </div>
-              <div className="chat-bubble">I hate you!</div>
+              <div className="chat-bubble bg-custom-green-30 text-black">
+                I hate you!
+              </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
             <div className="chat chat-end">
@@ -133,7 +142,9 @@ function TaskChat({ task }) {
                 Anakin
                 <time className="text-xs opacity-50">12:46</time>
               </div>
-              <div className="chat-bubble">I hate you!</div>
+              <div className="chat-bubble bg-custom-green-30 text-black">
+                I hate you!
+              </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
             <div className="chat chat-end">
@@ -149,7 +160,9 @@ function TaskChat({ task }) {
                 Anakin
                 <time className="text-xs opacity-50">12:46</time>
               </div>
-              <div className="chat-bubble">I hate you!</div>
+              <div className="chat-bubble bg-custom-green-30 text-black">
+                I hate you!
+              </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
             <div className="chat chat-end">
@@ -165,7 +178,9 @@ function TaskChat({ task }) {
                 Anakin
                 <time className="text-xs opacity-50">12:46</time>
               </div>
-              <div className="chat-bubble">I hate you!</div>
+              <div className="chat-bubble bg-custom-green-30 text-black">
+                I hate you!
+              </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
             <div className="chat chat-end">
@@ -181,7 +196,9 @@ function TaskChat({ task }) {
                 Anakin
                 <time className="text-xs opacity-50">12:46</time>
               </div>
-              <div className="chat-bubble">I hate you!</div>
+              <div className="chat-bubble bg-custom-green-30 text-black">
+                I hate you!
+              </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
             <div className="chat chat-end">
@@ -197,7 +214,9 @@ function TaskChat({ task }) {
                 Anakin
                 <time className="text-xs opacity-50">12:46</time>
               </div>
-              <div className="chat-bubble">I hate you!</div>
+              <div className="chat-bubble bg-custom-green-30 text-black">
+                I hate you!
+              </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
             <div className="chat chat-start">
@@ -213,7 +232,9 @@ function TaskChat({ task }) {
                 Obi-Wan Kenobi
                 <time className="text-xs opacity-50">12:45</time>
               </div>
-              <div className="chat-bubble">You were the Chosen One!</div>
+              <div className="chat-bubble bg-custom-green-30 text-black">
+                You were the Chosen One!
+              </div>
               <div className="chat-footer opacity-50">Delivered</div>
             </div>
           </section>
