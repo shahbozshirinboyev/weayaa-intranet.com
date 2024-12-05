@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function TaskChat({ task }) {
+  const endRef = useRef(null);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
   const showTaskInfo = () => {
     console.log(task);
   };
@@ -93,6 +98,7 @@ function TaskChat({ task }) {
               </div>
               <div className="chat-footer opacity-50">Delivered</div>
             </div>
+
             <div className="chat chat-start">
               <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
@@ -111,6 +117,7 @@ function TaskChat({ task }) {
               </div>
               <div className="chat-footer opacity-50">Delivered</div>
             </div>
+
             <div className="chat chat-end">
               <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
@@ -129,6 +136,7 @@ function TaskChat({ task }) {
               </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
+
             <div className="chat chat-end">
               <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
@@ -147,6 +155,7 @@ function TaskChat({ task }) {
               </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
+
             <div className="chat chat-end">
               <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
@@ -165,6 +174,7 @@ function TaskChat({ task }) {
               </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
+
             <div className="chat chat-end">
               <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
@@ -183,6 +193,7 @@ function TaskChat({ task }) {
               </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
+
             <div className="chat chat-end">
               <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
@@ -201,6 +212,7 @@ function TaskChat({ task }) {
               </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
+
             <div className="chat chat-end">
               <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
@@ -219,6 +231,7 @@ function TaskChat({ task }) {
               </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
+
             <div className="chat chat-start">
               <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
@@ -237,6 +250,10 @@ function TaskChat({ task }) {
               </div>
               <div className="chat-footer opacity-50">Delivered</div>
             </div>
+
+            {/* scroll to END => START */}
+            <div ref={endRef}></div>
+            {/* scroll to END => END */}
           </section>
           {/* Task Chat Body END */}
           {/* Chat Input START */}
