@@ -26,6 +26,7 @@ import ControlStaffs from "./pages/Master/Staffs/ControlStaffs";
 import MasterProjects from "./pages/Master/Projects/MasterProjects";
 import MasterStatus from "./pages/Master/Status/MasterStatus";
 import MasterSettings from "./pages/Master/Settings/MasterSettings";
+import CustomerDashboard from "./pages/Customer/CustomerDashboard";
 
 function App() {
 
@@ -133,7 +134,8 @@ function App() {
         {
           path: '/',
           element: <Signin setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />,
-          errorElement: <ErrorPage />
+          // errorElement: <ErrorPage />
+          errorElement: <CustomerDashboard />
         }
       )
     ]
