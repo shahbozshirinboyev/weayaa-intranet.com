@@ -9,14 +9,22 @@ function CustomerNavbar() {
     <div className="p-5">
     <div className="bg-custom-green-5 h-[60px] w-full rounded-[10px] flex">
       
-            <div className="h-full w-full flex items-center ml-[10px]">
+            <div className="h-full w-full flex items-center ml-[10px] border">
               <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
                 <i className="bi bi-calendar2-week font-medium"></i>
                 <p className="ml-[10px] whitespace-nowrap">{formattedDate}</p>
               </div>
             </div>
 
-            <div className="flex justify-end items-center w-full mr-[10px]">
+            <div className="h-full w-full flex items-center justify-center border">
+              <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
+                {/* <i className="bi bi-calendar2-week font-medium"></i>
+                <p className="ml-[10px] whitespace-nowrap">{formattedDate}</p> */}
+                <img src="./img/long_logo.png" alt="" />
+              </div>
+            </div>
+
+            <div className="flex justify-end items-center w-full mr-[10px] border">
               <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
                 <i className="bi bi-bell font-medium"></i>
               </div>
@@ -92,10 +100,6 @@ function CustomerNavbar() {
                   </form>
                 </dialog>
               </div>
-
-              {/* <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
-                <i className="bi bi-person font-medium"></i>
-              </div> */}
             </div>
           </div>
 
