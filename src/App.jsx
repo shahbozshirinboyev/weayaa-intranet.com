@@ -10,7 +10,6 @@ import RootLayoutClient from "./layouts/RootLayoutClient";
 // pages
 import Signin from "./pages/Auth/Signin";
 import ErrorPage from "./pages/Error/ErrorPage";
-import Logout from "./pages/Logout";
 
 // staff pages
 import StaffDashboard from "./pages/Staff/Dashboard/StaffDashboard";
@@ -32,12 +31,12 @@ import ProjectsList from "./pages/Customer/ProjectsList";
 function App() {
   const [access, setAccess] = useState(window.localStorage.getItem("access"));
   const [refresh, setRefresh] = useState(window.localStorage.getItem("refresh"));
-  // const [userType, setUserType] = useState(window.localStorage.getItem("userType"));
-  const [userType, setUserType] = useState("client");
+  const [userType, setUserType] = useState(window.localStorage.getItem("userType"));
+  // const [userType, setUserType] = useState("client");
 
   const routes = createBrowserRouter([
-    // access && refresh && userType ? 
-    userType ? 
+    access && refresh && userType ? 
+    // userType ? 
     userType === "master" ? 
           {
             path: "/",
@@ -63,10 +62,6 @@ function App() {
               {
                 path: "settings",
                 element: <MasterSettings />,
-              },
-              {
-                path: "logout",
-                element: <Logout setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />,
               },
             ],
           }
@@ -96,10 +91,6 @@ function App() {
                 path: "settings",
                 element: <StaffSettings />,
               },
-              {
-                path: "logout",
-                element: <Logout setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />,
-              },
             ],
           }
         : // userType === 'client' ?
@@ -111,11 +102,7 @@ function App() {
               {
                 index: true,
                 element: <ProjectsList />
-              },
-              {
-                path: "logout",
-                element: <Logout setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />,
-              },
+              }
             ],
           }
       : {
