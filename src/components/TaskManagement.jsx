@@ -653,7 +653,7 @@ function TaskManagement() {
               }`}
             >
               <span className={`${projectsList.length === 0 ? "hidden" : ""}`}>
-                <i class="bi bi-folder2-open block text-[65px] mb-2 text-custom-green-80"></i>
+                <i className="bi bi-folder2-open block text-[65px] mb-2 text-custom-green-80"></i>
                 <span>Please, select project.</span>  
               </span>
               <span className={`${projectsList.length !== 0 ? "hidden" : ""}`}> 
