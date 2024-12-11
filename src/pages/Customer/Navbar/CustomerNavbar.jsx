@@ -1,9 +1,12 @@
 // Date - Luxon
 import { DateTime } from "luxon";
+import { useNavigate } from "react-router-dom";
 
 function CustomerNavbar() {
   const noneuser = "./img/noneuser.png";
   const logo_long = "./img/logo_long.png";
+  const navigate = useNavigate();
+  const goHome = () => {navigate("/");};
   const currentDate = DateTime.now();
   const formattedDate = currentDate.toFormat("d MMMM yyyy");
   return (
@@ -25,7 +28,7 @@ function CustomerNavbar() {
               alt=""
               className="w-[170px] group-hover:hidden"
             />
-            <button className="w-full h-full hidden group-hover:block transition-all duration-300 font-medium px-3 py-1 rounded-[5px] text-custom-green-dark hover:text-white bg-custom-green-30 hover:bg-custom-green-dark">
+            <button onClick={goHome} className="w-full h-full hidden group-hover:block transition-all duration-300 font-medium px-3 py-1 rounded-[5px] text-custom-green-dark hover:text-white bg-custom-green-30 hover:bg-custom-green-dark">
               <i className="bi bi-house mr-2"></i>
               <span>Home</span>
             </button>

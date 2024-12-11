@@ -27,6 +27,7 @@ import MasterSettings from "./pages/Master/Settings/MasterSettings";
 
 // client pages
 import ProjectsList from "./pages/Customer/ProjectsList";
+import ProjectStatus from "./pages/Customer/ProjectStatus";
 
 function App() {
   const [access, setAccess] = useState(window.localStorage.getItem("access"));
@@ -102,7 +103,11 @@ function App() {
               {
                 index: true,
                 element: <ProjectsList />
-              }
+              },
+              {
+                path: "projectstatus",
+                element: <ProjectStatus />
+              },
             ],
           }
       : {
