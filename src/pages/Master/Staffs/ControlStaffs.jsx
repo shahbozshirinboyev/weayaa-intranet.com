@@ -206,45 +206,42 @@ function ControlStaffs() {
       <div className="font-semibold bg-white pb-[15px]">
         <div className="grid grid-cols-2">
           <div className="flex justify-start items-start">
-            <div className="mr-[5px] rounded-[10px] w-[260px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark">
-              <div
-                className={`w-[130px] h-[35px] bg-custom-green-dark absolute rounded-[8px] transition-all duration-300 ease-in-out transform ${
-                  smlist === "staff"
-                    ? "translate-x-[-65px]"
-                    : "translate-x-[65px]"
-                }`}
+
+            <div className="mr-[5px] rounded-[10px] w-[390px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark">
+
+              <div 
+                className={`w-[130px] h-[35px] bg-custom-green-dark absolute rounded-[8px] transition-all duration-300 ease-in-out transform 
+                ${smlist === "staff" ? "translate-x-[-130px]" : smlist === "master" ? "translate-x-[0px]" : "translate-x-[130px]"}`}
               ></div>
 
               <button
-                onClick={() => {
-                  changeListToStaff("staff");
-                }}
-                className={`flex justify-center items-center w-full rounded-[8px] transform  ${
-                  smlist === "staff" ? "text-white" : ""
-                } transition-all duration-300`}
+                onClick={() => { changeListToStaff("staff"); }}
+                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${ smlist === "staff" ? "text-white" : "" }`}
               >
                 <i className="bi bi-person text-[22px] mx-[5px]"></i>
-                <span className="mx-[5px] text-[14px] font-semibold">
-                  Staffs
-                </span>
+                <span className="mx-[5px] text-[14px] font-semibold">Staffs</span>
               </button>
 
               <button
-                onClick={() => {
-                  changeListToStaff("master");
-                }}
-                className={`flex justify-center items-center w-full rounded-[8px] transform ${
-                  smlist === "master" ? "text-white" : ""
-                } transition-all duration-300`}
+                onClick={() => {changeListToStaff("master");}}
+                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${ smlist === "master" ? "text-white" : "" }`}
+              >
+                <i className="bi bi-person-gear text-[22px] mx-[5px]"></i>
+                <span className="mx-[5px] text-[14px] font-semibold">Masters</span>
+              </button>
+
+              <button
+                onClick={() => {changeListToStaff("client");}}
+                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${ smlist === "client" ? "text-white" : "" }`}
               >
                 <i className="bi bi-person-check text-[22px] mx-[5px]"></i>
-                <span className="mx-[5px] text-[14px] font-semibold">
-                  Masters
-                </span>
+                <span className="mx-[5px] text-[14px] font-semibold">Clients</span>
               </button>
+
             </div>
 
             <button className="rounded-[10px] w-[125px] h-[35px] bg-custom-green-30 text-custom-green-dark cursor-default transition-all duration-150 hidden md:hidden lg:block">
+              <i className="bi bi-people text-[22px] mx-[5px]"></i>
               <span className="text-[22px] mx-[5px]">{usersCount}</span>
               <span className="text-[14px] font-semibold">Staffs</span>
             </button>

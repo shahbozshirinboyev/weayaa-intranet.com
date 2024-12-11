@@ -197,7 +197,7 @@ function AddStaff({ setCount }) {
         onClick={() => document.getElementById("add_user_modal").showModal()}
       >
         <i className="bi bi-person-add text-[22px] mx-[5px]"></i>
-        <span className="mx-[5px] text-[14px] font-semibold">Add Staff</span>
+        <span className="mx-[5px] text-[14px] font-semibold">Add</span>
       </button>
       {/* Modal Open Button END && Add New Staff */}
 
