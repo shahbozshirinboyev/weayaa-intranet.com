@@ -1,14 +1,30 @@
 // Date - Luxon
 import { DateTime } from "luxon";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
-function CustomerNavbar() {
+function CustomerNavbar({ setAccess, setRefresh, setUserType }) {
   const noneuser = "./img/noneuser.png";
   const logo_long = "./img/logo_long.png";
   const navigate = useNavigate();
   const goHome = () => {navigate("/");};
   const currentDate = DateTime.now();
   const formattedDate = currentDate.toFormat("d MMMM yyyy");
+
+    // Logout section start
+    const deleteUserInfo = () => {
+      toast("You are logged out!", { icon: "✌️" });
+      setAccess(null);
+      setRefresh(null);
+      setUserType(null);
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("userType");
+      localStorage.removeItem("activeProject");
+      localStorage.removeItem("userId");
+      navigate("/");
+    };
+    // Logout section end
   return (
     <div className="p-5">
       <div className="bg-custom-green-5 h-[60px] w-full rounded-[10px] flex">
@@ -92,7 +108,7 @@ function CustomerNavbar() {
                 <p className="py-4">Are you sure you want to Logout?</p>
                 <div className="modal-action flex justify-center items-center">
                   <button
-                    // onClick={deleteUserInfo}
+                    onClick={deleteUserInfo}
                     className="btn w-[70px] hover:text-white hover:bg-custom-green-dark bg-custom-green-30 text-custom-green-dark"
                   >
                     Yes
