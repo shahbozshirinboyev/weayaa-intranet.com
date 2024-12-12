@@ -241,24 +241,24 @@ function ControlStaffs() {
 
             </div>
 
-            <button className="rounded-[10px] w-[125px] h-[35px] bg-custom-green-30 text-custom-green-dark cursor-default transition-all duration-150 hidden md:hidden lg:block">
-              <i className="bi bi-people text-[22px] mx-[5px]"></i>
+            <button className="rounded-[10px] w-auto h-[35px] bg-custom-green-30 text-custom-green-dark cursor-default transition-all duration-150 hidden md:hidden lg:block">
+              <i className="bi bi-people pl-2 text-[22px] mx-[5px]"></i>
               <span className="text-[22px] mx-[5px]">{usersCount}</span>
-              <span className="text-[14px] font-semibold">Staffs</span>
+              <span className="text-[14px] pr-[10px] font-semibold">Members</span>
             </button>
           </div>
 
           <div className="flex justify-end items-center">
             <div className="flex">
               <AddStaff setCount={setCount} />
-              <AddClient />
+              <AddClient setCount={setCount} />
             </div>
           </div>
         </div>
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left">
+        <table className={`w-full text-sm text-left ${ smlist === "client" ? "hidden" : "" }`}>
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="text-[14px] text-custom-green-90 bg-custom-green-10">
               <th scope="col" className="px-6 py-3">
@@ -295,7 +295,7 @@ function ControlStaffs() {
 
           <tbody>
             {users
-              .filter((user) => user.user_type === smlist)
+              .filter((user) => user.user_type === smlist && user.user_type !== "client")
               .map((user) => (
                 <tr
                   key={user.id}
@@ -432,6 +432,100 @@ function ControlStaffs() {
                         <i className="bi bi-person-gear text-[22px]"></i>
                       </button>
                     </div>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+        <table className={`w-full text-sm text-left ${ smlist === "client" ? "" : "hidden" }`}>
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr className="text-[14px] text-custom-green-90 bg-custom-green-10">
+              <th scope="col" className="px-6 py-3">
+                Full Name
+              </th>
+
+              <th
+                scope="col"
+                className="px-6 py-3 hidden md:table-cell lg:table-cell"
+              >
+                Contact
+              </th>
+
+              <th
+                scope="col"
+                className="px-6 py-3 hidden md:hidden lg:table-cell"
+              >
+                Organization
+              </th>
+
+              <th scope="col" className="px-6 py-3">
+                Project
+              </th>
+
+              <th scope="col" className="px-6 py-3">
+                Setting
+              </th>
+
+            </tr>
+          </thead>
+
+          <tbody>
+            {users
+              .filter((user) => user.user_type === smlist && user.user_type === "client")
+              .map((user) => (
+                <tr
+                  key={user.id}
+                  className="bg-white border-b border-custom-green-30 hover:bg-custom-green-5"
+                >
+                  <td
+                    scope="row"
+                    className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    <img
+                      className="!w-12 !h-12 min-w-12 min-h-12 rounded-full object-cover border whitespace-nowrap"
+                      src={user.image ? user.image : noneuser}
+                      alt="user_image"
+                    />
+                    <div className="ps-3">
+                      <div className="text-base font-semibold text-custom-green-dark">
+                        {user.first_name} {user.last_name}
+                      </div>
+                      <div className="font-normal text-custom-green-80">
+                        Client
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell lg:table-cell">
+                    <div className="text-base font-semibold text-custom-green-dark">
+                      {user.phone_number === null || user.phone_number === ""
+                        ? "+998 (--) --- -- --"
+                        : user.phone_number}
+                    </div>
+                    <div className="font-normal text-custom-green-80">
+                      {user.email === null || user.email === ""
+                        ? "email.undefined"
+                        : user.email}
+                    </div>
+                  </td>
+
+                  <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
+                    <div className="flex text-custom-green-dark">
+                        <div>{user.organization || "org.undefined"}</div>
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-4">
+                    <button className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
+                    <i className="bi bi-folder-symlink"></i>
+                      Projects Status
+                    </button>
+                  </td>
+
+                  <td className="px-6 py-4 justify-start items-center">
+                    <button className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
+                    <i className="bi bi-sliders"></i>
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -637,27 +731,8 @@ function ControlStaffs() {
                         <i className="bi bi-telephone"></i> Phone Number
                       </span>
                       <MaskedInput
-                        mask={[
-                          "+",
-                          "9",
-                          "9",
-                          "8",
-                          " ",
-                          "(",
-                          /\d/,
-                          /\d/,
-                          ")",
-                          " ",
-                          /\d/,
-                          /\d/,
-                          /\d/,
-                          " ",
-                          /\d/,
-                          /\d/,
-                          " ",
-                          /\d/,
-                          /\d/,
-                        ]}
+                         // prettier-ignore
+                         mask={["+", "9", "9", "8", " ", "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, " ", /\d/, /\d/, " ", /\d/, /\d/,]}
                         value={editUserInfo.phone_number}
                         onChange={inputHandlePhone}
                         name="phone_number"

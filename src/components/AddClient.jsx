@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 // http
 import http from "../services/http"
 
-function AddClient() {
+function AddClient({ setCount }) {
   // Password hide/show function START
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => { setShowPassword(!showPassword); };
@@ -47,6 +47,10 @@ function AddClient() {
       {
         loading: "Adding...",
         success: (response) => {
+          const randomNum = Math.floor(Math.random() * 100); // 0 dan 99 gacha bo'lgan random son
+          setCount(randomNum);
+          document.getElementById("add_client_modal").close();
+          setState({ weayaa_id: "", password: "", first_name: "", last_name: "", phone_number: "", email: "", organization: "", image: "" })
           console.log(response.data);
           return <b>Add new User!</b>;
         },
@@ -253,9 +257,9 @@ function AddClient() {
                           <i className="bi bi-person-check"></i> WeaYaa ID <span className="text-red-700 font-bold">*</span>
                         </span>
                         <input
-                            value={state.weayaa_id}
-                            name="weayaa_id"
-                            onChange={inputHandle}
+                          value={state.weayaa_id}
+                          name="weayaa_id"
+                          onChange={inputHandle}
                           type="text"
                           placeholder="Enter WeaYaa ID"
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
@@ -293,7 +297,7 @@ function AddClient() {
                       </label>
                     </div>
                   </div>
-                  <button type="submit" className="btn mt-3 text-custom-green-dark">
+                  <button type="submit" className="px-3 py-2 text-[15px] rounded-[10px] w-full font-medium text-custom-green-dark hover:text-white bg-custom-green-10 hover:bg-custom-green-dark transition-all mt-3">
                     Save
                   </button>
                 </div>
