@@ -7,6 +7,18 @@ function AddClient() {
     const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => { setShowPassword(!showPassword); };
     // Password hide/show function END
+    const [avatar, setAvatar] = useState({ file: null, url: "" });
+    const handleAvatar = (e) => {
+      if (e.target.files[0]) {
+        setAvatar({
+          file: e.target.files[0],
+          url: URL.createObjectURL(e.target.files[0]),
+        });
+      }
+    };
+    const clearAvatar = () => {
+        setAvatar({ file: null, url: "" })
+    }
 
   return (
     <>
@@ -41,38 +53,32 @@ function AddClient() {
           </form>
           {/* Modal header End */}
           <>
-            <div className="p-4 text-custom-green-dark">
-              <div className="grid grid-cols-1 mt-2">
-                <div className="flex mt-2 gap-4 items-center">
-                  <div className="w-[100px] h-[100px] flex justify-center items-center">
-                    {null === null ? (
-                      <i className="bi bi-person-bounding-box text-[35px] text-custom-green-80"></i>
-                    ) : (
-                      <img
-                        // src={userImage}
-                        alt="user-image"
-                        className="w-[100px] rounded-full"
-                      />
-                    )}
-                  </div>
+          <form action="">
+            <div className="px-6 py-4 text-custom-green-dark">
 
+              <div className="grid grid-cols-1">
+                <div className="flex gap-4 items-center">
+                  <div className="w-[100px] h-[100px] flex justify-center items-center">
+                      <img
+                        src={avatar.url || "./img/noneuser.png"}
+                        alt="user-image"
+                        className="w-[80px] h-[80px] rounded-full object-cover border border-custom-green-30"
+                      />
+                  </div>
                   <div className="w-full">
                     <label htmlFor="">
-                      {true && (
+                      {avatar.url && (
                         <button
-                          //   onClick={handleClearFileUserImage}
+                            onClick={clearAvatar}
                           className="w-[100px] px-2 py-1 mr-2 rounded-[10px] text-[14px] bg-red-400 hover:bg-red-600 text-white font-medium transition-all"
                         >
                           Delete
                         </button>
                       )}
                       <input
-                        // value={state.image.data}
-                        // textni rransparent qilib qo'ydim orqaga qaytganda file name ni qayta topa olmayabdi
-                        // name="image"
-                        // onChange={handleFileUserImageChange}
+                        onChange={handleAvatar}
                         type="file"
-                        id="user-image"
+                        id="file"
                         className="text-[14px] text-transparent font-medium placeholder-custom-green-60
                                       file:mr-4 file:py-1 file:px-2 file:w-[100px]
                                       file:rounded-[10px] file:border-0
@@ -83,12 +89,11 @@ function AddClient() {
                         "
                       />
                     </label>
-                    <span className="block mt-[5px] text-custom-green-80">
-                      An image of the person, it’s best if it has the same
-                      length and height.
+                    <span className="block text-[14px] mt-[5px] text-custom-green-80">
+                      An image of the person, it’s best if it has the same length and height.
                       <br />
                       <span className="text-custom-green-dark font-medium">
-                        Recommendation: 300x300px
+                      Recommendation: 300x300px
                       </span>
                     </span>
                   </div>
@@ -105,6 +110,7 @@ function AddClient() {
                         // value={state.firstName}
                         // onChange={inputHandle}
                         // name="firstName"
+                        autoComplete="username"
                         type="text"
                         placeholder="Enter Staff First Name"
                         className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
@@ -158,6 +164,7 @@ function AddClient() {
                         // onChange={inputHandle}
                         // name="email"
                         type="email"
+                        autoComplete="email"
                         placeholder="example@gmail.com"
                         className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                       />
@@ -171,14 +178,10 @@ function AddClient() {
                       Account Type
                     </span>
                     <div className="grid grid-cols-1">
-                      <label className="p-2 border rounded-md flex items-center">
+                      <label className="p-2 border rounded-md flex items-center accent-custom-green-dark">
                         <input
-                          checked
-                          //   checked={state.workType === "full_time"}
-                          //   onChange={inputHandle}
                           type="radio"
-                          //   name="workType"
-                          value="full_time"
+                          defaultChecked 
                         />
                         <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                           Client
@@ -228,9 +231,10 @@ function AddClient() {
                       <div className="relative">
                         <input
                           // value={state.userPassword}
-                          name="userPassword"
+                        //   name="userPassword"
                           // onChange={inputHandle}
                           type={showPassword ? "text" : "password"}
+                          autoComplete="current-password"
                           placeholder="Enter Password"
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                         />
@@ -249,6 +253,9 @@ function AddClient() {
                     </label>
                   </div>
                 </div>
+                <button className="btn mt-3 text-custom-green-dark">
+                    Save
+                </button>
               </div>
               {/* Next Button Start */}
               {/* <div className="gap-4 grid grid-cols-1 justify-center items-center absolute inset-x-0 bottom-[20px] mx-6">
@@ -261,6 +268,7 @@ function AddClient() {
                   </div> */}
               {/* Next Button End */}
             </div>
+            </form>
           </>
         </div>
         <form method="dialog" className="modal-backdrop">
