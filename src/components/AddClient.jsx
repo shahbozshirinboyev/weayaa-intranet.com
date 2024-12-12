@@ -33,6 +33,7 @@ function AddClient({ setCount }) {
     formData.append("last_name", state.last_name);
     formData.append("phone_number", state.phone_number.replace(/\s+/g, ""));
     formData.append("email", state.email);
+    formData.append("organization", state.organization);
     formData.append("image", state.image);
 
     const access = localStorage.getItem("access");
