@@ -3,6 +3,14 @@ import MaskedInput from "react-text-mask";
 import { Toaster } from "react-hot-toast";
 
 function AddClient() {
+
+    const [showPassword, setShowPassword] = useState(false);
+
+      // Password hide/show function START
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  // Password hide/show function END
     
   return (
     <>
@@ -54,7 +62,7 @@ function AddClient() {
 
                       <div className="w-full">
                         <label htmlFor="">
-                          {null && (
+                          {true && (
                             <button
                             //   onClick={handleClearFileUserImage}
                               className="w-[100px] px-2 py-1 mr-2 rounded-[10px] text-[14px] bg-red-400 hover:bg-red-600 text-white font-medium transition-all"
@@ -181,35 +189,14 @@ function AddClient() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 mt-2">
-                      <div>
-                        <label>
-                          <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            Specialist Stuff
-                            <span className="text-red-700 font-bold">*</span>
-                          </span>
-                          <select
-                            // value={state.specialist}
-                            // onChange={inputHandle}
-                            // name="specialist"
-                            id=""
-                            placeholder="Select Specialist Stuff"
-                            className="text-custom-green-dark transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                          >
-                            <option>Select Specialist Stuff</option>
-                            <option value="Coder">Coder</option>
-                            <option value="Designer">Designer</option>
-                            <option value="Manager">Manager</option>
-                            <option value="Director">Director && Master</option>
-                          </select>
-                        </label>
-                      </div>
-                      <div>
+                    <div>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          Type
+                          Account Type
                         </span>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-1">
                           <label className="p-2 border rounded-md flex items-center">
                             <input
+                            checked
                             //   checked={state.workType === "full_time"}
                             //   onChange={inputHandle}
                               type="radio"
@@ -217,59 +204,77 @@ function AddClient() {
                               value="full_time"
                             />
                             <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
-                              Full Time
-                            </span>
-                          </label>
-                          <label className="p-2 border rounded-md flex items-center">
-                            <input
-                            //   checked={state.workType === "part_time"}
-                            //   onChange={inputHandle}
-                            //   name="workType"
-                              type="radio"
-                              value="part_time"
-                            />
-                            <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
-                              Part Time
+                              Client
                             </span>
                           </label>
                         </div>
                       </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 mt-2">
                       <div>
                         <label>
                           <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            Enter Specialist Stuff
+                            {/* <i className="bi bi-envelope"></i>  */}
+                            Organization
                           </span>
                           <input
-                            // value={state.label}
+                            // value={state.email}
                             // onChange={inputHandle}
-                            // name="label"
+                            // name="email"
                             type="text"
-                            placeholder="Example: 3D Designer | Frontend developer | Backend developer"
+                            placeholder="example@gmail.com"
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                           />
                         </label>
                       </div>
                     </div>
-
-                    <div className="mt-2">
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          Address
+                          <i className="bi bi-person-check"></i> WeaYaa ID
                         </span>
-                        <textarea
-                        //   value={state.address}
+                        <input
+                        //   value={state.userId}
+                        //   name="userId"
                         //   onChange={inputHandle}
-                        //   name="address"
-                          id=""
-                          rows="3"
-                          placeholder="Enter Staff Address here ..."
+                          type="text"
+                          placeholder="Enter WeaYaa ID"
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                        ></textarea>
+                        />
                       </label>
                     </div>
+
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          <i className="bi bi-key"></i> Password
+                        </span>
+                        <div className="relative">
+                          <input
+                            // value={state.userPassword}
+                            name="userPassword"
+                            // onChange={inputHandle}
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter Password"
+                            className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                          />
+                          <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className="absolute top-0 end-0 p-2.5 rounded-full w-[30px] font-medium flex justify-center items-center text-custom-green-60 hover:text-custom-green-dark"
+                          >
+                            {showPassword ? (
+                              <i className="bi bi-eye"></i>
+                            ) : (
+                              <i className="bi bi-eye-slash"></i>
+                            )}
+                          </button>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                    
+
+                   
                   </div>
                   {/* Next Button Start */}
                   {/* <div className="gap-4 grid grid-cols-1 justify-center items-center absolute inset-x-0 bottom-[20px] mx-6">
