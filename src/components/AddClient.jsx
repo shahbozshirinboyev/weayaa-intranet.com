@@ -1,28 +1,68 @@
 import { useState, useEffect } from "react";
 import MaskedInput from "react-text-mask";
 import toast, { Toaster } from "react-hot-toast";
+// http
+import http from "../services/http"
 
 function AddClient() {
-    // Password hide/show function START
-    const [showPassword, setShowPassword] = useState(false);
-    const togglePasswordVisibility = () => { setShowPassword(!showPassword); };
-    // Password hide/show function END
-    const [avatar, setAvatar] = useState({ file: null, url: "" });
-    const handleAvatar = (e) => {
-      if (e.target.files[0]) {
-        setAvatar({
-          file: e.target.files[0],
-          url: URL.createObjectURL(e.target.files[0]),
-        });
-      }
-    };
-    const clearAvatar = () => {
-        setAvatar({ file: null, url: "" })
+  // Password hide/show function START
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => { setShowPassword(!showPassword); };
+  // Password hide/show function END
+  const [state, setState] = useState({ weayaa_id: "", password: "", first_name: "", last_name: "", phone_number: "", email: "", organization: "", image: "" })
+  const inputHandle = (e) => { setState({ ...state, [e.target.name]: e.target.value, }); };
+
+  const [avatar, setAvatar] = useState({ file: null, url: "" });
+  const clearAvatar = () => { setAvatar({ file: null, url: "" }) }
+  const handleAvatar = (e) => {
+    if (e.target.files[0]) {
+      setAvatar({
+        file: e.target.files[0],
+        url: URL.createObjectURL(e.target.files[0]),
+      });
+      setState({ ...state, image: e.target.files[0], });
     }
+  };
+
+  const addClientUser = (e) => {
+    e.preventDefault()
+    const formData = new FormData();
+    formData.append("weayaa_id", state.weayaa_id);
+    formData.append("password", state.password);
+    formData.append("first_name", state.first_name);
+    formData.append("last_name", state.last_name);
+    formData.append("phone_number", state.phone_number.replace(/\s+/g, ""));
+    formData.append("email", state.email);
+    formData.append("image", state.image);
+
+    const access = localStorage.getItem("access");
+
+    toast.promise(
+      http.post("users/clients/register/", formData, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }),
+      {
+        loading: "Adding...",
+        success: (response) => {
+          console.log(response.data);
+          return <b>Add new User!</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Something went wrong :(</b>;
+        },
+      }
+    );
+
+
+  }
 
   return (
     <>
-    {/* Modal Open Button START */}
+      {/* Modal Open Button START */}
       <div className="ml-[10px]">
         <button
           className="rounded-[10px] min-w-[125px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark transition-all duration-150"
@@ -32,7 +72,7 @@ function AddClient() {
           <span className="mx-[5px] text-[14px] font-semibold">Add Client</span>
         </button>
       </div>
-    {/* Modal Open Button END */}
+      {/* Modal Open Button END */}
 
       <dialog id="add_client_modal" className="modal">
         <Toaster />
@@ -53,33 +93,33 @@ function AddClient() {
           </form>
           {/* Modal header End */}
           <>
-          <form action="">
-            <div className="px-6 py-4 text-custom-green-dark">
+            <form onSubmit={addClientUser}>
+              <div className="px-6 py-4 text-custom-green-dark">
 
-              <div className="grid grid-cols-1">
-                <div className="flex gap-4 items-center">
-                  <div className="w-[100px] h-[100px] flex justify-center items-center">
+                <div className="grid grid-cols-1">
+                  <div className="flex gap-4 items-center">
+                    <div className="w-[100px] h-[100px] flex justify-center items-center">
                       <img
                         src={avatar.url || "./img/noneuser.png"}
                         alt="user-image"
                         className="w-[80px] h-[80px] rounded-full object-cover border border-custom-green-30"
                       />
-                  </div>
-                  <div className="w-full">
-                    <label htmlFor="">
-                      {avatar.url && (
-                        <button
+                    </div>
+                    <div className="w-full">
+                      <label htmlFor="">
+                        {avatar.url && (
+                          <button
                             onClick={clearAvatar}
-                          className="w-[100px] px-2 py-1 mr-2 rounded-[10px] text-[14px] bg-red-400 hover:bg-red-600 text-white font-medium transition-all"
-                        >
-                          Delete
-                        </button>
-                      )}
-                      <input
-                        onChange={handleAvatar}
-                        type="file"
-                        id="file"
-                        className="text-[14px] text-transparent font-medium placeholder-custom-green-60
+                            className="w-[100px] px-2 py-1 mr-2 rounded-[10px] text-[14px] bg-red-400 hover:bg-red-600 text-white font-medium transition-all"
+                          >
+                            Delete
+                          </button>
+                        )}
+                        <input
+                          onChange={handleAvatar}
+                          type="file"
+                          id="file"
+                          className="text-[14px] text-transparent font-medium placeholder-custom-green-60
                                       file:mr-4 file:py-1 file:px-2 file:w-[100px]
                                       file:rounded-[10px] file:border-0
                                       file:text-sm file:font-semibold
@@ -87,177 +127,177 @@ function AddClient() {
                                       hover:file:bg-custom-green-dark hover:file:text-white
                                       hover:file:transition-all
                         "
-                      />
-                    </label>
-                    <span className="block text-[14px] mt-[5px] text-custom-green-80">
-                      An image of the person, it’s best if it has the same length and height.
-                      <br />
-                      <span className="text-custom-green-dark font-medium">
-                      Recommendation: 300x300px
-                      </span>
-                    </span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 mt-2">
-                  <div>
-                    <label>
-                      <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        First Name
-                        <span className="text-red-700 font-bold">*</span>
-                      </span>
-                      <input
-                        // value={state.firstName}
-                        // onChange={inputHandle}
-                        // name="firstName"
-                        autoComplete="username"
-                        type="text"
-                        placeholder="Enter Staff First Name"
-                        className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        Last Name
-                        <span className="text-red-700 font-bold">*</span>
-                      </span>
-                      <input
-                        // value={state.lastName}
-                        // onChange={inputHandle}
-                        // name="lastName"
-                        type="text"
-                        placeholder="Enter Staff Last Name"
-                        className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 mt-2">
-                  <div>
-                    <label>
-                      <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-telephone"></i> Phone Number
-                      </span>
-                      <MaskedInput
-                        // prettier-ignore
-                        mask={[ "+", "9", "9", "8", " ", "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, " ", /\d/, /\d/, " ", /\d/, /\d/, ]}
-                        // value={state.phone}
-                        // onChange={inputHandle}
-                        // name="phone"
-                        type="text"
-                        placeholder="+998 (--) --- -- --"
-                        // alwaysShowMask={true}
-                        className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-envelope"></i> Email Address
-                      </span>
-                      <input
-                        // value={state.email}
-                        // onChange={inputHandle}
-                        // name="email"
-                        type="email"
-                        autoComplete="email"
-                        placeholder="example@gmail.com"
-                        className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 mt-2">
-                  <div>
-                    <span className="block text-custom-green-dark font-semibold text-[14px]">
-                      Account Type
-                    </span>
-                    <div className="grid grid-cols-1">
-                      <label className="p-2 border rounded-md flex items-center accent-custom-green-dark">
-                        <input
-                          type="radio"
-                          defaultChecked 
                         />
-                        <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
-                          Client
+                      </label>
+                      <span className="block text-[14px] mt-[5px] text-custom-green-80">
+                        An image of the person, it’s best if it has the same length and height.
+                        <br />
+                        <span className="text-custom-green-dark font-medium">
+                          Recommendation: 300x300px
                         </span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          First Name
+                          <span className="text-red-700 font-bold">*</span>
+                        </span>
+                        <input
+                          value={state.first_name}
+                          onChange={inputHandle}
+                          name="first_name"
+                          autoComplete="username"
+                          type="text"
+                          placeholder="Enter Staff First Name"
+                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                        />
+                      </label>
+                    </div>
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          Last Name
+                          <span className="text-red-700 font-bold">*</span>
+                        </span>
+                        <input
+                          value={state.last_name}
+                          onChange={inputHandle}
+                          name="last_name"
+                          type="text"
+                          placeholder="Enter Staff Last Name"
+                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                        />
                       </label>
                     </div>
                   </div>
-                  <div>
-                    <label>
-                      <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        {/* <i className="bi bi-envelope"></i>  */}
-                        Organization
-                      </span>
-                      <input
-                        // value={state.email}
-                        // onChange={inputHandle}
-                        // name="email"
-                        type="text"
-                        placeholder="example@gmail.com"
-                        className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                      />
-                    </label>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-2 mt-2">
-                  <div>
-                    <label>
-                      <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-person-check"></i> WeaYaa ID <span className="text-red-700 font-bold">*</span>
-                      </span>
-                      <input
-                        //   value={state.userId}
-                        //   name="userId"
-                        //   onChange={inputHandle}
-                        type="text"
-                        placeholder="Enter WeaYaa ID"
-                        className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                      />
-                    </label>
-                  </div>
 
-                  <div>
-                    <label>
-                      <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-key"></i> Password <span className="text-red-700 font-bold">*</span>
-                      </span>
-                      <div className="relative">
-                        <input
-                          // value={state.userPassword}
-                        //   name="userPassword"
-                          // onChange={inputHandle}
-                          type={showPassword ? "text" : "password"}
-                          autoComplete="current-password"
-                          placeholder="Enter Password"
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          <i className="bi bi-telephone"></i> Phone Number
+                        </span>
+                        <MaskedInput
+                          // prettier-ignore
+                          mask={["+", "9", "9", "8", " ", "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, " ", /\d/, /\d/, " ", /\d/, /\d/,]}
+                          value={state.phone_number}
+                          onChange={inputHandle}
+                          name="phone_number"
+                          type="text"
+                          placeholder="+998 (--) --- -- --"
+                          // alwaysShowMask={true}
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                         />
-                        <button
-                          type="button"
-                          onClick={togglePasswordVisibility}
-                          className="absolute top-0 end-0 p-2.5 rounded-full w-[30px] font-medium flex justify-center items-center text-custom-green-60 hover:text-custom-green-dark"
-                        >
-                          {showPassword ? (
-                            <i className="bi bi-eye"></i>
-                          ) : (
-                            <i className="bi bi-eye-slash"></i>
-                          )}
-                        </button>
-                      </div>
-                    </label>
+                      </label>
+                    </div>
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          <i className="bi bi-envelope"></i> Email Address
+                        </span>
+                        <input
+                          value={state.email}
+                          onChange={inputHandle}
+                          name="email"
+                          type="email"
+                          autoComplete="email"
+                          placeholder="example@gmail.com"
+                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                        />
+                      </label>
+                    </div>
                   </div>
-                </div>
-                <button className="btn mt-3 text-custom-green-dark">
+
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div>
+                      <span className="block text-custom-green-dark font-semibold text-[14px]">
+                        Account Type
+                      </span>
+                      <div className="grid grid-cols-1">
+                        <label className="p-2 border rounded-md flex items-center accent-custom-green-dark">
+                          <input
+                            type="radio"
+                            defaultChecked
+                          />
+                          <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
+                            Client
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          {/* <i className="bi bi-envelope"></i>  */}
+                          Organization
+                        </span>
+                        <input
+                          value={state.organization}
+                          onChange={inputHandle}
+                          name="organization"
+                          type="text"
+                          placeholder="example@gmail.com"
+                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          <i className="bi bi-person-check"></i> WeaYaa ID <span className="text-red-700 font-bold">*</span>
+                        </span>
+                        <input
+                            value={state.weayaa_id}
+                            name="weayaa_id"
+                            onChange={inputHandle}
+                          type="text"
+                          placeholder="Enter WeaYaa ID"
+                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                        />
+                      </label>
+                    </div>
+
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          <i className="bi bi-key"></i> Password <span className="text-red-700 font-bold">*</span>
+                        </span>
+                        <div className="relative">
+                          <input
+                            value={state.password}
+                            name="password"
+                            onChange={inputHandle}
+                            type={showPassword ? "text" : "password"}
+                            autoComplete="current-password"
+                            placeholder="Enter Password"
+                            className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                          />
+                          <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className="absolute top-0 end-0 p-2.5 rounded-full w-[30px] font-medium flex justify-center items-center text-custom-green-60 hover:text-custom-green-dark"
+                          >
+                            {showPassword ? (
+                              <i className="bi bi-eye"></i>
+                            ) : (
+                              <i className="bi bi-eye-slash"></i>
+                            )}
+                          </button>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  <button type="submit" className="btn mt-3 text-custom-green-dark">
                     Save
-                </button>
+                  </button>
+                </div>
               </div>
-            </div>
             </form>
           </>
         </div>
