@@ -210,7 +210,7 @@ function AddClient() {
                   <div>
                     <label>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-person-check"></i> WeaYaa ID
+                        <i className="bi bi-person-check"></i> WeaYaa ID <span className="text-red-700 font-bold">*</span>
                       </span>
                       <input
                         //   value={state.userId}
@@ -226,7 +226,7 @@ function AddClient() {
                   <div>
                     <label>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-key"></i> Password
+                        <i className="bi bi-key"></i> Password <span className="text-red-700 font-bold">*</span>
                       </span>
                       <div className="relative">
                         <input
@@ -257,16 +257,6 @@ function AddClient() {
                     Save
                 </button>
               </div>
-              {/* Next Button Start */}
-              {/* <div className="gap-4 grid grid-cols-1 justify-center items-center absolute inset-x-0 bottom-[20px] mx-6">
-                    <button
-                      onClick={next}
-                      className="px-3 py-2 text-[15px] rounded-[10px] w-full font-medium text-white bg-custom-green-80 hover:bg-custom-green-dark transition-all"
-                    >
-                      Next
-                    </button>
-                  </div> */}
-              {/* Next Button End */}
             </div>
             </form>
           </>
