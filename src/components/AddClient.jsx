@@ -244,7 +244,7 @@ function AddClient({ setCount }) {
                           onChange={inputHandle}
                           name="organization"
                           type="text"
-                          placeholder="example@gmail.com"
+                          placeholder="Enter organization"
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                         />
                       </label>
@@ -254,7 +254,7 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-person-check"></i> WeaYaa ID <span className="text-red-700 font-bold">*</span>
+                          <i className="bi bi-person-check"></i> WeaYaa ID<span className="text-red-700 font-bold">*</span>
                         </span>
                         <input
                           value={state.weayaa_id}
@@ -270,7 +270,7 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-key"></i> Password <span className="text-red-700 font-bold">*</span>
+                          <i className="bi bi-key"></i> Password<span className="text-red-700 font-bold">*</span>
                         </span>
                         <div className="relative">
                           <input
