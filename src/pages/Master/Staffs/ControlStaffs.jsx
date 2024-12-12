@@ -9,6 +9,7 @@ import noneuser from "/img/noneuser.png";
 
 // Base URL
 import http from "../../../services/http";
+import AddClient from "../../../components/AddClient";
 
 function ControlStaffs() {
   const [smlist, setSmlist] = useState("staff");
@@ -248,8 +249,9 @@ function ControlStaffs() {
           </div>
 
           <div className="flex justify-end items-center">
-            <div>
+            <div className="flex">
               <AddStaff setCount={setCount} />
+              <AddClient />
             </div>
           </div>
         </div>

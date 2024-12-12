@@ -193,11 +193,11 @@ function AddStaff({ setCount }) {
     <section>
       {/* Modal Open Button START && Add New Staff*/}
       <button
-        className="rounded-[10px] w-[125px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark transition-all duration-150"
+        className="rounded-[10px] min-w-[125px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark transition-all duration-150"
         onClick={() => document.getElementById("add_user_modal").showModal()}
       >
         <i className="bi bi-person-add text-[22px] mx-[5px]"></i>
-        <span className="mx-[5px] text-[14px] font-semibold">Add</span>
+        <span className="ml-[5px] mr-[10px] text-[14px] font-semibold">Add Staff/Master</span>
       </button>
       {/* Modal Open Button END && Add New Staff */}
 
