@@ -210,7 +210,7 @@ function AddStaff({ setCount }) {
             className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
           >
             <span className="text-custom-green-dark font-bold">
-              Add News Staff
+              Add New Staff/Master
             </span>
             <div className="text-end">
               <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
