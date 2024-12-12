@@ -10,6 +10,7 @@ import noneuser from "/img/noneuser.png";
 // Base URL
 import http from "../../../services/http";
 import AddClient from "../../../components/AddClient";
+import EditClientInfo from "../../../components/EditClientInfo";
 
 function ControlStaffs() {
   const [smlist, setSmlist] = useState("staff");
@@ -523,9 +524,7 @@ function ControlStaffs() {
                   </td>
 
                   <td className="px-6 py-4 justify-start items-center">
-                    <button className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
-                    <i className="bi bi-sliders"></i>
-                    </button>
+                    <EditClientInfo clientId={user.id} />
                   </td>
                 </tr>
               ))}
