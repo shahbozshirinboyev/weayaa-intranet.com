@@ -4,37 +4,20 @@ import toast, { Toaster } from "react-hot-toast";
 // http
 import http from "../services/http"
 
-function EditClientInfo({ clientId }) {
-
-    const [state, setState] = useState({ weayaa_id: "", password: "", first_name: "", last_name: "", phone_number: "", email: "", organization: "", image: "" })
+function EditClientInfo({ clientInfo, setCount }) {
+    const [avatar, setAvatar] = useState({ file: null, url: "" });
+    const [state, setState] = useState([])
     const inputHandle = (e) => { setState({ ...state, [e.target.name]: e.target.value, }); };
 
 
-    const getClientUserInfo = (clientId) => {
-        const access = localStorage.getItem("access");
-        toast.promise(
-            http.get(`users/clients/${clientId}/`, {
-                headers: {
-                    Authorization: `Bearer ${access}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            }),
-            {
-                loading: "Loading...",
-                success: (response) => {
-                    //   const randomNum = Math.floor(Math.random() * 100); // 0 dan 99 gacha bo'lgan random son
-                    //   setCount(randomNum);
 
-                    console.log(response.data);
-                    return <b>Done!</b>;
-                },
-                error: (error) => {
-                    console.log(error.response.data);
-                    return <b>Something went wrong :(</b>;
-                },
-            }
-        );
-    }
+    useEffect(()=>{
+        if(clientInfo){
+            console.log(clientInfo)
+            setState(clientInfo)
+            setAvatar({...avatar, url: clientInfo.image})
+        }
+    },[clientInfo])
 
     // Password hide/show function START
     const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +25,7 @@ function EditClientInfo({ clientId }) {
     // Password hide/show function END
 
 
-    const [avatar, setAvatar] = useState({ file: null, url: "" });
+    
     const clearAvatar = () => { setAvatar({ file: null, url: "" }) }
     const handleAvatar = (e) => {
         if (e.target.files[0]) {
@@ -54,36 +37,35 @@ function EditClientInfo({ clientId }) {
         }
     };
 
-    const addClientUser = (e) => {
+    const editUserInfo = (e) => {
         e.preventDefault()
+        
         const formData = new FormData();
-        formData.append("weayaa_id", state.weayaa_id);
-        formData.append("password", state.password);
         formData.append("first_name", state.first_name);
         formData.append("last_name", state.last_name);
         formData.append("phone_number", state.phone_number.replace(/\s+/g, ""));
         formData.append("email", state.email);
         formData.append("organization", state.organization);
-        formData.append("image", state.image);
+        if(avatar.file){formData.append("image", state.image);}
 
         const access = localStorage.getItem("access");
 
         toast.promise(
-            http.post("users/clients/register/", formData, {
+            http.patch(`users/clients/${state.id}/`, formData, {
                 headers: {
                     Authorization: `Bearer ${access}`,
                     "Content-Type": "multipart/form-data",
                 },
             }),
             {
-                loading: "Adding...",
+                loading: "Editing...",
                 success: (response) => {
-                    const randomNum = Math.floor(Math.random() * 100); // 0 dan 99 gacha bo'lgan random son
+                    const randomNum = Math.floor(Math.random() * 100); 
                     setCount(randomNum);
-                    document.getElementById("add_client_modal").close();
-                    setState({ weayaa_id: "", password: "", first_name: "", last_name: "", phone_number: "", email: "", organization: "", image: "" })
+                    document.getElementById("editClientInfo").close();
+                    setState([])
                     console.log(response.data);
-                    return <b>Add new User!</b>;
+                    return <b>Edit Client Info!</b>;
                 },
                 error: (error) => {
                     console.log(error.response.data);
@@ -94,9 +76,13 @@ function EditClientInfo({ clientId }) {
     }
     return (
         <>
-            <button onClick={() => { getClientUserInfo(clientId) }} className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
+            {/* Button Client User Info Edit START */}
+            {/* <button onClick={() => { getClientUserInfo(clientId); document.getElementById("editClientInfo").showModal() }}
+                className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
                 <i className="bi bi-sliders"></i>
-            </button>
+            </button> */}
+            {/* Button Client User Info Edit END */}
+
 
             <dialog id="editClientInfo" className="modal">
                 <Toaster />
@@ -107,7 +93,7 @@ function EditClientInfo({ clientId }) {
                         className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
                     >
                         <span className="text-custom-green-dark font-bold">
-                            Add New Client
+                            Edit Client Info
                         </span>
                         <div className="text-end">
                             <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
@@ -117,7 +103,7 @@ function EditClientInfo({ clientId }) {
                     </form>
                     {/* Modal header End */}
                     <>
-                        <form onSubmit={addClientUser}>
+                        <form onSubmit={editUserInfo}>
                             <div className="px-6 py-4 text-custom-green-dark">
 
                                 <div className="grid grid-cols-1">
@@ -142,7 +128,7 @@ function EditClientInfo({ clientId }) {
                                                 <input
                                                     onChange={handleAvatar}
                                                     type="file"
-                                                    id="file"
+                                                    // id="file"
                                                     className="text-[14px] text-transparent font-medium placeholder-custom-green-60
                                       file:mr-4 file:py-1 file:px-2 file:w-[100px]
                                       file:rounded-[10px] file:border-0
@@ -270,53 +256,7 @@ function EditClientInfo({ clientId }) {
                                             </label>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-2 mt-2">
-                                        <div>
-                                            <label>
-                                                <span className="block text-custom-green-dark font-semibold text-[14px]">
-                                                    <i className="bi bi-person-check"></i> WeaYaa ID<span className="text-red-700 font-bold">*</span>
-                                                </span>
-                                                <input
-                                                    value={state.weayaa_id}
-                                                    name="weayaa_id"
-                                                    onChange={inputHandle}
-                                                    type="text"
-                                                    placeholder="Enter WeaYaa ID"
-                                                    className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                                                />
-                                            </label>
-                                        </div>
-
-                                        <div>
-                                            <label>
-                                                <span className="block text-custom-green-dark font-semibold text-[14px]">
-                                                    <i className="bi bi-key"></i> Password<span className="text-red-700 font-bold">*</span>
-                                                </span>
-                                                <div className="relative">
-                                                    <input
-                                                        value={state.password}
-                                                        name="password"
-                                                        onChange={inputHandle}
-                                                        type={showPassword ? "text" : "password"}
-                                                        autoComplete="current-password"
-                                                        placeholder="Enter Password"
-                                                        className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                                                    />
-                                                    <button
-                                                        type="button"
-                                                        onClick={togglePasswordVisibility}
-                                                        className="absolute top-0 end-0 p-2.5 rounded-full w-[30px] font-medium flex justify-center items-center text-custom-green-60 hover:text-custom-green-dark"
-                                                    >
-                                                        {showPassword ? (
-                                                            <i className="bi bi-eye"></i>
-                                                        ) : (
-                                                            <i className="bi bi-eye-slash"></i>
-                                                        )}
-                                                    </button>
-                                                </div>
-                                            </label>
-                                        </div>
-                                    </div>
+                                    
                                     <button type="submit" className="px-3 py-2 text-[15px] rounded-[10px] w-full font-medium text-custom-green-dark hover:text-white bg-custom-green-10 hover:bg-custom-green-dark transition-all mt-3">
                                         Save
                                     </button>

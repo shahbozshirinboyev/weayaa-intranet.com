@@ -50,6 +50,45 @@ function ControlStaffs() {
       });
   }, [count]);
   // Get Users List END
+  // =========================================================================================
+  // Edit Client Info
+  const [activeClientId, setActiveClientId] = useState()
+  const [clientInfo, setClientInfo] = useState()
+
+  const getClientUserInfo = (clientId) => {
+    const access = localStorage.getItem("access");
+    toast.promise(
+      http.get(`users/clients/${clientId}/`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }),
+      {
+        loading: "Loading...",
+        success: (response) => {
+          console.log(response.data)
+          setClientInfo(response.data)
+          return <b>Done!</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Something went wrong :(</b>;
+        },
+      }
+    );
+
+  }
+
+  useEffect(() => {
+    if (activeClientId) {
+      console.log(activeClientId)
+      getClientUserInfo(activeClientId)
+    }
+  }, [activeClientId])
+
+
+
 
   // =====================================================================================================================>
   const [editUserInfo, setEditUserInfo] = useState({
@@ -154,9 +193,9 @@ function ControlStaffs() {
     e.preventDefault();
     const updatedUserInfo =
       typeof editUserInfo.image === "string" &&
-      editUserInfo.image !== "" &&
-      editUserInfo.image !== null &&
-      editUserInfo.image.startsWith("https://")
+        editUserInfo.image !== "" &&
+        editUserInfo.image !== null &&
+        editUserInfo.image.startsWith("https://")
         ? (({ image, ...rest }) => rest)(editUserInfo) // image maydonini olib tashlaymiz
         : editUserInfo;
 
@@ -205,36 +244,37 @@ function ControlStaffs() {
 
   return (
     <>
+      <EditClientInfo clientInfo={clientInfo} setCount={setCount} />
       <div className="font-semibold bg-white pb-[15px]">
         <div className="grid grid-cols-2">
           <div className="flex justify-start items-start">
 
             <div className="mr-[5px] rounded-[10px] w-[390px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark">
 
-              <div 
+              <div
                 className={`w-[130px] h-[35px] bg-custom-green-dark absolute rounded-[8px] transition-all duration-300 ease-in-out transform 
                 ${smlist === "staff" ? "translate-x-[-130px]" : smlist === "master" ? "translate-x-[0px]" : "translate-x-[130px]"}`}
               ></div>
 
               <button
                 onClick={() => { changeListToStaff("staff"); }}
-                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${ smlist === "staff" ? "text-white" : "" }`}
+                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${smlist === "staff" ? "text-white" : ""}`}
               >
                 <i className="bi bi-person text-[22px] mx-[5px]"></i>
                 <span className="mx-[5px] text-[14px] font-semibold">Staffs</span>
               </button>
 
               <button
-                onClick={() => {changeListToStaff("master");}}
-                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${ smlist === "master" ? "text-white" : "" }`}
+                onClick={() => { changeListToStaff("master"); }}
+                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${smlist === "master" ? "text-white" : ""}`}
               >
                 <i className="bi bi-person-gear text-[22px] mx-[5px]"></i>
                 <span className="mx-[5px] text-[14px] font-semibold">Masters</span>
               </button>
 
               <button
-                onClick={() => {changeListToStaff("client");}}
-                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${ smlist === "client" ? "text-white" : "" }`}
+                onClick={() => { changeListToStaff("client"); }}
+                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${smlist === "client" ? "text-white" : ""}`}
               >
                 <i className="bi bi-person-check text-[22px] mx-[5px]"></i>
                 <span className="mx-[5px] text-[14px] font-semibold">Clients</span>
@@ -259,7 +299,7 @@ function ControlStaffs() {
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className={`w-full text-sm text-left ${ smlist === "client" ? "hidden" : "" }`}>
+        <table className={`w-full text-sm text-left ${smlist === "client" ? "hidden" : ""}`}>
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="text-[14px] text-custom-green-90 bg-custom-green-10">
               <th scope="col" className="px-6 py-3">
@@ -339,65 +379,58 @@ function ControlStaffs() {
                   <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
                     <div className="flex">
                       <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[0]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        }  font-semibold`}
+                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[0]
+                          ? "bg-custom-green-dark text-white"
+                          : "bg-custom-green-30 text-custom-green-dark"
+                          }  font-semibold`}
                       >
                         M
                       </div>
                       <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[1]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        } font-semibold`}
+                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[1]
+                          ? "bg-custom-green-dark text-white"
+                          : "bg-custom-green-30 text-custom-green-dark"
+                          } font-semibold`}
                       >
                         T
                       </div>
                       <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[2]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        } font-semibold`}
+                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[2]
+                          ? "bg-custom-green-dark text-white"
+                          : "bg-custom-green-30 text-custom-green-dark"
+                          } font-semibold`}
                       >
                         W
                       </div>
                       <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[3]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        } font-semibold`}
+                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[3]
+                          ? "bg-custom-green-dark text-white"
+                          : "bg-custom-green-30 text-custom-green-dark"
+                          } font-semibold`}
                       >
                         T
                       </div>
                       <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[4]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        } font-semibold`}
+                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[4]
+                          ? "bg-custom-green-dark text-white"
+                          : "bg-custom-green-30 text-custom-green-dark"
+                          } font-semibold`}
                       >
                         F
                       </div>
                       <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[5]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        }  font-semibold`}
+                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[5]
+                          ? "bg-custom-green-dark text-white"
+                          : "bg-custom-green-30 text-custom-green-dark"
+                          }  font-semibold`}
                       >
                         S
                       </div>
                       <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[6]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        } font-semibold`}
+                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[6]
+                          ? "bg-custom-green-dark text-white"
+                          : "bg-custom-green-30 text-custom-green-dark"
+                          } font-semibold`}
                       >
                         S
                       </div>
@@ -407,8 +440,8 @@ function ControlStaffs() {
                   <td className="px-6 py-4">
                     <div className="flex items-center text-custom-green-dark font-semibold">
                       {user.speciality === null ||
-                      user.speciality === "" ||
-                      user.speciality === undefined
+                        user.speciality === "" ||
+                        user.speciality === undefined
                         ? "no.position"
                         : user.speciality}
                     </div>
@@ -438,7 +471,7 @@ function ControlStaffs() {
               ))}
           </tbody>
         </table>
-        <table className={`w-full text-sm text-left ${ smlist === "client" ? "" : "hidden" }`}>
+        <table className={`w-full text-sm text-left ${smlist === "client" ? "" : "hidden"}`}>
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="text-[14px] text-custom-green-90 bg-custom-green-10">
               <th scope="col" className="px-6 py-3">
@@ -512,19 +545,25 @@ function ControlStaffs() {
 
                   <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
                     <div className="flex text-custom-green-dark">
-                        <div>{user.organization || "org.undefined"}</div>
+                      <div>{user.organization || "org.undefined"}</div>
                     </div>
                   </td>
 
                   <td className="px-6 py-4">
                     <button className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
-                    <i className="bi bi-folder-symlink"></i>
+                      <i className="bi bi-folder-symlink"></i>
                       Projects Status
                     </button>
                   </td>
 
                   <td className="px-6 py-4 justify-start items-center">
-                    <EditClientInfo clientId={user.id} />
+                    {/* Button Client User Info Edit START */}
+                    <button onClick={() => { setActiveClientId(user.id); document.getElementById("editClientInfo").showModal() }}
+                      className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
+                      <i className="bi bi-sliders"></i>
+                    </button>
+                    {/* Button Client User Info Edit END */}
+                    {/* <EditClientInfo clientId={user.id} setCount={setCount} /> */}
                   </td>
                 </tr>
               ))}
@@ -538,20 +577,20 @@ function ControlStaffs() {
           <Toaster />
           <div className="modal-box w-11/12 max-w-5xl p-0">
             {/* Modal header Start */}
-          <form
-            method="dialog"
-            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-          >
-            <span className="text-custom-green-dark font-bold">
-              Edit User Information
-            </span>
-            <div className="text-end">
-              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-              <i className="bi bi-x-lg flex justify-center items-center"></i>
-              </button>
-            </div>
-          </form>
-          {/* Modal header End */}
+            <form
+              method="dialog"
+              className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+            >
+              <span className="text-custom-green-dark font-bold">
+                Edit User Information
+              </span>
+              <div className="text-end">
+                <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                  <i className="bi bi-x-lg flex justify-center items-center"></i>
+                </button>
+              </div>
+            </form>
+            {/* Modal header End */}
 
             <form className="px-[24px]">
               <div className="grid grid-cols-1 mt-2">
@@ -730,8 +769,8 @@ function ControlStaffs() {
                         <i className="bi bi-telephone"></i> Phone Number
                       </span>
                       <MaskedInput
-                         // prettier-ignore
-                         mask={["+", "9", "9", "8", " ", "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, " ", /\d/, /\d/, " ", /\d/, /\d/,]}
+                        // prettier-ignore
+                        mask={["+", "9", "9", "8", " ", "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, " ", /\d/, /\d/, " ", /\d/, /\d/,]}
                         value={editUserInfo.phone_number}
                         onChange={inputHandlePhone}
                         name="phone_number"
@@ -871,18 +910,17 @@ function ControlStaffs() {
                   ].map((day, index) => (
                     <div key={index}>
                       <label
-                        className={`p-2 ${
-                          index < 5
-                            ? "border-custom-green-80"
-                            : "border-custom-green-60"
-                        } flex items-center`}
+                        className={`p-2 ${index < 5
+                          ? "border-custom-green-80"
+                          : "border-custom-green-60"
+                          } flex items-center`}
                       >
                         <input
                           className="accent-custom-green-dark"
                           type="checkbox"
                           checked={
                             editUserInfo.work_days &&
-                            editUserInfo.work_days[index] !== undefined
+                              editUserInfo.work_days[index] !== undefined
                               ? editUserInfo.work_days[index]
                               : false
                           }
@@ -890,9 +928,8 @@ function ControlStaffs() {
                           name={`work_days[${index}]`}
                         />
                         <span
-                          className={`text-custom-green-${
-                            index < 5 ? "dark" : "60"
-                          } font-semibold text-[15px] ml-[15px]`}
+                          className={`text-custom-green-${index < 5 ? "dark" : "60"
+                            } font-semibold text-[15px] ml-[15px]`}
                         >
                           {day}
                         </span>
