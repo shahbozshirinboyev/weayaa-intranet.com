@@ -11,12 +11,14 @@ import noneuser from "/img/noneuser.png";
 import http from "../../../services/http";
 import AddClient from "../../../components/AddClient";
 import EditClientInfo from "../../../components/EditClientInfo";
+import ClientProjects from "../../../components/ClientProjects";
 
 function ControlStaffs() {
   const [smlist, setSmlist] = useState("staff");
   const [users, setUsers] = useState([]);
   const [usersCount, setUsersCount] = useState();
   const [clientId, setClientId] = useState('')
+  const [clientIdProject, setClientIdProject] = useState('')
 
   const [editUserId, setEditUserId] = useState("");
   useEffect(() => {
@@ -207,6 +209,7 @@ function ControlStaffs() {
 
   return (
     <>
+    <ClientProjects clientId={clientIdProject} setCount={setCount} setClientId={setClientIdProject} />
       <EditClientInfo clientId={clientId} setCount={setCount} setClientId={setClientId} />
       <div className="font-semibold bg-white pb-[15px]">
         <div className="grid grid-cols-2">
@@ -513,7 +516,7 @@ function ControlStaffs() {
                   </td>
 
                   <td className="px-6 py-4">
-                    <button className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
+                    <button onClick={() => setClientIdProject(user.id)} className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
                       <i className="bi bi-folder-symlink"></i>
                       Projects Status
                     </button>
