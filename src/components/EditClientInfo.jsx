@@ -2,134 +2,158 @@ import { useState, useEffect } from "react";
 import MaskedInput from "react-text-mask";
 import toast, { Toaster } from "react-hot-toast";
 // http
-import http from "../services/http"
+import http from "../services/http";
 
-function EditClientInfo({ clientInfo, setCount }) {
-    const [avatar, setAvatar] = useState({ file: null, url: "" });
-    const [state, setState] = useState([])
-    const inputHandle = (e) => { setState({ ...state, [e.target.name]: e.target.value, }); };
+function EditClientInfo({ clientId, setCount, setClientId }) {
+  const [state, setState] = useState({
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    email: "",
+    organization: "",
+    image: "",
+  });
 
+  const getClientUserInfo = (id) => {
+    const access = localStorage.getItem("access");
+    toast.promise(
+      http.get(`users/clients/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }),
+      {
+        loading: "Loading...",
+        success: (response) => {
+          console.log(response.data);
+          setState(response.data);
+          setAvatar({ ...avatar, url: response.data.image });
+          document.getElementById("editClientInfo").showModal();
+          return <b>Get client information</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Something went wrong :(</b>;
+        },
+      }
+    );
+    setClientId("");
+  };
 
-
-    useEffect(()=>{
-        if(clientInfo){
-            console.log(clientInfo)
-            setState(clientInfo)
-            setAvatar({...avatar, url: clientInfo.image})
-        }
-    },[clientInfo])
-
-    // Password hide/show function START
-    const [showPassword, setShowPassword] = useState(false);
-    const togglePasswordVisibility = () => { setShowPassword(!showPassword); };
-    // Password hide/show function END
-
-
-    
-    const clearAvatar = () => { setAvatar({ file: null, url: "" }) }
-    const handleAvatar = (e) => {
-        if (e.target.files[0]) {
-            setAvatar({
-                file: e.target.files[0],
-                url: URL.createObjectURL(e.target.files[0]),
-            });
-            setState({ ...state, image: e.target.files[0], });
-        }
-    };
-
-    const editUserInfo = (e) => {
-        e.preventDefault()
-        
-        const formData = new FormData();
-        formData.append("first_name", state.first_name);
-        formData.append("last_name", state.last_name);
-        formData.append("phone_number", state.phone_number.replace(/\s+/g, ""));
-        formData.append("email", state.email);
-        formData.append("organization", state.organization);
-        if(avatar.file){formData.append("image", state.image);}
-
-        const access = localStorage.getItem("access");
-
-        toast.promise(
-            http.patch(`users/clients/${state.id}/`, formData, {
-                headers: {
-                    Authorization: `Bearer ${access}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            }),
-            {
-                loading: "Editing...",
-                success: (response) => {
-                    const randomNum = Math.floor(Math.random() * 100); 
-                    setCount(randomNum);
-                    document.getElementById("editClientInfo").close();
-                    setState([])
-                    console.log(response.data);
-                    return <b>Edit Client Info!</b>;
-                },
-                error: (error) => {
-                    console.log(error.response.data);
-                    return <b>Something went wrong :(</b>;
-                },
-            }
-        );
+  useEffect(() => {
+    if (clientId) {
+      console.log(clientId);
+      getClientUserInfo(clientId);
     }
-    return (
-        <>
-            {/* Button Client User Info Edit START */}
-            {/* <button onClick={() => { getClientUserInfo(clientId); document.getElementById("editClientInfo").showModal() }}
-                className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
-                <i className="bi bi-sliders"></i>
-            </button> */}
-            {/* Button Client User Info Edit END */}
+  }, [clientId]);
 
+  const [avatar, setAvatar] = useState({ file: null, url: "" });
 
-            <dialog id="editClientInfo" className="modal">
-                <Toaster />
-                <div className="modal-box max-w-3xl p-0">
-                    {/* Modal header Start */}
-                    <form
-                        method="dialog"
-                        className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-                    >
-                        <span className="text-custom-green-dark font-bold">
-                            Edit Client Info
-                        </span>
-                        <div className="text-end">
-                            <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                                <i className="bi bi-x-lg flex justify-center items-center"></i>
-                            </button>
-                        </div>
-                    </form>
-                    {/* Modal header End */}
-                    <>
-                        <form onSubmit={editUserInfo}>
-                            <div className="px-6 py-4 text-custom-green-dark">
+  const inputHandle = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
 
-                                <div className="grid grid-cols-1">
-                                    <div className="flex gap-4 items-center">
-                                        <div className="w-[100px] h-[100px] flex justify-center items-center">
-                                            <img
-                                                src={avatar.url || "./img/noneuser.png"}
-                                                alt="user-image"
-                                                className="w-[80px] h-[80px] rounded-full object-cover border border-custom-green-30"
-                                            />
-                                        </div>
-                                        <div className="w-full">
-                                            <label htmlFor="">
-                                                {avatar.url && (
-                                                    <button
-                                                        onClick={clearAvatar}
-                                                        className="w-[100px] px-2 py-1 mr-2 rounded-[10px] text-[14px] bg-red-400 hover:bg-red-600 text-white font-medium transition-all"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                )}
-                                                <input
-                                                    onChange={handleAvatar}
-                                                    type="file"
-                                                    // id="file"
-                                                    className="text-[14px] text-transparent font-medium placeholder-custom-green-60
+  const clearAvatar = () => {
+    setAvatar({ file: "", url: "" });
+  };
+  const handleAvatar = (e) => {
+    if (e.target.files[0]) {
+      setAvatar({
+        file: e.target.files[0],
+        url: URL.createObjectURL(e.target.files[0]),
+      });
+      setState({ ...state, image: e.target.files[0] });
+    }
+  };
+
+  const editUserInfo = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("first_name", state.first_name);
+    formData.append("last_name", state.last_name);
+    formData.append("phone_number", state.phone_number.replace(/\s+/g, ""));
+    formData.append("email", state.email);
+    formData.append("organization", state.organization);
+    if (avatar.file !== null) {
+      formData.append("image", avatar.file);
+    }
+
+    const access = localStorage.getItem("access");
+
+    toast.promise(
+      http.patch(`users/clients/${state.id}/`, formData, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }),
+      {
+        loading: "Editing...",
+        success: (response) => {
+          const randomNum = Math.floor(Math.random() * 100);
+          setCount(randomNum);
+          document.getElementById("editClientInfo").close();
+          setState([]);
+          setAvatar({ file: null, url: "" });
+          console.log(response.data);
+          return <b>Edit Client Info!</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Something went wrong :(</b>;
+        },
+      }
+    );
+  };
+  return (
+    <>
+      <dialog id="editClientInfo" className="modal">
+        <Toaster />
+        <div className="modal-box max-w-3xl p-0">
+          {/* Modal header Start */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Edit Client Info
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
+            </div>
+          </form>
+          {/* Modal header End */}
+          <>
+            <form onSubmit={editUserInfo}>
+              <div className="px-6 py-4 text-custom-green-dark">
+                <div className="grid grid-cols-1">
+                  <div className="flex gap-4 items-center">
+                    <div className="w-[100px] h-[100px] flex justify-center items-center">
+                      <img
+                        src={avatar.url || "./img/noneuser.png"}
+                        alt="user-image"
+                        className="w-[80px] h-[80px] rounded-full object-cover border border-custom-green-30"
+                      />
+                    </div>
+                    <div className="w-full">
+                      <label htmlFor="">
+                        {avatar.url && (
+                          <button
+                            onClick={clearAvatar}
+                            className="w-[100px] px-2 py-1 mr-2 rounded-[10px] text-[14px] bg-red-400 hover:bg-red-600 text-white font-medium transition-all"
+                          >
+                            Delete
+                          </button>
+                        )}
+                        <input
+                          onChange={handleAvatar}
+                          type="file"
+                          // id="file"
+                          className="text-[14px] text-transparent font-medium placeholder-custom-green-60
                                       file:mr-4 file:py-1 file:px-2 file:w-[100px]
                                       file:rounded-[10px] file:border-0
                                       file:text-sm file:font-semibold
@@ -137,141 +161,128 @@ function EditClientInfo({ clientInfo, setCount }) {
                                       hover:file:bg-custom-green-dark hover:file:text-white
                                       hover:file:transition-all
                         "
-                                                />
-                                            </label>
-                                            <span className="block text-[14px] mt-[5px] text-custom-green-80">
-                                                An image of the person, it’s best if it has the same length and height.
-                                                <br />
-                                                <span className="text-custom-green-dark font-medium">
-                                                    Recommendation: 300x300px
-                                                </span>
-                                            </span>
-                                        </div>
-                                    </div>
+                        />
+                      </label>
+                      <span className="block text-[14px] mt-[5px] text-custom-green-80">
+                        An image of the person, it’s best if it has the same
+                        length and height.
+                        <br />
+                        <span className="text-custom-green-dark font-medium">
+                          Recommendation: 300x300px
+                        </span>
+                      </span>
+                    </div>
+                  </div>
 
-                                    <div className="grid grid-cols-2 gap-2 mt-2">
-                                        <div>
-                                            <label>
-                                                <span className="block text-custom-green-dark font-semibold text-[14px]">
-                                                    First Name
-                                                    <span className="text-red-700 font-bold">*</span>
-                                                </span>
-                                                <input
-                                                    value={state.first_name}
-                                                    onChange={inputHandle}
-                                                    name="first_name"
-                                                    autoComplete="username"
-                                                    type="text"
-                                                    placeholder="Enter Staff First Name"
-                                                    className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                                                />
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <label>
-                                                <span className="block text-custom-green-dark font-semibold text-[14px]">
-                                                    Last Name
-                                                    <span className="text-red-700 font-bold">*</span>
-                                                </span>
-                                                <input
-                                                    value={state.last_name}
-                                                    onChange={inputHandle}
-                                                    name="last_name"
-                                                    type="text"
-                                                    placeholder="Enter Staff Last Name"
-                                                    className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                                                />
-                                            </label>
-                                        </div>
-                                    </div>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          First Name
+                          <span className="text-red-700 font-bold">*</span>
+                        </span>
+                        <input
+                          value={state.first_name}
+                          onChange={inputHandle}
+                          name="first_name"
+                          autoComplete="username"
+                          type="text"
+                          placeholder="Enter Staff First Name"
+                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                        />
+                      </label>
+                    </div>
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          Last Name
+                          <span className="text-red-700 font-bold">*</span>
+                        </span>
+                        <input
+                          value={state.last_name}
+                          onChange={inputHandle}
+                          name="last_name"
+                          type="text"
+                          placeholder="Enter Staff Last Name"
+                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                        />
+                      </label>
+                    </div>
+                  </div>
 
-                                    <div className="grid grid-cols-2 gap-2 mt-2">
-                                        <div>
-                                            <label>
-                                                <span className="block text-custom-green-dark font-semibold text-[14px]">
-                                                    <i className="bi bi-telephone"></i> Phone Number
-                                                </span>
-                                                <MaskedInput
-                                                    // prettier-ignore
-                                                    mask={["+", "9", "9", "8", " ", "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, " ", /\d/, /\d/, " ", /\d/, /\d/,]}
-                                                    value={state.phone_number}
-                                                    onChange={inputHandle}
-                                                    name="phone_number"
-                                                    type="text"
-                                                    placeholder="+998 (--) --- -- --"
-                                                    // alwaysShowMask={true}
-                                                    className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                                                />
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <label>
-                                                <span className="block text-custom-green-dark font-semibold text-[14px]">
-                                                    <i className="bi bi-envelope"></i> Email Address
-                                                </span>
-                                                <input
-                                                    value={state.email}
-                                                    onChange={inputHandle}
-                                                    name="email"
-                                                    type="email"
-                                                    autoComplete="email"
-                                                    placeholder="example@gmail.com"
-                                                    className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                                                />
-                                            </label>
-                                        </div>
-                                    </div>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          <i className="bi bi-telephone"></i> Phone Number
+                        </span>
+                        <MaskedInput
+                          // prettier-ignore
+                          mask={["+", "9", "9", "8", " ", "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, " ", /\d/, /\d/, " ", /\d/, /\d/,]}
+                          value={state.phone_number}
+                          onChange={inputHandle}
+                          name="phone_number"
+                          type="text"
+                          placeholder="+998 (--) --- -- --"
+                          // alwaysShowMask={true}
+                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                        />
+                      </label>
+                    </div>
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          <i className="bi bi-envelope"></i> Email Address
+                        </span>
+                        <input
+                          value={state.email}
+                          onChange={inputHandle}
+                          name="email"
+                          type="email"
+                          autoComplete="email"
+                          placeholder="example@gmail.com"
+                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                        />
+                      </label>
+                    </div>
+                  </div>
 
-                                    <div className="grid grid-cols-2 gap-2 mt-2">
-                                        <div>
-                                            <span className="block text-custom-green-dark font-semibold text-[14px]">
-                                                Account Type
-                                            </span>
-                                            <div className="grid grid-cols-1">
-                                                <label className="p-2 border rounded-md flex items-center accent-custom-green-dark">
-                                                    <input
-                                                        type="radio"
-                                                        defaultChecked
-                                                    />
-                                                    <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
-                                                        Client
-                                                    </span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label>
-                                                <span className="block text-custom-green-dark font-semibold text-[14px]">
-                                                    {/* <i className="bi bi-envelope"></i>  */}
-                                                    Organization
-                                                </span>
-                                                <input
-                                                    value={state.organization}
-                                                    onChange={inputHandle}
-                                                    name="organization"
-                                                    type="text"
-                                                    placeholder="Enter organization"
-                                                    className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                                                />
-                                            </label>
-                                        </div>
-                                    </div>
-                                    
-                                    <button type="submit" className="px-3 py-2 text-[15px] rounded-[10px] w-full font-medium text-custom-green-dark hover:text-white bg-custom-green-10 hover:bg-custom-green-dark transition-all mt-3">
-                                        Save
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </>
+                  <div className="grid grid-cols-1 gap-2 mt-2">
+                    <div>
+                      <label>
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          {/* <i className="bi bi-envelope"></i>  */}
+                          Organization
+                        </span>
+                        <input
+                          value={state.organization}
+                          onChange={inputHandle}
+                          name="organization"
+                          type="text"
+                          placeholder="Enter organization"
+                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                        />
+                      </label>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="px-3 py-2 text-[15px] rounded-[10px] w-full font-medium text-custom-green-dark hover:text-white bg-custom-green-10 hover:bg-custom-green-dark transition-all mt-3"
+                  >
+                    Save
+                  </button>
                 </div>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
-
-        </>
-    )
+              </div>
+            </form>
+          </>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+    </>
+  );
 }
 
-export default EditClientInfo
+export default EditClientInfo;

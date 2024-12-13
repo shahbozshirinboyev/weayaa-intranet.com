@@ -16,6 +16,7 @@ function ControlStaffs() {
   const [smlist, setSmlist] = useState("staff");
   const [users, setUsers] = useState([]);
   const [usersCount, setUsersCount] = useState();
+  const [clientId, setClientId] = useState('')
 
   const [editUserId, setEditUserId] = useState("");
   useEffect(() => {
@@ -50,44 +51,6 @@ function ControlStaffs() {
       });
   }, [count]);
   // Get Users List END
-  // =========================================================================================
-  // Edit Client Info
-  const [activeClientId, setActiveClientId] = useState()
-  const [clientInfo, setClientInfo] = useState()
-
-  const getClientUserInfo = (clientId) => {
-    const access = localStorage.getItem("access");
-    toast.promise(
-      http.get(`users/clients/${clientId}/`, {
-        headers: {
-          Authorization: `Bearer ${access}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }),
-      {
-        loading: "Loading...",
-        success: (response) => {
-          console.log(response.data)
-          setClientInfo(response.data)
-          return <b>Done!</b>;
-        },
-        error: (error) => {
-          console.log(error.response.data);
-          return <b>Something went wrong :(</b>;
-        },
-      }
-    );
-
-  }
-
-  useEffect(() => {
-    if (activeClientId) {
-      console.log(activeClientId)
-      getClientUserInfo(activeClientId)
-    }
-  }, [activeClientId])
-
-
 
 
   // =====================================================================================================================>
@@ -244,7 +207,7 @@ function ControlStaffs() {
 
   return (
     <>
-      <EditClientInfo clientInfo={clientInfo} setCount={setCount} />
+      <EditClientInfo clientId={clientId} setCount={setCount} setClientId={setClientId} />
       <div className="font-semibold bg-white pb-[15px]">
         <div className="grid grid-cols-2">
           <div className="flex justify-start items-start">
@@ -558,7 +521,7 @@ function ControlStaffs() {
 
                   <td className="px-6 py-4 justify-start items-center">
                     {/* Button Client User Info Edit START */}
-                    <button onClick={() => { setActiveClientId(user.id); document.getElementById("editClientInfo").showModal() }}
+                    <button onClick={() => setClientId(user.id)}
                       className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
                       <i className="bi bi-sliders"></i>
                     </button>
