@@ -2,33 +2,59 @@
 import { DateTime } from "luxon";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+// http
+import http from "../../../services/http"
+import { useState, useEffect } from "react";
 
 function CustomerNavbar({ setAccess, setRefresh, setUserType }) {
   const noneuser = "./img/noneuser.png";
   const logo_long = "./img/logo_long.png";
   const navigate = useNavigate();
-  const goHome = () => {navigate("/");};
+  const goHome = () => { navigate("/"); };
   const currentDate = DateTime.now();
   const formattedDate = currentDate.toFormat("d MMMM yyyy");
 
-    // Logout section start
-    const deleteUserInfo = () => {
-      toast("You are logged out!", { icon: "✌️" });
-      setAccess(null);
-      setRefresh(null);
-      setUserType(null);
-      localStorage.removeItem("access");
-      localStorage.removeItem("refresh");
-      localStorage.removeItem("userType");
-      localStorage.removeItem("activeProject");
-      localStorage.removeItem("userId");
-      navigate("/");
-    };
-    // Logout section end
+  const [clientInfo, setClientInfo] = useState([]);
+
+  const getClientInfo = async () => {
+    const clientId = localStorage.getItem("userId");
+    const access = localStorage.getItem("access");
+    http.get(`users/clients/${clientId}`, {
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+    })
+      .then((response) => {
+        // console.log(response.data);
+        setClientInfo(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
+  useEffect(() => {
+    getClientInfo();
+  }, [])
+  
+
+  // Logout section start
+  const deleteUserInfo = () => {
+    toast("You are logged out!", { icon: "✌️" });
+    setAccess(null);
+    setRefresh(null);
+    setUserType(null);
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("userType");
+    localStorage.removeItem("activeProject");
+    localStorage.removeItem("userId");
+    navigate("/");
+  };
+  // Logout section end
   return (
     <div className="p-5">
       <div className="bg-custom-green-5 h-[60px] w-full rounded-[10px] flex">
-      {/* Date START */}
+        {/* Date START */}
         <div className="h-full w-full items-center ml-[10px] hidden md:flex">
           <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
             <i className="bi bi-calendar2-week font-medium"></i>
@@ -70,20 +96,18 @@ function CustomerNavbar({ setAccess, setRefresh, setUserType }) {
             >
               <li>
                 <span className="hover:bg-custom-green-15">
-                  <span className="mr-[10px] flex justify-center items-center">
+                  <span className="flex justify-center items-center w-[40px] h-[40px] p-0 m-0">
                     <img
                       className="rounded-full w-[40px] h-[40px] object-cover"
-                      src={noneuser}
-                      // alt={firstName || ""}
+                      src={ clientInfo.image ||noneuser}
                     />
                   </span>
                   <span className="block">
-                    <p className="my-[0px] text-[16px] font-bold">
-                      Full Name
+                    <p className="w-[235px] text-[16px] font-bold whitespace-nowrap overflow-hidden truncate text-ellipsis">
+                      {clientInfo.first_name}{" "}{clientInfo.last_name}
                     </p>
-                    <p className="text-[14px]">
-                      Client | Organization
-                      {/* {speciality === undefined ? "undefined" : speciality} */}
+                    <p className="text-[14px] first-letter:uppercase">
+                      {clientInfo.user_type} | {clientInfo.organization}
                     </p>
                   </span>
                 </span>
