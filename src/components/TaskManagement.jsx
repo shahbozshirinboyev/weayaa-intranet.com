@@ -798,8 +798,8 @@ function TaskManagement() {
                                     <span className="text-[15.5px] font-medium text-custom-green-90">
                                       {task.name}
                                     </span>
-                                    <span className="text-[13.5px] text-custom-green-80">
-                                      {task.description}
+                                    <span className="text-[13.5px] w-[95%] text-custom-green-80">
+                                      {/* {task.description} */}
                                     </span>
                                   </div>
 
