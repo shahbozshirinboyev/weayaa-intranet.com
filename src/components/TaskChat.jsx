@@ -31,7 +31,7 @@ function TaskChat({ task }) {
   };
   const handleClearFile = () => {
     setFileName("");
-    document.getElementById("fileInput").value = "";
+    // document.getElementById("fileInput").value = "";
   };
 
   const sendMessage = (e) => {
@@ -218,18 +218,13 @@ function TaskChat({ task }) {
           {/* Task Chat Body END */}
           {/* Chat Input START */}
 
-          <div
-            className={`justify-between items-center px-3 py-2 transition-all duration-300 absolute w-full border bottom-[60px] ${
-              fileName === "" ? "hidden" : ""
-            } bg-white`}
-          >
-            <span className="text-custom-green-dark">{fileName}</span>
-            <button
-              className="btn btn-sm bg-white hover:bg-custom-green-dark hover:text-white absolute right-3 bottom-1"
-              onClick={handleClearFile}
-            >
-              <i className="bi bi-x flex justify-center items-center"></i>
-            </button>
+          <div className={`justify-between items-center transition-all duration-300 absolute w-full top-[55px] ${fileName === "" ? "hidden" : ""} bg-white`}>
+            <div className="bg-custom-green-dark px-3 py-2">
+              <span className="text-white">{fileName}</span>
+              <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white absolute right-3" onClick={handleClearFile}>
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
+            </div>
           </div>
 
           <div className="h-[60px] absolute w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
