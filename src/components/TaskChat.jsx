@@ -31,7 +31,7 @@ function TaskChat({ task }) {
   };
   const handleClearFile = () => {
     setFileName("");
-    document.getElementById("fileInput").value = "";
+    // document.getElementById("fileInput").value = "";
   };
 
   const sendMessage = (e) => {
