@@ -249,12 +249,13 @@ function TaskChat({ task }) {
                 />
               </div>
 
-              <input
+              <textarea
+              rows={1}
                 type="text"
                 name="message"
                 value={message.message}
                 onChange={inputHandle}
-                className="w-full px-2 py-1 outline-none text-custom-green-dark placeholder:text-custom-green-60"
+                className="flex-grow px-2 py-1 outline-none resize-none text-sm text-custom-green-dark placeholder:text-custom-green-60"
                 placeholder="Write a message..."
               />
               <button className="px-2 py-1 cursor-pointer">
