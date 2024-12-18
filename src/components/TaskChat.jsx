@@ -80,24 +80,7 @@ function TaskChat({ task }) {
           {/* Modal header End */}
           {/* Task Chat Body START */}
           <section className="px-4 overflow-auto chatcss">
-            <div className="chat chat-start">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
-                </div>
-              </div>
-              <div className="chat-header">
-                Obi-Wan Kenobi
-                <time className="text-xs opacity-50">12:45</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                You were the Chosen One!
-              </div>
-              <div className="chat-footer opacity-50">Delivered</div>
-            </div>
+            
 
             <div className="chat chat-start">
               <div className="chat-image avatar">
@@ -132,105 +115,15 @@ function TaskChat({ task }) {
                 <time className="text-xs opacity-50">12:46</time>
               </div>
               <div className="chat-bubble bg-custom-green-30 text-black">
-                I hate you!
+                I love you!
               </div>
               <div className="chat-footer opacity-50">Seen at 12:46</div>
             </div>
+    
 
-            <div className="chat chat-end">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
-                </div>
-              </div>
-              <div className="chat-header">
-                Anakin
-                <time className="text-xs opacity-50">12:46</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                I hate you!
-              </div>
-              <div className="chat-footer opacity-50">Seen at 12:46</div>
-            </div>
+            
 
-            <div className="chat chat-end">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
-                </div>
-              </div>
-              <div className="chat-header">
-                Anakin
-                <time className="text-xs opacity-50">12:46</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                I hate you!
-              </div>
-              <div className="chat-footer opacity-50">Seen at 12:46</div>
-            </div>
-
-            <div className="chat chat-end">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
-                </div>
-              </div>
-              <div className="chat-header">
-                Anakin
-                <time className="text-xs opacity-50">12:46</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                I hate you!
-              </div>
-              <div className="chat-footer opacity-50">Seen at 12:46</div>
-            </div>
-
-            <div className="chat chat-end">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
-                </div>
-              </div>
-              <div className="chat-header">
-                Anakin
-                <time className="text-xs opacity-50">12:46</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                I hate you!
-              </div>
-              <div className="chat-footer opacity-50">Seen at 12:46</div>
-            </div>
-
-            <div className="chat chat-end">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
-                </div>
-              </div>
-              <div className="chat-header">
-                Anakin
-                <time className="text-xs opacity-50">12:46</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                I hate you!
-              </div>
-              <div className="chat-footer opacity-50">Seen at 12:46</div>
-            </div>
+           
 
             <div className="chat chat-start">
               <div className="chat-image avatar">
@@ -246,10 +139,11 @@ function TaskChat({ task }) {
                 <time className="text-xs opacity-50">12:45</time>
               </div>
               <div className="chat-bubble bg-custom-green-30 text-black">
-                You were the Chosen One!
+                Okay!
               </div>
               <div className="chat-footer opacity-50">Delivered</div>
             </div>
+
 
             {/* scroll to END => START */}
             <div ref={endRef}></div>
@@ -259,7 +153,7 @@ function TaskChat({ task }) {
           {/* Chat Input START */}
 
           <div
-            className={`flex justify-between items-center px-3 py-1 transition-all duration-300 ${
+            className={`justify-between items-center px-3 py-1 transition-all duration-300 ${
               fileName === "" ? "hidden" : ""
             } bg-custom-green-15`}
           >
@@ -272,7 +166,7 @@ function TaskChat({ task }) {
             </button>
           </div>
 
-          <div className="h-[60px] py-2 px-3 border-t-[2px] border-custom-green-80">
+          <div className="h-[60px] absolute w-full bottom-0 py-2 px-3 border-t-[2px] border-custom-green-80">
             <form onSubmit={sendMessage} action="" className="flex gap-2">
               <div className="flex items-center gap-4">
                 <label
@@ -308,6 +202,7 @@ function TaskChat({ task }) {
               </button>
             </form>
           </div>
+
           {/* Chat Input END */}
         </div>
         <form method="dialog" className="modal-backdrop">
