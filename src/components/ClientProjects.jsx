@@ -63,10 +63,10 @@ function ClientProjects({ clientId, setCount, setClientId }) {
 
   const assignProjects = (e) => {
     e.preventDefault();
-    console.log({ project: assignProjectsId, client: id });
+    console.log({ client: id, projects: assignProjectsId, });
     const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
     http
-      .post(`projects/assignments/`, { project: assignProjectsId, client: id }, { headers })
+      .post(`projects/assignments/`, { client: id, projects: assignProjectsId, }, { headers })
       .then((response) => {
         console.log(response.data);
       })
