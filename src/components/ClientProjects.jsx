@@ -39,7 +39,8 @@ function ClientProjects({ clientId, setCount, setClientId }) {
       .get(`projects/assignments/`, { headers })
       .then((response) => {
         console.log(response.data);
-        setAssignProjectsId(response.data);
+        // -------------------------------------------------------Update here
+        // setAssignProjectsId(response.data);
       })
       .catch((error) => {
         console.log(error.response.data);
