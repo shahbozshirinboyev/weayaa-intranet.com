@@ -32,19 +32,20 @@ function ClientProjects({ clientId, setCount, setClientId }) {
   };
 
   const getAssignmentProjectList = () => {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access")}`,
-    };
-    http
-      .get(`projects/assignments/`, { headers })
+    const headers = {Authorization: `Bearer ${localStorage.getItem("access")}`,};
+    console.log("ID: " + id)
+    if(id){
+      http
+      .get(`projects/assignments/${id}`, { headers })
       .then((response) => {
         console.log(response.data);
         // -------------------------------------------------------Update here
         // setAssignProjectsId(response.data);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(error.response);
       });
+    }
   };
 
   useEffect(() => {
