@@ -66,13 +66,14 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
       }
 
       if (timeLeft <= 0) {
+        clearInterval(interval);
         http
           .post("token/refresh/", { refresh: localStorage.getItem("refresh") })
           .then((response) => {
             localStorage.setItem("access", response.data.access);
             setAccess(response.data.access)
-            const endTimeAccessToken = new Date().getTime() + 30 * 60 * 1000;
-            localStorage.setItem('endTimeAccessToken', endTimeAccessToken.toString());
+            const newEndTimeAccessToken  = new Date().getTime() + 30 * 60 * 1000;
+            localStorage.setItem('endTimeAccessToken', newEndTimeAccessToken.toString());
 
             console.log(response.data.access);
             console.log("Token yangilandi");
@@ -80,8 +81,9 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
           })
           .catch(() => {
             toast.error("Yangi 'token' olib bo'lmadi :(");
+            deleteUserInfo();
           });
-          clearInterval(interval)
+          return;
       }
 
       // Calculate Refresh Token remaining time

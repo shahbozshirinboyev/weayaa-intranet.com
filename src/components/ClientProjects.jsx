@@ -17,8 +17,7 @@ function ClientProjects({ clientId, setCount, setClientId }) {
   const [assignProjectsId, setAssignProjectsId] = useState([]);
 
   const getProjectList = () => {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`,
     };
     http
       .get(`projects/`, { headers })
@@ -48,7 +47,7 @@ function ClientProjects({ clientId, setCount, setClientId }) {
       )
       .then((response) => {
         console.log(response.data);
-        // ------------------------------------------------------- Update here
+        // ----------------------- Update here
         // setAssignProjectsId(response.data);
       })
       .catch((error) => {
