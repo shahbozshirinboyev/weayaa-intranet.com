@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -25,9 +25,89 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
     localStorage.removeItem("userType");
     localStorage.removeItem("activeProject");
     localStorage.removeItem("userId");
+    localStorage.removeItem("endTimeAccessToken");
+    localStorage.removeItem("endTimeRefreshToken");
     navigate("/");
   };
   // Logout section end
+  const [daysr, setDaysr] = useState(0);
+  const [hoursr, setHoursr] = useState(0);
+  const [minutesr, setMinutesr] = useState(0);
+  const [secondsr, setSecondsr] = useState(0);
+
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const endTimeAccessToken = localStorage.getItem("endTimeAccessToken");
+    const endTimeRefreshToken = localStorage.getItem("endTimeRefreshToken");
+
+    if (!endTimeAccessToken) {
+      deleteUserInfo();
+      return;
+    }
+
+    const interval = setInterval(() => {
+
+      const now = new Date().getTime();
+
+      const endTime = parseInt(endTimeAccessToken);
+      const timeLeft = endTime - now;
+      
+      const endTimer = parseInt(endTimeRefreshToken);
+      const timeLeftr = endTimer - now;
+
+      if (timeLeftr <= 0) {
+        toast.error("Log out bo'ladi hozir !!!")
+        clearInterval(interval);
+        deleteUserInfo();
+        return;
+      }
+
+      if (timeLeft <= 0) {
+        http
+          .post("token/refresh/", { refresh: localStorage.getItem("refresh") })
+          .then((response) => {
+            localStorage.setItem("access", response.data.access);
+            setAccess(response.data.access)
+            const endTimeAccessToken = new Date().getTime() + 30 * 60 * 1000;
+            localStorage.setItem('endTimeAccessToken', endTimeAccessToken.toString());
+
+            console.log(response.data.access);
+            console.log("Token yangilandi");
+            toast.success("Acces Token vaqti tugadi !!!")
+          })
+          .catch(() => {
+            toast.error("Yangi 'token' olib bo'lmadi :(");
+          });
+          clearInterval(interval)
+      }
+
+      // Calculate Refresh Token remaining time
+      const daysLeftr = Math.floor(timeLeftr / (24 * 1000 * 60 * 60));
+      const hoursLeftr = Math.floor((timeLeftr % (24 * 1000 * 60 * 60)) / (1000 * 60 * 60));
+      const minutesLeftr = Math.floor((timeLeftr % (1000 * 60 * 60)) / (1000 * 60));
+      const secondsLeftr = Math.floor((timeLeftr % (1000 * 60)) / 1000);
+
+      setDaysr(daysLeftr);
+      setHoursr(hoursLeftr);
+      setMinutesr(minutesLeftr);
+      setSecondsr(secondsLeftr);
+
+      // Calculate Access Token remaining time
+      const hoursLeft = Math.floor((timeLeft % (24 * 1000 * 60 * 60)) / (1000 * 60 * 60));
+      const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+      setHours(hoursLeft);
+      setMinutes(minutesLeft);
+      setSeconds(secondsLeft);
+
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -50,22 +130,23 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
       setImage(r.data.image);
     })
     .catch((error) => {
-      if (error.response.status === 401) {
-        http
-          .post("token/refresh/", {
-            refresh: localStorage.getItem("refresh"),
-          })
-          .then((newtoken) => {
-            localStorage.setItem("access", newtoken.data.access);
-            console.log("Token yangilandi");
-          })
-          .catch(() => {
-            toast.error("Yangi 'token' olib bo'lmadi :(");
-          });
-      } else {
-        console.log(error.response.data);
-        toast.error("Something went wrong :(");
-      }
+      console.log(error.response.data);
+      // if (error.response.status === 401) {
+      //   http
+      //     .post("token/refresh/", {
+      //       refresh: localStorage.getItem("refresh"),
+      //     })
+      //     .then((newtoken) => {
+      //       localStorage.setItem("access", newtoken.data.access);
+      //       console.log("Token yangilandi");
+      //     })
+      //     .catch(() => {
+      //       toast.error("Yangi 'token' olib bo'lmadi :(");
+      //     });
+      // } else {
+      //   console.log(error.response.data);
+      //   toast.error("Something went wrong :(");
+      // }
     });
 
   const currentDate = DateTime.now();
@@ -112,61 +193,63 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
           } fixed bg-custom-green-5 h-screen shadow-md duration-300 z-[99999]`}
         >
           <div className="h-screen w-full p-5 pt-7 bg-white">
-          {/* Button Sidebar width change start */}
-          <div
-            className={`absolute cursor-pointer -right-3 top-[50px] transition-all duration-300 z-[999999] ${
-              !open && "rotate-180"
-            }`}
-            onClick={() => setOpen(!open)}
-          >
-            <i className="bi bi-arrow-left-circle w-7 text-[28px] text-custom-green-60 hover:text-custom-green-dark ease-in-out transition-all"></i>
-          </div>
-          {/* Button Sidebar width change start */}
-          {/* Sidebar LOGO start */}
-          <div className="flex gap-x-4 items-center">
-            <img
-              src={logo}
-              className={`w-[40px] h-auto duration-75 ${
-                open && "scale-0 hidden"
+            {/* Button Sidebar width change start */}
+            <div
+              className={`absolute cursor-pointer -right-3 top-[50px] transition-all duration-300 z-[999999] ${
+                !open && "rotate-180"
               }`}
-            />
-            <img
-              src={logoLong}
-              className={`duration-75 ${!open && "scale-0 hidden"}`}
-            />
-          </div>
-          {/* Sidebar LOGO end */}
-          <ul className="pt-6">
-            {/* Menu name start */}
-            <div className="text-custom-green-dark font-semibold text-[14px] text-left">
-              <p>Menu</p>
+              onClick={() => setOpen(!open)}
+            >
+              <i className="bi bi-arrow-left-circle w-7 text-[28px] text-custom-green-60 hover:text-custom-green-dark ease-in-out transition-all"></i>
             </div>
-            {/* Menu name end */}
-            {/* Menu list START */}
-            {Menus.map((Menu, index) => (
-              <li key={index} className={`${Menu.gap ? "mt-9" : "mt-2"}`}>
-                <NavLink
-                  to={Menu.navLink}
-                  className={({ isActive }) =>
-                    `${
-                      isActive
-                        ? "bg-custom-green-dark text-white"
-                        : "bg-custom-green-30 text-custom-green-dark"
-                    } flex rounded-[10px] p-2 cursor-pointer hover:bg-custom-green-dark hover:text-white font-semibold text-sm items-center gap-x-4 transition-all duration-200`
-                  }
-                >
-                  {/* ${index === 0 && "bg-custom-green-dark text-white"} */}
-                  <i className={`${Menu.src} text-[20px] mx-[2px]`}></i>
-                  <span
-                    className={`${!open && "hidden"} origin-left duration-200`}
+            {/* Button Sidebar width change start */}
+            {/* Sidebar LOGO start */}
+            <div className="flex gap-x-4 items-center">
+              <img
+                src={logo}
+                className={`w-[40px] h-auto duration-75 ${
+                  open && "scale-0 hidden"
+                }`}
+              />
+              <img
+                src={logoLong}
+                className={`duration-75 ${!open && "scale-0 hidden"}`}
+              />
+            </div>
+            {/* Sidebar LOGO end */}
+            <ul className="pt-6">
+              {/* Menu name start */}
+              <div className="text-custom-green-dark font-semibold text-[14px] text-left">
+                <p>Menu</p>
+              </div>
+              {/* Menu name end */}
+              {/* Menu list START */}
+              {Menus.map((Menu, index) => (
+                <li key={index} className={`${Menu.gap ? "mt-9" : "mt-2"}`}>
+                  <NavLink
+                    to={Menu.navLink}
+                    className={({ isActive }) =>
+                      `${
+                        isActive
+                          ? "bg-custom-green-dark text-white"
+                          : "bg-custom-green-30 text-custom-green-dark"
+                      } flex rounded-[10px] p-2 cursor-pointer hover:bg-custom-green-dark hover:text-white font-semibold text-sm items-center gap-x-4 transition-all duration-200`
+                    }
                   >
-                    {Menu.title}
-                  </span>
-                </NavLink>
-              </li>
-            ))}
-            {/* Menu list END */}
-          </ul>
+                    {/* ${index === 0 && "bg-custom-green-dark text-white"} */}
+                    <i className={`${Menu.src} text-[20px] mx-[2px]`}></i>
+                    <span
+                      className={`${
+                        !open && "hidden"
+                      } origin-left duration-200`}
+                    >
+                      {Menu.title}
+                    </span>
+                  </NavLink>
+                </li>
+              ))}
+              {/* Menu list END */}
+            </ul>
           </div>
         </div>
         {/* Sidebar END */}
@@ -181,6 +264,41 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
               <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
                 <i className="bi bi-calendar2-week font-medium"></i>
                 <p className="ml-[10px] whitespace-nowrap">{formattedDate}</p>
+              </div>
+              <div>
+                <span className="countdown font-mono md:text-xl flex justify-center items-center">
+                  <span style={{ "--value": hours }}></span>:
+                  <span style={{ "--value": minutes }}></span>:
+                  <span style={{ "--value": seconds }}></span>
+                </span>
+              </div>
+              <div className="ml-10">
+                <div className="flex gap-5">
+                  <div>
+                    <span className="countdown font-mono text-4xl">
+                      <span style={{"--value": daysr }}></span>
+                    </span>
+                    days
+                  </div>
+                  <div>
+                    <span className="countdown font-mono text-4xl">
+                      <span style={{ "--value": hoursr }}></span>
+                    </span>
+                    hours
+                  </div>
+                  <div>
+                    <span className="countdown font-mono text-4xl">
+                      <span style={{ "--value": minutesr }}></span>
+                    </span>
+                    min
+                  </div>
+                  <div>
+                    <span className="countdown font-mono text-4xl">
+                      <span style={{ "--value": secondsr }}></span>
+                    </span>
+                    sec
+                  </div>
+                </div>
               </div>
             </div>
 

@@ -62,6 +62,13 @@ function Signin({ setAccess, setRefresh, setUserType }) {
     // Login API va user type ni olish
     loginPromise
       .then((res) => {
+
+        const endTimeAccessToken = new Date().getTime() + 30 * 60 * 1000;
+        localStorage.setItem('endTimeAccessToken', endTimeAccessToken.toString());
+
+        const endTimeRefreshToken = new Date().getTime() + 30 * 24 * 60 * 60 * 1000;
+        localStorage.setItem('endTimeRefreshToken', endTimeRefreshToken.toString());
+
         // Access va refresh tokenlarni saqlash
         setAccess(res.data.access);
         setRefresh(res.data.refresh);

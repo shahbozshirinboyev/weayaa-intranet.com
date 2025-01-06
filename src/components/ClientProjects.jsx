@@ -32,18 +32,27 @@ function ClientProjects({ clientId, setCount, setClientId }) {
   };
 
   const getAssignmentProjectList = () => {
-    const headers = {Authorization: `Bearer ${localStorage.getItem("access")}`,};
+    const access = localStorage.getItem("access");
     console.log("ID: " + id)
     if(id){
       http
-      .get(`projects/assignments/${id}`, { headers })
+      .get(
+        `projects/assignments/client/`, 
+        { "client_id": id }, 
+        {
+          headers: {
+            Authorization: `Bearer ${access}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then((response) => {
         console.log(response.data);
-        // -------------------------------------------------------Update here
+        // ------------------------------------------------------- Update here
         // setAssignProjectsId(response.data);
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log(error.response.data);
       });
     }
   };
