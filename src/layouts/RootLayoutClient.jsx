@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import CustomerNavbar from "../pages/Customer/Navbar/CustomerNavbar";
 
 function RootLayoutClient({ setAccess, setRefresh, setUserType }) {
+
   return (
     <section className="w-full h-screen flex flex-col">
       <div className="flex-none">

@@ -117,22 +117,6 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
     })
     .catch((error) => {
       console.log(error.response.data);
-      // if (error.response.status === 401) {
-      //   http
-      //     .post("token/refresh/", {
-      //       refresh: localStorage.getItem("refresh"),
-      //     })
-      //     .then((newtoken) => {
-      //       localStorage.setItem("access", newtoken.data.access);
-      //       console.log("Token yangilandi");
-      //     })
-      //     .catch(() => {
-      //       toast.error("Yangi 'token' olib bo'lmadi :(");
-      //     });
-      // } else {
-      //   console.log(error.response.data);
-      //   toast.error("Something went wrong :(");
-      // }
     });
 
   const currentDate = DateTime.now();
@@ -246,46 +230,51 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
         >
           {/* Navbar START */}
           <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px]">
+
             <div className="h-full w-full flex items-center ml-[10px]">
+
               <div className="flex px-[8px] py-[4px] mx-[5px] rounded-[8px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
                 <i className="bi bi-calendar2-week font-medium"></i>
                 <p className="ml-[10px] whitespace-nowrap">{formattedDate}</p>
               </div>
-              <div>
-                <span className="countdown font-mono md:text-xl flex justify-center items-center">
+
+              <div className="ml-4 text-[14px] flex justify-center items-center border">
+                <span className="countdown font-mono flex justify-center items-center">
                   <span style={{ "--value": hours }}></span>:
                   <span style={{ "--value": minutes }}></span>:
                   <span style={{ "--value": seconds }}></span>
                 </span>
               </div>
-              <div className="ml-10">
+
+              <div className="ml-4 text-[14px] flex justify-center items-center border">
                 <div className="flex gap-5">
                   <div>
-                    <span className="countdown font-mono text-4xl">
+                    <span className="countdown font-mono">
                       <span style={{ "--value": daysr }}></span>
                     </span>
                     days
                   </div>
                   <div>
-                    <span className="countdown font-mono text-4xl">
+                    <span className="countdown font-mono">
                       <span style={{ "--value": hoursr }}></span>
                     </span>
                     hours
                   </div>
                   <div>
-                    <span className="countdown font-mono text-4xl">
+                    <span className="countdown font-mono">
                       <span style={{ "--value": minutesr }}></span>
                     </span>
                     min
                   </div>
                   <div>
-                    <span className="countdown font-mono text-4xl">
+                    <span className="countdown font-mono">
                       <span style={{ "--value": secondsr }}></span>
                     </span>
                     sec
                   </div>
                 </div>
               </div>
+
             </div>
 
             <div className="flex justify-end items-center w-full mr-[10px]">

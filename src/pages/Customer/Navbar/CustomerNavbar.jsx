@@ -49,8 +49,74 @@ function CustomerNavbar({ setAccess, setRefresh, setUserType }) {
     localStorage.removeItem("activeProject");
     localStorage.removeItem("userId");
     navigate("/");
+    localStorage.removeItem("endTimeAccessToken");
+    localStorage.removeItem("endTimeRefreshToken");
   };
   // Logout section end
+    // Logout section end
+    const [daysr, setDaysr] = useState(0);
+    const [hoursr, setHoursr] = useState(0);
+    const [minutesr, setMinutesr] = useState(0);
+    const [secondsr, setSecondsr] = useState(0);
+  
+    const [hours, setHours] = useState(0);
+    const [minutes, setMinutes] = useState(0);
+    const [seconds, setSeconds] = useState(0);
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        const endTimeAccessToken = localStorage.getItem("endTimeAccessToken");
+        const endTimeRefreshToken = localStorage.getItem("endTimeRefreshToken");
+    
+        if (!endTimeAccessToken || !endTimeRefreshToken) {
+          deleteUserInfo();
+          clearInterval(interval);
+          return;
+        }
+    
+        const now = new Date().getTime();
+        const timeLeft = parseInt(endTimeAccessToken) - now;
+        const timeLeftr = parseInt(endTimeRefreshToken) - now;
+    
+        if (timeLeftr <= 0) {
+          toast.error("Log out bo'ladi hozir !!!");
+          deleteUserInfo();
+          clearInterval(interval);
+          return;
+        }
+    
+        if (timeLeft <= 0) {
+          http
+            .post("token/refresh/", { refresh: localStorage.getItem("refresh") })
+            .then((response) => {
+              const newAccessToken = response.data.access;
+              localStorage.setItem("access", newAccessToken);
+              setAccess(newAccessToken);
+              const newEndTimeAccessToken = new Date().getTime() + 30 * 60 * 1000;
+              localStorage.setItem("endTimeAccessToken", newEndTimeAccessToken.toString());
+              toast.success("Acces Token vaqti yangilandi!");
+            })
+            .catch(() => {
+              toast.error("Yangi 'token' olib bo'lmadi :(");
+              clearInterval(interval);
+              deleteUserInfo();
+            });
+        }
+    
+        // Refresh token vaqti tugashini ekranga chiqarish
+        setDaysr(Math.floor(timeLeftr / (24 * 60 * 60 * 1000)));
+        setHoursr(Math.floor((timeLeftr % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)));
+        setMinutesr(Math.floor((timeLeftr % (60 * 60 * 1000)) / (60 * 1000)));
+        setSecondsr(Math.floor((timeLeftr % (60 * 1000)) / 1000));
+    
+        // Access token vaqtini ekranga chiqarish
+        setHours(Math.floor((timeLeft % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)));
+        setMinutes(Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000)));
+        setSeconds(Math.floor((timeLeft % (60 * 1000)) / 1000));
+      }, 1000);
+    
+      return () => clearInterval(interval);
+    }, []);
   return (
     <div className="p-5">
       <div className="bg-custom-green-5 h-[60px] w-full rounded-[10px] flex">
@@ -60,6 +126,42 @@ function CustomerNavbar({ setAccess, setRefresh, setUserType }) {
             <i className="bi bi-calendar2-week font-medium"></i>
             <p className="ml-[10px] whitespace-nowrap">{formattedDate}</p>
           </div>
+          <div className="ml-4 text-[14px] flex justify-center items-center border">
+                <span className="countdown font-mono flex justify-center items-center">
+                  <span style={{ "--value": hours }}></span>:
+                  <span style={{ "--value": minutes }}></span>:
+                  <span style={{ "--value": seconds }}></span>
+                </span>
+              </div>
+
+              <div className="ml-4 text-[14px] flex justify-center items-center border">
+                <div className="flex gap-5">
+                  <div>
+                    <span className="countdown font-mono">
+                      <span style={{ "--value": daysr }}></span>
+                    </span>
+                    days
+                  </div>
+                  <div>
+                    <span className="countdown font-mono">
+                      <span style={{ "--value": hoursr }}></span>
+                    </span>
+                    hours
+                  </div>
+                  <div>
+                    <span className="countdown font-mono">
+                      <span style={{ "--value": minutesr }}></span>
+                    </span>
+                    min
+                  </div>
+                  <div>
+                    <span className="countdown font-mono">
+                      <span style={{ "--value": secondsr }}></span>
+                    </span>
+                    sec
+                  </div>
+                </div>
+              </div>
         </div>
         {/* Date END */}
         {/* Home = Logo START */}
