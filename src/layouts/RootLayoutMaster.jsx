@@ -40,76 +40,60 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    const endTimeAccessToken = localStorage.getItem("endTimeAccessToken");
-    const endTimeRefreshToken = localStorage.getItem("endTimeRefreshToken");
-
-    if (!endTimeAccessToken) {
-      deleteUserInfo();
-      return;
-    }
-
     const interval = setInterval(() => {
-
-      const now = new Date().getTime();
-
-      const endTime = parseInt(endTimeAccessToken);
-      const timeLeft = endTime - now;
-      
-      const endTimer = parseInt(endTimeRefreshToken);
-      const timeLeftr = endTimer - now;
-
-      if (timeLeftr <= 0) {
-        toast.error("Log out bo'ladi hozir !!!")
-        clearInterval(interval);
+      const endTimeAccessToken = localStorage.getItem("endTimeAccessToken");
+      const endTimeRefreshToken = localStorage.getItem("endTimeRefreshToken");
+  
+      if (!endTimeAccessToken || !endTimeRefreshToken) {
         deleteUserInfo();
+        clearInterval(interval);
         return;
       }
-
-      if (timeLeft <= 0) {
+  
+      const now = new Date().getTime();
+      const timeLeft = parseInt(endTimeAccessToken) - now;
+      const timeLeftr = parseInt(endTimeRefreshToken) - now;
+  
+      if (timeLeftr <= 0) {
+        toast.error("Log out bo'ladi hozir !!!");
+        deleteUserInfo();
         clearInterval(interval);
+        return;
+      }
+  
+      if (timeLeft <= 0) {
         http
           .post("token/refresh/", { refresh: localStorage.getItem("refresh") })
           .then((response) => {
-            localStorage.setItem("access", response.data.access);
-            setAccess(response.data.access)
-            const newEndTimeAccessToken  = new Date().getTime() + 30 * 60 * 1000;
-            localStorage.setItem('endTimeAccessToken', newEndTimeAccessToken.toString());
-
-            console.log(response.data.access);
-            console.log("Token yangilandi");
-            toast.success("Acces Token vaqti tugadi !!!")
+            const newAccessToken = response.data.access;
+            localStorage.setItem("access", newAccessToken);
+            setAccess(newAccessToken);
+            const newEndTimeAccessToken = new Date().getTime() + 30 * 60 * 1000;
+            localStorage.setItem("endTimeAccessToken", newEndTimeAccessToken.toString());
+            toast.success("Acces Token vaqti yangilandi!");
           })
           .catch(() => {
             toast.error("Yangi 'token' olib bo'lmadi :(");
+            clearInterval(interval);
             deleteUserInfo();
           });
-          return;
       }
-
-      // Calculate Refresh Token remaining time
-      const daysLeftr = Math.floor(timeLeftr / (24 * 1000 * 60 * 60));
-      const hoursLeftr = Math.floor((timeLeftr % (24 * 1000 * 60 * 60)) / (1000 * 60 * 60));
-      const minutesLeftr = Math.floor((timeLeftr % (1000 * 60 * 60)) / (1000 * 60));
-      const secondsLeftr = Math.floor((timeLeftr % (1000 * 60)) / 1000);
-
-      setDaysr(daysLeftr);
-      setHoursr(hoursLeftr);
-      setMinutesr(minutesLeftr);
-      setSecondsr(secondsLeftr);
-
-      // Calculate Access Token remaining time
-      const hoursLeft = Math.floor((timeLeft % (24 * 1000 * 60 * 60)) / (1000 * 60 * 60));
-      const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-      const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-      setHours(hoursLeft);
-      setMinutes(minutesLeft);
-      setSeconds(secondsLeft);
-
+  
+      // Refresh token vaqti tugashini ekranga chiqarish
+      setDaysr(Math.floor(timeLeftr / (24 * 60 * 60 * 1000)));
+      setHoursr(Math.floor((timeLeftr % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)));
+      setMinutesr(Math.floor((timeLeftr % (60 * 60 * 1000)) / (60 * 1000)));
+      setSecondsr(Math.floor((timeLeftr % (60 * 1000)) / 1000));
+  
+      // Access token vaqtini ekranga chiqarish
+      setHours(Math.floor((timeLeft % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)));
+      setMinutes(Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000)));
+      setSeconds(Math.floor((timeLeft % (60 * 1000)) / 1000));
     }, 1000);
-
+  
     return () => clearInterval(interval);
   }, []);
+  
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -278,7 +262,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
                 <div className="flex gap-5">
                   <div>
                     <span className="countdown font-mono text-4xl">
-                      <span style={{"--value": daysr }}></span>
+                      <span style={{ "--value": daysr }}></span>
                     </span>
                     days
                   </div>
