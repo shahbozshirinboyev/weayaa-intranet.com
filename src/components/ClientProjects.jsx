@@ -36,17 +36,13 @@ function ClientProjects({ clientId, setCount, setClientId }) {
     if(id){
       http
       .get(
-        `projects/assignments/client/`, 
-        { "client_id": id }, 
+        `projects/assignments/client/?client_id=${id}`,
         {
-          headers: {
-            Authorization: `Bearer ${access}`,
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { Authorization: `Bearer ${access}`, },
         }
       )
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
         // ----------------------- Update here
         // setAssignProjectsId(response.data);
       })

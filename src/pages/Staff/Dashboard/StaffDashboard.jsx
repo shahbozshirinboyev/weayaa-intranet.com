@@ -16,7 +16,7 @@ function StaffDashboard() {
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Error :(");
+        // toast.error("Error :(");
       });
   }, []);
 
