@@ -17,7 +17,8 @@ function ClientProjects({ clientId, setCount, setClientId }) {
   const [assignProjectsId, setAssignProjectsId] = useState([]);
 
   const getProjectList = () => {
-    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`,
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
     };
     http
       .get(`projects/`, { headers })
@@ -32,23 +33,20 @@ function ClientProjects({ clientId, setCount, setClientId }) {
 
   const getAssignmentProjectList = () => {
     const access = localStorage.getItem("access");
-    console.log("ID: " + id)
-    if(id){
+    console.log("ID: " + id);
+    if (id) {
       http
-      .get(
-        `projects/assignments/client/?client_id=${id}`,
-        {
+        .get(`projects/assignments/client/?client_id=${id}`, {
           headers: { Authorization: `Bearer ${access}`, },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        // ----------------------- Update here
-        // setAssignProjectsId(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
+        })
+        .then((response) => {
+          console.log(response);
+          // ----------------------- Update here
+          // setAssignProjectsId(response.data);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
     }
   };
 
@@ -60,7 +58,7 @@ function ClientProjects({ clientId, setCount, setClientId }) {
   const handleCheckboxChange = (projectId) => {
     setAssignProjectsId((prevIds) => {
       if (prevIds.includes(projectId)) {
-        return prevIds.filter(id => id !== projectId);
+        return prevIds.filter((id) => id !== projectId);
       } else {
         return [...prevIds, projectId];
       }
@@ -69,10 +67,19 @@ function ClientProjects({ clientId, setCount, setClientId }) {
 
   const assignProjects = (e) => {
     e.preventDefault();
-    console.log({ client: id, projects: assignProjectsId, });
-    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
+    console.log({ client: id, projects: assignProjectsId });
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`, 'Content-Type': 'application/json',
+    };
     http
-      .post(`projects/assignments/`, { client: id, projects: assignProjectsId, }, { headers })
+      .put(
+        `projects/assignments/client/`,
+        { 
+          client_id: id, 
+          project_ids: assignProjectsId 
+        },
+        { headers }
+      )
       .then((response) => {
         console.log(response.data);
       })
@@ -123,7 +130,10 @@ function ClientProjects({ clientId, setCount, setClientId }) {
                   </label>
                 </div>
               ))}
-              <button type="submit" className="btn btn-sm my-2 bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark hover border-0 rounded-md">
+              <button
+                type="submit"
+                className="btn btn-sm my-2 bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark hover border-0 rounded-md"
+              >
                 Save
               </button>
             </form>
