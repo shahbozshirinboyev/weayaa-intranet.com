@@ -41,8 +41,8 @@ function ClientProjects({ clientId, setCount, setClientId }) {
         })
         .then((response) => {
           console.log(response);
-          // ----------------------- Update here
-          // setAssignProjectsId(response.data);
+          const projectIds = response.data.map(item => item.project_id);
+          setAssignProjectsId(projectIds);
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -82,6 +82,8 @@ function ClientProjects({ clientId, setCount, setClientId }) {
       )
       .then((response) => {
         console.log(response.data);
+        document.getElementById("SelectProjectForClient").close();
+        toast.success("Projects updated successfully!")
       })
       .catch((error) => {
         console.log(error.response.data);
