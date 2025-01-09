@@ -126,7 +126,7 @@ function CustomerNavbar({ setAccess, setRefresh, setUserType }) {
             <i className="bi bi-calendar2-week font-medium"></i>
             <p className="ml-[10px] whitespace-nowrap">{formattedDate}</p>
           </div>
-          <div className="ml-4 text-[14px] flex justify-center items-center border">
+          <div className="hidden justify-center items-center border ml-4 text-[14px]">
                 <span className="countdown font-mono flex justify-center items-center">
                   <span style={{ "--value": hours }}></span>:
                   <span style={{ "--value": minutes }}></span>:
@@ -134,7 +134,7 @@ function CustomerNavbar({ setAccess, setRefresh, setUserType }) {
                 </span>
               </div>
 
-              <div className="ml-4 text-[14px] flex justify-center items-center border">
+              <div className="hidden justify-center items-center border ml-4 text-[14px]">
                 <div className="flex gap-5">
                   <div>
                     <span className="countdown font-mono">
