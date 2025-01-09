@@ -56,8 +56,8 @@ function Signin({ setAccess, setRefresh, setUserType }) {
     toast.promise(loginPromise,
       {
         loading: "Loading...", // API javobi kelguncha ko'rsatish
-        success: "You have successfully signed in!", // Muvaffaqiyatli javob
-        error: "ID or Password went wrong :(" // Xatolik holati
+        success: "Welcome to WeaYaa!", // Muvaffaqiyatli javob
+        error: "Oops! ID or Password went wrong :(" // Xatolik holati
       });
     // Login API va user type ni olish
     loginPromise
