@@ -248,7 +248,7 @@ function ControlStaffs() {
 
             </div>
 
-            <button className="rounded-[10px] w-auto h-[35px] bg-custom-green-30 text-custom-green-dark cursor-default transition-all duration-150 hidden md:hidden lg:block">
+            <button className="rounded-[10px] w-auto h-[35px] bg-custom-green-30 text-custom-green-dark cursor-default transition-all duration-150 hidden xl:block">
               <i className="bi bi-people pl-2 text-[22px] mx-[5px]"></i>
               <span className="text-[22px] mx-[5px]">{usersCount}</span>
               <span className="text-[14px] pr-[10px] font-semibold">Members</span>
@@ -518,7 +518,7 @@ function ControlStaffs() {
                   <td className="px-6 py-4">
                     <button onClick={() => setClientIdProject(user.id)} className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
                       <i className="bi bi-folder-symlink"></i>
-                      Projects Status
+                      <span className="hidden xl:block">Projects Status</span>
                     </button>
                   </td>
 
