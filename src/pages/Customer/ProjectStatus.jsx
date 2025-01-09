@@ -1,8 +1,11 @@
 import React from 'react'
+import TaskManagement from '../../components/TaskManagement'
 
 function ProjectStatus() {
   return (
-    <div>ProjectStatus</div>
+    <div>
+      <TaskManagement />
+    </div>
   )
 }
 
