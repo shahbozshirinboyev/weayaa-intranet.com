@@ -65,11 +65,11 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getActiveProjectTasks }
           </div>
 
           {/* Line ------ START */}
-          {activeTaskUsersInfo.length !== 0 && userType !== "staff" && ( <div className="w-0.5 rounded-full bg-custom-green-60 mx-1.5 my-[5px]"></div>)}
+          {activeTaskUsersInfo.length !== 0 && userType !== "staff" && userType !== "client" && ( <div className="w-0.5 rounded-full bg-custom-green-60 mx-1.5 my-[5px]"></div>)}
           {/* Line ------ END */}
 
           <button onClick={() => document.getElementById(`addUsersForTask${task.id}`).showModal()}
-            className={`w-8 h-8 ${ userType === "staff" ? "hidden" : ""} bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3`}
+            className={`w-8 h-8 ${ userType === "staff" || userType === "client" ? "hidden" : ""} bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3`}
           >
             <i className="bi bi-plus flex text-[24px] justify-center items-center"></i>
           </button>

@@ -5,6 +5,7 @@ import http from "../services/http";
 import toast, { Toaster } from "react-hot-toast";
 
 const CreateTask = ({ getActiveProjectTasks }) => {
+  const userType = localStorage.getItem("userType");
   const activeProjectInfo = JSON.parse(localStorage.getItem("activeProject"));
   const activeProjectId = activeProjectInfo ? activeProjectInfo.id : null;
   const [taskData, setTaskData] = useState({
@@ -74,7 +75,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
       {/* Button ===> START */}
       <div
         onClick={() => { document.getElementById("createTask").showModal(); }}
-        className="flex cursor-pointer items-center justify-center text-custom-green-dark hover:bg-custom-green-dark hover:text-white transition-all duration-300 gap-1 py-[10px] w-full bg-white rounded-lg shadow-sm font-medium text-[15px]"
+        className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } flex cursor-pointer items-center justify-center text-custom-green-dark hover:bg-custom-green-dark hover:text-white transition-all duration-300 gap-1 py-[10px] w-full bg-white rounded-lg shadow-sm font-medium text-[15px]`}
       >
         <i className="bi bi-plus-lg flex justify-center items-center"></i>
         &nbsp;
