@@ -2,7 +2,10 @@
 import toast from "react-hot-toast";
 import http from "../services/http";
 export const onDragEnd = (result, columns, setColumns) => {
+  const userType = localStorage.getItem("userType");
+
   if (!result.destination) return;
+  if (userType === "client") return;
 
   const { source, destination } = result;
   // result.draggableId o'zgarishni olgan task ID si
@@ -22,7 +25,7 @@ export const onDragEnd = (result, columns, setColumns) => {
 
     console.log(result.draggableId);
     console.log(status);
-	console.log(result)
+    console.log(result);
 
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
@@ -36,7 +39,6 @@ export const onDragEnd = (result, columns, setColumns) => {
         { headers }
       ),
       {
-        
         loading: "Change status ...",
         success: (response) => {
           console.log(response);

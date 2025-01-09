@@ -101,7 +101,7 @@ function ProjectsList() {
       {projectsList.length === 0 && !loading && (
         <div className="flex justify-center items-center mt-12 text-custom-green-dark">
           <div className="flex flex-col justify-center items-center">
-            <i class="bi bi-folder-x text-[30px] xl:text-[50px]"></i>
+            <i className="bi bi-folder-x text-[30px] xl:text-[50px]"></i>
             <span className="font-medium">You have no projects assigned to you.</span>
           </div>
         </div>
