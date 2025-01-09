@@ -15,7 +15,6 @@ function ProjectsList() {
         headers: { Authorization: `Bearer ${access}` },
       })
       .then((response) => {
-        console.log(response.data);
         setProjectsList(response.data);
         setLoading(false);
       })
@@ -30,7 +29,7 @@ function ProjectsList() {
 
   return (
     <div className="w-full flex flex-col">
-      {/* Map Project Lis Start */}
+      {/* Map Project List Start */}
       {!loading &&
         projectsList?.map((project) => (
           <div
@@ -106,7 +105,7 @@ function ProjectsList() {
           </div>
         </div>
       )}
-      {/* Map Project Lis END */}
+      {/* Map Project List END */}
       {/* <TaskManagement /> */}
     </div>
   );

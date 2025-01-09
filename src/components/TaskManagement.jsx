@@ -779,8 +779,8 @@ function TaskManagement() {
                               <>
                                 <div
                                   ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
+                                  {...(userType !== "client" ? provided.draggableProps : {})}
+                                  {...(userType !== "client" ? provided.dragHandleProps : {})}
                                   className="w-full cursor-grab bg-white flex flex-col justify-between gap-3 items-start shadow-sm rounded-lg px-3 py-4"
                                 >
                                   <div className="w-full">
