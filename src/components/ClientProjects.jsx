@@ -8,7 +8,7 @@ function ClientProjects({ clientId, setCount, setClientId }) {
     if (clientId) {
       console.log(clientId);
       setId(clientId);
-      document.getElementById("SelectProjectForClient").showModal();
+      // document.getElementById("SelectProjectForClient").showModal();
       setClientId("");
     }
   }, [clientId]);
@@ -43,6 +43,7 @@ function ClientProjects({ clientId, setCount, setClientId }) {
           console.log(response);
           const projectIds = response.data.map(item => item.project_id);
           setAssignProjectsId(projectIds);
+          document.getElementById("SelectProjectForClient").showModal();
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -87,6 +88,7 @@ function ClientProjects({ clientId, setCount, setClientId }) {
       })
       .catch((error) => {
         console.log(error.response.data);
+        toast.error("Something went wrong :(")
       });
   };
 
