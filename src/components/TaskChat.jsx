@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 function TaskChat({ task }) {
+  const [rows, setRows] = useState(1);
+
   const endRef = useRef(null);
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -16,10 +18,10 @@ function TaskChat({ task }) {
   });
 
   const inputHandle = (e) => {
-    setMessage({
-      ...message,
-      [e.target.name]: e.target.value,
-    });
+    setMessage({...message, [e.target.name]: e.target.value,});
+    const text = e.target.value;
+    const lineBreaks = text.split("\n").length;
+    setRows(Math.min(Math.max(lineBreaks, 1), 5));
   };
 
   const handleFileChange = (event) => {
@@ -48,7 +50,7 @@ function TaskChat({ task }) {
       <button onClick={() => { document.getElementById(`task_chat${task.id}`).showModal(); showTaskInfo();}}>
         <div className="flex">
           <div className="relative">
-            <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"> <i className="bi bi-chat-dots"></i> </div>
+            <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"> <i className="bi bi-chat-text"></i> </div>
             <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
           </div>
         </div>
@@ -227,7 +229,7 @@ function TaskChat({ task }) {
             </div>
           </div>
 
-          <div className="h-[60px] absolute w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
+          <div className="min-h-[60px] bg-white w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
             <form onSubmit={sendMessage} action="" className="flex w-full gap-2">
               <div className="flex items-center gap-4">
                 <label
@@ -245,12 +247,12 @@ function TaskChat({ task }) {
               </div>
 
               <textarea
-              rows={1}
+              rows={rows}
                 type="text"
                 name="message"
                 value={message.message}
                 onChange={inputHandle}
-                className="flex-grow px-2 py-1 outline-none resize-none text-sm text-custom-green-dark placeholder:text-custom-green-60"
+                className="flex-grow border px-2 py-1 outline-none resize-none text-sm text-custom-green-dark placeholder:text-custom-green-60"
                 placeholder="Write a message..."
               />
               <button className="px-2 py-1 cursor-pointer">
