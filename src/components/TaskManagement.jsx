@@ -8,6 +8,7 @@ import http from "../services/http";
 import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 import TaskFileControl from "./TaskFileControl";
+import ProjectsScrollBar from "./ProjectsScrollBar";
 
 function TaskManagement() {
   const userType = localStorage.getItem("userType");
@@ -326,7 +327,11 @@ function TaskManagement() {
             </button>
             {/* Add new project --- end  */}
 
-            <div className="dropdown text-custom-green-dark">
+            <div className="flex gap-1 overflow-hidden border border-red-700">
+              <ProjectsScrollBar />
+            </div>
+
+            <div className="dropdown text-custom-green-dark hidden">
               <div
                 tabIndex={0}
                 role="button"
@@ -340,23 +345,7 @@ function TaskManagement() {
                 tabIndex={0}
                 className="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow"
               >
-                <li
-                  onClick={() =>
-                    document.getElementById("new_project").showModal()
-                  }
-                  className={`${
-                    userType === "staff" || userType === "client"
-                      ? "hidden"
-                      : ""
-                  } bg-custom-green-15 rounded-[10px] text-custom-green-dark mb-1 font-semibold hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
-                >
-                  <button>
-                    <i className="bi bi-plus-lg flex justify-center items-center"></i>{" "}
-                    <span className="whitespace-nowrap">Add new project</span>
-                  </button>
-                </li>
                 {/* All Project list ===============> start */}
-
                 <li
                   className={`${
                     projectsList.length === 0 && userType === "staff"
