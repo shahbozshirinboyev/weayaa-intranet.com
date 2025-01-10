@@ -12,13 +12,17 @@ function TaskChat({ task }) {
     console.log(task);
   };
 
-  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState({
+    name: "",
+    file: "",
+    url: "",
+  });
   const [message, setMessage] = useState({
     message: "",
   });
 
   const inputHandle = (e) => {
-    setMessage({...message, [e.target.name]: e.target.value,});
+    setMessage({ ...message, [e.target.name]: e.target.value });
     const text = e.target.value;
     const lineBreaks = text.split("\n").length;
     setRows(Math.min(Math.max(lineBreaks, 1), 5));
@@ -26,31 +30,46 @@ function TaskChat({ task }) {
 
   const handleFileChange = (event) => {
     if (event.target.files.length > 0) {
-      setFileName(event.target.files[0].name);
+      const selectedFile = event.target.files[0];
+      setFile({
+        ...file,
+        name: selectedFile.name,
+        file: selectedFile,
+        url: URL.createObjectURL(selectedFile),
+      });
     } else {
-      setFileName("");
+      setFile({ ...file, name: "", file: "" });
     }
   };
+
   const handleClearFile = () => {
-    setFileName("");
+    setFile({ ...file, name: "", file: "", url: "" });
     // document.getElementById("fileInput").value = "";
   };
 
   const sendMessage = (e) => {
     e.preventDefault();
-    console.log(message);
-    setFileName("");
-    document.getElementById("fileInput").value = "";
-    setMessage({ message: "" });
+    console.log(message, file);
+
+    setFile({ ...file, name: "", file: "", url: "" });
+    setMessage({ ...message, message: "" });
   };
 
   return (
     <>
       {/* Chat button START */}
-      <button onClick={() => { document.getElementById(`task_chat${task.id}`).showModal(); showTaskInfo();}}>
+      <button
+        onClick={() => {
+          document.getElementById(`task_chat${task.id}`).showModal();
+          showTaskInfo();
+        }}
+      >
         <div className="flex">
           <div className="relative">
-            <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"> <i className="bi bi-chat-text"></i> </div>
+            <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center">
+              {" "}
+              <i className="bi bi-chat-text"></i>{" "}
+            </div>
             <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
           </div>
         </div>
@@ -60,10 +79,14 @@ function TaskChat({ task }) {
       {/* TASK => Chat START */}
       <dialog id={`task_chat${task.id}`} className="modal z-50 border-red-700">
         <div className="modal-box h-full max-h-[700px] p-0 flex flex-col rounded-none">
-
           {/* Modal header Start */}
-          <form method="dialog" className="border-b-[2px] border-custom-green-80 h-[55px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10">
-            <span className="text-custom-green-dark font-bold">Chat (Task ID: {task.id})</span>
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[55px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Chat (Task ID: {task.id})
+            </span>
             <div className="text-end">
               <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
                 <i className="bi bi-x-lg flex justify-center items-center"></i>
@@ -74,163 +97,170 @@ function TaskChat({ task }) {
 
           {/* Task Chat Body START */}
           <>
-          <section className="px-4 chatcss overflow-y-auto h-[585px]">
-            
-
-            <div className="chat chat-start">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                  />
+            <section className="px-4 chatcss overflow-y-auto h-[585px]">
+              <div className="chat chat-start">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="chat-header">
-                Obi-Wan Kenobi <time className="text-xs opacity-50">12:45</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                You were the Chosen One!
-              </div>
-              <div className="chat-footer opacity-50">Delivered</div>
-            </div>
-
-            <div className="chat chat-end">
-              <div className="chat-header">
-                Anakin <time className="text-xs opacity-50">12:46</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-dark text-white">
-                I love you!
-              </div>
-              <div className="chat-footer opacity-50">Seen at 12:46</div>
-            </div>
-    
-
-            
-
-           
-
-            <div className="chat chat-start">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                  />
+                <div className="chat-header">
+                  Obi-Wan Kenobi{" "}
+                  <time className="text-xs opacity-50">12:45</time>
                 </div>
-              </div>
-              <div className="chat-header">
-                Obi-Wan Kenobi <time className="text-xs opacity-50">12:45</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                Okay!
-              </div>
-              <div className="chat-footer opacity-50">Delivered</div>
-            </div>
-
-            <div className="chat chat-start">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                  />
+                <div className="chat-bubble bg-custom-green-30 text-black">
+                  You were the Chosen One!
                 </div>
+                <div className="chat-footer opacity-50">Delivered</div>
               </div>
-              <div className="chat-header">
-                Obi-Wan Kenobi <time className="text-xs opacity-50">12:45</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                Okay!
-              </div>
-              <div className="chat-footer opacity-50">Delivered</div>
-            </div>
 
-
-            <div className="chat chat-start">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                  />
+              <div className="chat chat-end">
+                <div className="chat-header">
+                  Anakin <time className="text-xs opacity-50">12:46</time>
                 </div>
-              </div>
-              <div className="chat-header">
-                Obi-Wan Kenobi <time className="text-xs opacity-50">12:45</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                Okay!
-              </div>
-              <div className="chat-footer opacity-50">Delivered</div>
-            </div>
-
-            <div className="chat chat-start">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                  />
+                <div className="chat-bubble bg-custom-green-dark text-white">
+                  I love you!
                 </div>
+                <div className="chat-footer opacity-50">Seen at 12:46</div>
               </div>
-              <div className="chat-header">
-                Obi-Wan Kenobi <time className="text-xs opacity-50">12:45</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                Okay!
-              </div>
-              <div className="chat-footer opacity-50">Delivered</div>
-            </div>
 
-            <div className="chat chat-start">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                  />
+              <div className="chat chat-start">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
+                    />
+                  </div>
                 </div>
+                <div className="chat-header">
+                  Obi-Wan Kenobi{" "}
+                  <time className="text-xs opacity-50">12:45</time>
+                </div>
+                <div className="chat-bubble bg-custom-green-30 text-black">
+                  Okay!
+                </div>
+                <div className="chat-footer opacity-50">Delivered</div>
               </div>
-              <div className="chat-header">
-                Obi-Wan Kenobi <time className="text-xs opacity-50">12:45</time>
-              </div>
-              <div className="chat-bubble bg-custom-green-30 text-black">
-                Okay!
-              </div>
-              <div className="chat-footer opacity-50">Delivered</div>
-            </div>
 
-            <div className="chat chat-end border-0">
-              <div className="chat-header border-0">
-                Anakin <time className="text-xs opacity-50">12:46</time>
+              <div className="chat chat-start">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
+                    />
+                  </div>
+                </div>
+                <div className="chat-header">
+                  Obi-Wan Kenobi{" "}
+                  <time className="text-xs opacity-50">12:45</time>
+                </div>
+                <div className="chat-bubble bg-custom-green-30 text-black">
+                  Okay!
+                </div>
+                <div className="chat-footer opacity-50">Delivered</div>
               </div>
-              <div className="chat-bubble bg-custom-green-dark text-white">
-                Yeap!
+
+              <div className="chat chat-start">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
+                    />
+                  </div>
+                </div>
+                <div className="chat-header">
+                  Obi-Wan Kenobi{" "}
+                  <time className="text-xs opacity-50">12:45</time>
+                </div>
+                <div className="chat-bubble bg-custom-green-30 text-black">
+                  Okay!
+                </div>
+                <div className="chat-footer opacity-50">Delivered</div>
               </div>
-              <div className="chat-footer opacity-50">Seen at 12:46</div>
-            </div>
 
+              <div className="chat chat-start">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
+                    />
+                  </div>
+                </div>
+                <div className="chat-header">
+                  Obi-Wan Kenobi{" "}
+                  <time className="text-xs opacity-50">12:45</time>
+                </div>
+                <div className="chat-bubble bg-custom-green-30 text-black">
+                  Okay!
+                </div>
+                <div className="chat-footer opacity-50">Delivered</div>
+              </div>
 
-            {/* scroll to END => START */}
-            <div ref={endRef}></div>
-            {/* scroll to END => END */}
-          </section>
+              <div className="chat chat-start">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
+                    />
+                  </div>
+                </div>
+                <div className="chat-header">
+                  Obi-Wan Kenobi{" "}
+                  <time className="text-xs opacity-50">12:45</time>
+                </div>
+                <div className="chat-bubble bg-custom-green-30 text-black">
+                  Okay!
+                </div>
+                <div className="chat-footer opacity-50">Delivered</div>
+              </div>
+
+              <div className="chat chat-end border-0">
+                <div className="chat-header border-0">
+                  Anakin <time className="text-xs opacity-50">12:46</time>
+                </div>
+                <div className="chat-bubble bg-custom-green-dark text-white">
+                  Yeap!
+                </div>
+                <div className="chat-footer opacity-50">Seen at 12:46</div>
+              </div>
+
+              {/* scroll to END => START */}
+              <div ref={endRef}></div>
+              {/* scroll to END => END */}
+            </section>
           </>
           {/* Task Chat Body END */}
           {/* Chat Input START */}
-
-          <div className={`justify-between items-center transition-all duration-300 absolute w-full top-[55px] ${fileName === "" ? "hidden" : ""} bg-white`}>
+          <div
+            className={`justify-between items-center transition-all duration-300 absolute w-full top-[55px] ${
+              file.name === "" ? "hidden" : ""
+            } bg-white`}
+          >
             <div className="bg-custom-green-dark px-3 py-2">
-              <span className="text-white">{fileName}</span>
-              <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white absolute right-3" onClick={handleClearFile}>
+              <span className="text-white">{file.name}</span>
+              <button
+                className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white absolute right-3"
+                onClick={handleClearFile}
+              >
                 <i className="bi bi-x-lg flex justify-center items-center"></i>
               </button>
             </div>
           </div>
 
           <div className="min-h-[60px] bg-white w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
-            <form onSubmit={sendMessage} action="" className="flex w-full gap-2">
+            <form
+              onSubmit={sendMessage}
+              action=""
+              className="flex w-full gap-2"
+            >
               <div className="flex items-center gap-4">
                 <label
                   htmlFor={`fileInput${task.id}`}
@@ -242,20 +272,20 @@ function TaskChat({ task }) {
                   type="file"
                   id={`fileInput${task.id}`}
                   className="hidden"
-                  onChange={handleFileChange} // Faylni tanlashda ishlaydi
+                  onChange={handleFileChange}
                 />
               </div>
 
               <textarea
-              rows={rows}
+                rows={rows}
                 type="text"
                 name="message"
                 value={message.message}
                 onChange={inputHandle}
-                className="flex-grow border px-2 py-1 outline-none resize-none text-sm text-custom-green-dark placeholder:text-custom-green-60"
+                className="flex-grow px-2 py-1 outline-none resize-none text-sm text-custom-green-dark placeholder:text-custom-green-60"
                 placeholder="Write a message..."
               />
-              <button className="px-2 py-1 cursor-pointer">
+              <button className="px-2 py-1 cursor-pointer" type="submit">
                 <i
                   className={`bi ${
                     message.message === ""
