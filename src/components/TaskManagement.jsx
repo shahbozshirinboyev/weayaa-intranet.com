@@ -12,10 +12,17 @@ import TaskFileControl from "./TaskFileControl";
 function TaskManagement() {
   const userType = localStorage.getItem("userType");
   const [projectsList, setProjectsList] = useState([]);
-  const [activeProject, setActiveProject] = useState( JSON.parse(localStorage.getItem("activeProject")));
-  const [formData, setFormData] = useState({ projectName: "", projectDeadline: "", });
+  const [activeProject, setActiveProject] = useState(
+    JSON.parse(localStorage.getItem("activeProject"))
+  );
+  const [formData, setFormData] = useState({
+    projectName: "",
+    projectDeadline: "",
+  });
   const [membersInfo, setMembersInfo] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState( activeProject.members ? activeProject.members : [] );
+  const [selectedUsers, setSelectedUsers] = useState(
+    activeProject.members ? activeProject.members : []
+  );
   // line variables end
 
   const getProjectsList = () => {
@@ -26,9 +33,9 @@ function TaskManagement() {
       .get(`projects/`, { headers })
       .then((response) => {
         setProjectsList(response.data);
-        if(response.data.length === 0){
-          setActiveProject([])
-          localStorage.setItem("activeProject", JSON.stringify([]))
+        if (response.data.length === 0) {
+          setActiveProject([]);
+          localStorage.setItem("activeProject", JSON.stringify([]));
         }
       })
       .catch((error) => {
@@ -54,10 +61,10 @@ function TaskManagement() {
       success: (response) => {
         console.log(response);
         getProjectsList();
-        document.getElementById("deleteProjectModal").close(); 
-        if(id === activeProject.id){
-          setActiveProject([])
-          localStorage.setItem("activeProject", JSON.stringify([]))
+        document.getElementById("deleteProjectModal").close();
+        if (id === activeProject.id) {
+          setActiveProject([]);
+          localStorage.setItem("activeProject", JSON.stringify([]));
         }
         return <b>Delete :)</b>;
       },
@@ -292,18 +299,32 @@ function TaskManagement() {
     <>
       {/* <Line /> START */}
       <>
-        <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex mb-[20px]">
-          <div className="h-full w-full flex items-center ml-[10px] relative">
-            <div className="flex px-[8px] py-[4px] mx-[5px] rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white transition-all duration-100 ease-in-out cursor-pointer">
+        <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex gap-2 mb-[20px] border border-sky-700">
+          <div className="h-full w-full p-2 flex gap-2 items-center border border-red-700">
+            {/* Deadline --- start */}
+            <button
+              className={`btn btn-sm ${
+                activeProject.deadline ? "" : "hidden"
+              } border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
+            >
               <i className="bi bi-calendar2-week font-medium"></i>
-              <p
-                className={`whitespace-nowrap ${
-                  activeProject.deadline ? "ml-[10px]" : ""
-                } transition-all duration-300`}
-              >
+              <span className="whitespace-nowrap">
                 {activeProject.deadline}
-              </p>
-            </div>
+              </span>
+            </button>
+            {/* Deadline --- end */}
+
+            {/* Add new project --- start */}
+            <button
+              onClick={() => document.getElementById("new_project").showModal()}
+              className={`${
+                userType === "staff" || userType === "client" ? "hidden" : ""
+              } btn btn-sm border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
+            >
+              <i className="bi bi-plus-lg font-medium"></i>
+              <span className="whitespace-nowrap">New Project</span>
+            </button>
+            {/* Add new project --- end  */}
 
             <div className="dropdown text-custom-green-dark">
               <div
@@ -324,7 +345,9 @@ function TaskManagement() {
                     document.getElementById("new_project").showModal()
                   }
                   className={`${
-                    userType === "staff" || userType === "client" ? "hidden" : ""
+                    userType === "staff" || userType === "client"
+                      ? "hidden"
+                      : ""
                   } bg-custom-green-15 rounded-[10px] text-custom-green-dark mb-1 font-semibold hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
                 >
                   <button>
@@ -333,11 +356,17 @@ function TaskManagement() {
                   </button>
                 </li>
                 {/* All Project list ===============> start */}
-                
-                  <li className={`${projectsList.length === 0 && userType === "staff"  ? "" : "hidden"}`}>
-                    <p className="whitespace-nowrap">You have no projects!</p>
-                  </li>
-                
+
+                <li
+                  className={`${
+                    projectsList.length === 0 && userType === "staff"
+                      ? ""
+                      : "hidden"
+                  }`}
+                >
+                  <p className="whitespace-nowrap">You have no projects!</p>
+                </li>
+
                 {projectsList.map((project) => (
                   <div className="flex" key={project.id}>
                     <li
@@ -369,7 +398,9 @@ function TaskManagement() {
                         setSelectProjectInfo(project);
                       }}
                       className={`${
-                        userType === "staff" || userType === "client" ? "hidden" : ""
+                        userType === "staff" || userType === "client"
+                          ? "hidden"
+                          : ""
                       } border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
                     >
                       <i className="bi bi-pencil flex justify-center items-center"></i>
@@ -382,7 +413,9 @@ function TaskManagement() {
                         setSelectProjectInfo(project);
                       }}
                       className={`${
-                        userType === "staff" || userType === "client" ? "hidden" : ""
+                        userType === "staff" || userType === "client"
+                          ? "hidden"
+                          : ""
                       } border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
                     >
                       <i className="bi bi-trash flex justify-center items-center"></i>
@@ -394,7 +427,7 @@ function TaskManagement() {
             </div>
           </div>
 
-          <div className="flex h-full w-full p-2 items-center justify-end">
+          <div className="flex h-full p-2 items-center justify-end border border-red-700">
             {activeProject.members && activeProject.members.length !== 0 && (
               <div
                 onClick={() =>
@@ -423,158 +456,156 @@ function TaskManagement() {
 
             {activeProject.members &&
               activeProject.members.length !== 0 &&
-              userType !== "staff" && userType !== "client" && (
+              userType !== "staff" &&
+              userType !== "client" && (
                 <div className="w-0.5 h-6 rounded-full bg-custom-green-60 mx-1"></div>
               )}
 
-            {userType !== "staff" && userType !== "client" && activeProject.length !== 0 && (
-              <button
-                className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3 p-2"
-                onClick={() => document.getElementById("adduser").showModal()}
-              >
-                <i className="bi bi-plus text-[24px] flex justify-center items-center"></i>
-              </button>
-            )}
+            {userType !== "staff" &&
+              userType !== "client" &&
+              activeProject.length !== 0 && (
+                <button
+                  className="w-8 h-8 bg-custom-green-10 hover:bg-custom-green-dark text-custom-green-90  hover:text-white transition-all duration-300 rounded-full flex items-center justify-center right-3 p-2"
+                  onClick={() => document.getElementById("adduser").showModal()}
+                >
+                  <i className="bi bi-plus text-[24px] flex justify-center items-center"></i>
+                </button>
+              )}
           </div>
+        </div>
+        {/* Add User Modal */}
+        <dialog id="adduser" className="modal">
+          <Toaster />
+          <div className="modal-box p-0">
+            {/* Modal header Start */}
+            <form
+              method="dialog"
+              className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+            >
+              <span className="text-custom-green-dark font-bold">
+                Add Staff for this Project
+              </span>
+              <div className="text-end">
+                <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                  <i className="bi bi-x-lg flex justify-center items-center"></i>
+                </button>
+              </div>
+            </form>
+            {/* Modal header End */}
 
-          {/* Add User Modal */}
-          <dialog id="adduser" className="modal">
-            <Toaster />
-            <div className="modal-box p-0">
-              {/* Modal header Start */}
-              <form
-                method="dialog"
-                className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-              >
-                <span className="text-custom-green-dark font-bold">
-                  Add Staff for this Project
-                </span>
-                <div className="text-end">
-                  <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                    <i className="bi bi-x-lg flex justify-center items-center"></i>
-                  </button>
-                </div>
-              </form>
-              {/* Modal header End */}
+            <form action="" onSubmit={submitSelectedUsers}>
+              <div className="p-4">
+                {membersInfo.map((user) => (
+                  <div
+                    key={user.id}
+                    className={`form-control rounded-md px-1 my-2 ${
+                      selectedUsers.includes(user.id)
+                        ? "bg-custom-green-15"
+                        : "bg-transparent"
+                    }`}
+                  >
+                    <label className="cursor-pointer label">
+                      <div className="flex">
+                        <img
+                          src={user.image || noneuser}
+                          alt=""
+                          className="w-[45px] h-[45px] object-cover rounded-full"
+                        />
+                        <div className="ml-4">
+                          <p className="font-bold text-custom-green-dark">
+                            {user.first_name} {user.last_name}
+                          </p>
+                          <p className="text-custom-green-60">
+                            {user.speciality}
+                          </p>
+                        </div>
+                      </div>
+                      <input
+                        type="checkbox"
+                        className="checkbox border-custom-green-80 [--chkbg:theme(colors.custom-green-dark)] [--chkfg:white] checked:border-border-custom-green-dark"
+                        onChange={() => handleUserSelect(user.id)}
+                        checked={selectedUsers.includes(user.id)}
+                      />
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <div className="px-4 pb-4">
+                <button
+                  type="submit"
+                  className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+          <form method="dialog" className="modal-backdrop">
+            <button>close</button>
+          </form>
+        </dialog>
 
-              <form action="" onSubmit={submitSelectedUsers}>
-                <div className="p-4">
-                  {membersInfo.map((user) => (
+        {/* See User Modal */}
+        <dialog id="addedUsersList" className="modal">
+          <Toaster />
+          <div className="modal-box p-0">
+            {/* Modal header Start */}
+            <form
+              method="dialog"
+              className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+            >
+              <span className="text-custom-green-dark font-bold">
+                Added Users List
+              </span>
+              <div className="text-end">
+                <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                  <i className="bi bi-x-lg flex justify-center items-center"></i>
+                </button>
+              </div>
+            </form>
+            {/* Modal header End */}
+
+            <div className="p-3">
+              {activeProject.length !== 0 &&
+                activeProject.members.map((userId, index) => {
+                  const user = membersInfo.find((m) => m.id === userId);
+
+                  return user ? (
                     <div
-                      key={user.id}
-                      className={`form-control rounded-md px-1 my-2 ${
+                      key={index}
+                      className={`${
                         selectedUsers.includes(user.id)
-                          ? "bg-custom-green-15"
+                          ? "bg-white"
                           : "bg-transparent"
                       }`}
                     >
-                      <label className="cursor-pointer label">
+                      <label className="label">
                         <div className="flex">
+                          {/* Display user image */}
                           <img
                             src={user.image || noneuser}
-                            alt=""
+                            alt={`${user.first_name} ${user.last_name}`}
                             className="w-[45px] h-[45px] object-cover rounded-full"
                           />
                           <div className="ml-4">
+                            {/* Display user first and last name */}
                             <p className="font-bold text-custom-green-dark">
                               {user.first_name} {user.last_name}
                             </p>
-                            <p className="text-custom-green-60">
-                              {user.speciality}
-                            </p>
+                            {/* Display user label */}
+                            <p className="text-custom-green-60">{user.label}</p>
                           </div>
                         </div>
-                        <input
-                          type="checkbox"
-                          className="checkbox border-custom-green-80 [--chkbg:theme(colors.custom-green-dark)] [--chkfg:white] checked:border-border-custom-green-dark"
-                          onChange={() => handleUserSelect(user.id)}
-                          checked={selectedUsers.includes(user.id)}
-                        />
                       </label>
                     </div>
-                  ))}
-                </div>
-                <div className="px-4 pb-4">
-                  <button
-                    type="submit"
-                    className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
-                  >
-                    Save
-                  </button>
-                </div>
-              </form>
+                  ) : null;
+                })}
             </div>
-            <form method="dialog" className="modal-backdrop">
-              <button>close</button>
-            </form>
-          </dialog>
-
-          {/* See User Modal */}
-          <dialog id="addedUsersList" className="modal">
-            <Toaster />
-            <div className="modal-box p-0">
-              {/* Modal header Start */}
-              <form
-                method="dialog"
-                className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-              >
-                <span className="text-custom-green-dark font-bold">
-                  Added Users List
-                </span>
-                <div className="text-end">
-                  <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                    <i className="bi bi-x-lg flex justify-center items-center"></i>
-                  </button>
-                </div>
-              </form>
-              {/* Modal header End */}
-
-              <div className="p-3">
-                {
-                  activeProject.length !== 0 && activeProject.members.map((userId, index) => {
-
-                    const user = membersInfo.find((m) => m.id === userId);
-
-                    return user ? (
-                      <div
-                        key={index}
-                        className={`${
-                          selectedUsers.includes(user.id)
-                            ? "bg-white"
-                            : "bg-transparent"
-                        }`}
-                      >
-                        <label className="label">
-                          <div className="flex">
-                            {/* Display user image */}
-                            <img
-                              src={user.image || noneuser}
-                              alt={`${user.first_name} ${user.last_name}`}
-                              className="w-[45px] h-[45px] object-cover rounded-full"
-                            />
-                            <div className="ml-4">
-                              {/* Display user first and last name */}
-                              <p className="font-bold text-custom-green-dark">
-                                {user.first_name} {user.last_name}
-                              </p>
-                              {/* Display user label */}
-                              <p className="text-custom-green-60">
-                                {user.label}
-                              </p>
-                            </div>
-                          </div>
-                        </label>
-                      </div>
-                    ) : null;
-                  })
-                }
-              </div>
-            </div>
-            <form method="dialog" className="modal-backdrop">
-              <button>close</button>
-            </form>
-          </dialog>
-        </div>
+          </div>
+          <form method="dialog" className="modal-backdrop">
+            <button>close</button>
+          </form>
+        </dialog>
 
         {/* New Project Modal */}
         <dialog id="new_project" className="modal text-custom-green-dark">
@@ -654,9 +685,9 @@ function TaskManagement() {
             >
               <span className={`${projectsList.length === 0 ? "hidden" : ""}`}>
                 <i className="bi bi-folder2-open block text-[65px] mb-2 text-custom-green-80"></i>
-                <span>Please, select project.</span>  
+                <span>Please, select project.</span>
               </span>
-              <span className={`${projectsList.length !== 0 ? "hidden" : ""}`}> 
+              <span className={`${projectsList.length !== 0 ? "hidden" : ""}`}>
                 <i className="bi bi-folder-x block text-[65px] mb-2 text-custom-green-80"></i>
                 <span>You have no projects.</span>
               </span>
@@ -707,7 +738,9 @@ function TaskManagement() {
                       setSelectProjectInfo(project);
                     }}
                     className={`${
-                      userType === "staff" || userType === "client" ? "hidden" : ""
+                      userType === "staff" || userType === "client"
+                        ? "hidden"
+                        : ""
                     } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
                   >
                     <i className="bi bi-pencil flex justify-center items-center"></i>
@@ -718,7 +751,9 @@ function TaskManagement() {
                       setSelectProjectInfo(project);
                     }}
                     className={`${
-                      userType === "staff" || userType === "client" ? "hidden" : ""
+                      userType === "staff" || userType === "client"
+                        ? "hidden"
+                        : ""
                     } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center m-1 mr-0 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
                   >
                     <i className="bi bi-trash flex justify-center items-center"></i>
@@ -731,7 +766,6 @@ function TaskManagement() {
       ) : activeProjectTasks.length === 0 ? (
         <>
           <div className="grid grid-cols-1 justify-center items-center mt-12">
-
             <p className="text-center text-[65px] text-custom-green-80">
               <i className="bi bi-list-task"></i>
             </p>
@@ -739,14 +773,19 @@ function TaskManagement() {
               No tasks have been added to the project yet.
             </p>
 
-            <div className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } w-[200px] rounded-lg border border-custom-green-10 mx-auto mt-4`}>
+            <div
+              className={`${
+                userType === "staff" || userType === "client" ? "hidden" : ""
+              } w-[200px] rounded-lg border border-custom-green-10 mx-auto mt-4`}
+            >
               <CreateTask getActiveProjectTasks={getActiveProjectTasks} />
             </div>
-
           </div>
         </>
       ) : (
-        <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)}>
+        <DragDropContext
+          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+        >
           <div className="grid grid-cols-4 px-4 bg-custom-green-10 rounded-[15px] gap-4 min-w-[1400px]">
             {Object.entries(columns).map(([columnId, column], index) => (
               <div className="flex flex-col gap-2" key={columnId}>
@@ -766,9 +805,14 @@ function TaskManagement() {
                         </div>
                       </div>
 
-                      {index === 0 && userType !== "staff" && ( <CreateTask getActiveProjectTasks={getActiveProjectTasks} />)}
+                      {index === 0 && userType !== "staff" && (
+                        <CreateTask
+                          getActiveProjectTasks={getActiveProjectTasks}
+                        />
+                      )}
 
-                      {column.items && column.items.map((task, index) => (
+                      {column.items &&
+                        column.items.map((task, index) => (
                           <Draggable
                             key={task.id.toString()}
                             draggableId={task.id.toString()}
@@ -779,8 +823,12 @@ function TaskManagement() {
                               <>
                                 <div
                                   ref={provided.innerRef}
-                                  {...(userType !== "client" ? provided.draggableProps : {})}
-                                  {...(userType !== "client" ? provided.dragHandleProps : {})}
+                                  {...(userType !== "client"
+                                    ? provided.draggableProps
+                                    : {})}
+                                  {...(userType !== "client"
+                                    ? provided.dragHandleProps
+                                    : {})}
                                   className="w-full cursor-grab bg-white flex flex-col justify-between gap-3 items-start shadow-sm rounded-lg px-3 py-4"
                                 >
                                   <div className="w-full">
@@ -791,7 +839,7 @@ function TaskManagement() {
                                       }
                                     />
                                   </div>
-                                    
+
                                   <div className="w-full flex items-start flex-col gap-0">
                                     <span className="text-[15.5px] font-medium text-custom-green-90">
                                       {task.name}
@@ -804,20 +852,21 @@ function TaskManagement() {
                                   {/* <div className={`w-full border border-dashed border-custom-green-60 ${ !task.file ? "hidden" : "" }`}></div> */}
 
                                   {/* ============= Task file Control ============= */}
-                                    <TaskFileControl fileUrl={task.file} />
+                                  <TaskFileControl fileUrl={task.file} />
                                   {/* ============= Task file Control ============= */}
 
                                   {/* <div className="w-full border border-dashed border-custom-green-60"></div> */}
 
                                   <div className="w-full">
                                     <TaskFoother
-                                      getActiveProjectTasks={getActiveProjectTasks}
+                                      getActiveProjectTasks={
+                                        getActiveProjectTasks
+                                      }
                                       selectedUsers={selectedUsers}
                                       task={task}
                                       membersInfo={membersInfo}
                                     />
                                   </div>
-
                                 </div>
                               </>
                               // Task END
@@ -927,7 +976,6 @@ function TaskManagement() {
           <button>close</button>
         </form>
       </dialog>
-
     </>
   );
 }
