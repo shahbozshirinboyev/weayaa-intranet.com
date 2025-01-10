@@ -53,6 +53,7 @@ function TaskChat({ task }) {
 
     setFile({ ...file, name: "", file: "", url: "" });
     setMessage({ ...message, message: "" });
+    setRows(1);
   };
 
   return (
@@ -240,7 +241,7 @@ function TaskChat({ task }) {
           {/* Task Chat Body END */}
           {/* Chat Input START */}
           <div
-            className={`justify-between items-center transition-all duration-300 absolute w-full top-[55px] ${
+            className={`justify-between items-center transition-all duration-300 w-full ${
               file.name === "" ? "hidden" : ""
             } bg-white`}
           >
