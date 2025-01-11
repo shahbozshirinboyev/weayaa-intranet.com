@@ -327,11 +327,21 @@ function TaskManagement() {
             </button>
             {/* Add new project --- end  */}
 
-            <div className="flex gap-1 overflow-hidden border border-red-700">
-              <ProjectsScrollBar />
+            <div className="flex gap-1 overflow-hidden overflow-x-auto border max-w-[600px] h-full border-red-700">
+              {[0, 1, 2, 3, 4, 6, 7, 8, 9, 10].map((index) => (
+                <button
+                  key={index}
+                  className="btn btn-sm border-0 rounded-md bg-custom-green-30 w-auto flex-shrink-0 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer"
+                >
+                  <i className="bi bi-calendar2-week font-medium"></i>
+                  <span className="whitespace-nowrap">
+                    Project name {index}
+                  </span>
+                </button>
+              ))}
             </div>
 
-            <div className="dropdown text-custom-green-dark hidden">
+            <div className="dropdown text-custom-green-dark ">
               <div
                 tabIndex={0}
                 role="button"
@@ -416,7 +426,7 @@ function TaskManagement() {
             </div>
           </div>
 
-          <div className="flex h-full p-2 items-center justify-end border border-red-700">
+          <div className="flex flex-shrink-0 h-full p-2 items-center justify-end border border-red-700">
             {activeProject.members && activeProject.members.length !== 0 && (
               <div
                 onClick={() =>
