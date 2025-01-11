@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { onDragEnd } from "../helpers/onDragEnd";
 import TaskFoother from "./TaskFoother";
@@ -11,6 +11,34 @@ import TaskFileControl from "./TaskFileControl";
 import ProjectsScrollBar from "./ProjectsScrollBar";
 
 function TaskManagement() {
+  const [divWidth, setDivWidth] = useState("100%");
+  const divRef = useRef(null);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (divRef.current) {
+        setDivWidth(`${divRef.current.offsetWidth}px`);
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateWidth();
+    });
+
+    if (divRef.current) {
+      resizeObserver.observe(divRef.current);
+    }
+
+    updateWidth(); // Komponent yuklanganda kenglikni olish
+
+    return () => {
+      if (divRef.current) {
+        resizeObserver.unobserve(divRef.current);
+      }
+    };
+  }, []);
+
+
   const userType = localStorage.getItem("userType");
   const [projectsList, setProjectsList] = useState([]);
   const [activeProject, setActiveProject] = useState(
@@ -300,13 +328,12 @@ function TaskManagement() {
     <>
       {/* <Line /> START */}
       <>
-        <div className="bg-custom-green-5 h-[60px] w-full rounded-[15px] flex gap-2 mb-[20px] border border-sky-700">
+        <div className="bg-custom-green-5 h-[60px] max-h-5w-full rounded-[15px] flex gap-2 mb-[20px] border border-sky-700">
           <div className="h-full w-full p-2 flex gap-2 items-center border border-red-700">
             {/* Deadline --- start */}
             <button
-              className={`btn btn-sm ${
-                activeProject.deadline ? "" : "hidden"
-              } border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
+              className={`btn btn-sm ${activeProject.deadline ? "" : "hidden"
+                } border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
             >
               <i className="bi bi-calendar2-week font-medium"></i>
               <span className="whitespace-nowrap">
@@ -318,16 +345,17 @@ function TaskManagement() {
             {/* Add new project --- start */}
             <button
               onClick={() => document.getElementById("new_project").showModal()}
-              className={`${
-                userType === "staff" || userType === "client" ? "hidden" : ""
-              } btn btn-sm border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
+              className={`${userType === "staff" || userType === "client" ? "hidden" : ""
+                } btn btn-sm border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
             >
               <i className="bi bi-plus-lg font-medium"></i>
               <span className="whitespace-nowrap">New Project</span>
             </button>
             {/* Add new project --- end  */}
 
-            <div className="flex gap-1 overflow-hidden overflow-x-auto border max-w-[600px] h-full border-red-700">
+            <div ref={divRef} className="relative w-full h-full border border-red-700">
+                {divWidth}
+                <div style={{ width: divWidth }} className={`absolute top-0 left-0 h-full flex gap-1 overflow-hidden overflow-x-auto border-2 border-sky-700`}>
               {[0, 1, 2, 3, 4, 6, 7, 8, 9, 10].map((index) => (
                 <button
                   key={index}
@@ -340,8 +368,10 @@ function TaskManagement() {
                 </button>
               ))}
             </div>
+            </div>
 
-            <div className="dropdown text-custom-green-dark ">
+
+            <div className="dropdown text-custom-green-dark">
               <div
                 tabIndex={0}
                 role="button"
@@ -357,11 +387,10 @@ function TaskManagement() {
               >
                 {/* All Project list ===============> start */}
                 <li
-                  className={`${
-                    projectsList.length === 0 && userType === "staff"
-                      ? ""
-                      : "hidden"
-                  }`}
+                  className={`${projectsList.length === 0 && userType === "staff"
+                    ? ""
+                    : "hidden"
+                    }`}
                 >
                   <p className="whitespace-nowrap">You have no projects!</p>
                 </li>
@@ -380,11 +409,10 @@ function TaskManagement() {
                       className="flex-auto"
                     >
                       <button
-                        className={`whitespace-nowrap border font-medium border-custom-green-10 hover:bg-custom-green-15 my-[2px] ${
-                          project.id === activeProject.id
-                            ? "bg-custom-green-15"
-                            : ""
-                        }`}
+                        className={`whitespace-nowrap border font-medium border-custom-green-10 hover:bg-custom-green-15 my-[2px] ${project.id === activeProject.id
+                          ? "bg-custom-green-15"
+                          : ""
+                          }`}
                       >
                         {" "}
                         <i className="bi bi-folder flex justify-center items-center"></i>{" "}
@@ -396,11 +424,10 @@ function TaskManagement() {
                         document.getElementById("edit_project").showModal();
                         setSelectProjectInfo(project);
                       }}
-                      className={`${
-                        userType === "staff" || userType === "client"
-                          ? "hidden"
-                          : ""
-                      } border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
+                      className={`${userType === "staff" || userType === "client"
+                        ? "hidden"
+                        : ""
+                        } border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
                     >
                       <i className="bi bi-pencil flex justify-center items-center"></i>
                     </button>
@@ -411,11 +438,10 @@ function TaskManagement() {
                           .showModal();
                         setSelectProjectInfo(project);
                       }}
-                      className={`${
-                        userType === "staff" || userType === "client"
-                          ? "hidden"
-                          : ""
-                      } border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
+                      className={`${userType === "staff" || userType === "client"
+                        ? "hidden"
+                        : ""
+                        } border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
                     >
                       <i className="bi bi-trash flex justify-center items-center"></i>
                     </button>
@@ -497,11 +523,10 @@ function TaskManagement() {
                 {membersInfo.map((user) => (
                   <div
                     key={user.id}
-                    className={`form-control rounded-md px-1 my-2 ${
-                      selectedUsers.includes(user.id)
-                        ? "bg-custom-green-15"
-                        : "bg-transparent"
-                    }`}
+                    className={`form-control rounded-md px-1 my-2 ${selectedUsers.includes(user.id)
+                      ? "bg-custom-green-15"
+                      : "bg-transparent"
+                      }`}
                   >
                     <label className="cursor-pointer label">
                       <div className="flex">
@@ -572,11 +597,10 @@ function TaskManagement() {
                   return user ? (
                     <div
                       key={index}
-                      className={`${
-                        selectedUsers.includes(user.id)
-                          ? "bg-white"
-                          : "bg-transparent"
-                      }`}
+                      className={`${selectedUsers.includes(user.id)
+                        ? "bg-white"
+                        : "bg-transparent"
+                        }`}
                     >
                       <label className="label">
                         <div className="flex">
@@ -678,9 +702,8 @@ function TaskManagement() {
         <>
           <div className="grid grid-cols-1 justify-center items-center text-custom-green-dark">
             <p
-              className={`text-center text-2xl p-4 ${
-                userType === "staff" ? "py-12" : ""
-              }`}
+              className={`text-center text-2xl p-4 ${userType === "staff" ? "py-12" : ""
+                }`}
             >
               <span className={`${projectsList.length === 0 ? "hidden" : ""}`}>
                 <i className="bi bi-folder2-open block text-[65px] mb-2 text-custom-green-80"></i>
@@ -692,9 +715,8 @@ function TaskManagement() {
               </span>
               <br />
               <span
-                className={`text-red-700 text-[16px] ${
-                  userType === "staff" || userType === "client" ? "hidden" : ""
-                }`}
+                className={`text-red-700 text-[16px] ${userType === "staff" || userType === "client" ? "hidden" : ""
+                  }`}
               >
                 If you don't see any projects, you need to add a new project.
               </span>
@@ -703,9 +725,8 @@ function TaskManagement() {
             <div className="flex flex-wrap justify-center items-start px-12 gap-4">
               {projectsList.map((project) => (
                 <div
-                  className={`flex border border-custom-green-10 px-2 ${
-                    userType === "staff" ? "py-2" : "py-0"
-                  } justify-center items-center rounded-lg hover:bg-custom-green-15`}
+                  className={`flex border border-custom-green-10 px-2 ${userType === "staff" ? "py-2" : "py-0"
+                    } justify-center items-center rounded-lg hover:bg-custom-green-15`}
                   key={project.id}
                 >
                   <div
@@ -720,11 +741,10 @@ function TaskManagement() {
                     className="flex-auto font-medium"
                   >
                     <button
-                      className={`whitespace-nowrap flex justify-center items-center my-[2px] ${
-                        project.id === activeProject.id
-                          ? "bg-custom-green-15"
-                          : ""
-                      }`}
+                      className={`whitespace-nowrap flex justify-center items-center my-[2px] ${project.id === activeProject.id
+                        ? "bg-custom-green-15"
+                        : ""
+                        }`}
                     >
                       {" "}
                       <i className="bi bi-folder flex justify-center items-center"></i>{" "}
@@ -736,11 +756,10 @@ function TaskManagement() {
                       document.getElementById("edit_project").showModal();
                       setSelectProjectInfo(project);
                     }}
-                    className={`${
-                      userType === "staff" || userType === "client"
-                        ? "hidden"
-                        : ""
-                    } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
+                    className={`${userType === "staff" || userType === "client"
+                      ? "hidden"
+                      : ""
+                      } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
                   >
                     <i className="bi bi-pencil flex justify-center items-center"></i>
                   </button>
@@ -749,11 +768,10 @@ function TaskManagement() {
                       document.getElementById("deleteProjectModal").showModal();
                       setSelectProjectInfo(project);
                     }}
-                    className={`${
-                      userType === "staff" || userType === "client"
-                        ? "hidden"
-                        : ""
-                    } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center m-1 mr-0 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
+                    className={`${userType === "staff" || userType === "client"
+                      ? "hidden"
+                      : ""
+                      } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center m-1 mr-0 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
                   >
                     <i className="bi bi-trash flex justify-center items-center"></i>
                   </button>
@@ -773,9 +791,8 @@ function TaskManagement() {
             </p>
 
             <div
-              className={`${
-                userType === "staff" || userType === "client" ? "hidden" : ""
-              } w-[200px] rounded-lg border border-custom-green-10 mx-auto mt-4`}
+              className={`${userType === "staff" || userType === "client" ? "hidden" : ""
+                } w-[200px] rounded-lg border border-custom-green-10 mx-auto mt-4`}
             >
               <CreateTask getActiveProjectTasks={getActiveProjectTasks} />
             </div>
