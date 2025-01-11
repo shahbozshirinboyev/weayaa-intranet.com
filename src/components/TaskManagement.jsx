@@ -352,25 +352,6 @@ function TaskManagement() {
               <span className="whitespace-nowrap">New Project</span>
             </button>
             {/* Add new project --- end  */}
-
-            <div ref={divRef} className="relative w-full h-full border border-red-700">
-                {divWidth}
-                <div style={{ width: divWidth }} className={`absolute top-0 left-0 h-full flex gap-1 overflow-hidden overflow-x-auto border-2 border-sky-700`}>
-              {[0, 1, 2, 3, 4, 6, 7, 8, 9, 10].map((index) => (
-                <button
-                  key={index}
-                  className="btn btn-sm border-0 rounded-md bg-custom-green-30 w-auto flex-shrink-0 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer"
-                >
-                  <i className="bi bi-calendar2-week font-medium"></i>
-                  <span className="whitespace-nowrap">
-                    Project name {index}
-                  </span>
-                </button>
-              ))}
-            </div>
-            </div>
-
-
             <div className="dropdown text-custom-green-dark">
               <div
                 tabIndex={0}
@@ -450,6 +431,26 @@ function TaskManagement() {
                 {/* All Project list ===============> end */}
               </ul>
             </div>
+
+            <div ref={divRef} className="relative w-full h-full border border-red-700">
+                {divWidth}
+                <div style={{ width: divWidth }} className={`absolute top-0 left-0 h-full flex gap-1 overflow-hidden overflow-x-auto border-2 border-sky-700`}>
+              {[0, 1, 2, 3, 4, 6, 7, 8, 9, 10].map((index) => (
+                <button
+                  key={index}
+                  className="btn btn-sm border-0 rounded-md bg-custom-green-30 w-auto flex-shrink-0 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer"
+                >
+                  <i className="bi bi-calendar2-week font-medium"></i>
+                  <span className="whitespace-nowrap">
+                    Project name {index}
+                  </span>
+                </button>
+              ))}
+            </div>
+            </div>
+
+
+            
           </div>
 
           <div className="flex flex-shrink-0 h-full p-2 items-center justify-end border border-red-700">
