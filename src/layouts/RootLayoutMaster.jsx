@@ -291,7 +291,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
 
                 <ul
                   tabIndex="0"
-                  className="dropdown-content menu bg-base-100 rounded-box z-[1] w-[330px] p-2 shadow"
+                  className="dropdown-content menu bg-base-100 rounded-box w-[330px] p-2 shadow z-50"
                 >
                   <li>
                     <span className="hover:bg-custom-green-15">

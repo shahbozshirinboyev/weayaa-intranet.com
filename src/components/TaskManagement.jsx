@@ -9,6 +9,9 @@ import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 import TaskFileControl from "./TaskFileControl";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+
 function TaskManagement() {
   const [divWidth, setDivWidth] = useState("100%");
   const divRef = useRef(null);
@@ -326,13 +329,13 @@ function TaskManagement() {
     <>
       {/* <Line /> START */}
       <>
-        <div className="bg-custom-green-5 h-[60px] max-h-5w-full rounded-[15px] flex gap-2 mb-[20px] border border-sky-700">
-          <div className="h-full w-full p-2 flex gap-2 items-center border border-red-700">
+        <div className="bg-custom-green-5 h-[60px] max-h-5w-full rounded-[15px] flex gap-2 mb-[20px]">
+          <div className="h-full w-full p-2 flex gap-2 items-center">
             {/* Deadline --- start */}
             <button
               className={`btn btn-sm ${
                 activeProject.deadline ? "" : "hidden"
-              } border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
+              } border-0 rounded-md w-[125px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
             >
               <i className="bi bi-calendar2-week font-medium"></i>
               <span className="whitespace-nowrap">
@@ -346,13 +349,13 @@ function TaskManagement() {
               onClick={() => document.getElementById("new_project").showModal()}
               className={`${
                 userType === "staff" || userType === "client" ? "hidden" : ""
-              } btn btn-sm border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
+              } w-[125px] btn btn-sm border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
             >
               <i className="bi bi-plus-lg font-medium"></i>
               <span className="whitespace-nowrap">New Project</span>
             </button>
             {/* Add new project --- end  */}
-            <div className="dropdown text-custom-green-dark">
+            <div className="dropdown text-custom-green-dark hidden">
               <div
                 tabIndex={0}
                 role="button"
@@ -380,14 +383,7 @@ function TaskManagement() {
                 {projectsList.map((project) => (
                   <div className="flex" key={project.id}>
                     <li
-                      onClick={() => {
-                        setActiveProject(project);
-                        setSelectedUsers(project.members);
-                        localStorage.setItem(
-                          "activeProject",
-                          JSON.stringify(project)
-                        );
-                      }}
+                      onClick={() => { setActiveProject(project); setSelectedUsers(project.members); localStorage.setItem("activeProject", JSON.stringify(project));}}
                       className="flex-auto"
                     >
                       <button
@@ -398,8 +394,8 @@ function TaskManagement() {
                         }`}
                       >
                         {" "}
-                        <i className="bi bi-folder flex justify-center items-center"></i>{" "}
-                        &nbsp; {project.name}
+                        <i className="bi bi-folder flex justify-center items-center"></i>
+                        &nbsp;{project.name}
                       </button>
                     </li>
                     <button
@@ -436,30 +432,86 @@ function TaskManagement() {
               </ul>
             </div>
 
-            <div ref={divRef} className="relative w-full h-full border border-red-700" >
-              {divWidth}
+            <div
+              ref={divRef}
+              className="relative w-full h-full"
+            >
+              {/* {divWidth} */}
 
-              <div style={{ width: divWidth }} className={`absolute top-0 left-0 h-full flex gap-1 overflow-hidden overflow-x-auto border-2 border-sky-700`}>
+              <Swiper
+                spaceBetween={10}
+                slidesPerView={"auto"}
+                style={{ width: divWidth }}
+                className={` absolute flex top-[6px] left-0 z-10`}
+              >
+                {projectsList.map((project) => (
+                  <SwiperSlide
+                    key={project.id}
+                    onClick={() => { setActiveProject(project); setSelectedUsers(project.members); localStorage.setItem("activeProject", JSON.stringify(project));}}
+                    className={`btn btn-sm border-0 rounded-md bg-custom-green-30 ${
+                      project.id === activeProject.id
+                        ? "bg-custom-green-dark text-white"
+                        : ""
+                    } w-auto text-custom-green-dark font-medium hover:bg-custom-green-80 hover:text-white cursor-pointer`}
+                  >
+                    <button className="flex gap-2">
+                      <i className="bi bi-folder flex justify-center items-center"></i>
+                      <span>{project.name}</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        document.getElementById("edit_project").showModal();
+                        setSelectProjectInfo(project);
+                      }}
+                      className={`${
+                        userType === "staff" || userType === "client"
+                          ? "hidden"
+                          : ""
+                      } border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
+                    >
+                      <i className="bi bi-pencil flex justify-center items-center"></i>
+                    </button>
+                    <button
+                      onClick={() => {
+                        document
+                          .getElementById("deleteProjectModal")
+                          .showModal();
+                        setSelectProjectInfo(project);
+                      }}
+                      className={`${
+                        userType === "staff" || userType === "client"
+                          ? "hidden"
+                          : ""
+                      } border border-custom-green-10 w-[28px] flex justify-center items-center m-1 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
+                    >
+                      <i className="bi bi-trash flex justify-center items-center"></i>
+                    </button>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+
+              {/* <div
+                style={{ width: divWidth }}
+                className={`absolute top-0 left-0 h-full flex gap-1 overflow-hidden overflow-x-auto border-2 border-sky-700`}
+              >
                 {[0, 1, 2, 3, 4, 6, 7, 8, 9, 10].map((index) => (
-                  <button key={index} className="btn btn-sm border-0 rounded-md bg-custom-green-30 w-auto flex-shrink-0 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer">
+                  <button
+                    key={index}
+                    className="btn btn-sm border-0 rounded-md bg-custom-green-30 w-auto flex-shrink-0 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer"
+                  >
                     <i className="bi bi-folder font-medium"></i>
-                    <span className="whitespace-nowrap">Project name {index}</span>
+                    <span className="whitespace-nowrap">
+                      Project name {index}
+                    </span>
                   </button>
                 ))}
-              </div>
-
-
-
+              </div> */}
             </div>
           </div>
 
-          <div className="flex flex-shrink-0 h-full p-2 items-center justify-end border border-red-700">
+           {activeProject.name && <div className="h-full p-2 flex flex-shrink-0 items-center justify-end">
             {activeProject.members && activeProject.members.length !== 0 && (
-              <div
-                onClick={() =>
-                  document.getElementById("addedUsersList").showModal()
-                }
-              >
+              <div onClick={() => document.getElementById("addedUsersList").showModal()}>
                 <div className="flex justify-end items-center">
                   <div className="flex -space-x-4 w-full transition-all duration-300">
                     {activeProject.members.map((memberId) => {
@@ -497,7 +549,8 @@ function TaskManagement() {
                   <i className="bi bi-plus text-[24px] flex justify-center items-center"></i>
                 </button>
               )}
-          </div>
+          </div>}
+
         </div>
         {/* Add User Modal */}
         <dialog id="adduser" className="modal">
