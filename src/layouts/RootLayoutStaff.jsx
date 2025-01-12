@@ -162,7 +162,9 @@ function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
     <>
       <div className="flex">
         {/* Sidebar START */}
-        <div className={`${ open ? "w-[250px]" : "w-[80px]"} fixed bg-custom-green-5 h-screen p-5 pt-7 duration-300`}>
+        <div className={`${ open ? "w-[250px]" : "w-[80px]" } fixed bg-custom-green-5 h-screen shadow-md duration-300 z-[99999]`}>
+
+          <div className="h-screen w-full p-5 pt-7 bg-white">
           {/* Button Sidebar width change start */}
           <div className={`absolute cursor-pointer -right-3 top-[50px] ${ !open && "rotate-180" }`} onClick={() => setOpen(!open)}>
             <i className="bi bi-arrow-left-circle w-7 text-[28px] text-custom-green-60 hover:text-custom-green-dark ease-in-out transition-all"></i>
@@ -193,6 +195,7 @@ function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
             ))}
             {/* Menu list END */}
           </ul>
+          </div>
         </div>
         {/* Sidebar END */}
         <div className={`flex-1 p-7 ${ open ? "ml-[250px]" : "ml-[80px]" } transition-all duration-300`}>
@@ -251,7 +254,7 @@ function RootLayoutStaff({ setAccess, setRefresh, setUserType }) {
 
               <i tabIndex="0" role="button" className="bi bi-person font-medium w-[32px] h-[32px] rounded-[8px] bg-custom-green-30 hover:bg-custom-green-dark flex justify-center items-center hover:text-white transition-all duration-100 ease-in-out"></i>
 
-              <ul tabIndex="0" className="dropdown-content menu bg-base-100 rounded-box z-[1] w-[330px] p-2 shadow">
+              <ul tabIndex="0" className="dropdown-content menu bg-base-100 rounded-box z-[50] w-[330px] p-2 shadow">
               <li>
                   <span>
                     <span className="mr-[10px] flex justify-center items-center">

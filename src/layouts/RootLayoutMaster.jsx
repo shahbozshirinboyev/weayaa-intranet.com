@@ -158,9 +158,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
       <div className="flex">
         {/* Sidebar START */}
         <div
-          className={`${
-            open ? "w-[250px]" : "w-[80px]"
-          } fixed bg-custom-green-5 h-screen shadow-md duration-300 z-[99999]`}
+          className={`${ open ? "w-[250px]" : "w-[80px]" } fixed bg-custom-green-5 h-screen shadow-md duration-300 z-[99999]`}
         >
           <div className="h-screen w-full p-5 pt-7 bg-white">
             {/* Button Sidebar width change start */}
@@ -220,6 +218,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
               ))}
               {/* Menu list END */}
             </ul>
+            
           </div>
         </div>
         {/* Sidebar END */}

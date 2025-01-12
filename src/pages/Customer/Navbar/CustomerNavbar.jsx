@@ -194,7 +194,7 @@ function CustomerNavbar({ setAccess, setRefresh, setUserType }) {
 
             <ul
               tabIndex="0"
-              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-[330px] p-2 shadow"
+              className="dropdown-content menu bg-base-100 rounded-box z-[50] w-[330px] p-2 shadow"
             >
               <li>
                 <span className="hover:bg-custom-green-15">
