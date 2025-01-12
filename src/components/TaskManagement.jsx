@@ -10,7 +10,7 @@ import noneuser from "/img/noneuser.png";
 import TaskFileControl from "./TaskFileControl";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode } from 'swiper/modules';
+import { FreeMode, Mousewheel } from 'swiper/modules';
 import 'swiper/css/free-mode';
 import "swiper/css";
 
@@ -445,7 +445,9 @@ function TaskManagement() {
                 spaceBetween={10}
                 slidesPerView={"auto"}
                 freeMode={true}
-                modules={[FreeMode]}
+                modules={[FreeMode, Mousewheel]}
+                 
+        mousewheel={true}
                 style={{ width: divWidth }}
                 className={` absolute flex top-[6px] left-0 z-10`}
               >
