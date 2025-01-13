@@ -23,7 +23,7 @@ function ClientProjects({ clientId, setCount, setClientId }) {
     http
       .get(`projects/`, { headers })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setAllProjects(response.data);
       })
       .catch((error) => {
@@ -33,7 +33,7 @@ function ClientProjects({ clientId, setCount, setClientId }) {
 
   const getAssignmentProjectList = () => {
     const access = localStorage.getItem("access");
-    console.log("ID: " + id);
+    // console.log("ID: " + id);
     if (id) {
       http
         .get(`projects/assignments/client/?client_id=${id}`, {
