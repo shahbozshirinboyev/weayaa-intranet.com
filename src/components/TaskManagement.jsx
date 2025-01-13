@@ -371,19 +371,19 @@ function TaskManagement() {
                     </button>
                     <button
                       onClick={() => { document.getElementById("edit_project").showModal(); setSelectProjectInfo(project); }}
-                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } ml-3 border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-sky-700 hover:text-white transition-all duration-300`}
+                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } ml-3 border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-sky-700 hover:text-white`}
                     >
                       <i className="bi bi-pencil flex justify-center items-center"></i>
                     </button>
                     <button 
                       onClick={() => { document.getElementById("deleteProjectModal").showModal(); setSelectProjectInfo(project); }}
-                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
+                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-red-700 hover:text-white`}
                     >
                       <i className="bi bi-trash flex justify-center items-center"></i>
                     </button>
                     <button 
                       onClick={() => { document.getElementById("archiveProjectModal").showModal(); setSelectProjectInfo(project); }}
-                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-gray-700 hover:text-white transition-all duration-300`}
+                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-gray-700 hover:text-white`}
                     >
                       <i className="bi bi-file-earmark-zip flex justify-center items-center"></i>
                     </button>
