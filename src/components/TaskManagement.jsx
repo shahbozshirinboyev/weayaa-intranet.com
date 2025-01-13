@@ -675,8 +675,8 @@ function TaskManagement() {
                 If you don't see any projects, you need to add a new project.
               </span>
             </p>
-
-            <div className="flex flex-wrap justify-center items-start px-12 gap-4">
+            {/* progress section -- hali ish bor */}
+            {/* <div className="flex flex-wrap justify-center items-start px-12 gap-4">
               {projectsList.map((project) => (
                 <div
                   className={`flex border border-custom-green-10 px-2 ${
@@ -735,7 +735,7 @@ function TaskManagement() {
                   </button>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </>
       ) : activeProjectTasks.length === 0 ? (
