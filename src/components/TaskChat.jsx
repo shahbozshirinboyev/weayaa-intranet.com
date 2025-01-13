@@ -98,8 +98,9 @@ function TaskChat({ task }) {
 
           {/* Task Chat Body START */}
           <>
-            <section className="px-4 chatcss overflow-y-auto h-[585px]">
-              <div className="chat chat-start">
+            <section className="px-4 chatcss overflow-y-auto h-[585px]">    
+
+              <div className="chat chat-start border-0 group">
                 <div className="chat-image avatar">
                   <div className="w-10 rounded-full">
                     <img
@@ -108,129 +109,75 @@ function TaskChat({ task }) {
                     />
                   </div>
                 </div>
-                <div className="chat-header">
-                  Obi-Wan Kenobi{" "}
-                  <time className="text-xs opacity-50">12:45</time>
-                </div>
+
                 <div className="chat-bubble bg-custom-green-30 text-black">
-                  You were the Chosen One!
+
+                  <div className="flex justify-between text-xs items-center pb-1 gap-4">
+                    <span className="font-bold">Tommy Kim</span>
+                    <span className="text-xs opacity-60 text-end">Derictor</span>
+                  </div>
+                
+                  <span>Okay!</span>
+
+                  <p className="flex justify-end items-center gap-2 text-xs">
+                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span>12:46 AM</span>
+                  </p>
+
                 </div>
-                <div className="chat-footer opacity-50">Delivered</div>
               </div>
 
-              <div className="chat chat-end">
-                <div className="chat-header">
-                  Anakin <time className="text-xs opacity-50">12:46</time>
+              <div className="chat chat-start border-0 group">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
+                    />
+                  </div>
                 </div>
+
+                <div className="chat-bubble bg-custom-green-30 text-black">
+                  <div className="flex justify-between text-xs items-center pb-1 gap-4">
+                    <span className="font-bold">Tommy Kim</span>
+                    <span className="text-xs opacity-60 text-end">Derictor</span>
+                  </div>
+                  <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
+                    <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
+                    <div>
+                      <div className="flex justify-between">
+                        <span className="font-bold">Obi-Wan Kenobi</span>
+                        <span className="text-xs opacity-60 text-end">12:45 AM</span>
+                      </div>
+                      <span className="line-clamp-1"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptatum. </span>
+                    </div>
+                  </div>
+                  <span>Okay!</span>
+                  <p className="flex justify-end items-center gap-2 text-xs">
+                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span>12:46 AM</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="chat chat-end border-0 group">
                 <div className="chat-bubble bg-custom-green-dark text-white">
-                  I love you!
-                </div>
-                <div className="chat-footer opacity-50">Seen at 12:46</div>
-              </div>
-
-              <div className="chat chat-start">
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                    />
+                  <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
+                    <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
+                    <div>
+                      <div className="flex justify-between">
+                        <span className="font-bold">Tommy Kim</span>
+                        <span className="text-xs opacity-60 text-end">12:45 AM</span>
+                      </div>
+                      <span className="line-clamp-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptatum.</span>
+                    </div>
                   </div>
+                  <span>Lorem ipsum dolor sit amet, con.</span>
+                  <p className="flex justify-end items-center gap-2 text-xs">
+                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span>12:46 AM</span>
+                  </p>
                 </div>
-                <div className="chat-header">
-                  Obi-Wan Kenobi{" "}
-                  <time className="text-xs opacity-50">12:45</time>
-                </div>
-                <div className="chat-bubble bg-custom-green-30 text-black">
-                  Okay!
-                </div>
-                <div className="chat-footer opacity-50">Delivered</div>
-              </div>
-
-              <div className="chat chat-start">
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                    />
-                  </div>
-                </div>
-                <div className="chat-header">
-                  Obi-Wan Kenobi{" "}
-                  <time className="text-xs opacity-50">12:45</time>
-                </div>
-                <div className="chat-bubble bg-custom-green-30 text-black">
-                  Okay!
-                </div>
-                <div className="chat-footer opacity-50">Delivered</div>
-              </div>
-
-              <div className="chat chat-start">
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                    />
-                  </div>
-                </div>
-                <div className="chat-header">
-                  Obi-Wan Kenobi{" "}
-                  <time className="text-xs opacity-50">12:45</time>
-                </div>
-                <div className="chat-bubble bg-custom-green-30 text-black">
-                  Okay!
-                </div>
-                <div className="chat-footer opacity-50">Delivered</div>
-              </div>
-
-              <div className="chat chat-start">
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                    />
-                  </div>
-                </div>
-                <div className="chat-header">
-                  Obi-Wan Kenobi{" "}
-                  <time className="text-xs opacity-50">12:45</time>
-                </div>
-                <div className="chat-bubble bg-custom-green-30 text-black">
-                  Okay!
-                </div>
-                <div className="chat-footer opacity-50">Delivered</div>
-              </div>
-
-              <div className="chat chat-start">
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                    />
-                  </div>
-                </div>
-                <div className="chat-header">
-                  Obi-Wan Kenobi{" "}
-                  <time className="text-xs opacity-50">12:45</time>
-                </div>
-                <div className="chat-bubble bg-custom-green-30 text-black">
-                  Okay!
-                </div>
-                <div className="chat-footer opacity-50">Delivered</div>
-              </div>
-
-              <div className="chat chat-end border-0">
-                <div className="chat-header border-0">
-                  Anakin <time className="text-xs opacity-50">12:46</time>
-                </div>
-                <div className="chat-bubble bg-custom-green-dark text-white">
-                  Yeap!
-                </div>
-                <div className="chat-footer opacity-50">Seen at 12:46</div>
               </div>
 
               {/* scroll to END => START */}
