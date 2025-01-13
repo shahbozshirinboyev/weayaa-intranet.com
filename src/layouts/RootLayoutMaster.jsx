@@ -70,10 +70,9 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
             setAccess(newAccessToken);
             const newEndTimeAccessToken = new Date().getTime() + 30 * 60 * 1000;
             localStorage.setItem("endTimeAccessToken", newEndTimeAccessToken.toString());
-            toast.success("Acces Token vaqti yangilandi!");
           })
-          .catch(() => {
-            toast.error("Yangi 'token' olib bo'lmadi :(");
+          .catch((error) => {
+            console.log(error);
             clearInterval(interval);
             deleteUserInfo();
           });
