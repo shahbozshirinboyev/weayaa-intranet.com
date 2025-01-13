@@ -371,7 +371,7 @@ function TaskManagement() {
                     </button>
                     <button
                       onClick={() => { document.getElementById("edit_project").showModal(); setSelectProjectInfo(project); }}
-                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } ml-3 border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
+                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } ml-3 border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-sky-700 hover:text-white transition-all duration-300`}
                     >
                       <i className="bi bi-pencil flex justify-center items-center"></i>
                     </button>
@@ -380,6 +380,12 @@ function TaskManagement() {
                       className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
                     >
                       <i className="bi bi-trash flex justify-center items-center"></i>
+                    </button>
+                    <button 
+                      onClick={() => { document.getElementById("archiveProjectModal").showModal(); setSelectProjectInfo(project); }}
+                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-gray-700 hover:text-white transition-all duration-300`}
+                    >
+                      <i className="bi bi-file-earmark-zip flex justify-center items-center"></i>
                     </button>
                   </SwiperSlide>
                 ))}
@@ -870,6 +876,43 @@ function TaskManagement() {
             <button
               onClick={() =>
                 document.getElementById("deleteProjectModal").close()
+              }
+              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-custom-green-dark hover:text-white border-transparent"
+            >
+              No
+            </button>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
+      <dialog id="archiveProjectModal" className="modal">
+        <Toaster />
+        <div className="modal-box">
+          <h3 className="font-bold text-lg text-custom-green-dark text-center">
+            Are you sure archive{" "}
+            <span className="text-red-700">{selectProjectInfo.name}</span>?
+          </h3>
+          <div className="flex justify-center items-center gap-12 pt-10">
+            <button
+              onClick={() => {
+                // handleDeleteProject(selectProjectInfo.id);
+                toast(
+                  "The function has not yet been launched!",
+                  {
+                    duration: 2000,
+                  }
+                );
+              }}
+              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-red-700 hover:text-white border-transparent"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() =>
+                document.getElementById("archiveProjectModal").close()
               }
               className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-custom-green-dark hover:text-white border-transparent"
             >

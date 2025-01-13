@@ -141,6 +141,11 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
       navLink: "/projects",
     },
     {
+      title: "Archive projects",
+      src: "bi bi-archive",
+      navLink: "/archiveprojects",
+    },
+    {
       title: "Status",
       src: "bi bi-pie-chart",
       navLink: "/status",

@@ -24,6 +24,7 @@ import ControlStaffs from "./pages/Master/Staffs/ControlStaffs";
 import MasterProjects from "./pages/Master/Projects/MasterProjects";
 import MasterStatus from "./pages/Master/Status/MasterStatus";
 import MasterSettings from "./pages/Master/Settings/MasterSettings";
+import ArchiveProjects from "./pages/Master/ArchiveProjects/ArchiveProjects";
 
 // client pages
 import ProjectsList from "./pages/Customer/ProjectsList";
@@ -31,17 +32,27 @@ import ProjectStatus from "./pages/Customer/ProjectStatus";
 
 function App() {
   const [access, setAccess] = useState(window.localStorage.getItem("access"));
-  const [refresh, setRefresh] = useState(window.localStorage.getItem("refresh"));
-  const [userType, setUserType] = useState(window.localStorage.getItem("userType"));
+  const [refresh, setRefresh] = useState(
+    window.localStorage.getItem("refresh")
+  );
+  const [userType, setUserType] = useState(
+    window.localStorage.getItem("userType")
+  );
   // const [userType, setUserType] = useState("client");
 
   const routes = createBrowserRouter([
-    access && refresh && userType ? 
-    // userType ? 
-    userType === "master" ? 
-          {
+    access && refresh && userType
+      ? // userType ?
+        userType === "master"
+        ? {
             path: "/",
-            element: <RootLayoutMaster setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />,
+            element: (
+              <RootLayoutMaster
+                setAccess={setAccess}
+                setRefresh={setRefresh}
+                setUserType={setUserType}
+              />
+            ),
             errorElement: <ErrorPage />,
             children: [
               {
@@ -56,6 +67,11 @@ function App() {
                 path: "projects",
                 element: <MasterProjects />,
               },
+
+              {
+                path: "archiveprojects",
+                element: <ArchiveProjects />,
+              },
               {
                 path: "status",
                 element: <MasterStatus />,
@@ -66,10 +82,16 @@ function App() {
               },
             ],
           }
-        : userType === "staff" ? 
-          {
+        : userType === "staff"
+        ? {
             path: "/",
-            element: <RootLayoutStaff setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />,
+            element: (
+              <RootLayoutStaff
+                setAccess={setAccess}
+                setRefresh={setRefresh}
+                setUserType={setUserType}
+              />
+            ),
             errorElement: <ErrorPage />,
             children: [
               {
@@ -97,22 +119,34 @@ function App() {
         : // userType === 'client' ?
           {
             path: "/",
-            element: <RootLayoutClient setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />,
+            element: (
+              <RootLayoutClient
+                setAccess={setAccess}
+                setRefresh={setRefresh}
+                setUserType={setUserType}
+              />
+            ),
             errorElement: <ErrorPage />,
             children: [
               {
                 index: true,
-                element: <ProjectsList />
+                element: <ProjectsList />,
               },
               {
                 path: "projectstatus",
-                element: <ProjectStatus />
+                element: <ProjectStatus />,
               },
             ],
           }
       : {
           path: "/",
-          element: <Signin setAccess={setAccess} setRefresh={setRefresh} setUserType={setUserType} />,
+          element: (
+            <Signin
+              setAccess={setAccess}
+              setRefresh={setRefresh}
+              setUserType={setUserType}
+            />
+          ),
           errorElement: <ErrorPage />,
         },
   ]);
