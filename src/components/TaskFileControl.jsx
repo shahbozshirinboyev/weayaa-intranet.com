@@ -13,7 +13,7 @@ function TaskFileControl({ fileUrl }) {
         <img
           src={fileUrl}
           alt=""
-          className="w-full max-h-[250px] rounded-lg object-cover"
+          className="w-full max-h-[250px] rounded-lg object-cover my-1"
         />
       )}
 
@@ -21,7 +21,7 @@ function TaskFileControl({ fileUrl }) {
         <img
           src={fileUrl}
           alt=""
-          className="w-full max-h-[250px] rounded-lg object-cover"
+          className="w-full max-h-[250px] rounded-lg object-cover my-1"
         />
       )}
 
@@ -29,7 +29,7 @@ function TaskFileControl({ fileUrl }) {
         <img
           src={fileUrl}
           alt=""
-          className="w-full max-h-[200px] rounded-lg object-cover"
+          className="w-full max-h-[200px] rounded-lg object-cover my-1"
         />
       )}
 
