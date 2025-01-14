@@ -678,7 +678,7 @@ function TaskManagement() {
               </span>
             </p>
             {/* progress section -- hali ish bor */}
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start p-6  gap-4 border">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start gap-4">
               {projectsList.map((project) => (
                 <div
                   className={`flex justify-start items-center border border-custom-green-10 px-2 rounded-lg hover:bg-custom-green-15 ${ userType === "staff" ? "py-2" : "py-0" }`}
@@ -689,38 +689,14 @@ function TaskManagement() {
                     className="flex-auto font-medium"
                   >
                     <button
-                      className={`flex justify-start items-center gap-2 my-[2px] ${ project.id === activeProject.id ? "bg-custom-green-15" : "" }`}
+                      className={`flex justify-start w-full items-center gap-2 my-[2px] ${project.id === activeProject.id ? "bg-custom-green-15" : ""}`}
                     >
                       <i className="bi bi-folder flex justify-center items-center"></i>
-                      <span className="whitespace-nowrap truncate text-ellipsis overflow-hidden ">{project.name}</span>
+                      <span className="whitespace-nowrap truncate text-ellipsis overflow-hidden text-start max-w-full">{project.name}</span>
                     </button>
                   </div>
-                  <button
-                    onClick={() => {
-                      document.getElementById("edit_project").showModal();
-                      setSelectProjectInfo(project);
-                    }}
-                    className={`${
-                      userType === "staff" || userType === "client"
-                        ? "hidden"
-                        : ""
-                    } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`}
-                  >
-                    <i className="bi bi-pencil flex justify-center items-center"></i>
-                  </button>
-                  <button
-                    onClick={() => {
-                      document.getElementById("deleteProjectModal").showModal();
-                      setSelectProjectInfo(project);
-                    }}
-                    className={`${
-                      userType === "staff" || userType === "client"
-                        ? "hidden"
-                        : ""
-                    } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center m-1 mr-0 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`}
-                  >
-                    <i className="bi bi-trash flex justify-center items-center"></i>
-                  </button>
+                  <button onClick={() => { document.getElementById("edit_project").showModal(); setSelectProjectInfo(project); }} className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`} > <i className="bi bi-pencil flex justify-center items-center"></i> </button>
+                  <button onClick={() => { document.getElementById("deleteProjectModal").showModal(); setSelectProjectInfo(project); }} className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center m-1 mr-0 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`} > <i className="bi bi-trash flex justify-center items-center"></i> </button>
                 </div>
               ))}
             </div>
