@@ -42,6 +42,34 @@ function TaskManagement() {
     };
   }, []);
 
+  
+  const [divRefNameProject, setDivRefNameProject] = useState("100%");
+  const divRefName = useRef(null);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (divRefName.current) {
+        setDivRefNameProject(`${divRefName.current.offsetWidth}px`);
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateWidth();
+    });
+
+    if (divRefName.current) {
+      resizeObserver.observe(divRefName.current);
+    }
+
+    updateWidth(); 
+
+    return () => {
+      if (divRefName.current) {
+        resizeObserver.unobserve(divRefName.current);
+      }
+    };
+  }, []);
+
   const userType = localStorage.getItem("userType");
   const [projectsList, setProjectsList] = useState([]);
   const [activeProject, setActiveProject] = useState(
@@ -692,7 +720,10 @@ function TaskManagement() {
                       className={`flex justify-start w-full items-center gap-2 my-[2px] ${project.id === activeProject.id ? "bg-custom-green-15" : ""}`}
                     >
                       <i className="bi bi-folder flex justify-center items-center"></i>
-                      <span className="whitespace-nowrap truncate text-ellipsis overflow-hidden text-start max-w-full">{project.name}</span>
+                      <div className="w-full relative flex">
+                        <span ref={divRefName} className="whitespace-nowrap truncate text-ellipsis overflow-hidden text-start invisible w-full">{divRefNameProject}</span>
+                        <span className="whitespace-nowrap absolute truncate text-ellipsis overflow-hidden text-start w-full">{project.name}</span>
+                      </div>
                     </button>
                   </div>
                   <button onClick={() => { document.getElementById("edit_project").showModal(); setSelectProjectInfo(project); }} className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`} > <i className="bi bi-pencil flex justify-center items-center"></i> </button>
