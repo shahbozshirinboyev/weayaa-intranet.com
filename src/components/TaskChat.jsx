@@ -2,7 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import TaskFileControl from "./TaskFileControl";
 
 function TaskChat({ task }) {
+  const [reply, setReply] = useState({ id: "", user: "", message: "" });
   const [rows, setRows] = useState(1);
+
+  const acriveReply = () => {
+    setReply({
+      id: "12",
+      user: "Shahboz Shirnboyev",
+      message:
+        "Lorem ipsum shu gaplarda nima bo'lsa ham ju joyga kelganimdan xursandman",
+    });
+  };
+  const handleClearReply = () => {
+    setReply({ id: "", user: "", message: "" })
+  }
 
   const endRef = useRef(null);
   useEffect(() => {
@@ -13,14 +26,8 @@ function TaskChat({ task }) {
     console.log(task);
   };
 
-  const [file, setFile] = useState({
-    name: "",
-    file: "",
-    url: "",
-  });
-  const [message, setMessage] = useState({
-    message: "",
-  });
+  const [file, setFile] = useState({ name: "", file: "", url: "" });
+  const [message, setMessage] = useState({ message: "" });
 
   const inputHandle = (e) => {
     setMessage({ ...message, [e.target.name]: e.target.value });
@@ -99,8 +106,7 @@ function TaskChat({ task }) {
 
           {/* Task Chat Body START */}
           <>
-            <section className="px-4 chatcss overflow-y-auto h-[585px]">    
-
+            <section className="px-4 chatcss overflow-y-auto h-[585px]">
               <div className="chat chat-start border-0 group">
                 <div className="chat-image avatar">
                   <div className="w-10 rounded-full">
@@ -112,48 +118,21 @@ function TaskChat({ task }) {
                 </div>
 
                 <div className="chat-bubble bg-custom-green-30 text-black">
-
                   <div className="flex justify-between text-xs items-center pb-1 gap-4">
                     <span className="font-bold">Tommy Kim</span>
-                    <span className="text-xs opacity-60 text-end">Derictor</span>
+                    <span className="text-xs opacity-60 text-end">
+                      Derictor
+                    </span>
                   </div>
-                
+
                   <span>Okay!</span>
 
                   <p className="flex justify-end items-center gap-2 text-xs">
-                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center">
+                      <i className="bi bi-reply"></i>Reply
+                    </span>
                     <span>12:46 AM</span>
                   </p>
-
-                </div>
-              </div>
-
-              <div className="chat chat-start border-0 group">
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                    />
-                  </div>
-                </div>
-
-                <div className="chat-bubble bg-custom-green-30 text-black">
-
-                  <div className="flex justify-between text-xs items-center pb-1 gap-4">
-                    <span className="font-bold">Tommy Kim</span>
-                    <span className="text-xs opacity-60 text-end">Derictor</span>
-                  </div>
-
-                  <TaskFileControl fileUrl={'https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces.jpg'} />
-                
-                  <span>Okay!</span>
-
-                  <p className="flex justify-end items-center gap-2 text-xs">
-                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
-                    <span>12:46 AM</span>
-                  </p>
-
                 </div>
               </div>
 
@@ -170,21 +149,66 @@ function TaskChat({ task }) {
                 <div className="chat-bubble bg-custom-green-30 text-black">
                   <div className="flex justify-between text-xs items-center pb-1 gap-4">
                     <span className="font-bold">Tommy Kim</span>
-                    <span className="text-xs opacity-60 text-end">Derictor</span>
+                    <span className="text-xs opacity-60 text-end">
+                      Derictor
+                    </span>
+                  </div>
+
+                  <TaskFileControl
+                    fileUrl={
+                      "https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces.jpg"
+                    }
+                  />
+
+                  <span>Okay!</span>
+
+                  <p className="flex justify-end items-center gap-2 text-xs">
+                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center">
+                      <i className="bi bi-reply"></i>Reply
+                    </span>
+                    <span>12:46 AM</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="chat chat-start border-0 group">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
+                    />
+                  </div>
+                </div>
+
+                <div className="chat-bubble bg-custom-green-30 text-black">
+                  <div className="flex justify-between text-xs items-center pb-1 gap-4">
+                    <span className="font-bold">Tommy Kim</span>
+                    <span className="text-xs opacity-60 text-end">
+                      Derictor
+                    </span>
                   </div>
                   <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
                     <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
                     <div>
                       <div className="flex justify-between">
                         <span className="font-bold">Obi-Wan Kenobi</span>
-                        <span className="text-xs opacity-60 text-end">12:45 AM</span>
+                        <span className="text-xs opacity-60 text-end">
+                          12:45 AM
+                        </span>
                       </div>
-                      <span className="line-clamp-1"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptatum. </span>
+                      <span className="line-clamp-1">
+                        {" "}
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Dolorum, voluptatum.{" "}
+                      </span>
                     </div>
                   </div>
                   <span>Okay!</span>
                   <p className="flex justify-end items-center gap-2 text-xs">
-                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center">
+                      <i className="bi bi-reply"></i>Reply
+                    </span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -197,14 +221,21 @@ function TaskChat({ task }) {
                     <div>
                       <div className="flex justify-between">
                         <span className="font-bold">Tommy Kim</span>
-                        <span className="text-xs opacity-60 text-end">12:45 AM</span>
+                        <span className="text-xs opacity-60 text-end">
+                          12:45 AM
+                        </span>
                       </div>
-                      <span className="line-clamp-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptatum.</span>
+                      <span className="line-clamp-1">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Dolorum, voluptatum.
+                      </span>
                     </div>
                   </div>
                   <span>Lorem ipsum dolor sit amet, con.</span>
                   <p className="flex justify-end items-center gap-2 text-xs">
-                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center">
+                      <i className="bi bi-reply"></i>Reply
+                    </span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -217,16 +248,30 @@ function TaskChat({ task }) {
                     <div>
                       <div className="flex justify-between">
                         <span className="font-bold">Tommy Kim</span>
-                        <span className="text-xs opacity-60 text-end">12:45 AM</span>
+                        <span className="text-xs opacity-60 text-end">
+                          12:45 AM
+                        </span>
                       </div>
-                      <span className="line-clamp-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptatum.</span>
+                      <span className="line-clamp-1">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Dolorum, voluptatum.
+                      </span>
                     </div>
                   </div>
-                  <TaskFileControl fileUrl={'https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces.jpg'} />
+                  <TaskFileControl
+                    fileUrl={
+                      "https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces.jpg"
+                    }
+                  />
 
                   <span>Lorem ipsum dolor sit amet, con.</span>
                   <p className="flex justify-end items-center gap-2 text-xs">
-                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span
+                      onClick={acriveReply}
+                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
+                    >
+                      <i className="bi bi-reply"></i>Reply
+                    </span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -239,6 +284,34 @@ function TaskChat({ task }) {
           </>
           {/* Task Chat Body END */}
           {/* Chat Input START */}
+          {/* selected relpy inso show --- start */}
+          <div
+            className={`justify-between items-center transition-all duration-300 w-full ${
+              reply.id === "" ? "hidden" : ""
+            } bg-white`}
+          >
+            <div className="bg-custom-green-dark p-1 flex gap-1 items-center justify-center">
+              <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
+                <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
+                <div>
+                  <div className="flex justify-between">
+                    <span className="font-bold">Tommy Kim</span>
+                    <span className="text-xs opacity-60 text-end">
+                      Derictor
+                    </span>
+                  </div>
+                  <span className="line-clamp-1">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Dolorum, voluptatum.
+                  </span>
+                </div>
+              </div>
+              <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white" onClick={handleClearReply} ><i className="bi bi-x-lg flex justify-center items-center"></i></button>
+            </div>
+          </div>
+          {/* selected relpy inso show --- end */}
+
+          {/* selected file show section --- start */}
           <div
             className={`justify-between items-center transition-all duration-300 w-full ${
               file.name === "" ? "hidden" : ""
@@ -254,6 +327,7 @@ function TaskChat({ task }) {
               </button>
             </div>
           </div>
+          {/* selected file show section --- end */}
 
           <div className="min-h-[60px] bg-white w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
             <form
