@@ -33,11 +33,11 @@ function TaskFileControl({ fileUrl }) {
         />
       )}
 
-      <div className="w-full px-2 py-[5px] border flex justify-between items-center rounded-md border-custom-green-10 ">
+      <div className="w-full px-2 py-[5px] border flex justify-between items-center rounded-md border-custom-green-10 bg-white">
         <div className="text-custom-green-dark font-bold h-full w-[45px] px-2 py-1">
           {fileType}
         </div>
-        <div className=" max-w-[200px] text-[14px] px-2">
+        <div className="max-w-[200px] text-[14px] px-2">
           <p className="truncate text-custom-green-dark">{fileName}</p>
         </div>
         <div>
