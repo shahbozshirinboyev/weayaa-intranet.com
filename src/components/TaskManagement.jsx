@@ -678,35 +678,21 @@ function TaskManagement() {
               </span>
             </p>
             {/* progress section -- hali ish bor */}
-            {/* <div className="flex flex-wrap justify-center items-start px-12 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start p-6  gap-4 border">
               {projectsList.map((project) => (
                 <div
-                  className={`flex border border-custom-green-10 px-2 ${
-                    userType === "staff" ? "py-2" : "py-0"
-                  } justify-center items-center rounded-lg hover:bg-custom-green-15`}
+                  className={`flex justify-start items-center border border-custom-green-10 px-2 rounded-lg hover:bg-custom-green-15 ${ userType === "staff" ? "py-2" : "py-0" }`}
                   key={project.id}
                 >
                   <div
-                    onClick={() => {
-                      setActiveProject(project);
-                      setSelectedUsers(project.members);
-                      localStorage.setItem(
-                        "activeProject",
-                        JSON.stringify(project)
-                      );
-                    }}
+                    onClick={() => { setActiveProject(project); setSelectedUsers(project.members); localStorage.setItem( "activeProject", JSON.stringify(project) ); }}
                     className="flex-auto font-medium"
                   >
                     <button
-                      className={`whitespace-nowrap flex justify-center items-center my-[2px] ${
-                        project.id === activeProject.id
-                          ? "bg-custom-green-15"
-                          : ""
-                      }`}
+                      className={`flex justify-start items-center gap-2 my-[2px] ${ project.id === activeProject.id ? "bg-custom-green-15" : "" }`}
                     >
-                      {" "}
-                      <i className="bi bi-folder flex justify-center items-center"></i>{" "}
-                      &nbsp; {project.name}
+                      <i className="bi bi-folder flex justify-center items-center"></i>
+                      <span className="whitespace-nowrap truncate text-ellipsis overflow-hidden ">{project.name}</span>
                     </button>
                   </div>
                   <button
@@ -737,7 +723,7 @@ function TaskManagement() {
                   </button>
                 </div>
               ))}
-            </div> */}
+            </div>
           </div>
         </>
       ) : activeProjectTasks.length === 0 ? (
