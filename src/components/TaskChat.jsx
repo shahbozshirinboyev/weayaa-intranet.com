@@ -128,9 +128,7 @@ function TaskChat({ task }) {
                   <span>Okay!</span>
 
                   <p className="flex justify-end items-center gap-2 text-xs">
-                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center">
-                      <i className="bi bi-reply"></i>Reply
-                    </span>
+                  <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -163,9 +161,7 @@ function TaskChat({ task }) {
                   <span>Okay!</span>
 
                   <p className="flex justify-end items-center gap-2 text-xs">
-                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center">
-                      <i className="bi bi-reply"></i>Reply
-                    </span>
+                  <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -206,9 +202,7 @@ function TaskChat({ task }) {
                   </div>
                   <span>Okay!</span>
                   <p className="flex justify-end items-center gap-2 text-xs">
-                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center">
-                      <i className="bi bi-reply"></i>Reply
-                    </span>
+                  <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -233,9 +227,7 @@ function TaskChat({ task }) {
                   </div>
                   <span>Lorem ipsum dolor sit amet, con.</span>
                   <p className="flex justify-end items-center gap-2 text-xs">
-                    <span className="btn btn-xs hidden group-hover:flex justify-center items-center">
-                      <i className="bi bi-reply"></i>Reply
-                    </span>
+                  <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -266,12 +258,7 @@ function TaskChat({ task }) {
 
                   <span>Lorem ipsum dolor sit amet, con.</span>
                   <p className="flex justify-end items-center gap-2 text-xs">
-                    <span
-                      onClick={acriveReply}
-                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
-                    >
-                      <i className="bi bi-reply"></i>Reply
-                    </span>
+                    <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
