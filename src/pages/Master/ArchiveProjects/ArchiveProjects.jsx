@@ -5,144 +5,39 @@ function ArchiveProjects() {
     <>
       <div className="overflow-x-auto">
         <table className="table">
-          {/* head */}
           <thead>
-            <tr>
-              <th>Archive Project Name</th>
+            <tr className="text-custom-green-dark uppercase">
+              <th>Archive project Name</th>
               <th>Archive date</th>
               <th>The person who archived</th>
               <th>Unarchive</th>
             </tr>
           </thead>
-          {/* body */}
-          <tbody>
-            {/* row 1 */}
+
+          <tbody className="text-custom-green-dark">
             <tr>
               <td>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
-                    <div className="mask mask-squircle h-12 w-12">
-                      <img
-                        src="https://e7.pngegg.com/pngimages/107/310/png-clipart-computer-icons-betterzip-file-archiver-others-7z-winzip-thumbnail.png"
-                        alt="Avatar Tailwind CSS Component"
-                      />
-                    </div>
+                    <i className="bi bi-file-earmark-zip text-[30px]"></i>
                   </div>
                   <div>
-                    <div className="font-bold">Hart Hagerty</div>
-                    <div className="text-sm opacity-50">United States</div>
+                    <div className="font-semibold">TopClass.Uz</div>
+                    <div className="text-xs opacity-50">Task count: 23</div>
                   </div>
                 </div>
               </td>
               <td>
-                Zemlak, Daniel and Leannon
-                <br />
-                <span className="badge badge-ghost badge-sm">
-                  Desktop Support Technician
-                </span>
+                <span className="font-semibold"> 24.01.2025 </span>
               </td>
-              <td>Purple</td>
+              <td className="font-semibold">Tommy Kim</td>
               <th>
-                <button className="btn btn-sm flex gap-2">
-                  <i className="bi bi-folder-symlink"></i>
-                  <span>Unarchive</span>
-                </button>
-              </th>
-            </tr>
-            {/* row 2 */}
-            <tr>
-              <td>
-                <div className="flex items-center gap-3">
-                  <div className="avatar">
-                    <div className="mask mask-squircle h-12 w-12">
-                      <img
-                        src="https://e7.pngegg.com/pngimages/107/310/png-clipart-computer-icons-betterzip-file-archiver-others-7z-winzip-thumbnail.png"
-                        alt="Avatar Tailwind CSS Component"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-bold">Brice Swyre</div>
-                    <div className="text-sm opacity-50">China</div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                Carroll Group
-                <br />
-                <span className="badge badge-ghost badge-sm">
-                  Tax Accountant
-                </span>
-              </td>
-              <td>Red</td>
-              <th>
-                <button className="btn btn-sm flex gap-2">
-                  <i className="bi bi-folder-symlink"></i>
-                  <span>Unarchive</span>
-                </button>
-              </th>
-            </tr>
-            {/* row 3 */}
-            <tr>
-              <td>
-                <div className="flex items-center gap-3">
-                  <div className="avatar">
-                    <div className="mask mask-squircle h-12 w-12">
-                      <img
-                        src="https://e7.pngegg.com/pngimages/107/310/png-clipart-computer-icons-betterzip-file-archiver-others-7z-winzip-thumbnail.png"
-                        alt="Avatar Tailwind CSS Component"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-bold">Marjy Ferencz</div>
-                    <div className="text-sm opacity-50">Russia</div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                Rowe-Schoen
-                <br />
-                <span className="badge badge-ghost badge-sm">
-                  Office Assistant I
-                </span>
-              </td>
-              <td>Crimson</td>
-              <th>
-                <button className="btn btn-sm flex gap-2">
-                  <i className="bi bi-folder-symlink"></i>
-                  <span>Unarchive</span>
-                </button>
-              </th>
-            </tr>
-            {/* row 4 */}
-            <tr>
-              <td>
-                <div className="flex items-center gap-3">
-                  <div className="avatar">
-                    <div className="mask mask-squircle h-12 w-12">
-                      <img
-                        src="https://e7.pngegg.com/pngimages/107/310/png-clipart-computer-icons-betterzip-file-archiver-others-7z-winzip-thumbnail.png"
-                        alt="Avatar Tailwind CSS Component"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-bold">Yancy Tear</div>
-                    <div className="text-sm opacity-50">Brazil</div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                Wyman-Ledner
-                <br />
-                <span className="badge badge-ghost badge-sm">
-                  Community Outreach Specialist
-                </span>
-              </td>
-              <td>Indigo</td>
-              <th>
-                <button className="btn btn-sm flex gap-2">
+                <button
+                  onClick={() =>
+                    document.getElementById("my_unarchive_modal").showModal()
+                  }
+                  className="btn btn-xs flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-10 hover:bg-custom-green-dark hover:text-white"
+                >
                   <i className="bi bi-folder-symlink"></i>
                   <span>Unarchive</span>
                 </button>
@@ -151,6 +46,30 @@ function ArchiveProjects() {
           </tbody>
         </table>
       </div>
+
+      {/* unarchive modal - start */}
+      <dialog id="my_unarchive_modal" className="modal">
+        <div className="modal-box p-0">
+          {/* Modal header Start */}
+          <form method="dialog" className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10" >
+            <span className="text-custom-green-dark font-bold">Unarchive</span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+              <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
+            </div>
+          </form>
+          {/* Modal header End */}
+
+          <div className="p-4">
+            <p>This action is not working ...</p>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+      {/* unarchive modal - start */}
     </>
   );
 }
