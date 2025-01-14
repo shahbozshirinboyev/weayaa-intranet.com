@@ -156,6 +156,7 @@ function AddClient({ setCount }) {
                           onChange={inputHandle}
                           name="first_name"
                           autoComplete="username"
+                          required
                           type="text"
                           placeholder="Enter Staff First Name"
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
@@ -172,6 +173,7 @@ function AddClient({ setCount }) {
                           value={state.last_name}
                           onChange={inputHandle}
                           name="last_name"
+                          required
                           type="text"
                           placeholder="Enter Staff Last Name"
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
@@ -261,6 +263,7 @@ function AddClient({ setCount }) {
                           value={state.weayaa_id}
                           name="weayaa_id"
                           onChange={inputHandle}
+                          required
                           type="text"
                           placeholder="Enter WeaYaa ID"
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
@@ -277,6 +280,7 @@ function AddClient({ setCount }) {
                           <input
                             value={state.password}
                             name="password"
+                            required
                             onChange={inputHandle}
                             type={showPassword ? "text" : "password"}
                             autoComplete="current-password"

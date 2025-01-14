@@ -112,6 +112,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
                   <input
                     type="text"
                     name="name"
+                    required
                     value={taskData.name}
                     onChange={handleChange}
                     className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
@@ -125,6 +126,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
                   <textarea
                     name="description"
                     value={taskData.description}
+                    required
                     onChange={handleChange}
                     className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
                     rows={4}
@@ -138,6 +140,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
                   <input
                     type="date"
                     name="deadline"
+                    required
                     value={taskData.deadline}
                     onChange={handleChange}
                     className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"

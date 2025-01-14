@@ -615,6 +615,7 @@ function TaskManagement() {
                     <input
                       type="text"
                       name="projectName"
+                      required
                       value={formData.projectName}
                       onChange={handleChange}
                       placeholder="Title type here"
@@ -628,6 +629,7 @@ function TaskManagement() {
                     <input
                       type="date"
                       name="projectDeadline"
+                      required
                       value={formData.projectDeadline}
                       onChange={handleChange}
                       placeholder="Title type here"

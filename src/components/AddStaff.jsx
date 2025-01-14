@@ -316,6 +316,7 @@ function AddStaff({ setCount }) {
                           <input
                             value={state.firstName}
                             onChange={inputHandle}
+                            required
                             name="firstName"
                             type="text"
                             placeholder="Enter Staff First Name"
@@ -332,6 +333,7 @@ function AddStaff({ setCount }) {
                           <input
                             value={state.lastName}
                             onChange={inputHandle}
+                            required
                             name="lastName"
                             type="text"
                             placeholder="Enter Staff Last Name"
@@ -407,6 +409,7 @@ function AddStaff({ setCount }) {
                             value={state.specialist}
                             onChange={inputHandle}
                             name="specialist"
+                            required
                             id=""
                             placeholder="Select Specialist Stuff"
                             className="text-custom-green-dark transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
@@ -613,6 +616,7 @@ function AddStaff({ setCount }) {
                           value={state.userId}
                           name="userId"
                           onChange={inputHandle}
+                          required
                           type="text"
                           placeholder="Enter WeaYaa ID"
                           className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
@@ -630,6 +634,7 @@ function AddStaff({ setCount }) {
                             value={state.userPassword}
                             name="userPassword"
                             onChange={inputHandle}
+                            required
                             type={showPassword ? "text" : "password"}
                             placeholder="Enter Password"
                             className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
