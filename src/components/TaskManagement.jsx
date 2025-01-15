@@ -18,6 +18,7 @@ import TaskChat from "./TaskChat/TaskChat";
 function TaskManagement() {
   const [divWidth, setDivWidth] = useState("100%");
   const divRef = useRef(null);
+  const [task, setTask] = useState([])
 
   useEffect(() => {
     const updateWidth = () => {
@@ -795,8 +796,16 @@ function TaskManagement() {
                                   </div>
 
                                   <div className="w-full flex items-center">
-
-                                  <TaskChat task={task} />
+                                    {/* Chat button START */}
+                                    <button onClick={() => { setTask(task); document.getElementById(`task_chat`).showModal(); }}>
+                                      <div className="flex">
+                                        <div className="relative">
+                                          <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"><i className="bi bi-chat-text"></i></div>
+                                          <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
+                                        </div>
+                                      </div>
+                                    </button>
+                                    {/* Chat button END */}                                  
 
                                     <TaskFoother getActiveProjectTasks={ getActiveProjectTasks } selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
                                   </div>
@@ -946,6 +955,8 @@ function TaskManagement() {
           <button>close</button>
         </form>
       </dialog>
+
+      <TaskChat task={task} />
     </>
   );
 }

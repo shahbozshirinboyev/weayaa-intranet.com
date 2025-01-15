@@ -61,24 +61,10 @@ function TaskChat({ task }) {
 
   return (
     <>
-      {/* Chat button START */}
-      <button
-        onClick={() => { document.getElementById(`task_chat${task.id}`).showModal(); }}
-      >
-        <div className="flex">
-          <div className="relative">
-            <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center">
-              {" "}
-              <i className="bi bi-chat-text"></i>{" "}
-            </div>
-            <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
-          </div>
-        </div>
-      </button>
-      {/* Chat button END */}
+      
 
       {/* TASK => Chat START */}
-      <dialog id={`task_chat${task.id}`} className="modal z-[100000] border-red-700">
+      <dialog id={`task_chat`} className="modal z-[100000] border-red-700">
         <div className="modal-box h-full max-h-[700px] p-0 flex flex-col rounded-none">
           {/* Modal header Start */}
           <form
