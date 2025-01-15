@@ -22,10 +22,6 @@ function TaskChat({ task }) {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  const showTaskInfo = () => {
-    console.log(task);
-  };
-
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
 
@@ -68,10 +64,7 @@ function TaskChat({ task }) {
     <>
       {/* Chat button START */}
       <button
-        onClick={() => {
-          document.getElementById(`task_chat${task.id}`).showModal();
-          showTaskInfo();
-        }}
+        onClick={() => { document.getElementById(`task_chat${task.id}`).showModal(); }}
       >
         <div className="flex">
           <div className="relative">
@@ -86,7 +79,7 @@ function TaskChat({ task }) {
       {/* Chat button END */}
 
       {/* TASK => Chat START */}
-      <dialog id={`task_chat${task.id}`} className="modal z-50 border-red-700">
+      <dialog id={`task_chat${task.id}`} className="modal z-[100000] border-red-700">
         <div className="modal-box h-full max-h-[700px] p-0 flex flex-col rounded-none">
           {/* Modal header Start */}
           <form
