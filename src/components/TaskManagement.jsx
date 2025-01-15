@@ -753,89 +753,48 @@ function TaskManagement() {
           </div>
         </>
       ) : (
-        <DragDropContext
-          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
-        >
+        <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)} >
           <div className="grid grid-cols-4 px-4 bg-custom-green-10 rounded-[15px] gap-4 min-w-[1400px]">
             {Object.entries(columns).map(([columnId, column], index) => (
               <div className="flex flex-col gap-2" key={columnId}>
                 <Droppable droppableId={columnId} key={columnId}>
                   {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      className="grid grid-col gap-3 items-center py-4 w-full"
-                    >
+                    <div ref={provided.innerRef} {...provided.droppableProps} className="grid grid-col gap-3 items-center py-4 w-full" >
                       <div className="flex justify-between p-2 py-[10px] w-full bg-white rounded-lg shadow-sm text-custom-green-dark  text-[15px] font-extrabold">
                         {column.name}
                         <div className="bg-custom-green-30 text-center  text-custom-green-dark rounded-md">
-                          <span className="px-2 py-1">
-                            {column.items.length}
-                          </span>
+                          <span className="px-2 py-1"> {column.items.length} </span>
                         </div>
                       </div>
 
-                      {index === 0 && userType !== "staff" && (
-                        <CreateTask
-                          getActiveProjectTasks={getActiveProjectTasks}
-                        />
-                      )}
+                      { index === 0 && userType !== "staff" && ( <CreateTask getActiveProjectTasks={getActiveProjectTasks} /> )}
 
-                      {column.items &&
-                        column.items.map((task, index) => (
-                          <Draggable
-                            key={task.id.toString()}
-                            draggableId={task.id.toString()}
-                            index={index}
-                          >
+                      {column.items && column.items.map((task, index) => (
+                          <Draggable key={task.id.toString()} draggableId={task.id.toString()} index={index}>
                             {(provided) => (
                               // Task START
                               <>
                                 <div
                                   ref={provided.innerRef}
-                                  {...(userType !== "client"
-                                    ? provided.draggableProps
-                                    : {})}
-                                  {...(userType !== "client"
-                                    ? provided.dragHandleProps
-                                    : {})}
+                                  {...(userType !== "client" ? provided.draggableProps : {})}
+                                  {...(userType !== "client" ? provided.dragHandleProps : {})}
                                   className="w-full cursor-grab bg-white flex flex-col justify-between gap-3 items-start shadow-sm rounded-lg px-3 py-4"
                                 >
                                   <div className="w-full">
-                                    <TaskHeader
-                                      task={task}
-                                      getActiveProjectTasks={
-                                        getActiveProjectTasks
-                                      }
-                                    />
+                                    <TaskHeader task={task} getActiveProjectTasks={ getActiveProjectTasks } />
                                   </div>
 
-                                  <div className="w-full flex items-start flex-col gap-0">
-                                    <span className="text-[15.5px] font-medium text-custom-green-90">
-                                      {task.name}
-                                    </span>
-                                    <span className="text-[13.5px] text-custom-green-80 break-all">
-                                      {task.description}
-                                    </span>
+                                  <div className="w-full flex items-start flex-col gap-1">
+                                    <span className="text-[15.5px] font-medium text-custom-green-90"> {task.name} </span>
+                                    <span className="text-[13.5px] text-custom-green-80 break-all"> {task.description} </span>
                                   </div>
-
-                                  {/* <div className={`w-full border border-dashed border-custom-green-60 ${ !task.file ? "hidden" : "" }`}></div> */}
-
-                                  {/* ============= Task file Control ============= */}
-                                  <TaskFileControl fileUrl={task.file} />
-                                  {/* ============= Task file Control ============= */}
-
-                                  {/* <div className="w-full border border-dashed border-custom-green-60"></div> */}
 
                                   <div className="w-full">
-                                    <TaskFoother
-                                      getActiveProjectTasks={
-                                        getActiveProjectTasks
-                                      }
-                                      selectedUsers={selectedUsers}
-                                      task={task}
-                                      membersInfo={membersInfo}
-                                    />
+                                    <TaskFileControl fileUrl={task.file} />
+                                  </div>
+
+                                  <div className="w-full">
+                                    <TaskFoother getActiveProjectTasks={ getActiveProjectTasks } selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
                                   </div>
                                 </div>
                               </>
