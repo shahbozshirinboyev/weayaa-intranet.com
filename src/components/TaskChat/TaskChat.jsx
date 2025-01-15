@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import TaskFileControl from "../TaskFileControl";
+
 function TaskChat({ task }) {
+
   const [reply, setReply] = useState({ id: "", user: "", message: "" });
   const [rows, setRows] = useState(1);
 
@@ -8,18 +10,15 @@ function TaskChat({ task }) {
     setReply({
       id: "12",
       user: "Shahboz Shirnboyev",
-      message:
-        "Lorem ipsum shu gaplarda nima bo'lsa ham ju joyga kelganimdan xursandman",
+      message: "Lorem ipsum shu gaplarda nima bo'lsa ham shu joyga kelganimdan xursandman",
     });
   };
   const handleClearReply = () => {
-    setReply({ id: "", user: "", message: "" })
-  }
+    setReply({ id: "", user: "", message: "" });
+  };
 
   const endRef = useRef(null);
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, []);
 
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
@@ -47,7 +46,6 @@ function TaskChat({ task }) {
 
   const handleClearFile = () => {
     setFile({ ...file, name: "", file: "", url: "" });
-    // document.getElementById("fileInput").value = "";
   };
 
   const sendMessage = (e) => {
@@ -61,16 +59,11 @@ function TaskChat({ task }) {
 
   return (
     <>
-      
-
       {/* TASK => Chat START */}
-      <dialog id={`task_chat`} className="modal z-[100000] border-red-700">
+      <dialog id={`task_chat`} className="modal">
         <div className="modal-box h-full max-h-[700px] p-0 flex flex-col rounded-none">
           {/* Modal header Start */}
-          <form
-            method="dialog"
-            className="border-b-[2px] border-custom-green-80 h-[55px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-          >
+          <form method="dialog" className="border-b-[2px] border-custom-green-80 h-[55px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10" >
             <span className="text-custom-green-dark font-bold">
               Chat (Task ID: {task.id})
             </span>
@@ -106,7 +99,12 @@ function TaskChat({ task }) {
                   <span>Okay!</span>
 
                   <p className="flex justify-end items-center gap-2 text-xs">
-                  <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span
+                      onClick={acriveReply}
+                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
+                    >
+                      <i className="bi bi-reply"></i>Reply
+                    </span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -139,7 +137,12 @@ function TaskChat({ task }) {
                   <span>Okay!</span>
 
                   <p className="flex justify-end items-center gap-2 text-xs">
-                  <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span
+                      onClick={acriveReply}
+                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
+                    >
+                      <i className="bi bi-reply"></i>Reply
+                    </span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -180,7 +183,12 @@ function TaskChat({ task }) {
                   </div>
                   <span>Okay!</span>
                   <p className="flex justify-end items-center gap-2 text-xs">
-                  <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span
+                      onClick={acriveReply}
+                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
+                    >
+                      <i className="bi bi-reply"></i>Reply
+                    </span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -205,7 +213,12 @@ function TaskChat({ task }) {
                   </div>
                   <span>Lorem ipsum dolor sit amet, con.</span>
                   <p className="flex justify-end items-center gap-2 text-xs">
-                  <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span
+                      onClick={acriveReply}
+                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
+                    >
+                      <i className="bi bi-reply"></i>Reply
+                    </span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -236,7 +249,12 @@ function TaskChat({ task }) {
 
                   <span>Lorem ipsum dolor sit amet, con.</span>
                   <p className="flex justify-end items-center gap-2 text-xs">
-                    <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                    <span
+                      onClick={acriveReply}
+                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
+                    >
+                      <i className="bi bi-reply"></i>Reply
+                    </span>
                     <span>12:46 AM</span>
                   </p>
                 </div>
@@ -271,7 +289,12 @@ function TaskChat({ task }) {
                   </span>
                 </div>
               </div>
-              <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white" onClick={handleClearReply} ><i className="bi bi-x-lg flex justify-center items-center"></i></button>
+              <button
+                className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white"
+                onClick={handleClearReply}
+              >
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
             </div>
           </div>
           {/* selected relpy inso show --- end */}
