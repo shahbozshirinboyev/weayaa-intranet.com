@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import TaskFileControl from "./TaskFileControl";
-
+import TaskFileControl from "../TaskFileControl";
 function TaskChat({ task }) {
   const [reply, setReply] = useState({ id: "", user: "", message: "" });
   const [rows, setRows] = useState(1);

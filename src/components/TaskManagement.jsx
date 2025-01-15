@@ -13,7 +13,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Mousewheel } from "swiper/modules";
 import "swiper/css/free-mode";
 import "swiper/css";
-import TaskChat from "./TaskChat";
+import TaskChat from "./TaskChat/TaskChat";
 
 function TaskManagement() {
   const [divWidth, setDivWidth] = useState("100%");
