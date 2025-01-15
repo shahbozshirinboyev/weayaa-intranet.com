@@ -3,6 +3,93 @@ import TaskFileControl from "../TaskFileControl";
 
 function TaskChat({ task }) {
 
+  
+  class ChatService {
+    constructor(taskId, token) {
+        this.taskId = task.id;
+        this.token = localStorage.getItem('access');
+        this.ws = null;
+    }
+
+    connect() {
+        this.ws = new WebSocket(`wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/`);
+        
+        // Add token to WebSocket handshake
+        this.ws.onopen = () => {
+            // Set the authorization header
+            this.ws.send(JSON.stringify({
+                type: 'authorization',
+                token: this.token
+            }));
+            console.log('Connected to chat');
+        };
+
+        this.ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            this.handleMessage(data);
+        };
+
+        this.ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
+        this.ws.onclose = () => {
+            console.log('Disconnected from chat');
+            // Implement reconnection logic if needed
+        };
+    }
+
+    handleMessage(data) {
+        switch (data.type) {
+            case 'connection_established':
+                console.log('Successfully connected to chat room');
+                break;
+            case 'chat_message':
+                // Handle incoming chat message
+                console.log('Received message:', data.content);
+                break;
+            case 'error':
+                console.error('Error:', data.message);
+                break;
+            default:
+                console.log('Unknown message type:', data.type);
+        }
+    }
+
+    sendMessage(content) {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(JSON.stringify({
+                type: 'message',
+                content: content
+            }));
+        } else {
+            console.error('WebSocket is not connected');
+        }
+    }
+
+    disconnect() {
+        if (this.ws) {
+            this.ws.close();
+        }
+    }
+}
+
+useEffect(() => {
+  async function initializeChat(taskId) {
+    const token = localStorage.getItem('access');
+    const chat = new ChatService(taskId, token);
+    chat.connect();
+    return chat;
+  }
+
+  // Check if task is available and initialize chat
+  if (task && task.id) {
+    initializeChat(task.id);
+  }
+}, [task]); // Dependency array includes task
+
+
+  // --------------------------------------------
   const [reply, setReply] = useState({ id: "", user: "", message: "" });
   const [rows, setRows] = useState(1);
 
