@@ -2,7 +2,6 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 import http from "../services/http";
-import TaskChat from "./TaskChat";
 
 const TaskFoother = ({ task, membersInfo, selectedUsers, getActiveProjectTasks }) => {
 
@@ -47,9 +46,9 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getActiveProjectTasks }
 
   return (
     <>
-      <div className="flex items-center">
+     
 
-        <TaskChat task={task} />
+        
 
         {/* Task users list START */}
         <div className="flex justify-end w-full">
@@ -76,7 +75,7 @@ const TaskFoother = ({ task, membersInfo, selectedUsers, getActiveProjectTasks }
           
         </div>
         {/* Task users list END */}
-      </div>
+      
 
       {/* Show Added User List START */}
       <dialog id={`showAddedUsers${task.id}`} className="modal">

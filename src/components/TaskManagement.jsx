@@ -13,6 +13,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Mousewheel } from "swiper/modules";
 import "swiper/css/free-mode";
 import "swiper/css";
+import TaskChat from "./TaskChat";
 
 function TaskManagement() {
   const [divWidth, setDivWidth] = useState("100%");
@@ -793,7 +794,10 @@ function TaskManagement() {
                                     <TaskFileControl fileUrl={task.file} />
                                   </div>
 
-                                  <div className="w-full">
+                                  <div className="w-full flex items-center">
+
+                                  <TaskChat task={task} />
+
                                     <TaskFoother getActiveProjectTasks={ getActiveProjectTasks } selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
                                   </div>
                                 </div>
