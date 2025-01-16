@@ -186,20 +186,25 @@ function TaskChat({ task }) {
             <section className="px-4 chatcss overflow-y-auto h-[585px]">
               
               {oldMessages.map((message)=>(
+
                 <div key={message.id} className={`chat ${String(message.sender) === String(userId) ? "chat-end" : "chat-start"} border-0 group`}>
-                <div className="chat-image avatar">
+
+                {String(message.sender) !== String(userId) && 
+                  <div className="chat-image avatar">
                     <div className="w-10 rounded-full">
                       <img
-                        alt="Tailwind CSS chat bubble component"
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
+                        alt={message.sender_details.full_name}
+                        src={message.sender_details.image}
                       />
                     </div>
                   </div>
-                  <div className={`chat-bubble  ${String(message.sender) === String(userId) ? "bg-custom-green-dark text-white" : "bg-custom-green-dark text-white"}`}>
+                }
+
+                  <div className={`chat-bubble  ${String(message.sender) === String(userId) ? "bg-custom-green-30 text-black" : "bg-custom-green-dark text-white"}`}>
                   <div className="flex justify-between text-xs items-center pb-1 gap-4">
-                      <span className="font-bold">Tommy Kim</span>
+                      <span className="font-bold">{message.sender_details.full_name}</span>
                       <span className="text-xs opacity-60 text-end">
-                        Derictor
+                        Derictorg
                       </span>
                     </div>
                     <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
@@ -223,7 +228,7 @@ function TaskChat({ task }) {
                       }
                     />
   
-                    <span>Lorem ipsum dolor sit amet, con.</span>
+                    <span>{message.content}</span>
                     <p className="flex justify-end items-center gap-2 text-xs">
                       <span
                         onClick={acriveReply}
