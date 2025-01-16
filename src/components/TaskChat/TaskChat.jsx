@@ -205,20 +205,11 @@ function TaskChat({ task }) {
                   )}
 
                   <div
-                    className={`chat-bubble  ${
-                      String(message.sender) === String(userId)
-                        ? "bg-custom-green-30 text-black"
-                        : "bg-custom-green-dark text-white"
-                    }`}
+                    className={`chat-bubble  ${ String(message.sender) === String(userId) ? "bg-custom-green-dark text-white" : "bg-custom-green-30 text-custom-green-dark" }`}
                   >
                     <div className="flex justify-between text-xs items-center pb-1 gap-4">
-                      <span className="font-bold text-custom-green-dark">
-                        {message.sender_details.full_name}
-                      </span>
-                      <span className="text-xs opacity-80 text-end text-custom-green-dark">
-                        {" "}
-                        unknown{" "}
-                      </span>
+                      <span className="font-bold">{message.sender_details.full_name}</span>
+                      <span className="opacity-80 text-end">unknown</span>
                     </div>
                     {/* Reply section -- start */}
                     { message.reply_to && 
@@ -245,15 +236,12 @@ function TaskChat({ task }) {
                     {/* <TaskFileControl fileUrl={message.sender_details.image} /> */}
 
                     <span>{message.content}</span>
-                    <p className="flex justify-end items-center gap-2 text-xs">
-                      <span
-                        onClick={acriveReply}
-                        className="btn btn-xs hidden group-hover:flex justify-center items-center"
-                      >
-                        <i className="bi bi-reply"></i>Reply
-                      </span>
-                      <span>{new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
-                    </p>
+
+                      <p className="flex justify-end items-center gap-2 text-xs">
+                        <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
+                        <span>{new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
+                      </p>
+
                   </div>
                 </div>
               ))}
