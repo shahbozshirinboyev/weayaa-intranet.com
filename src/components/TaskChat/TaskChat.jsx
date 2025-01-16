@@ -239,7 +239,7 @@ function TaskChat({ task }) {
 
                       <p className="flex justify-end items-center gap-2 text-xs">
                         <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
-                        <span>{new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
+                        <span>{new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
                       </p>
 
                   </div>
