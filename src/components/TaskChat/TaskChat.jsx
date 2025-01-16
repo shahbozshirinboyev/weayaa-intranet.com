@@ -184,30 +184,46 @@ function TaskChat({ task }) {
           {/* Task Chat Body START */}
           <>
             <section className="px-4 chatcss overflow-y-auto h-[585px]">
-              
-              {oldMessages.map((message)=>(
-
-                <div key={message.id} className={`chat ${String(message.sender) === String(userId) ? "chat-end" : "chat-start"} border-0 group`}>
-
-                {String(message.sender) !== String(userId) && 
-                  <div className="chat-image avatar">
-                    <div className="w-10 rounded-full">
-                      <img
-                        alt={message.sender_details.full_name}
-                        src={message.sender_details.image}
-                      />
+              {oldMessages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`chat ${
+                    String(message.sender) === String(userId)
+                      ? "chat-end"
+                      : "chat-start"
+                  } border-0 group`}
+                >
+                  {String(message.sender) !== String(userId) && (
+                    <div className="chat-image avatar">
+                      <div className="w-10 rounded-full">
+                        <img
+                          alt={message.sender_details.full_name}
+                          src={message.sender_details.image}
+                        />
+                      </div>
                     </div>
-                  </div>
-                }
+                  )}
 
-                  <div className={`chat-bubble  ${String(message.sender) === String(userId) ? "bg-custom-green-30 text-black" : "bg-custom-green-dark text-white"}`}>
-                  <div className="flex justify-between text-xs items-center pb-1 gap-4">
-                      <span className="font-bold">{message.sender_details.full_name}</span>
-                      <span className="text-xs opacity-60 text-end">
-                        Derictorg
+                  <div
+                    className={`chat-bubble  ${
+                      String(message.sender) === String(userId)
+                        ? "bg-custom-green-30 text-black"
+                        : "bg-custom-green-dark text-white"
+                    }`}
+                  >
+                    <div className="flex justify-between text-xs items-center pb-1 gap-4">
+                      <span className="font-bold text-custom-green-dark">
+                        {message.sender_details.full_name}
+                      </span>
+                      <span className="text-xs opacity-80 text-end text-custom-green-dark">
+                        {" "}
+                        unknown{" "}
                       </span>
                     </div>
+                    {/* Reply section -- start */}
+                    { message.reply_to && 
                     <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
+
                       <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
                       <div>
                         <div className="flex justify-between">
@@ -217,17 +233,17 @@ function TaskChat({ task }) {
                           </span>
                         </div>
                         <span className="line-clamp-1">
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                          Dolorum, voluptatum.
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Dolorum, voluptatum.
                         </span>
                       </div>
-                    </div>
-                    <TaskFileControl
-                      fileUrl={
-                        "https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces.jpg"
-                      }
-                    />
-  
+
+                    </div>}
+                    {/* Reply section -- end */}
+
+                    <TaskFileControl fileUrl={message.file} />
+                    {/* <TaskFileControl fileUrl={message.sender_details.image} /> */}
+
                     <span>{message.content}</span>
                     <p className="flex justify-end items-center gap-2 text-xs">
                       <span
@@ -241,11 +257,6 @@ function TaskChat({ task }) {
                   </div>
                 </div>
               ))}
-
-
-              
-
-              
 
               {/* scroll to END => START */}
               <div ref={endRef}></div>
