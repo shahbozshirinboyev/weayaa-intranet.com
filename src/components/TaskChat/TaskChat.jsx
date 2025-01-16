@@ -3,16 +3,9 @@ import TaskFileControl from "../TaskFileControl";
 import http from "../../services/http";
 
 function TaskChat({ task }) {
-  const userId = localStorage.getItem('userId')
-  const [messages, setMessages] = useState([])
-
-  useEffect(() => {
-    if(!task.id) return;
-    http 
-      .get(`/chat/tasks/${task.id}/messages/`, { headers: { Authorization: `Bearer ${localStorage.getItem("access")}` }, })
-      .then((response) => { console.log(response.data) })
-      .catch((error) => { console.log(error.response.data); });
-    }, [task.id]);
+  
+  const userId = localStorage.getItem('userId');
+  const [messages, setMessages] = useState([]);
 
   class ChatService {
 
@@ -50,7 +43,6 @@ function TaskChat({ task }) {
           console.log("Successfully connected to chat room");
           break;
         case "chat_message":
-          // Handle incoming chat message
           console.log("Received message:", data.content);
           break;
         case "error":
@@ -58,7 +50,6 @@ function TaskChat({ task }) {
           break;
         default:
           setMessages((prevMessages) => [...prevMessages, data.message]);
-          // console.log("Unknown message type:", data.message);
       }
     }
 
