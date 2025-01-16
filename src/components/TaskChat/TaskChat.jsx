@@ -252,7 +252,7 @@ function TaskChat({ task }) {
                       >
                         <i className="bi bi-reply"></i>Reply
                       </span>
-                      <span>{message.created_at}</span>
+                      <span>{new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
                     </p>
                   </div>
                 </div>
