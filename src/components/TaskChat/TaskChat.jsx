@@ -252,7 +252,7 @@ function TaskChat({ task }) {
                       >
                         <i className="bi bi-reply"></i>Reply
                       </span>
-                      <span>12:46 AM</span>
+                      <span>{message.created_at}</span>
                     </p>
                   </div>
                 </div>
