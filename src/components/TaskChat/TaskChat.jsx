@@ -34,12 +34,6 @@ function TaskChat({ task }) {
     // this.ws.send(JSON.stringify(message));  // JSON formatida yuborish
       };
 
-      this.ws.onmessage = (old_messages) => {
-        const data = JSON.parse(old_messages.data);
-        console.log(data);
-        // this.handleMessage(data);
-      };
-
       this.ws.onerror = (error) => {
         console.error("WebSocket error:", error);
       };
