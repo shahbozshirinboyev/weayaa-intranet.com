@@ -2,90 +2,89 @@ import { useEffect, useRef, useState } from "react";
 import TaskFileControl from "../TaskFileControl";
 
 function TaskChat({ task }) {
-
-  
   class ChatService {
-    
     constructor() {
-        this.taskId = task.id;
-        this.token = localStorage.getItem('access');
-        this.ws = null;
+      this.taskId = task.id;
+      this.token = localStorage.getItem("access");
+      this.ws = null;
     }
 
     connect() {
-      this.ws = new WebSocket(`wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}`);
+      this.ws = new WebSocket(
+        `wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}`
+      );
 
-        
-        // Add token to WebSocket handshake
-        this.ws.onopen = (data) => {
-            console.log('Connected to chat');
-            console.log(data);
-        };
+      // Add token to WebSocket handshake
+      this.ws.onopen = (data) => {
+        console.log("Connected to chat");
+        console.log(data);
+      };
 
-        this.ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            this.handleMessage(data);
-        };
+      this.ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        this.handleMessage(data);
+      };
 
-        this.ws.onerror = (error) => {
-            console.error('WebSocket error:', error);
-        };
+      this.ws.onerror = (error) => {
+        console.error("WebSocket error:", error);
+      };
 
-        this.ws.onclose = () => {
-            console.log('Disconnected from chat');
-            // Implement reconnection logic if needed
-        };
+      this.ws.onclose = () => {
+        console.log("Disconnected from chat");
+        // Implement reconnection logic if needed
+      };
     }
 
     handleMessage(data) {
-        switch (data.type) {
-            case 'connection_established':
-                console.log('Successfully connected to chat room');
-                break;
-            case 'chat_message':
-                // Handle incoming chat message
-                console.log('Received message:', data.content);
-                break;
-            case 'error':
-                console.error('Error:', data.message);
-                break;
-            default:
-                console.log('Unknown message type:', data.type);
-        }
+      switch (data.type) {
+        case "connection_established":
+          console.log("Successfully connected to chat room");
+          break;
+        case "chat_message":
+          // Handle incoming chat message
+          console.log("Received message:", data.content);
+          break;
+        case "error":
+          console.error("Error:", data.message);
+          break;
+        default:
+          console.log("Unknown message type:", data.type);
+      }
     }
 
     sendMessage(content) {
-        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-            this.ws.send(JSON.stringify({
-                type: 'message',
-                content: content
-            }));
-        } else {
-            console.error('WebSocket is not connected');
-        }
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+        this.ws.send(
+          JSON.stringify({
+            type: "message",
+            content: content,
+          })
+        );
+      } else {
+        console.error("WebSocket is not connected");
+      }
     }
 
     disconnect() {
-        if (this.ws) {
-            this.ws.close();
-        }
+      if (this.ws) {
+        this.ws.close();
+      }
     }
-}
-
-useEffect(() => {
-  async function initializeChat(taskId) {
-    const token = localStorage.getItem('access');
-    const chat = new ChatService(taskId, token);
-    chat.connect();
-    return chat;
   }
 
-  // Check if task is available and initialize chat
-  if (task && task.id) {
-    initializeChat(task.id);
-  }
-}, [task]); // Dependency array includes task
+  useEffect(() => {
+    async function initializeChat(taskId) {
+      const token = localStorage.getItem("access");
+      const chat = new ChatService(taskId, token);
+      chat.connect();
+      return chat;
+    }
 
+    // Check if task is available and initialize chat
+    if (task && task.id) {
+      initializeChat(task.id);
+    }
+  }, [task]); // Dependency array includes task
 
   // --------------------------------------------
   const [reply, setReply] = useState({ id: "", user: "", message: "" });
@@ -95,7 +94,8 @@ useEffect(() => {
     setReply({
       id: "12",
       user: "Shahboz Shirnboyev",
-      message: "Lorem ipsum shu gaplarda nima bo'lsa ham shu joyga kelganimdan xursandman",
+      message:
+        "Lorem ipsum shu gaplarda nima bo'lsa ham shu joyga kelganimdan xursandman",
     });
   };
   const handleClearReply = () => {
@@ -103,7 +103,9 @@ useEffect(() => {
   };
 
   const endRef = useRef(null);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, []);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
@@ -148,7 +150,10 @@ useEffect(() => {
       <dialog id={`task_chat`} className="modal">
         <div className="modal-box h-full max-h-[700px] p-0 flex flex-col rounded-none">
           {/* Modal header Start */}
-          <form method="dialog" className="border-b-[2px] border-custom-green-80 h-[55px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10" >
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[55px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
             <span className="text-custom-green-dark font-bold">
               Chat (Task ID: {task.id})
             </span>
