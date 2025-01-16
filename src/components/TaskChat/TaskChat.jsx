@@ -6,6 +6,7 @@ function TaskChat({ task }) {
   
   const userId = localStorage.getItem('userId');
   const [messages, setMessages] = useState([]);
+  const chatServiceRef = useRef(null);
 
   class ChatService {
 
@@ -74,6 +75,7 @@ function TaskChat({ task }) {
       const token = localStorage.getItem("access");
       const chat = new ChatService(taskId, token);
       chat.connect();
+      chatServiceRef.current = chat; // Store the instance in the ref
       return chat;
     }
 
@@ -135,7 +137,9 @@ function TaskChat({ task }) {
   const sendMessage = (e) => {
     e.preventDefault();
     console.log(message, file);
-    ChatService.sendMessage(message.message);
+    if (chatServiceRef.current) {
+      chatServiceRef.current.sendMessage(message.message); // Use the ref to send the message
+    }
 
     setFile({ ...file, name: "", file: "", url: "" });
     setMessage({ ...message, message: "" });
