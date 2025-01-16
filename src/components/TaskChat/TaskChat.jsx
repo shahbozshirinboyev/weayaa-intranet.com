@@ -253,11 +253,7 @@ function TaskChat({ task }) {
           {/* Task Chat Body END */}
           {/* Chat Input START */}
           {/* selected relpy inso show --- start */}
-          <div
-            className={`justify-between items-center transition-all duration-300 w-full ${
-              reply.id === "" ? "hidden" : ""
-            } bg-white`}
-          >
+          <div className={`justify-between items-center transition-all duration-300 w-full ${ reply.id === "" ? "hidden" : "" } bg-white`} >
             <div className="bg-custom-green-dark p-1 flex gap-1 items-center justify-center">
               <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
                 <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
@@ -274,10 +270,7 @@ function TaskChat({ task }) {
                   </span>
                 </div>
               </div>
-              <button
-                className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white"
-                onClick={handleClearReply}
-              >
+              <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white" onClick={handleClearReply} >
                 <i className="bi bi-x-lg flex justify-center items-center"></i>
               </button>
             </div>
@@ -303,6 +296,7 @@ function TaskChat({ task }) {
           {/* selected file show section --- end */}
 
           <div className="min-h-[60px] bg-white w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
+
             <form
               onSubmit={sendMessage}
               action=""
