@@ -3,19 +3,19 @@ import TaskFileControl from "../TaskFileControl";
 import http from "../../services/http";
 
 function TaskChat({ task }) {
-
   const userId = localStorage.getItem('userId')
-  const [oldMessages, setOldMessages] = useState([])
+  const [messages, setMessages] = useState([])
 
   useEffect(() => {
     if(!task.id) return;
     http 
       .get(`/chat/tasks/${task.id}/messages/`, { headers: { Authorization: `Bearer ${localStorage.getItem("access")}` }, })
-      .then((response) => { setOldMessages(response.data.results); console.log(response.data) })
+      .then((response) => { setMessages(response.data.results); console.log(response.data) })
       .catch((error) => { console.log(error.response.data); });
-  }, [task.id]);
+    }, [task.id]);
 
   class ChatService {
+
     constructor() {
       this.taskId = task.id;
       this.token = localStorage.getItem("access");
@@ -25,14 +25,15 @@ function TaskChat({ task }) {
     connect() {
       this.ws = new WebSocket( `wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}` );
 
-      // Add token to WebSocket handshake
-      this.ws.onopen = (data) => {
-        console.log(data);
+      this.ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        this.handleMessage(data);
+    };
 
-        // Xabar yuborish
-    // const message = { content: `Ulangan vaqtning xabari: ${new Date()}` };  // Yuboriladigan xabar
-    // this.ws.send(JSON.stringify(message));  // JSON formatida yuborish
-      };
+      this.ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        this.handleMessage(data);
+    };
 
       this.ws.onerror = (error) => {
         console.error("WebSocket error:", error);
@@ -40,7 +41,6 @@ function TaskChat({ task }) {
 
       this.ws.onclose = () => {
         console.log("Disconnected from chat");
-        // Implement reconnection logic if needed
       };
     }
 
@@ -115,7 +115,7 @@ function TaskChat({ task }) {
   const endRef = useRef(null);
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [oldMessages]);
+  }, [messages]);
 
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
@@ -178,14 +178,10 @@ function TaskChat({ task }) {
           {/* Task Chat Body START */}
           <>
             <section className="px-4 chatcss overflow-y-auto h-[585px]">
-              {oldMessages.map((message) => (
+              {messages.sort((b, a) => new Date(b.created_at) - new Date(a.created_at)).map((message) => (
                 <div
                   key={message.id}
-                  className={`chat ${
-                    String(message.sender) === String(userId)
-                      ? "chat-end"
-                      : "chat-start"
-                  } group relative`}
+                  className={`chat ${ String(message.sender) === String(userId) ? "chat-end" : "chat-start" } group relative`}
                 >
                   {String(message.sender) !== String(userId) && (
                     <div className="chat-image avatar">
