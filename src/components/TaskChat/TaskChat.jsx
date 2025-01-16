@@ -6,7 +6,7 @@ function TaskChat({ task }) {
   
   class ChatService {
     
-    constructor(taskId, token) {
+    constructor() {
         this.taskId = task.id;
         this.token = localStorage.getItem('access');
         this.ws = null;
@@ -17,8 +17,9 @@ function TaskChat({ task }) {
 
         
         // Add token to WebSocket handshake
-        this.ws.onopen = () => {
+        this.ws.onopen = (data) => {
             console.log('Connected to chat');
+            console.log(data);
         };
 
         this.ws.onmessage = (event) => {
