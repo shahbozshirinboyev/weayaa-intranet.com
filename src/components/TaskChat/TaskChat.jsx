@@ -23,11 +23,6 @@ function TaskChat({ task }) {
         this.handleMessage(data);
     };
 
-      this.ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        this.handleMessage(data);
-    };
-
       this.ws.onerror = (error) => {
         console.error("WebSocket error:", error);
       };
@@ -140,6 +135,7 @@ function TaskChat({ task }) {
   const sendMessage = (e) => {
     e.preventDefault();
     console.log(message, file);
+    ChatService.sendMessage(message.message);
 
     setFile({ ...file, name: "", file: "", url: "" });
     setMessage({ ...message, message: "" });
