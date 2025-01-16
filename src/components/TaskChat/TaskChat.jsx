@@ -49,7 +49,8 @@ function TaskChat({ task }) {
       }
     }
 
-    sendMessage(content) {
+    sendMessage(content, file) {
+      console.log(message, file)
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
         this.ws.send(
           JSON.stringify({
@@ -113,7 +114,7 @@ function TaskChat({ task }) {
     e.preventDefault();
     console.log(message, file);
     if (chatServiceRef.current) {
-      chatServiceRef.current.sendMessage(message.message); // Use the ref to send the message
+      chatServiceRef.current.sendMessage(message.message, file.file); // Use the ref to send the message
     }
 
     setFile({ name: "", file: "", url: "" });
