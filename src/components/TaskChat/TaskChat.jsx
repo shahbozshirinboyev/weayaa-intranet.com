@@ -1,7 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import TaskFileControl from "../TaskFileControl";
+import http from "../../services/http";
 
 function TaskChat({ task }) {
+
+  const userId = localStorage.getItem('userId')
+  const [oldMessages, setOldMessages] = useState([])
+
+  useEffect(() => {
+    if(!task.id) return;
+    http 
+      .get(`/chat/tasks/${task.id}/messages/`, { headers: { Authorization: `Bearer ${localStorage.getItem("access")}` }, })
+      .then((response) => { setOldMessages(response.data.results); console.log(response.data) })
+      .catch((error) => { console.log(error.response.data); });
+  }, [task.id]);
+
   class ChatService {
     constructor() {
       this.taskId = task.id;
@@ -10,19 +23,21 @@ function TaskChat({ task }) {
     }
 
     connect() {
-      this.ws = new WebSocket(
-        `wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}`
-      );
+      this.ws = new WebSocket( `wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}` );
 
       // Add token to WebSocket handshake
       this.ws.onopen = (data) => {
-        console.log("Connected to chat");
         console.log(data);
+
+        // Xabar yuborish
+    // const message = { content: `Ulangan vaqtning xabari: ${new Date()}` };  // Yuboriladigan xabar
+    // this.ws.send(JSON.stringify(message));  // JSON formatida yuborish
       };
 
-      this.ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        this.handleMessage(data);
+      this.ws.onmessage = (old_messages) => {
+        const data = JSON.parse(old_messages.data);
+        console.log(data);
+        // this.handleMessage(data);
       };
 
       this.ws.onerror = (error) => {
@@ -73,6 +88,7 @@ function TaskChat({ task }) {
   }
 
   useEffect(() => {
+    
     async function initializeChat(taskId) {
       const token = localStorage.getItem("access");
       const chat = new ChatService(taskId, token);
@@ -168,187 +184,63 @@ function TaskChat({ task }) {
           {/* Task Chat Body START */}
           <>
             <section className="px-4 chatcss overflow-y-auto h-[585px]">
-              <div className="chat chat-start border-0 group">
+              
+              {oldMessages.map((message)=>(
+                <div key={message.id} className={`chat ${String(message.sender) === String(userId) ? "chat-end" : "chat-start"} border-0 group`}>
                 <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                    />
-                  </div>
-                </div>
-
-                <div className="chat-bubble bg-custom-green-30 text-black">
-                  <div className="flex justify-between text-xs items-center pb-1 gap-4">
-                    <span className="font-bold">Tommy Kim</span>
-                    <span className="text-xs opacity-60 text-end">
-                      Derictor
-                    </span>
-                  </div>
-
-                  <span>Okay!</span>
-
-                  <p className="flex justify-end items-center gap-2 text-xs">
-                    <span
-                      onClick={acriveReply}
-                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
-                    >
-                      <i className="bi bi-reply"></i>Reply
-                    </span>
-                    <span>12:46 AM</span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="chat chat-start border-0 group">
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                    />
-                  </div>
-                </div>
-
-                <div className="chat-bubble bg-custom-green-30 text-black">
-                  <div className="flex justify-between text-xs items-center pb-1 gap-4">
-                    <span className="font-bold">Tommy Kim</span>
-                    <span className="text-xs opacity-60 text-end">
-                      Derictor
-                    </span>
-                  </div>
-
-                  <TaskFileControl
-                    fileUrl={
-                      "https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces.jpg"
-                    }
-                  />
-
-                  <span>Okay!</span>
-
-                  <p className="flex justify-end items-center gap-2 text-xs">
-                    <span
-                      onClick={acriveReply}
-                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
-                    >
-                      <i className="bi bi-reply"></i>Reply
-                    </span>
-                    <span>12:46 AM</span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="chat chat-start border-0 group">
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
-                    />
-                  </div>
-                </div>
-
-                <div className="chat-bubble bg-custom-green-30 text-black">
-                  <div className="flex justify-between text-xs items-center pb-1 gap-4">
-                    <span className="font-bold">Tommy Kim</span>
-                    <span className="text-xs opacity-60 text-end">
-                      Derictor
-                    </span>
-                  </div>
-                  <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
-                    <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
-                    <div>
-                      <div className="flex justify-between">
-                        <span className="font-bold">Obi-Wan Kenobi</span>
-                        <span className="text-xs opacity-60 text-end">
-                          12:45 AM
-                        </span>
-                      </div>
-                      <span className="line-clamp-1">
-                        {" "}
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Dolorum, voluptatum.{" "}
-                      </span>
+                    <div className="w-10 rounded-full">
+                      <img
+                        alt="Tailwind CSS chat bubble component"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU"
+                      />
                     </div>
                   </div>
-                  <span>Okay!</span>
-                  <p className="flex justify-end items-center gap-2 text-xs">
-                    <span
-                      onClick={acriveReply}
-                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
-                    >
-                      <i className="bi bi-reply"></i>Reply
-                    </span>
-                    <span>12:46 AM</span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="chat chat-end border-0 group">
-                <div className="chat-bubble bg-custom-green-dark text-white">
-                  <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
-                    <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
-                    <div>
-                      <div className="flex justify-between">
-                        <span className="font-bold">Tommy Kim</span>
-                        <span className="text-xs opacity-60 text-end">
-                          12:45 AM
-                        </span>
-                      </div>
-                      <span className="line-clamp-1">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Dolorum, voluptatum.
+                  <div className={`chat-bubble  ${String(message.sender) === String(userId) ? "bg-custom-green-dark text-white" : "bg-custom-green-dark text-white"}`}>
+                  <div className="flex justify-between text-xs items-center pb-1 gap-4">
+                      <span className="font-bold">Tommy Kim</span>
+                      <span className="text-xs opacity-60 text-end">
+                        Derictor
                       </span>
                     </div>
-                  </div>
-                  <span>Lorem ipsum dolor sit amet, con.</span>
-                  <p className="flex justify-end items-center gap-2 text-xs">
-                    <span
-                      onClick={acriveReply}
-                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
-                    >
-                      <i className="bi bi-reply"></i>Reply
-                    </span>
-                    <span>12:46 AM</span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="chat chat-end border-0 group">
-                <div className="chat-bubble bg-custom-green-dark text-white">
-                  <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
-                    <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
-                    <div>
-                      <div className="flex justify-between">
-                        <span className="font-bold">Tommy Kim</span>
-                        <span className="text-xs opacity-60 text-end">
-                          12:45 AM
+                    <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
+                      <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
+                      <div>
+                        <div className="flex justify-between">
+                          <span className="font-bold">Tommy Kim</span>
+                          <span className="text-xs opacity-60 text-end">
+                            12:45 AM
+                          </span>
+                        </div>
+                        <span className="line-clamp-1">
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                          Dolorum, voluptatum.
                         </span>
                       </div>
-                      <span className="line-clamp-1">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Dolorum, voluptatum.
-                      </span>
                     </div>
+                    <TaskFileControl
+                      fileUrl={
+                        "https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces.jpg"
+                      }
+                    />
+  
+                    <span>Lorem ipsum dolor sit amet, con.</span>
+                    <p className="flex justify-end items-center gap-2 text-xs">
+                      <span
+                        onClick={acriveReply}
+                        className="btn btn-xs hidden group-hover:flex justify-center items-center"
+                      >
+                        <i className="bi bi-reply"></i>Reply
+                      </span>
+                      <span>12:46 AM</span>
+                    </p>
                   </div>
-                  <TaskFileControl
-                    fileUrl={
-                      "https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces.jpg"
-                    }
-                  />
-
-                  <span>Lorem ipsum dolor sit amet, con.</span>
-                  <p className="flex justify-end items-center gap-2 text-xs">
-                    <span
-                      onClick={acriveReply}
-                      className="btn btn-xs hidden group-hover:flex justify-center items-center"
-                    >
-                      <i className="bi bi-reply"></i>Reply
-                    </span>
-                    <span>12:46 AM</span>
-                  </p>
                 </div>
-              </div>
+              ))}
+
+
+              
+
+              
 
               {/* scroll to END => START */}
               <div ref={endRef}></div>
