@@ -185,7 +185,7 @@ function TaskChat({ task }) {
                     String(message.sender) === String(userId)
                       ? "chat-end"
                       : "chat-start"
-                  } border-0 group`}
+                  } group relative`}
                 >
                   {String(message.sender) !== String(userId) && (
                     <div className="chat-image avatar">
@@ -199,7 +199,7 @@ function TaskChat({ task }) {
                   )}
 
                   <div
-                    className={`chat-bubble  ${ String(message.sender) === String(userId) ? "bg-custom-green-dark text-white" : "bg-custom-green-30 text-custom-green-dark" }`}
+                    className={`chat-bubble border-0 ${ String(message.sender) === String(userId) ? "bg-custom-green-dark text-white" : "bg-custom-green-30 text-custom-green-dark" }`}
                   >
                     <div className="flex justify-between text-xs items-center pb-1 gap-4">
                       <span className="font-bold">{message.sender_details.full_name}</span>
@@ -232,11 +232,16 @@ function TaskChat({ task }) {
                     <span>{message.content}</span>
 
                       <p className="flex justify-end items-center gap-2 text-xs">
-                        <span onClick={acriveReply} className="btn btn-xs hidden group-hover:flex justify-center items-center"><i className="bi bi-reply"></i>Reply</span>
                         <span>{new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
                       </p>
 
                   </div>
+                        <div onClick={acriveReply} 
+                              className={`btn btn-sm rounded-full border-0 hidden group-hover:flex justify-center items-center
+                                          absolute bottom-1 bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
+                                          ${ String(message.sender) === String(userId) ? "left-1" : "right-0" }`}>
+                          <i className="bi bi-reply"></i>
+                        </div>
                 </div>
               ))}
 
