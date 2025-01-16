@@ -108,9 +108,28 @@ function TaskChat({ task }) {
 
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
+  
+  const sendMessage = (e) => {
+    e.preventDefault();
+    console.log(message, file);
+    if (chatServiceRef.current) {
+      chatServiceRef.current.sendMessage(message.message); // Use the ref to send the message
+    }
+
+    setFile({ name: "", file: "", url: "" });
+    setMessage({ message: "" }); // Clear the message input
+    setRows(1);
+  };
 
   const inputHandle = (e) => {
-    setMessage({ ...message, [e.target.name]: e.target.value });
+    if (e.key === 'Enter' && !e.shiftKey) { // Check for Enter key without Shift
+      e.preventDefault(); // Prevent new line
+      sendMessage(e); 
+      setMessage({ message: "" });
+      setFile({ name: "", file: "", url: "" });
+    } else {
+      setMessage({ ...message, [e.target.name]: e.target.value });
+    }
     const text = e.target.value;
     const lineBreaks = text.split("\n").length;
     setRows(Math.min(Math.max(lineBreaks, 1), 5));
@@ -134,17 +153,7 @@ function TaskChat({ task }) {
     setFile({ ...file, name: "", file: "", url: "" });
   };
 
-  const sendMessage = (e) => {
-    e.preventDefault();
-    console.log(message, file);
-    if (chatServiceRef.current) {
-      chatServiceRef.current.sendMessage(message.message); // Use the ref to send the message
-    }
-
-    setFile({ ...file, name: "", file: "", url: "" });
-    setMessage({ ...message, message: "" });
-    setRows(1);
-  };
+  
 
   return (
     <>
@@ -311,6 +320,7 @@ function TaskChat({ task }) {
                 name="message"
                 value={message.message}
                 onChange={inputHandle}
+                onKeyDown={inputHandle}
                 className="flex-grow px-2 py-1 outline-none resize-none text-sm text-custom-green-dark placeholder:text-custom-green-60"
                 placeholder="Write a message..."
               />
