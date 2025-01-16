@@ -10,7 +10,7 @@ function TaskChat({ task }) {
     if(!task.id) return;
     http 
       .get(`/chat/tasks/${task.id}/messages/`, { headers: { Authorization: `Bearer ${localStorage.getItem("access")}` }, })
-      .then((response) => { setMessages(response.data.results); console.log(response.data) })
+      .then((response) => { console.log(response.data) })
       .catch((error) => { console.log(error.response.data); });
     }, [task.id]);
 
@@ -57,7 +57,8 @@ function TaskChat({ task }) {
           console.error("Error:", data.message);
           break;
         default:
-          console.log("Unknown message type:", data.type);
+          setMessages((prevMessages) => [...prevMessages, data.message]);
+          // console.log("Unknown message type:", data.message);
       }
     }
 
