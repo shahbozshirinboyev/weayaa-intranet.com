@@ -5,6 +5,7 @@ function TaskChat({ task }) {
 
   
   class ChatService {
+    
     constructor(taskId, token) {
         this.taskId = task.id;
         this.token = localStorage.getItem('access');
@@ -12,15 +13,11 @@ function TaskChat({ task }) {
     }
 
     connect() {
-        this.ws = new WebSocket(`wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/`);
+      this.ws = new WebSocket(`wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}`);
+
         
         // Add token to WebSocket handshake
         this.ws.onopen = () => {
-            // Set the authorization header
-            this.ws.send(JSON.stringify({
-                type: 'authorization',
-                token: this.token
-            }));
             console.log('Connected to chat');
         };
 
