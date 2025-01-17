@@ -93,7 +93,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
 
 
       <dialog id={`editTaskModal${task.id}`} className="modal">
-        <div className="modal-box p-0">
+        <div className="modal-box p-0 max-w-xl">
           {/* Modal header Start */}
           <form
             method="dialog"
@@ -110,8 +110,93 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
           </form>
           {/* Modal header End */}
           <>
-          
 
+          <form>
+              <div className="rounded-md shadow-md z-50 flex flex-col gap-3 px-5 py-4 text-custom-green-dark">
+                <label className="w-full">
+                  <span className="text-custom-green-80 font-medium text-[14px]">
+                    Task title
+                  </span>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    // value={taskData.name}
+                    // onChange={handleChange}
+                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
+                  />
+                </label>
+
+                <label className="w-full ">
+                  <span className="text-custom-green-80 font-medium text-[14px]">
+                    Task description
+                  </span>
+                  <textarea
+                    name="description"
+                    required
+                    // value={taskData.description}
+                    // onChange={handleChange}
+                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
+                    rows={4}
+                  ></textarea>
+                </label>
+
+                <label className="w-full">
+                  <span className="text-custom-green-80 font-medium text-[14px]">
+                    Task deadline
+                  </span>
+                  <input
+                    type="date"
+                    name="deadline"
+                    required
+                    // value={taskData.deadline}
+                    // onChange={handleChange}
+                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
+                  />
+                </label>
+
+                <div className="flex items-center w-full">
+                  <label className="w-full text-center rounded-lg cursor-pointer bg-custom-green-15  hover:bg-custom-green-30 py-3">
+                    <div className="flex flex-col w-full items-center justify-center">
+                      <i className="bi bi-cloud-arrow-up-fill text-2xl text-custom-green-60"></i>
+
+                      <p className="text-sm text-custom-green-60 font-bold">
+                        Choose file to upload <br /> Supported formats: JPG,
+                        PNG, RAR, ZIP
+                      </p>
+                    </div>
+
+                    <input
+                      className="hidden"
+                      id="file-upload"
+                      accept="*/*"
+                      type="file"
+                      // multiple
+                      // accept=".jpg,.png,.rar,.zip"
+                      // onChange={handleFileChange}
+                    />
+
+                    <div>
+                      {/* {files.length > 0 && (
+                        <ul className="space-y-2">
+                          {files.map((file, index) => (
+                            <li key={index} className="text-sm text-gray-700">
+                              {file.name}
+                            </li>
+                          ))}
+                        </ul>
+                      )} */}
+                    </div>
+                  </label>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full rounded-md h-9 bg-custom-green-dark text-blue-50 font-medium"
+                >
+                  Submit Task
+                </button>
+              </div>
+            </form>
           </>
         </div>
         <form method="dialog" className="modal-backdrop">
