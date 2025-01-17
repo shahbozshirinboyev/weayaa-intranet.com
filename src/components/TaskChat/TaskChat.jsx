@@ -92,12 +92,11 @@ function TaskChat({ task }) {
   const [reply, setReply] = useState({ id: "", user: "", message: "" });
   const [rows, setRows] = useState(1);
 
-  const acriveReply = () => {
+  const acriveReply = (message) => {
     setReply({
-      id: "12",
-      user: "Shahboz Shirnboyev",
-      message:
-        "Lorem ipsum shu gaplarda nima bo'lsa ham shu joyga kelganimdan xursandman",
+      id: message.id,
+      user: message.sender_details.full_name,
+      message: message.content,
     });
   };
   const handleClearReply = () => {
@@ -230,7 +229,7 @@ function TaskChat({ task }) {
                       </p>
 
                   </div>
-                        <div onClick={acriveReply} 
+                        <div onClick={()=> {acriveReply(message)}} 
                               className={`btn btn-sm rounded-full border-0 hidden group-hover:flex justify-center items-center
                                           absolute bottom-1 bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
                                           ${ String(message.sender) === String(userId) ? "left-1" : "right-0" }`}>
