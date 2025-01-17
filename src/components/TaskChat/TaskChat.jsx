@@ -106,6 +106,11 @@ function TaskChat({ task }) {
 
     sendMessage(content, file, reply) {
       // console.log(content, file, reply);
+      console.log({
+        type: "message",
+        content: content,
+        reply_to: reply.id !== "" ? reply.id : null,
+      })
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
         if (file.name === '') {
           this.ws.send(
