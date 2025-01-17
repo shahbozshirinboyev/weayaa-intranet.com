@@ -116,8 +116,8 @@ function TaskChat({ task }) {
           this.ws.send(
             JSON.stringify({
               type: "message",
-              content: content,
               reply_to: reply.id !== "" ? reply.id : null,
+              content: content,
             })
           );
         } else {
@@ -127,6 +127,7 @@ function TaskChat({ task }) {
             const base64Content = reader.result.split(',')[1];
             const message = {
               type: "message",
+              reply_to: reply.id !== "" ? reply.id : null,
               content: content,
               file: base64Content,
               file_name: file.name
