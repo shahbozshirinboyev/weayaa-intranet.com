@@ -50,7 +50,6 @@ function TaskChat({ task }) {
           console.error("Error:", data.message);
           break;
         default:
-          console.log(data)
           setMessages((prevMessages) => [...prevMessages, data.message]);
       }
     }
@@ -58,6 +57,7 @@ function TaskChat({ task }) {
     sendMessage(content, file) {
        
       console.log(message, file)
+
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
         this.ws.send(
           JSON.stringify({
@@ -70,28 +70,23 @@ function TaskChat({ task }) {
       }
     }
 
-    disconnect() {
-      if (this.ws) {
-        this.ws.close();
-      }
-    }
+    disconnect() { if (this.ws) { this.ws.close(); } }
   }
 
   useEffect(() => {
-    
-    async function initializeChat(taskId) {
-      const token = localStorage.getItem("access");
-      const chat = new ChatService(taskId, token);
+
+    setMessages([]);
+
+    async function initializeChat() {
+      const chat = new ChatService();
       chat.connect();
-      chatServiceRef.current = chat; // Store the instance in the ref
+      chatServiceRef.current = chat;
       return chat;
     }
 
-    // Check if task is available and initialize chat
-    if (task && task.id) {
-      initializeChat(task.id);
-    }
-  }, [task]); // Dependency array includes task
+    if (task && task.id) { initializeChat(task.id); }
+
+  }, [task]); 
 
   // --------------------------------------------
   const [reply, setReply] = useState({ id: "", user: "", message: "" });
