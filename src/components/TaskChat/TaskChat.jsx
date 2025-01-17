@@ -56,7 +56,7 @@ function TaskChat({ task }) {
 
     sendMessage(content, file) {
        
-      console.log(message, file)
+      console.log(content, file)
 
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
         this.ws.send(
@@ -92,7 +92,7 @@ function TaskChat({ task }) {
   const [reply, setReply] = useState({ id: "", user: "", message: "" });
   const [rows, setRows] = useState(1);
 
-  const acriveReply = (message) => {
+  const activeReply = (message) => {
     setReply({
       id: message.id,
       user: message.sender_details.full_name,
@@ -229,7 +229,7 @@ function TaskChat({ task }) {
                       </p>
 
                   </div>
-                        <div onClick={()=> {acriveReply(message)}} 
+                        <div onClick={()=> {activeReply(message)}} 
                               className={`btn btn-sm rounded-full border-0 hidden group-hover:flex justify-center items-center
                                           absolute bottom-1 bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
                                           ${ String(message.sender) === String(userId) ? "left-1" : "right-0" }`}>
