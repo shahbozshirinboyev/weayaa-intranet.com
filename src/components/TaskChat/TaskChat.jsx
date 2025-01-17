@@ -14,9 +14,7 @@ function TaskChat({ task }) {
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
 
-  useEffect(() => {
-    console.log(messages)
-  }, [messages])
+  // useEffect(() => { console.log(messages) }, [messages])
 
   const activeReply = (message) => {
     setReply({
@@ -38,7 +36,6 @@ function TaskChat({ task }) {
   
   const sendMessage = (e) => {
     e.preventDefault();
-    console.log(message, file);
     if (chatServiceRef.current) {
       chatServiceRef.current.sendMessage(message.message, file, reply); // Use the ref to send the message
     }
@@ -125,7 +122,7 @@ function TaskChat({ task }) {
 
     sendMessage(content, file, reply){
        
-      console.log(content, file, reply);
+      // console.log(content, file, reply);
 
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 
