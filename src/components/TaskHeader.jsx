@@ -23,7 +23,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
   }, []);
 
   const deleteTask = (id) => {
-    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`};
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}` };
     toast.promise(http.delete(`projects/tasks/${id}/`, { headers }), {
       loading: "Deleting...",
       success: (response) => {
@@ -52,13 +52,12 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
         <div className="relative" ref={dropdownRef}>
           <button onClick={toggleDropdown} className="h-full px-0 text-custom-green-dark">
             <i
-              className={`bi bi-three-dots-vertical flex justify-center items-center ${
-                isOpen ? "-rotate-90" : "rotate-0"
-              } transition-all duration-300`}
+              className={`bi bi-three-dots-vertical flex justify-center items-center ${isOpen ? "-rotate-90" : "rotate-0"
+                } transition-all duration-300`}
             ></i>
           </button>
           {isOpen && (
-            <ul className="dropdown-content text-[14px] menu text-custom-green-dark bg-base-100 rounded-md z-[1] w-[160px] p-1 shadow-xl border border-custom-green-30 border-opacity-5 absolute mt-1 right-0">
+            <ul className="dropdown-content text-[14px] menu text-custom-green-dark bg-base-100 rounded-md z-[1] w-[160px] p-1 shadow-xl border border-custom-green-30 border-opacity-5 absolute mt-1 right-0 gap-1">
               <li>
                 <button
                   onClick={showTaskId}
@@ -70,8 +69,17 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
               </li>
               <li>
                 <button
-                  onClick={ () => { deleteTask(task.id); }}
-                  className={`hover:bg-red-700 hover:text-white ${ userType === "staff" ? "hidden" : "" }`}
+                  onClick={() => document.getElementById(`editTaskModal${task.id}`).showModal()}
+                  className="hover:bg-custom-green-dark hover:text-white"
+                >
+                  <i className="bi bi-pencil flex justify-center items-center"></i>{" "}
+                  Edit
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => { deleteTask(task.id); }}
+                  className={`hover:bg-red-700 hover:text-white ${userType === "staff" ? "hidden" : ""}`}
                 >
                   <i className="bi bi-trash flex justify-center items-center"></i>{" "}
                   Delete
@@ -82,6 +90,35 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
         </div>
 
       </div>
+
+
+      <dialog id={`editTaskModal${task.id}`} className="modal">
+        <div className="modal-box p-0">
+          {/* Modal header Start */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Edit Task (ID: {task.id})
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
+            </div>
+          </form>
+          {/* Modal header End */}
+          <>
+          
+
+          </>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
     </>
   );
 };
