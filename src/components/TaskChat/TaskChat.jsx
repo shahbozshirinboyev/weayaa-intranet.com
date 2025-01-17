@@ -248,14 +248,14 @@ function TaskChat({ task }) {
           {/* selected relpy message show --- start */}
           <div className={`justify-between items-center transition-all duration-300 w-full ${ reply.id === "" ? "hidden" : "" } bg-white`} >
             <div className="bg-custom-green-dark p-1 flex gap-1 items-center justify-center">
-              <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
+              <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark w-full">
                 <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
-                <div>
-                  <div className="flex justify-between">
-                    <span className="font-bold">Tommy Kim</span>
-                    <span className="text-xs opacity-60 text-end">Derictor</span>
+                <div className="w-full">
+                  <div className="flex justify-between items-center w-full">
+                    <span className="font-bold">{reply.user}</span>
+                    <span className="text-xs opacity-60 text-end">unknown</span>
                   </div>
-                  <span className="line-clamp-1"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptatum. </span>
+                  <span className="line-clamp-1">{reply.message}</span>
                 </div>
               </div>
               <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white" onClick={handleClearReply} >
