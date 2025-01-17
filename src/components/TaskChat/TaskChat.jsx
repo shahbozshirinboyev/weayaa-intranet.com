@@ -185,7 +185,8 @@ function TaskChat({ task }) {
               {messages.sort((b, a) => new Date(b.created_at) - new Date(a.created_at)).map((message) => (
                 <div
                   key={message.id}
-                  className={`chat ${ String(message.sender) === String(userId) ? "chat-end" : "chat-start" } group relative`}
+                  className={`chat group relative rounded-md hover:bg-custom-green-15  
+                   ${ String(message.sender) === String(userId) ? "chat-end" : "chat-start" }`}
                 >
                   {String(message.sender) !== String(userId) && (
                     <div className="chat-image avatar">
@@ -197,13 +198,10 @@ function TaskChat({ task }) {
                       </div>
                     </div>
                   )}
-
-                  <div
-                    className={`chat-bubble border-0 ${ String(message.sender) === String(userId) ? "bg-custom-green-dark text-white" : "bg-custom-green-30 text-custom-green-dark" }`}
-                  >
+                  <div className={`chat-bubble border-0 ${ String(message.sender) === String(userId) ? "bg-custom-green-dark text-white" : "bg-custom-green-30 text-custom-green-dark" }`} >
                     <div className="flex justify-between text-xs items-center pb-1 gap-4">
                       <span className="font-bold">{message.sender_details.full_name}</span>
-                      <span className="opacity-80 text-end">unknown</span>
+                      <span className="opacity-80 text-end">{ String(message.sender) === String(userId) ? "You" : "unknown" }</span>
                     </div>
                     {/* Reply section -- start */}
                     { message.reply_to && 
@@ -213,17 +211,13 @@ function TaskChat({ task }) {
                       <div>
                         <div className="flex justify-between">
                           <span className="font-bold">Tommy Kim</span>
-                          <span className="text-xs opacity-60 text-end">
-                            12:45 AM
-                          </span>
+                          <span className="text-xs opacity-60 text-end"> 12:45 AM </span>
                         </div>
-                        <span className="line-clamp-1">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Dolorum, voluptatum.
-                        </span>
+                        <span className="line-clamp-1"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptatum. </span>
                       </div>
 
-                    </div>}
+                    </div>
+                    }
                     {/* Reply section -- end */}
 
                     <TaskFileControl fileUrl={message.file} />
@@ -252,7 +246,7 @@ function TaskChat({ task }) {
           </>
           {/* Task Chat Body END */}
           {/* Chat Input START */}
-          {/* selected relpy inso show --- start */}
+          {/* selected relpy message show --- start */}
           <div className={`justify-between items-center transition-all duration-300 w-full ${ reply.id === "" ? "hidden" : "" } bg-white`} >
             <div className="bg-custom-green-dark p-1 flex gap-1 items-center justify-center">
               <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
@@ -260,14 +254,9 @@ function TaskChat({ task }) {
                 <div>
                   <div className="flex justify-between">
                     <span className="font-bold">Tommy Kim</span>
-                    <span className="text-xs opacity-60 text-end">
-                      Derictor
-                    </span>
+                    <span className="text-xs opacity-60 text-end">Derictor</span>
                   </div>
-                  <span className="line-clamp-1">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolorum, voluptatum.
-                  </span>
+                  <span className="line-clamp-1"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptatum. </span>
                 </div>
               </div>
               <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white" onClick={handleClearReply} >
