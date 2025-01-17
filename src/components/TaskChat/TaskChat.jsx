@@ -8,6 +8,11 @@ function TaskChat({ task }) {
   const [messages, setMessages] = useState([]);
   const chatServiceRef = useRef(null);
 
+  useEffect(() => {
+    console.log(messages)
+  }, [messages])
+  
+
   class ChatService {
 
     constructor() {
@@ -45,16 +50,19 @@ function TaskChat({ task }) {
           console.error("Error:", data.message);
           break;
         default:
+          console.log(data)
           setMessages((prevMessages) => [...prevMessages, data.message]);
       }
     }
 
     sendMessage(content, file) {
+       
       console.log(message, file)
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
         this.ws.send(
           JSON.stringify({
             type: "message",
+            file: file.url,
             content: content,
           })
         );
