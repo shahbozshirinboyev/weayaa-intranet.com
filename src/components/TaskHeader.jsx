@@ -57,32 +57,29 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
             ></i>
           </button>
           {isOpen && (
-            <ul className="dropdown-content text-[14px] menu text-custom-green-dark bg-base-100 rounded-md z-[1] w-[160px] p-1 shadow-xl border border-custom-green-30 border-opacity-5 absolute mt-1 right-0 gap-1">
+            <ul className="dropdown-content text-[14px] menu text-custom-green-dark bg-base-100 rounded-md z-[1] w-[160px] p-1 shadow-md border-custom-green-30 absolute mt-1 right-0 gap-1">
               <li>
                 <button
                   onClick={showTaskId}
-                  className="hover:bg-custom-green-dark hover:text-white"
-                >
-                  <i className="bi bi-fire flex justify-center items-center"></i>{" "}
-                  Important Task
+                  className="hover:bg-custom-green-dark btn btn-sm justify-start border-0 hover:text-white">
+                  <i className="bi bi-fire flex justify-center items-center"></i>
+                  <span>Important Task</span>
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => document.getElementById(`editTaskModal${task.id}`).showModal()}
-                  className="hover:bg-custom-green-dark hover:text-white"
-                >
-                  <i className="bi bi-pencil flex justify-center items-center"></i>{" "}
-                  Edit
+                  className={`hover:bg-custom-green-dark btn btn-sm justify-start border-0 hover:text-white ${userType === "staff" ? "hidden" : ""}`}>
+                  <i className="bi bi-pencil flex justify-center items-center"></i>
+                  <span>Edit</span>
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => { deleteTask(task.id); }}
-                  className={`hover:bg-red-700 hover:text-white ${userType === "staff" ? "hidden" : ""}`}
-                >
-                  <i className="bi bi-trash flex justify-center items-center"></i>{" "}
-                  Delete
+                  className={`hover:bg-red-700 hover:text-white btn btn-sm justify-start border-0 ${userType === "staff" ? "hidden" : ""}`}>
+                  <i className="bi bi-trash flex justify-center items-center"></i>
+                  <span>Delete</span>
                 </button>
               </li>
             </ul>
