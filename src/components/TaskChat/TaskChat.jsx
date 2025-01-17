@@ -8,9 +8,78 @@ function TaskChat({ task }) {
   const [messages, setMessages] = useState([]);
   const chatServiceRef = useRef(null);
 
+  const [reply, setReply] = useState({ id: "", user: "", message: "" });
+  const [rows, setRows] = useState(1);
+
+  const [file, setFile] = useState({ name: "", file: "", url: "" });
+  const [message, setMessage] = useState({ message: "" });
+
   useEffect(() => {
     console.log(messages)
   }, [messages])
+
+  const activeReply = (message) => {
+    setReply({
+      id: message.id,
+      user: message.sender_details.full_name,
+      message: message.content,
+    });
+  };
+  const handleClearReply = () => {
+    setReply({ id: "", user: "", message: "" });
+  };
+
+  const endRef = useRef(null);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  
+  
+  const sendMessage = (e) => {
+    e.preventDefault();
+    console.log(message, file);
+    if (chatServiceRef.current) {
+      chatServiceRef.current.sendMessage(message.message, file, reply); // Use the ref to send the message
+    }
+
+    setFile({ name: "", file: "", url: "" });
+    setMessage({ message: "" }); // Clear the message input
+    setRows(1);
+    handleClearReply();
+  };
+
+  const inputHandle = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { // Check for Enter key without Shift
+      e.preventDefault(); // Prevent new line
+      sendMessage(e); 
+      setMessage({ message: "" });
+      setFile({ name: "", file: "", url: "" });
+    } else {
+      setMessage({ ...message, [e.target.name]: e.target.value });
+    }
+    const text = e.target.value;
+    const lineBreaks = text.split("\n").length;
+    setRows(Math.min(Math.max(lineBreaks, 1), 5));
+  };
+
+  const handleFileChange = (event) => {
+    if (event.target.files.length > 0) {
+      const selectedFile = event.target.files[0];
+      setFile({
+        ...file,
+        name: selectedFile.name,
+        file: selectedFile,
+        url: URL.createObjectURL(selectedFile),
+      });
+    } else {
+      setFile({ ...file, name: "", file: "" });
+    }
+  };
+
+  const handleClearFile = () => {
+    setFile({ ...file, name: "", file: "", url: "" });
+  };
   
 
   class ChatService {
@@ -54,20 +123,42 @@ function TaskChat({ task }) {
       }
     }
 
-    sendMessage(content, file) {
+    sendMessage(content, file, reply){
        
-      console.log(content, file)
+      console.log(content, file, reply);
 
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-        this.ws.send(
-          JSON.stringify({
-            type: "message",
-            content: content,
-          })
-        );
+
+        if(file.name === ''){
+
+          this.ws.send(
+            JSON.stringify({
+              type: "message",
+              content: content,
+              reply_to: reply.id !== "" ? reply.id : null,
+            })
+          );
+
+        }else{
+          const reader = new FileReader();
+          reader.readAsDataURL(file.file);
+          reader.onload = () => {
+              const base64Content = reader.result.split(',')[1];
+              
+              const message = {
+                  type: "message",
+                  content: content,
+                  file: base64Content,
+                  file_name: file.name
+              };
+              
+              this.ws.send(JSON.stringify(message));
+        }
+      }
       } else {
         console.error("WebSocket is not connected");
       }
+      
     }
 
     disconnect() { if (this.ws) { this.ws.close(); } }
@@ -89,71 +180,9 @@ function TaskChat({ task }) {
   }, [task]); 
 
   // --------------------------------------------
-  const [reply, setReply] = useState({ id: "", user: "", message: "" });
-  const [rows, setRows] = useState(1);
 
-  const activeReply = (message) => {
-    setReply({
-      id: message.id,
-      user: message.sender_details.full_name,
-      message: message.content,
-    });
-  };
-  const handleClearReply = () => {
-    setReply({ id: "", user: "", message: "" });
-  };
 
-  const endRef = useRef(null);
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
 
-  const [file, setFile] = useState({ name: "", file: "", url: "" });
-  const [message, setMessage] = useState({ message: "" });
-  
-  const sendMessage = (e) => {
-    e.preventDefault();
-    console.log(message, file);
-    if (chatServiceRef.current) {
-      chatServiceRef.current.sendMessage(message.message, file.file); // Use the ref to send the message
-    }
-
-    setFile({ name: "", file: "", url: "" });
-    setMessage({ message: "" }); // Clear the message input
-    setRows(1);
-  };
-
-  const inputHandle = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { // Check for Enter key without Shift
-      e.preventDefault(); // Prevent new line
-      sendMessage(e); 
-      setMessage({ message: "" });
-      setFile({ name: "", file: "", url: "" });
-    } else {
-      setMessage({ ...message, [e.target.name]: e.target.value });
-    }
-    const text = e.target.value;
-    const lineBreaks = text.split("\n").length;
-    setRows(Math.min(Math.max(lineBreaks, 1), 5));
-  };
-
-  const handleFileChange = (event) => {
-    if (event.target.files.length > 0) {
-      const selectedFile = event.target.files[0];
-      setFile({
-        ...file,
-        name: selectedFile.name,
-        file: selectedFile,
-        url: URL.createObjectURL(selectedFile),
-      });
-    } else {
-      setFile({ ...file, name: "", file: "" });
-    }
-  };
-
-  const handleClearFile = () => {
-    setFile({ ...file, name: "", file: "", url: "" });
-  };
 
   
 
