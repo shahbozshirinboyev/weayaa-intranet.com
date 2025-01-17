@@ -62,7 +62,6 @@ function TaskChat({ task }) {
         this.ws.send(
           JSON.stringify({
             type: "message",
-            file: file.url,
             content: content,
           })
         );
