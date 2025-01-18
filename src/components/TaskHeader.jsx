@@ -57,7 +57,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
             ></i>
           </button>
           {isOpen && (
-            <ul className="dropdown-content text-[14px] menu text-custom-green-dark bg-base-100 rounded-md z-[1] w-[160px] p-1 shadow-md border-custom-green-30 absolute mt-1 right-0 gap-1">
+            <ul className="dropdown-content text-[14px] menu text-custom-green-dark bg-base-100 rounded-md z-[1] w-[160px] p-1 border shadow-md border-custom-green-5 absolute mt-1 right-0 gap-1">
               <li>
                 <button
                   onClick={showTaskId}
@@ -97,7 +97,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
             className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
           >
             <span className="text-custom-green-dark font-bold">
-              Edit Task (ID: {task.id})
+              Edit Task Info (ID: {task.id})
             </span>
             <div className="text-end">
               <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
@@ -109,20 +109,76 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
           <>
 
           <form>
-              <div className="rounded-md shadow-md z-50 flex flex-col gap-3 px-5 py-4 text-custom-green-dark">
-                <label className="w-full">
-                  <span className="text-custom-green-80 font-medium text-[14px]">
-                    Task title
-                  </span>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    // value={taskData.name}
-                    // onChange={handleChange}
-                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
-                  />
-                </label>
+              <div className="flex flex-col gap-3 px-5 py-4 text-custom-green-dark z-50">
+                <div className="flex gap-4 border">
+
+                  <div className="flex items-center w-[200px] h-full border">
+                    <label className="w-full text-center rounded-lg cursor-pointer bg-custom-green-15  hover:bg-custom-green-30 py-3">
+                      <div className="flex flex-col w-full items-center justify-center">
+                        <i className="bi bi-cloud-arrow-up-fill text-2xl text-custom-green-60"></i>
+                        <p className="text-xs text-custom-green-60">
+                          <span className="font-bold">Choose file to upload</span>
+                          <br />
+                          <span>Supported any formats</span>
+                        </p>
+                      </div>
+
+                      <input
+                        className="hidden"
+                        id="file-upload"
+                        accept="*/*"
+                        type="file"
+                      // multiple
+                      // accept=".jpg,.png,.rar,.zip"
+                      // onChange={handleFileChange}
+                      />
+
+                      <div>
+                        {/* {files.length > 0 && (
+                        <ul className="space-y-2">
+                          {files.map((file, index) => (
+                            <li key={index} className="text-sm text-gray-700">
+                              {file.name}
+                            </li>
+                          ))}
+                        </ul>
+                      )} */}
+                      </div>
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="w-full">
+                      <span className="text-custom-green-80 font-medium text-[14px]">
+                        Task title
+                      </span>
+                      <input
+                        type="text"
+                        name="name"
+                        required
+                        // value={taskData.name}
+                        // onChange={handleChange}
+                        className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
+                      />
+                    </label>
+
+                    <label className="w-full">
+                      <span className="text-custom-green-80 font-medium text-[14px]">
+                        Task deadline
+                      </span>
+                      <input
+                        type="date"
+                        name="deadline"
+                        required
+                        // value={taskData.deadline}
+                        // onChange={handleChange}
+                        className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
+                      />
+                    </label>
+
+                  </div>
+
+                </div>
 
                 <label className="w-full ">
                   <span className="text-custom-green-80 font-medium text-[14px]">
@@ -136,62 +192,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                     className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
                     rows={4}
                   ></textarea>
-                </label>
-
-                <label className="w-full">
-                  <span className="text-custom-green-80 font-medium text-[14px]">
-                    Task deadline
-                  </span>
-                  <input
-                    type="date"
-                    name="deadline"
-                    required
-                    // value={taskData.deadline}
-                    // onChange={handleChange}
-                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
-                  />
-                </label>
-
-                <div className="flex items-center w-full">
-                  <label className="w-full text-center rounded-lg cursor-pointer bg-custom-green-15  hover:bg-custom-green-30 py-3">
-                    <div className="flex flex-col w-full items-center justify-center">
-                      <i className="bi bi-cloud-arrow-up-fill text-2xl text-custom-green-60"></i>
-
-                      <p className="text-sm text-custom-green-60 font-bold">
-                        Choose file to upload <br /> Supported formats: JPG,
-                        PNG, RAR, ZIP
-                      </p>
-                    </div>
-
-                    <input
-                      className="hidden"
-                      id="file-upload"
-                      accept="*/*"
-                      type="file"
-                      // multiple
-                      // accept=".jpg,.png,.rar,.zip"
-                      // onChange={handleFileChange}
-                    />
-
-                    <div>
-                      {/* {files.length > 0 && (
-                        <ul className="space-y-2">
-                          {files.map((file, index) => (
-                            <li key={index} className="text-sm text-gray-700">
-                              {file.name}
-                            </li>
-                          ))}
-                        </ul>
-                      )} */}
-                    </div>
-                  </label>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full rounded-md h-9 bg-custom-green-dark text-blue-50 font-medium"
-                >
-                  Submit Task
-                </button>
+                </label>               
+                <button type="submit" className="w-full rounded-md h-9 bg-custom-green-dark text-blue-50 font-medium">Submit Task</button>
               </div>
             </form>
           </>
