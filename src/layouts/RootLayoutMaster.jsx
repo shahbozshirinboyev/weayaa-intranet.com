@@ -141,7 +141,7 @@ function RootLayoutMaster({ setAccess, setRefresh, setUserType }) {
       navLink: "/projects",
     },
     {
-      title: "Archive projects",
+      title: "Archive",
       src: "bi bi-archive",
       navLink: "/archiveprojects",
     },

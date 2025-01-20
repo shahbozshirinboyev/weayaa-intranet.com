@@ -73,10 +73,8 @@ function ArchiveProjects() {
                     </div>
                   </div>
                 </td>
-                <td>
-                  <span className="font-semibold"> 24.01.2025 </span>
-                </td>
-                <td className="font-semibold">Tommy Kim</td>
+                <td> <span className="font-semibold">24.01.2025</span> </td>
+                <td> <span className="font-semibold">Full Name</span> </td>
                 <th>
                   <button
                     onClick={() => { document.getElementById("my_unarchive_modal").showModal(); setSelectArchiveProject(project) }}
