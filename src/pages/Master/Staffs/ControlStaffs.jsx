@@ -16,6 +16,7 @@ import ClientProjects from "../../../components/ClientProjects";
 function ControlStaffs() {
   const [smlist, setSmlist] = useState("staff");
   const [users, setUsers] = useState([]);
+  console.log(users)
   const [usersCount, setUsersCount] = useState();
   const [clientId, setClientId] = useState('')
   const [clientIdProject, setClientIdProject] = useState('')
@@ -303,6 +304,7 @@ function ControlStaffs() {
           <tbody>
             {users
               .filter((user) => user.user_type === smlist && user.user_type !== "client")
+              .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
               .map((user) => (
                 <tr
                   key={user.id}
