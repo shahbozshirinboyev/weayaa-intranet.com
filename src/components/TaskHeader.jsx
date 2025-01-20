@@ -123,18 +123,18 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                   <span>Important Task</span>
                 </button>
               </li>
-              <li>
+              <li className={`${userType === "staff" || userType === "client" ? "hidden" : ""}`}>
                 <button
                   onClick={() => document.getElementById(`editTaskModal${task.id}`).showModal()}
-                  className={`hover:bg-custom-green-dark text-custom-green-dark btn btn-sm justify-start border-0 hover:text-white ${userType === "staff" ? "hidden" : ""}`}>
+                  className={`hover:bg-custom-green-dark text-custom-green-dark btn btn-sm justify-start border-0 hover:text-white`}>
                   <i className="bi bi-pencil flex justify-center items-center"></i>
                   <span>Edit</span>
                 </button>
               </li>
-              <li>
+              <li className={`${userType === "staff" || userType === "client" ? "hidden" : ""}`}>
                 <button
                   onClick={() => { deleteTask(task.id); }}
-                  className={`hover:bg-red-700 text-custom-green-dark hover:text-white btn btn-sm justify-start border-0 ${userType === "staff" ? "hidden" : ""}`}>
+                  className={`hover:bg-red-700 text-custom-green-dark hover:text-white btn btn-sm justify-start border-0`}>
                   <i className="bi bi-trash flex justify-center items-center"></i>
                   <span>Delete</span>
                 </button>
