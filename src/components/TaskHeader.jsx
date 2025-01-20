@@ -13,14 +13,12 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
     description: ""
   })
 
-  const activeTask = () => {
-    console.log(taskInfo)
-  }
-
   useEffect(() => {
     setTaskInfo({
       id: task.id,
       file: task.file,
+      // fileName: task.file.split("/").pop(),
+      // fileType: task.file.split(".").pop().toUpperCase(),
       name: task.name,
       deadline: task.deadline,
       description: task.description,
