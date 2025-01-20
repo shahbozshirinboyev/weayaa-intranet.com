@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import TaskFileControl from "../TaskFileControl";
+import toast, { Toaster } from "react-hot-toast";
 
 function TaskChat({ task }) {
 
@@ -137,6 +138,7 @@ function TaskChat({ task }) {
         }
       } else {
         console.error("WebSocket is not connected");
+        toast.error("Please, re-enter the Chat Room!")
       }
     }
     disconnect() { if (this.ws) { this.ws.close(); } }
@@ -156,6 +158,7 @@ function TaskChat({ task }) {
     <>
       {/* TASK => Chat START */}
       <dialog id={`task_chat`} className="modal">
+        <Toaster />
         <div className="modal-box h-full max-h-[750px] p-0 flex flex-col rounded-none">
           {/* Modal header Start */}
           <form
