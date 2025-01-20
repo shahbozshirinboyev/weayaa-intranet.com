@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import http from "../services/http";
 
 const TaskHeader = ({ task, getActiveProjectTasks }) => {
@@ -31,7 +31,35 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
     const { name, value } = e.target;
     setTaskInfo({ ...taskInfo, [name]: value });
   };
-  
+
+  const TaskInfoEdit = (e) => {
+    e.preventDefault();
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
+    toast.promise(
+      http.patch(`projects/tasks/${taskInfo.id}/`,
+        {
+          name: taskInfo.name,
+          deadline: taskInfo.deadline,
+          description: taskInfo.description,
+        },
+        { headers }
+      ),
+      {
+        loading: "Changing ...",
+        success: (response) => {
+          // console.log(response.data);
+          getActiveProjectTasks();
+          document.getElementById(`editTaskModal${task.id}`).close();
+          return <b>Done :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Error :(</b>;
+        },
+      }
+    );
+  };
+
 
   const userType = localStorage.getItem("userType")
   const toggleDropdown = () => { setIsOpen(!isOpen); };
@@ -119,6 +147,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
 
 
       <dialog id={`editTaskModal${task.id}`} className="modal">
+          <Toaster />
         <div className="modal-box p-0 max-w-xl">
           {/* Modal header Start */}
           <form
@@ -136,32 +165,32 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
           </form>
           {/* Modal header End */}
           <>
-          <form>
+            <form onSubmit={TaskInfoEdit}>
               <div className="flex flex-col gap-3 px-5 py-4 text-custom-green-dark z-50">
                 <div className="flex gap-4">
 
-                    <label className="w-[200px] py-3 flex justify-center items-center rounded-lg cursor-pointer bg-custom-green-15 text-custom-green-80  hover:bg-custom-green-dark hover:text-white transition-all duration-150">
+                  <label className="w-[200px] py-3 flex justify-center items-center rounded-lg cursor-pointer bg-custom-green-15 text-custom-green-80  hover:bg-custom-green-dark hover:text-white transition-all duration-150">
                     <input
-                        className="hidden"
-                        id="file-upload"
-                        accept="*/*"
-                        type="file"
-                      // multiple
-                      // accept=".jpg,.png,.rar,.zip"
-                      // onChange={handleFileChange}
-                      />
+                      className="hidden"
+                      id="file-upload"
+                      accept="*/*"
+                      type="file"
+                    // multiple
+                    // accept=".jpg,.png,.rar,.zip"
+                    // onChange={handleFileChange}
+                    />
 
-                      <div className="flex flex-col items-center justify-center">
-                        <i className="bi bi-cloud-arrow-up-fill text-2xl"></i>
-                        <p className="text-xs text-center">
-                          <span className="font-semibold">Choose file to upload</span>
-                          <br />
-                          <span>Supported any formats</span>
-                        </p>
-                      </div>
+                    <div className="flex flex-col items-center justify-center">
+                      <i className="bi bi-cloud-arrow-up-fill text-2xl"></i>
+                      <p className="text-xs text-center">
+                        <span className="font-semibold">Choose file to upload</span>
+                        <br />
+                        <span>Supported any formats</span>
+                      </p>
+                    </div>
 
-                      <div className="hidden">
-                        {/* {files.length > 0 && (
+                    <div className="hidden">
+                      {/* {files.length > 0 && (
                         <ul className="space-y-2">
                           {files.map((file, index) => (
                             <li key={index} className="text-sm text-gray-700">
@@ -170,8 +199,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                           ))}
                         </ul>
                       )} */}
-                      </div>
-                    </label>
+                    </div>
+                  </label>
 
                   <div>
                     <label className="w-full">
@@ -218,8 +247,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                     className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
                     rows={4}
                   ></textarea>
-                </label>               
-                <button type="submit" className="w-full rounded-md h-9 bg-custom-green-dark text-blue-50 font-medium">Submit Task</button>
+                </label>
+                <button type="submit" className="w-full rounded-md h-9 bg-custom-green-dark text-blue-50 font-medium">Save</button>
               </div>
             </form>
           </>
