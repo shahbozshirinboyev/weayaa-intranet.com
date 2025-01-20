@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import TaskFileControl from "../TaskFileControl";
 import toast, { Toaster } from "react-hot-toast";
+import noneuser from "/img/noneuser.png";
 
 function TaskChat({ task }) {
 
@@ -191,7 +192,7 @@ function TaskChat({ task }) {
                       <div className="w-10 rounded-full">
                         <img
                           alt={message.sender_details.full_name}
-                          src={message.sender_details.image}
+                          src={message.sender_details.image || noneuser}
                         />
                       </div>
                     </div>
