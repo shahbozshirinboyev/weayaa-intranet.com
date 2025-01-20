@@ -17,8 +17,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
     setTaskInfo({
       id: task.id,
       file: task.file,
-      // fileName: task.file.split("/").pop(),
-      // fileType: task.file.split(".").pop().toUpperCase(),
+      fileName: task?.file?.split("/").pop(),
+      fileType: task?.file?.split(".").pop().toUpperCase(),
       name: task.name,
       deadline: task.deadline,
       description: task.description,
