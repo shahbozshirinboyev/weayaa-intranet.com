@@ -4,6 +4,35 @@ import http from "../services/http";
 
 const TaskHeader = ({ task, getActiveProjectTasks }) => {
 
+  console.log(task)
+  const [taskInfo, setTaskInfo] = useState({
+    id: "",
+    file: "",
+    name: "",
+    deadline: "",
+    description: ""
+  })
+
+  const activeTask = () => {
+    console.log(taskInfo)
+  }
+
+  useEffect(() => {
+    setTaskInfo({
+      id: task.id,
+      file: task.file,
+      name: task.name,
+      deadline: task.deadline,
+      description: task.description,
+    })
+  }, [task])
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTaskInfo({ ...taskInfo, [name]: value });
+  };
+  
+
   const userType = localStorage.getItem("userType")
   const toggleDropdown = () => { setIsOpen(!isOpen); };
   const [isOpen, setIsOpen] = useState(false);
@@ -107,23 +136,12 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
           </form>
           {/* Modal header End */}
           <>
-
           <form>
               <div className="flex flex-col gap-3 px-5 py-4 text-custom-green-dark z-50">
-                <div className="flex gap-4 border">
+                <div className="flex gap-4">
 
-                  <div className="flex items-center w-[200px] h-full border">
-                    <label className="w-full text-center rounded-lg cursor-pointer bg-custom-green-15  hover:bg-custom-green-30 py-3">
-                      <div className="flex flex-col w-full items-center justify-center">
-                        <i className="bi bi-cloud-arrow-up-fill text-2xl text-custom-green-60"></i>
-                        <p className="text-xs text-custom-green-60">
-                          <span className="font-bold">Choose file to upload</span>
-                          <br />
-                          <span>Supported any formats</span>
-                        </p>
-                      </div>
-
-                      <input
+                    <label className="w-[200px] py-3 flex justify-center items-center rounded-lg cursor-pointer bg-custom-green-15 text-custom-green-80  hover:bg-custom-green-dark hover:text-white transition-all duration-150">
+                    <input
                         className="hidden"
                         id="file-upload"
                         accept="*/*"
@@ -133,7 +151,16 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                       // onChange={handleFileChange}
                       />
 
-                      <div>
+                      <div className="flex flex-col items-center justify-center">
+                        <i className="bi bi-cloud-arrow-up-fill text-2xl"></i>
+                        <p className="text-xs text-center">
+                          <span className="font-semibold">Choose file to upload</span>
+                          <br />
+                          <span>Supported any formats</span>
+                        </p>
+                      </div>
+
+                      <div className="hidden">
                         {/* {files.length > 0 && (
                         <ul className="space-y-2">
                           {files.map((file, index) => (
@@ -145,7 +172,6 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                       )} */}
                       </div>
                     </label>
-                  </div>
 
                   <div>
                     <label className="w-full">
@@ -156,8 +182,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                         type="text"
                         name="name"
                         required
-                        // value={taskData.name}
-                        // onChange={handleChange}
+                        value={taskInfo.name}
+                        onChange={handleChange}
                         className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
                       />
                     </label>
@@ -170,8 +196,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                         type="date"
                         name="deadline"
                         required
-                        // value={taskData.deadline}
-                        // onChange={handleChange}
+                        value={taskInfo.deadline}
+                        onChange={handleChange}
                         className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
                       />
                     </label>
@@ -187,8 +213,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                   <textarea
                     name="description"
                     required
-                    // value={taskData.description}
-                    // onChange={handleChange}
+                    value={taskInfo.description}
+                    onChange={handleChange}
                     className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
                     rows={4}
                   ></textarea>
