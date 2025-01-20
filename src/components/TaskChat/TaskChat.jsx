@@ -21,9 +21,10 @@ function TaskChat({ task }) {
       id: message.id,
       user: message.sender_details.full_name,
       message: message.content,
+      file: message.file
     });
   };
-  const handleClearReply = () => { setReply({ id: "", user: "", message: "" }); };
+  const handleClearReply = () => { setReply({ id: "", user: "", message: "", file: "" }); };
 
   const endRef = useRef(null);
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
@@ -228,7 +229,7 @@ function TaskChat({ task }) {
                     </p>
 
                   </div>
-                  <div onClick={() => { activeReply(message) }}
+                  <div onClick={() => { activeReply(message); console.log(message) }}
                     className={`btn btn-sm rounded-full border-0 hidden group-hover:flex justify-center items-center
                                           absolute bottom-1 bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
                                           ${String(message.sender) === String(userId) ? "left-1" : "right-0"}`}>
@@ -255,6 +256,7 @@ function TaskChat({ task }) {
                     <span className="text-xs opacity-60 text-end">unknown</span>
                   </div>
                   <span className="line-clamp-1">{reply.message}</span>
+                  <span className={`line-clamp-1 ${reply.message === "" ? "" : "hidden"}`}>file</span>
                 </div>
               </div>
               <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white" onClick={handleClearReply} >
