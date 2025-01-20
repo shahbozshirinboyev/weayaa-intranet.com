@@ -199,7 +199,7 @@ function TaskChat({ task }) {
                   <div className={`chat-bubble border-0 ${String(message.sender) === String(userId) ? "bg-custom-green-dark text-white" : "bg-custom-green-30 text-custom-green-dark"}`} >
                     <div className="flex justify-between text-xs items-center pb-1 gap-4">
                       <span className="font-bold">{message.sender_details.full_name}</span>
-                      <span className="opacity-80 text-end">{String(message.sender) === String(userId) ? "You" : "unknown"}</span>
+                      <span className="opacity-80 text-end">{String(message.sender) === String(userId) ? "You" : message.sender_details.speciality}</span>
                     </div>
                     {/* Reply section -- start */}
                     {message.reply_to &&
