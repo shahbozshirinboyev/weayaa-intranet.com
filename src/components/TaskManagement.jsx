@@ -44,7 +44,7 @@ function TaskManagement() {
     };
   }, []);
 
-  
+
   const [divRefNameProject, setDivRefNameProject] = useState("100%");
   const divRefName = useRef(null);
 
@@ -63,7 +63,7 @@ function TaskManagement() {
       resizeObserver.observe(divRefName.current);
     }
 
-    updateWidth(); 
+    updateWidth();
 
     return () => {
       if (divRefName.current) {
@@ -91,13 +91,13 @@ function TaskManagement() {
   // line variables end
 
   const getProjectsList = () => {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access")}`,
-    };
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
     http
       .get(`projects/`, { headers })
       .then((response) => {
-        setProjectsList(response.data);
+        const responseData = response.data;
+        const filteredProjects = responseData.filter( (project) => project.is_archived === true );
+        setProjectsList(filteredProjects);
         if (response.data.length === 0) {
           setActiveProject([]);
           localStorage.setItem("activeProject", JSON.stringify([]));
@@ -190,7 +190,7 @@ function TaskManagement() {
   const moveProjectToArchive = (id) => {
     const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
     toast.promise(
-      http.patch( `projects/${selectProjectInfo.id}/`,
+      http.patch(`projects/${selectProjectInfo.id}/`,
         { is_archived: true, },
         { headers }
       ),
@@ -384,7 +384,7 @@ function TaskManagement() {
     }
   };
 
-  useEffect(() => { getActiveProjectTasks(); },[activeProject]);
+  useEffect(() => { getActiveProjectTasks(); }, [activeProject]);
   // ===========> Get ActiveProjectTasks List END <=========== //
 
   return (
@@ -394,7 +394,7 @@ function TaskManagement() {
         <div className="bg-custom-green-5 h-[60px] max-h-5w-full rounded-[15px] flex gap-2 mb-[20px]">
           <div className="h-full w-full p-2 flex gap-2 items-center">
             {/* Deadline --- start */}
-            <button className={`btn btn-sm ${ activeProject.deadline ? "" : "hidden" } border-0 rounded-md w-[125px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`} >
+            <button className={`btn btn-sm ${activeProject.deadline ? "" : "hidden"} border-0 rounded-md w-[125px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`} >
               <i className="bi bi-calendar2-week font-medium"></i>
               <span className="whitespace-nowrap"> {activeProject.deadline} </span>
             </button>
@@ -403,7 +403,7 @@ function TaskManagement() {
             {/* Add new project --- start */}
             <button
               onClick={() => document.getElementById("new_project").showModal()}
-              className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } w-[125px] btn btn-sm border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
+              className={`${userType === "staff" || userType === "client" ? "hidden" : ""} w-[125px] btn btn-sm border-0 rounded-md bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`}
             >
               <i className="bi bi-plus-lg font-medium"></i>
               <span className="whitespace-nowrap">New Project</span>
@@ -424,8 +424,8 @@ function TaskManagement() {
                 {projectsList.map((project) => (
                   <SwiperSlide
                     key={project.id}
-                    onClick={() => { setActiveProject(project); setSelectedUsers(project.members); localStorage.setItem( "activeProject", JSON.stringify(project) ); }}
-                    className={`btn btn-sm border-0 rounded-md bg-custom-green-30 ${ project.id === activeProject.id ? "bg-custom-green-dark text-white" : "" } w-auto text-custom-green-dark font-medium hover:bg-custom-green-80 hover:text-white cursor-pointer`}
+                    onClick={() => { setActiveProject(project); setSelectedUsers(project.members); localStorage.setItem("activeProject", JSON.stringify(project)); }}
+                    className={`btn btn-sm border-0 rounded-md bg-custom-green-30 ${project.id === activeProject.id ? "bg-custom-green-dark text-white" : ""} w-auto text-custom-green-dark font-medium hover:bg-custom-green-80 hover:text-white cursor-pointer`}
                   >
                     <button className="flex gap-2">
                       <i className="bi bi-folder flex justify-center items-center"></i>
@@ -433,19 +433,19 @@ function TaskManagement() {
                     </button>
                     <button
                       onClick={() => { document.getElementById("edit_project").showModal(); setSelectProjectInfo(project); }}
-                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } ml-3 border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-sky-700 hover:text-white`}
+                      className={`${userType === "staff" || userType === "client" ? "hidden" : ""} ml-3 border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-sky-700 hover:text-white`}
                     >
                       <i className="bi bi-pencil flex justify-center items-center"></i>
                     </button>
-                    <button 
+                    <button
                       onClick={() => { document.getElementById("deleteProjectModal").showModal(); setSelectProjectInfo(project); }}
-                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-red-700 hover:text-white`}
+                      className={`${userType === "staff" || userType === "client" ? "hidden" : ""} border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-red-700 hover:text-white`}
                     >
                       <i className="bi bi-trash flex justify-center items-center"></i>
                     </button>
-                    <button 
+                    <button
                       onClick={() => { document.getElementById("archiveProjectModal").showModal(); setSelectProjectInfo(project); }}
-                      className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-gray-700 hover:text-white`}
+                      className={`${userType === "staff" || userType === "client" ? "hidden" : ""} border border-custom-green-60 w-[24px] h-[24px] flex justify-center items-center rounded-md hover:border-transparent hover:bg-gray-700 hover:text-white`}
                     >
                       <i className="bi bi-file-earmark-zip flex justify-center items-center"></i>
                     </button>
@@ -535,11 +535,10 @@ function TaskManagement() {
                 {membersInfo.map((user) => (
                   <div
                     key={user.id}
-                    className={`form-control rounded-md px-1 my-2 ${
-                      selectedUsers.includes(user.id)
+                    className={`form-control rounded-md px-1 my-2 ${selectedUsers.includes(user.id)
                         ? "bg-custom-green-15"
                         : "bg-transparent"
-                    }`}
+                      }`}
                   >
                     <label className="cursor-pointer label">
                       <div className="flex">
@@ -610,11 +609,10 @@ function TaskManagement() {
                   return user ? (
                     <div
                       key={index}
-                      className={`${
-                        selectedUsers.includes(user.id)
+                      className={`${selectedUsers.includes(user.id)
                           ? "bg-white"
                           : "bg-transparent"
-                      }`}
+                        }`}
                     >
                       <label className="label">
                         <div className="flex">
@@ -718,9 +716,8 @@ function TaskManagement() {
         <>
           <div className="grid grid-cols-1 justify-center items-center text-custom-green-dark">
             <p
-              className={`text-center text-2xl p-4 ${
-                userType === "staff" ? "py-12" : ""
-              }`}
+              className={`text-center text-2xl p-4 ${userType === "staff" ? "py-12" : ""
+                }`}
             >
               <span className={`${projectsList.length === 0 ? "hidden" : ""}`}>
                 <i className="bi bi-folder2-open block text-[65px] mb-2 text-custom-green-80"></i>
@@ -732,9 +729,8 @@ function TaskManagement() {
               </span>
               <br />
               <span
-                className={`text-red-700 text-[16px] ${
-                  userType === "staff" || userType === "client" ? "hidden" : ""
-                }`}
+                className={`text-red-700 text-[16px] ${userType === "staff" || userType === "client" ? "hidden" : ""
+                  }`}
               >
                 If you don't see any projects, you need to add a new project.
               </span>
@@ -743,11 +739,11 @@ function TaskManagement() {
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start gap-4">
               {projectsList.map((project) => (
                 <div
-                  className={`flex justify-start items-center border border-custom-green-10 px-2 rounded-lg hover:bg-custom-green-15 ${ userType === "staff" ? "py-2" : "py-0" }`}
+                  className={`flex justify-start items-center border border-custom-green-10 px-2 rounded-lg hover:bg-custom-green-15 ${userType === "staff" ? "py-2" : "py-0"}`}
                   key={project.id}
                 >
                   <div
-                    onClick={() => { setActiveProject(project); setSelectedUsers(project.members); localStorage.setItem( "activeProject", JSON.stringify(project) ); }}
+                    onClick={() => { setActiveProject(project); setSelectedUsers(project.members); localStorage.setItem("activeProject", JSON.stringify(project)); }}
                     className="flex-auto font-medium"
                   >
                     <button
@@ -760,8 +756,8 @@ function TaskManagement() {
                       </div>
                     </button>
                   </div>
-                  <button onClick={() => { document.getElementById("edit_project").showModal(); setSelectProjectInfo(project); }} className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`} > <i className="bi bi-pencil flex justify-center items-center"></i> </button>
-                  <button onClick={() => { document.getElementById("deleteProjectModal").showModal(); setSelectProjectInfo(project); }} className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center m-1 mr-0 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`} > <i className="bi bi-trash flex justify-center items-center"></i> </button>
+                  <button onClick={() => { document.getElementById("edit_project").showModal(); setSelectProjectInfo(project); }} className={`${userType === "staff" || userType === "client" ? "hidden" : ""} border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center ml-4 m-1 rounded-md hover:border-transparent hover:bg-custom-green-dark hover:text-white transition-all duration-300`} > <i className="bi bi-pencil flex justify-center items-center"></i> </button>
+                  <button onClick={() => { document.getElementById("deleteProjectModal").showModal(); setSelectProjectInfo(project); }} className={`${userType === "staff" || userType === "client" ? "hidden" : ""} border border-custom-green-10 w-[28px] px-4 py-2 flex justify-center items-center m-1 mr-0 rounded-md hover:border-transparent hover:bg-red-700 hover:text-white transition-all duration-300`} > <i className="bi bi-trash flex justify-center items-center"></i> </button>
                 </div>
               ))}
             </div>
@@ -778,9 +774,8 @@ function TaskManagement() {
             </p>
 
             <div
-              className={`${
-                userType === "staff" || userType === "client" ? "hidden" : ""
-              } w-[200px] rounded-lg border border-custom-green-10 mx-auto mt-4`}
+              className={`${userType === "staff" || userType === "client" ? "hidden" : ""
+                } w-[200px] rounded-lg border border-custom-green-10 mx-auto mt-4`}
             >
               <CreateTask getActiveProjectTasks={getActiveProjectTasks} />
             </div>
@@ -801,52 +796,52 @@ function TaskManagement() {
                         </div>
                       </div>
 
-                      { index === 0 && userType !== "staff" && ( <CreateTask getActiveProjectTasks={getActiveProjectTasks} /> )}
+                      {index === 0 && userType !== "staff" && (<CreateTask getActiveProjectTasks={getActiveProjectTasks} />)}
 
                       {column.items && column.items.map((task, index) => (
-                          <Draggable key={task.id.toString()} draggableId={task.id.toString()} index={index}>
-                            {(provided) => (
-                              // Task START
-                              <>
-                                <div
-                                  ref={provided.innerRef}
-                                  {...(userType !== "client" ? provided.draggableProps : {})}
-                                  {...(userType !== "client" ? provided.dragHandleProps : {})}
-                                  className="w-full cursor-grab bg-white flex flex-col justify-between gap-3 items-start shadow-sm rounded-lg px-3 py-4"
-                                >
-                                  <div className="w-full">
-                                    <TaskHeader task={task} getActiveProjectTasks={ getActiveProjectTasks } />
-                                  </div>
-
-                                  <div className="w-full flex items-start flex-col gap-1">
-                                    <span className="text-[15.5px] font-medium text-custom-green-90"> {task.name} </span>
-                                    <span className="text-[13.5px] text-custom-green-80 break-all"> {task.description} </span>
-                                  </div>
-
-                                  <div className="w-full">
-                                    <TaskFileControl fileUrl={task.file} />
-                                  </div>
-
-                                  <div className="w-full flex items-center">
-                                    {/* Chat button START */}
-                                    <button onClick={() => { setTask(task); document.getElementById(`task_chat`).showModal(); }}>
-                                      <div className="flex">
-                                        <div className="relative">
-                                          <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"><i className="bi bi-chat-text"></i></div>
-                                          <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
-                                        </div>
-                                      </div>
-                                    </button>
-                                    {/* Chat button END */}                                  
-
-                                    <TaskFoother getActiveProjectTasks={ getActiveProjectTasks } selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
-                                  </div>
+                        <Draggable key={task.id.toString()} draggableId={task.id.toString()} index={index}>
+                          {(provided) => (
+                            // Task START
+                            <>
+                              <div
+                                ref={provided.innerRef}
+                                {...(userType !== "client" ? provided.draggableProps : {})}
+                                {...(userType !== "client" ? provided.dragHandleProps : {})}
+                                className="w-full cursor-grab bg-white flex flex-col justify-between gap-3 items-start shadow-sm rounded-lg px-3 py-4"
+                              >
+                                <div className="w-full">
+                                  <TaskHeader task={task} getActiveProjectTasks={getActiveProjectTasks} />
                                 </div>
-                              </>
-                              // Task END
-                            )}
-                          </Draggable>
-                        ))}
+
+                                <div className="w-full flex items-start flex-col gap-1">
+                                  <span className="text-[15.5px] font-medium text-custom-green-90"> {task.name} </span>
+                                  <span className="text-[13.5px] text-custom-green-80 break-all"> {task.description} </span>
+                                </div>
+
+                                <div className="w-full">
+                                  <TaskFileControl fileUrl={task.file} />
+                                </div>
+
+                                <div className="w-full flex items-center">
+                                  {/* Chat button START */}
+                                  <button onClick={() => { setTask(task); document.getElementById(`task_chat`).showModal(); }}>
+                                    <div className="flex">
+                                      <div className="relative">
+                                        <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"><i className="bi bi-chat-text"></i></div>
+                                        <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
+                                      </div>
+                                    </div>
+                                  </button>
+                                  {/* Chat button END */}
+
+                                  <TaskFoother getActiveProjectTasks={getActiveProjectTasks} selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
+                                </div>
+                              </div>
+                            </>
+                            // Task END
+                          )}
+                        </Draggable>
+                      ))}
                       {provided.placeholder}
                     </div>
                   )}
