@@ -104,7 +104,7 @@ const MasterStatus = () => {
               tabIndex={0}
               className="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow"
             >
-              {projects.length !== 0 ? projects.map((project) => (
+              {projects.length !== 0 ? projects.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map((project) => (
                 <li
                   key={project.id}
                   className="w-full flex flex-nowrap my-[1px]"

@@ -57,7 +57,7 @@ function ArchiveProjects() {
           </thead>
 
           <tbody className="text-custom-green-dark">
-            {projectsList?.map((project) => (
+            {projectsList?.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map((project) => (
               <tr key={project.id}>
                 <td>
                   <div className="flex items-center gap-3">

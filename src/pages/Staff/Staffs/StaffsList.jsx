@@ -122,6 +122,7 @@ function StaffsList() {
           <tbody>
             {users
               .filter((user) => user.user_type === smlist)
+              .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
               .map((user) => (
                 <tr
                   key={user.id}

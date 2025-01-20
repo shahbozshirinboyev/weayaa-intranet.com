@@ -75,6 +75,8 @@ function TaskManagement() {
   const userType = localStorage.getItem("userType");
   const [projectsList, setProjectsList] = useState([]);
 
+  console.log(projectsList)
+
   const [activeProject, setActiveProject] = useState(
     JSON.parse(localStorage.getItem("activeProject"))
   );
@@ -417,7 +419,7 @@ function TaskManagement() {
                 style={{ width: divWidth }}
                 className={` absolute flex top-[6px] left-0 z-10`}
               >
-                {projectsList.map((project) => (
+                {projectsList.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map((project) => (
                   <SwiperSlide
                     key={project.id}
                     onClick={() => { setActiveProject(project); setSelectedUsers(project.members); localStorage.setItem("activeProject", JSON.stringify(project)); }}
