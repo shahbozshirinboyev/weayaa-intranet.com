@@ -8,6 +8,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
   const [taskInfo, setTaskInfo] = useState({
     id: "",
     file: "",
+    fileName: "",
+    fileType: "",
     name: "",
     deadline: "",
     description: ""
@@ -29,6 +31,16 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
     const { name, value } = e.target;
     setTaskInfo({ ...taskInfo, [name]: value });
   };
+
+  const removeFile = () => {
+    setTaskInfo((prevState) => ({
+      ...prevState, // Spread the previous state to retain other properties
+      file: "", // Update file-related properties to their default state
+      fileName: "",
+      fileType: "",
+    }));
+  };
+  
 
   const TaskInfoEdit = (e) => {
     e.preventDefault();
@@ -178,7 +190,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                     // onChange={handleFileChange}
                     />
 
-                    <div className="flex flex-col items-center justify-center">
+                    <div className={`flex flex-col items-center justify-center ${ taskInfo.file === null || taskInfo.file === "" ? "" : "hidden"}`}>
                       <i className="bi bi-cloud-arrow-up-fill text-2xl"></i>
                       <p className="text-xs text-center">
                         <span className="font-semibold">Choose file to upload</span>
@@ -187,16 +199,16 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                       </p>
                     </div>
 
-                    <div className="hidden">
-                      {/* {files.length > 0 && (
-                        <ul className="space-y-2">
-                          {files.map((file, index) => (
-                            <li key={index} className="text-sm text-gray-700">
-                              {file.name}
+                    <div className={`${ taskInfo.file === null || taskInfo.file === "" ? "hidden" : ""} border border-red-700 h-full mx-3`}>
+                        <ul className="relative">
+                        <span 
+                        onClick={(e) => { e.preventDefault(); removeFile(); }} 
+                        className="absolute -right-2 -top-2 bg-white hover:bg-red-100 w-[25px] h-[25px] border border-red-100 rounded-full p-1 flex justify-center items-center text-[10px]">❌</span>
+                            <li className="text-sm text-gray-700 flex flex-col justify-center items-center">
+                              <span>{taskInfo?.fileName}</span>
+                              <span>{taskInfo?.fileType}</span>
                             </li>
-                          ))}
                         </ul>
-                      )} */}
                     </div>
                   </label>
 
