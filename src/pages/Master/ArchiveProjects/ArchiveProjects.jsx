@@ -1,6 +1,48 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import http from "../../../services/http";
+import toast, { Toaster } from "react-hot-toast";
 
 function ArchiveProjects() {
+  const [projectsList, setProjectsList] = useState([]);
+  const [selectArchiveProject, setSelectArchiveProject] = useState([]);
+
+  const getProjectsList = () => {
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
+    http
+      .get(`projects/`, { headers })
+      .then((response) => {
+        const responseData = response.data;
+        const filteredProjects = responseData.filter((project) => project.is_archived === true);
+        setProjectsList(filteredProjects);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+  useEffect(() => { getProjectsList(); }, [])
+
+  const moveArchiveToProject = (id) => {
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
+    toast.promise(
+      http.patch(`projects/${id}/`,
+        { is_archived: false, },
+        { headers }
+      ),
+      {
+        loading: "Changing ...",
+        success: (response) => {
+          // console.log(response.data);
+          getProjectsList();
+          document.getElementById("my_unarchive_modal").close();
+          return <b>Done :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Error :(</b>;
+        },
+      }
+    );
+  };
   return (
     <>
       <div className="overflow-x-auto">
@@ -15,54 +57,57 @@ function ArchiveProjects() {
           </thead>
 
           <tbody className="text-custom-green-dark">
-            <tr>
-              <td>
-                <div className="flex items-center gap-3">
-                  <div className="avatar">
-                    <i className="bi bi-file-earmark-zip text-[30px]"></i>
+            {projectsList?.map((project) => (
+              <tr key={project.id}>
+                <td>
+                  <div className="flex items-center gap-3">
+                    <div className="avatar">
+                      <i className="bi bi-file-earmark-zip text-[30px]"></i>
+                    </div>
+                    <div>
+                      <div className="font-semibold">{project.name}</div>
+                      <div className="text-xs opacity-50 flex justify-start items-center gap-1">
+                        <i className="bi bi-people"></i>
+                        <span>{project.members.length}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold">TopClass.Uz</div>
-                    <div className="text-xs opacity-50">Task count: 23</div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <span className="font-semibold"> 24.01.2025 </span>
-              </td>
-              <td className="font-semibold">Tommy Kim</td>
-              <th>
-                <button
-                  onClick={() =>
-                    document.getElementById("my_unarchive_modal").showModal()
-                  }
-                  className="btn btn-xs flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-10 hover:bg-custom-green-dark hover:text-white"
-                >
-                  <i className="bi bi-folder-symlink"></i>
-                  <span>Unarchive</span>
-                </button>
-              </th>
-            </tr>
+                </td>
+                <td>
+                  <span className="font-semibold"> 24.01.2025 </span>
+                </td>
+                <td className="font-semibold">Tommy Kim</td>
+                <th>
+                  <button
+                    onClick={() => { document.getElementById("my_unarchive_modal").showModal(); setSelectArchiveProject(project) }}
+                    className="btn btn-xs flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-10 hover:bg-custom-green-dark hover:text-white"
+                  >
+                    <i className="bi bi-folder-symlink"></i>
+                    <span>Unarchive</span>
+                  </button>
+                </th>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
       {/* unarchive modal - start */}
       <dialog id="my_unarchive_modal" className="modal">
-        <div className="modal-box p-0">
-          {/* Modal header Start */}
-          <form method="dialog" className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10" >
-            <span className="text-custom-green-dark font-bold">Unarchive</span>
-            <div className="text-end">
-              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-              <i className="bi bi-x-lg flex justify-center items-center"></i>
-              </button>
-            </div>
-          </form>
-          {/* Modal header End */}
-
-          <div className="p-4">
-            <p>This action is not working ...</p>
+        <Toaster />
+        <div className="modal-box">
+          <h3 className="font-bold text-lg text-custom-green-dark text-center">
+            Are you sure unarchive <span className="text-red-700">{selectArchiveProject.name}</span>?
+          </h3>
+          <div className="flex justify-center items-center gap-12 pt-10">
+            <button
+              onClick={() => { moveArchiveToProject(selectArchiveProject.id); }}
+              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-red-700 hover:text-white border-transparent"
+            >Yes</button>
+            <button
+              onClick={() => document.getElementById("my_unarchive_modal").close() }
+              className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-custom-green-dark hover:text-white border-transparent"
+            >No</button>
           </div>
         </div>
         <form method="dialog" className="modal-backdrop">

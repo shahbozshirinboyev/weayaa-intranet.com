@@ -75,8 +75,6 @@ function TaskManagement() {
   const userType = localStorage.getItem("userType");
   const [projectsList, setProjectsList] = useState([]);
 
-  console.log(projectsList)
-
   const [activeProject, setActiveProject] = useState(
     JSON.parse(localStorage.getItem("activeProject"))
   );
@@ -96,7 +94,7 @@ function TaskManagement() {
       .get(`projects/`, { headers })
       .then((response) => {
         const responseData = response.data;
-        const filteredProjects = responseData.filter( (project) => project.is_archived === true );
+        const filteredProjects = responseData.filter( (project) => project.is_archived === false );
         setProjectsList(filteredProjects);
         if (response.data.length === 0) {
           setActiveProject([]);
@@ -115,8 +113,6 @@ function TaskManagement() {
 
   // Delete Project function
   const [selectProjectInfo, setSelectProjectInfo] = useState([]);
-
-  console.log(selectProjectInfo.id)
 
   const handleDeleteProject = (id) => {
     // console.log(id);

@@ -14,7 +14,7 @@ function TaskChat({ task }) {
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
 
-  useEffect(() => { console.log(messages) }, [messages])
+  // useEffect(() => { console.log(messages) }, [messages])
 
   const activeReply = (message) => {
     setReply({
