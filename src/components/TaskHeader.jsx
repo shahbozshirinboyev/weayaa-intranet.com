@@ -179,7 +179,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
               <div className="flex flex-col gap-3 px-5 py-4 text-custom-green-dark z-50">
                 <div className="flex gap-4">
 
-                  <label className="w-[200px] py-3 flex justify-center items-center rounded-lg cursor-pointer bg-custom-green-15 text-custom-green-80  hover:bg-custom-green-dark hover:text-white transition-all duration-150">
+                  <label className={`w-[200px] py-3 flex justify-center items-center rounded-lg cursor-pointer bg-custom-green-15 text-custom-green-80 ${ taskInfo.file === null || taskInfo.file === "" ? "hover:bg-custom-green-dark hover:text-white" : ""} transition-all duration-150`}>
                     <input
                       className="hidden"
                       id="file-upload"
@@ -199,14 +199,14 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                       </p>
                     </div>
 
-                    <div className={`${ taskInfo.file === null || taskInfo.file === "" ? "hidden" : ""} border border-red-700 h-full mx-3`}>
-                        <ul className="relative">
-                        <span 
-                        onClick={(e) => { e.preventDefault(); removeFile(); }} 
-                        className="absolute -right-2 -top-2 bg-white hover:bg-red-100 w-[25px] h-[25px] border border-red-100 rounded-full p-1 flex justify-center items-center text-[10px]">❌</span>
-                            <li className="text-sm text-gray-700 flex flex-col justify-center items-center">
-                              <span>{taskInfo?.fileName}</span>
-                              <span>{taskInfo?.fileType}</span>
+                    <div className={`${ taskInfo.file === null || taskInfo.file === "" ? "hidden" : ""} relative flex justify-center items-center h-full mx-3 bg-white rounded-md`}>
+                        <span onClick={(e) => { e.preventDefault(); removeFile(); }} className="absolute -right-2 -top-2 bg-white hover:bg-red-100 w-[25px] h-[25px] border border-red-100 rounded-full p-1 flex justify-center items-center text-[10px]">❌</span>
+                        <ul className="flex justify-center items-center">
+
+                            <li className="text-sm text-gray-700 flex flex-col justify-center items-center mx-2">
+                              <i className="bi bi-file-earmark-fill text-[30px] text-custom-green-dark"></i>
+                              <span className="line-clamp-1 text-custom-green-dark font-semibold">{taskInfo?.fileName}</span>
+                              <span className="font-bold text-custom-green-dark border px-2 py-1 text-xs rounded-lg border-custom-green-15">{taskInfo?.fileType}</span>
                             </li>
                         </ul>
                     </div>
