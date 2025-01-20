@@ -74,6 +74,9 @@ function TaskManagement() {
 
   const userType = localStorage.getItem("userType");
   const [projectsList, setProjectsList] = useState([]);
+
+  console.log(projectsList)
+
   const [activeProject, setActiveProject] = useState(
     JSON.parse(localStorage.getItem("activeProject"))
   );
@@ -112,6 +115,8 @@ function TaskManagement() {
 
   // Delete Project function
   const [selectProjectInfo, setSelectProjectInfo] = useState([]);
+
+  console.log(selectProjectInfo.id)
 
   const handleDeleteProject = (id) => {
     // console.log(id);
@@ -172,6 +177,33 @@ function TaskManagement() {
           // console.log(response.data);
           getProjectsList();
           document.getElementById("edit_project").close();
+          return <b>Done :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Error :(</b>;
+        },
+      }
+    );
+  };
+
+  const moveProjectToArchive = (id) => {
+    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
+    toast.promise(
+      http.patch( `projects/${selectProjectInfo.id}/`,
+        { is_archived: true, },
+        { headers }
+      ),
+      {
+        loading: "Changing ...",
+        success: (response) => {
+          // console.log(response.data);
+          getProjectsList();
+          document.getElementById("archiveProjectModal").close();
+          if (id === activeProject.id) {
+            setActiveProject([]);
+            localStorage.setItem("activeProject", JSON.stringify([]));
+          }
           return <b>Done :)</b>;
         },
         error: (error) => {
@@ -864,15 +896,7 @@ function TaskManagement() {
           </h3>
           <div className="flex justify-center items-center gap-12 pt-10">
             <button
-              onClick={() => {
-                // handleDeleteProject(selectProjectInfo.id);
-                toast(
-                  "The function has not yet been launched!",
-                  {
-                    duration: 2000,
-                  }
-                );
-              }}
+              onClick={() => { moveProjectToArchive(selectProjectInfo.id); }}
               className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-red-700 hover:text-white border-transparent"
             >
               Yes
