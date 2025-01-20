@@ -14,7 +14,7 @@ function TaskChat({ task }) {
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
 
-  // useEffect(() => { console.log(messages) }, [messages])
+  useEffect(() => { console.log(messages) }, [messages])
 
   const activeReply = (message) => {
     setReply({
@@ -207,10 +207,11 @@ function TaskChat({ task }) {
                         <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
                         <div>
                           <div className="flex justify-between">
-                            <span className="font-bold">Tommy Kim</span>
-                            <span className="text-xs opacity-60 text-end"> 12:45 AM </span>
+                            <span className="font-bold">{message.reply_to_details.sender}</span>
+                            {/* <span className="text-xs opacity-60 text-end"> 12:45 AM </span> */}
                           </div>
-                          <span className="line-clamp-1"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptatum. </span>
+                          <span className="line-clamp-1">{message.reply_to_details.content}</span>
+                          <span className={`line-clamp-1 ${message.reply_to_details.file !== null ? "" : "hidden" }`}>file</span>
                         </div>
 
                       </div>
