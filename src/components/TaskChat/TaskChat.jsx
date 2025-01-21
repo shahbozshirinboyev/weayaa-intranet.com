@@ -6,13 +6,13 @@ import noneuser from "/img/noneuser.png";
 function TaskChat({ task }) {
 
   // Inside the TaskChat function, add this state
-const [isButtonVisible, setIsButtonVisible] = useState(false);
+  const [isButtonVisible, setIsButtonVisible] = useState(false);
 
   const userId = localStorage.getItem('userId');
   const [messages, setMessages] = useState([]);
   const chatServiceRef = useRef(null);
 
-  const [reply, setReply] = useState({ id: "", user: "",  speciality: "", message: "" });
+  const [reply, setReply] = useState({ id: "", user: "", speciality: "", message: "" });
   const [rows, setRows] = useState(1);
 
   const [file, setFile] = useState({ name: "", file: "", url: "" });
@@ -159,23 +159,33 @@ const [isButtonVisible, setIsButtonVisible] = useState(false);
       chatServiceRef.current = chat;
       return chat;
     }
-    
+
     const chatBody = document.querySelector('.chatcss');
-    
+
     const handleScroll = () => {
       const scrollTop = chatBody.scrollTop;
       const scrollHeight = chatBody.scrollHeight;
       const clientHeight = chatBody.clientHeight;
-  
+
+      console.log('scrollTop', scrollTop);
+      console.log('scrollHeight', scrollHeight);
+      console.log('clientHeight', clientHeight);
+
       // Check if the scroll position is less than 700px from the bottom
+      // setIsButtonVisible(scrollHeight < 700 || (scrollHeight - scrollTop - clientHeight < 700));
       setIsButtonVisible(scrollHeight - scrollTop - clientHeight < 700);
+      if(scrollTop === 0) {
+        setIsButtonVisible(true);
+      }
     };
-  
-    if (task && task.id) { 
-      initializeChat(task.id); 
+    // error section action
+    handleScroll();
+
+    if (task && task.id) {
+      initializeChat(task.id);
       chatBody.addEventListener('scroll', handleScroll);
     }
-  
+
     return () => {
       chatBody.removeEventListener('scroll', handleScroll);
     };
@@ -284,10 +294,10 @@ const [isButtonVisible, setIsButtonVisible] = useState(false);
             </section>
 
             <button
-  onClick={() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }}  
-  className={`border-0 z-[99] active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center ${isButtonVisible ? 'hidden' : ''}`}>
-  <i className="bi bi-chevron-left -rotate-90 flex justify-center items-center text-[20px]"></i>
-</button>
+              onClick={() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }}
+              className={`border-0 z-[99] active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center ${isButtonVisible ? 'hidden' : ''}`}>
+              <i className="bi bi-chevron-left -rotate-90 flex justify-center items-center text-[20px]"></i>
+            </button>
           </>
           {/* Task Chat Body END */}
           {/* Chat Input START */}
