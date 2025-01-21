@@ -1,10 +1,15 @@
+import * as React from "react";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+
 function TaskFileControl({ fileUrl }) {
-  if (!fileUrl) {
-    return;
-  }
+  if (!fileUrl) { return; }
 
   const fileName = fileUrl.split("/").pop();
   const fileType = fileUrl.split(".").pop().toUpperCase();
+
+  const [open, setOpen] = React.useState(false);
 
   // console.log(fileType, fileName);
   return (
@@ -22,6 +27,7 @@ function TaskFileControl({ fileUrl }) {
           src={fileUrl}
           alt=""
           className="w-full max-h-[250px] rounded-lg object-cover my-1"
+          onClick={() => setOpen(true)}
         />
       )}
 
@@ -30,6 +36,7 @@ function TaskFileControl({ fileUrl }) {
           src={fileUrl}
           alt=""
           className="w-full max-h-[200px] rounded-lg object-cover my-1"
+          onClick={() => setOpen(true)}
         />
       )}
 
@@ -50,6 +57,27 @@ function TaskFileControl({ fileUrl }) {
           </a>
         </div>
       </div>
+
+      <Lightbox
+      className="z-[999999]"
+          open={open}
+          plugins={[Zoom]}
+          close={() => setOpen(false)}
+          slides={[{ src: fileUrl }]}
+          carousel={{ finite: true }}
+          styles={{ container: { backgroundColor: "rgba(0, 0, 0, .8)" } }}
+          render={{
+            buttonPrev: () => null, // Chapga o'tkazuvchi tugmani o'chiradi
+            buttonNext: () => null, // O'ngga o'tkazuvchi tugmani o'chiradi
+          }}
+          zoom={{
+            maxZoomPixelRatio: 5, // Zoom imkoniyatlarini oshiradi (bu qiymatni oshirishingiz mumkin)
+            zoomInMultiplier: 2, // Zoom bosqichlari tezligini boshqaradi
+            doubleTapDelay: 300, // Ikki marta bosish uchun kechikish vaqti (ms)
+            doubleClickDelay: 300, // Ikki marta bosish uchun kechikish vaqti (ms)
+            scrollToZoom: true, // Skrin qilish orqali zoom qilish imkoniyati
+          }}
+        />
     </>
   );
 }
