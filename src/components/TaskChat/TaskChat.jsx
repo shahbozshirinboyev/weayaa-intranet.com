@@ -167,9 +167,9 @@ function TaskChat({ task }) {
       const scrollHeight = chatBody.scrollHeight;
       const clientHeight = chatBody.clientHeight;
 
-      console.log('scrollTop', scrollTop);
-      console.log('scrollHeight', scrollHeight);
-      console.log('clientHeight', clientHeight);
+      // console.log('scrollTop', scrollTop);
+      // console.log('scrollHeight', scrollHeight);
+      // console.log('clientHeight', clientHeight);
 
       // Check if the scroll position is less than 700px from the bottom
       // setIsButtonVisible(scrollHeight < 700 || (scrollHeight - scrollTop - clientHeight < 700));
