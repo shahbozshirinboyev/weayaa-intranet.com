@@ -183,7 +183,7 @@ function TaskChat({ task }) {
             <section className="px-4 chatcss overflow-y-auto h-[635px]">
               {messages.sort((b, a) => new Date(b.created_at) - new Date(a.created_at)).map((message) => (
                 <div
-                id={message.id}
+                  id={message.id}
                   key={message.id}
                   className={`chat group relative rounded-md hover:bg-custom-green-15  
                    ${String(message.sender) === String(userId) ? "chat-end" : "chat-start"}`}
@@ -205,11 +205,19 @@ function TaskChat({ task }) {
                     </div>
                     {/* Reply section -- start */}
                     {message.reply_to &&
-                      <div onClick={() => { 
-                        const replyMessage = document.getElementById(message.reply_to); 
+                      <div onClick={() => {
+                        const replyMessage = document.getElementById(message.reply_to);
                         if (replyMessage) {
-                            replyMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        } }} className="cursor-pointer chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
+                          replyMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          // Orqa fonini qizil qilish
+                          replyMessage.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
+
+                          // 2 sekunddan so'ng orqa fonini asl holatiga qaytarish
+                          setTimeout(() => {
+                            replyMessage.style.backgroundColor = ''; // yoki asl rangni yozing
+                          }, 2000);
+                        }
+                      }} className="cursor-pointer chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
 
                         <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
                         <div>
@@ -218,7 +226,7 @@ function TaskChat({ task }) {
                             {/* <span className="text-xs opacity-60 text-end"> 12:45 AM </span> */}
                           </div>
                           <span className="line-clamp-1">{message.reply_to_details.content}</span>
-                          <span className={`line-clamp-1 ${message.reply_to_details.file !== null ? "" : "hidden" }`}>file</span>
+                          <span className={`line-clamp-1 ${message.reply_to_details.file !== null ? "" : "hidden"}`}>file</span>
                         </div>
 
                       </div>
