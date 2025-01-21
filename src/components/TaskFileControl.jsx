@@ -49,6 +49,7 @@ function TaskFileControl({ fileUrl }) {
         </div>
         <div>
           <a
+            target="_blank"
             href={fileUrl}
             download={fileName}
             className="flex justify-center items-center border-custom-green-10 border h-full w-[45px] px-2 py-1 rounded-md text-custom-green-dark hover:bg-custom-green-dark hover:border-transparent hover:text-white transition-all duration-300"
@@ -59,25 +60,25 @@ function TaskFileControl({ fileUrl }) {
       </div>
 
       <Lightbox
-      className="z-[999999]"
-          open={open}
-          plugins={[Zoom]}
-          close={() => setOpen(false)}
-          slides={[{ src: fileUrl }]}
-          carousel={{ finite: true }}
-          styles={{ container: { backgroundColor: "rgba(0, 0, 0, .8)" } }}
-          render={{
-            buttonPrev: () => null, // Chapga o'tkazuvchi tugmani o'chiradi
-            buttonNext: () => null, // O'ngga o'tkazuvchi tugmani o'chiradi
-          }}
-          zoom={{
-            maxZoomPixelRatio: 5, // Zoom imkoniyatlarini oshiradi (bu qiymatni oshirishingiz mumkin)
-            zoomInMultiplier: 2, // Zoom bosqichlari tezligini boshqaradi
-            doubleTapDelay: 300, // Ikki marta bosish uchun kechikish vaqti (ms)
-            doubleClickDelay: 300, // Ikki marta bosish uchun kechikish vaqti (ms)
-            scrollToZoom: true, // Skrin qilish orqali zoom qilish imkoniyati
-          }}
-        />
+        className="z-[999999]"
+        open={open}
+        plugins={[Zoom]}
+        close={() => setOpen(false)}
+        slides={[{ src: fileUrl }]}
+        carousel={{ finite: true }}
+        styles={{ container: { backgroundColor: "rgba(0, 0, 0, .8)" } }}
+        render={{
+          buttonPrev: () => null, // Chapga o'tkazuvchi tugmani o'chiradi
+          buttonNext: () => null, // O'ngga o'tkazuvchi tugmani o'chiradi
+        }}
+        zoom={{
+          maxZoomPixelRatio: 5, // Zoom imkoniyatlarini oshiradi (bu qiymatni oshirishingiz mumkin)
+          zoomInMultiplier: 2, // Zoom bosqichlari tezligini boshqaradi
+          doubleTapDelay: 300, // Ikki marta bosish uchun kechikish vaqti (ms)
+          doubleClickDelay: 300, // Ikki marta bosish uchun kechikish vaqti (ms)
+          scrollToZoom: true, // Skrin qilish orqali zoom qilish imkoniyati
+        }}
+      />
     </>
   );
 }
