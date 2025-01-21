@@ -259,7 +259,9 @@ function TaskChat({ task }) {
               {/* scroll to END => END */}
             </section>
 
-              <button className="border-0 active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center">
+              <button
+                  onClick={() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }}  
+                  className="border-0 active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center">
                 <i class="bi bi-chevron-left -rotate-90 flex justify-center items-center text-[20px]"></i>
               </button>
           </>
