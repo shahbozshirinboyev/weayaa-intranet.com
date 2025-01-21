@@ -75,7 +75,7 @@ function TaskManagement() {
   const userType = localStorage.getItem("userType");
   const [projectsList, setProjectsList] = useState([]);
 
-  console.log(projectsList)
+  // console.log(projectsList)
 
   const [activeProject, setActiveProject] = useState(
     JSON.parse(localStorage.getItem("activeProject"))

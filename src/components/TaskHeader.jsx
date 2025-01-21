@@ -4,7 +4,7 @@ import http from "../services/http";
 
 const TaskHeader = ({ task, getActiveProjectTasks }) => {
 
-  console.log(task)
+  // console.log(task)
   const [taskInfo, setTaskInfo] = useState({
     id: "",
     file: "",
@@ -32,10 +32,23 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
     setTaskInfo({ ...taskInfo, [name]: value });
   };
 
+  const handleFile = (e) => {
+    console.log(e.target.files[0].name)
+    setTaskInfo((prevState) => ({
+      ...prevState, 
+      file: e.target.files[0],
+      fileName: e.target.files[0].name,
+      fileType: e.target.files[0].name.split(".").pop().toUpperCase(),
+    }));
+    const files = Array.from(e.target.files);
+    const urls = files.map((file) => URL.createObjectURL(file));
+    setPhotos({ files, urls });
+  };
+
   const removeFile = () => {
     setTaskInfo((prevState) => ({
-      ...prevState, // Spread the previous state to retain other properties
-      file: "", // Update file-related properties to their default state
+      ...prevState, 
+      file: "",
       fileName: "",
       fileType: "",
     }));
@@ -187,7 +200,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                       type="file"
                     // multiple
                     // accept=".jpg,.png,.rar,.zip"
-                    // onChange={handleFileChange}
+                      onChange={handleFile}
                     />
 
                     <div className={`flex flex-col items-center justify-center ${ taskInfo.file === null || taskInfo.file === "" ? "" : "hidden"}`}>
@@ -201,14 +214,13 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
 
                     <div className={`${ taskInfo.file === null || taskInfo.file === "" ? "hidden" : ""} relative flex justify-center items-center h-full mx-3 bg-white rounded-md`}>
                         <span onClick={(e) => { e.preventDefault(); removeFile(); }} className="absolute -right-2 -top-2 bg-white hover:bg-red-100 w-[25px] h-[25px] border border-red-100 rounded-full p-1 flex justify-center items-center text-[10px]">❌</span>
-                        <ul className="flex justify-center items-center">
-
-                            <li className="text-sm text-gray-700 flex flex-col justify-center items-center mx-2">
-                              <i className="bi bi-file-earmark-fill text-[30px] text-custom-green-dark"></i>
+                        {/* <ul className="flex justify-center items-center"> */}
+                            <li className="text-sm text-gray-700 flex flex-col justify-center items-center mx-2 relative gap-1">
+                              <span className="font-bold text-custom-green-90 text-[12px] absolute">{taskInfo?.fileType}</span>
+                              <i className="bi bi-file-earmark text-[65px] text-custom-green-90"></i>
                               <span className="line-clamp-1 text-custom-green-dark font-semibold">{taskInfo?.fileName}</span>
-                              <span className="font-bold text-custom-green-dark border px-2 py-1 text-xs rounded-lg border-custom-green-15">{taskInfo?.fileType}</span>
                             </li>
-                        </ul>
+                        {/* </ul> */}
                     </div>
                   </label>
 
