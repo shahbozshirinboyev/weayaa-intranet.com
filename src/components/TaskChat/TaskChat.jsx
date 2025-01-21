@@ -204,7 +204,7 @@ function TaskChat({ task }) {
                     </div>
                     {/* Reply section -- start */}
                     {message.reply_to &&
-                      <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
+                      <div onClick={()=> { console.log(message.reply_to, message.id)}} className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
 
                         <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
                         <div>
