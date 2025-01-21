@@ -161,7 +161,7 @@ function TaskChat({ task }) {
       {/* TASK => Chat START */}
       <dialog id={`task_chat`} className="modal">
         <Toaster />
-        <div className="modal-box h-full max-h-[750px] p-0 flex flex-col rounded-none">
+        <div className="modal-box h-full max-h-[750px] p-0 flex flex-col rounded-none relative">
           {/* Modal header Start */}
           <form
             method="dialog"
@@ -258,6 +258,10 @@ function TaskChat({ task }) {
               <div ref={endRef}></div>
               {/* scroll to END => END */}
             </section>
+
+              <button className="border-0 active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center">
+                <i class="bi bi-chevron-left -rotate-90 flex justify-center items-center text-[20px]"></i>
+              </button>
           </>
           {/* Task Chat Body END */}
           {/* Chat Input START */}
