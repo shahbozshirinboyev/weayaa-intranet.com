@@ -3,7 +3,6 @@ import toast, { Toaster } from "react-hot-toast";
 import http from "../services/http";
 
 const TaskHeader = ({ task, getActiveProjectTasks }) => {
-
   // console.log(task)
   const [taskInfo, setTaskInfo] = useState({
     id: "",
@@ -12,8 +11,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
     fileType: "",
     name: "",
     deadline: "",
-    description: ""
-  })
+    description: "",
+  });
 
   useEffect(() => {
     setTaskInfo({
@@ -24,8 +23,8 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
       name: task.name,
       deadline: task.deadline,
       description: task.description,
-    })
-  }, [task])
+    });
+  }, [task]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,46 +32,54 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
   };
 
   const handleFile = (e) => {
-    console.log(e.target.files[0].name)
+    console.log(e.target.files[0].name);
     setTaskInfo((prevState) => ({
-      ...prevState, 
+      ...prevState,
       file: e.target.files[0],
       fileName: e.target.files[0].name,
-      fileType: e.target.files[0].name.split(".").pop().toUpperCase(),
+      fileType: e.target.files[0].name?.split(".").pop().toUpperCase(),
     }));
-    const files = Array.from(e.target.files);
-    const urls = files.map((file) => URL.createObjectURL(file));
-    setPhotos({ files, urls });
   };
 
   const removeFile = () => {
     setTaskInfo((prevState) => ({
-      ...prevState, 
+      ...prevState,
       file: "",
       fileName: "",
       fileType: "",
     }));
   };
-  
 
   const TaskInfoEdit = (e) => {
     e.preventDefault();
-    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
+
+    // Header konfiguratsiyasi
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
+
+    // FormData yaratish
+    const formData = new FormData();
+    formData.append("name", taskInfo.name);
+    formData.append("deadline", taskInfo.deadline);
+    formData.append("description", taskInfo.description);
+
+    if (taskInfo.file === "") {
+      formData.append("file", taskInfo.file);
+    } else if (!(typeof taskInfo.file === "string")) {
+      formData.append("file", taskInfo.file);
+    }
+
+    // Patch so'rovi
+    console.log("FormData tarkibi:", Object.fromEntries(formData.entries())); // Debug uchun
+
     toast.promise(
-      http.patch(`projects/tasks/${taskInfo.id}/`,
-        {
-          name: taskInfo.name,
-          deadline: taskInfo.deadline,
-          description: taskInfo.description,
-        },
-        { headers }
-      ),
+      http.patch(`projects/tasks/${taskInfo.id}/`, formData, { headers }),
       {
         loading: "Changing ...",
         success: (response) => {
-          // console.log(response.data);
           getActiveProjectTasks();
-          document.getElementById(`editTaskModal${task.id}`).close();
+          document.getElementById(`editTaskModal${taskInfo.id}`).close();
           return <b>Done :)</b>;
         },
         error: (error) => {
@@ -83,9 +90,10 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
     );
   };
 
-
-  const userType = localStorage.getItem("userType")
-  const toggleDropdown = () => { setIsOpen(!isOpen); };
+  const userType = localStorage.getItem("userType");
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -103,7 +111,9 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
   }, []);
 
   const deleteTask = (id) => {
-    const headers = { Authorization: `Bearer ${localStorage.getItem("access")}` };
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    };
     toast.promise(http.delete(`projects/tasks/${id}/`, { headers }), {
       loading: "Deleting...",
       success: (response) => {
@@ -117,7 +127,10 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
     });
   };
 
-  const showTaskId = () => { console.log("task ID: " + task.id); console.log(task); };
+  const showTaskId = () => {
+    console.log("task ID: " + task.id);
+    console.log(task);
+  };
 
   return (
     <>
@@ -130,10 +143,14 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
         </div>
 
         <div className="relative" ref={dropdownRef}>
-          <button onClick={toggleDropdown} className="h-full px-0 text-custom-green-dark">
+          <button
+            onClick={toggleDropdown}
+            className="h-full px-0 text-custom-green-dark"
+          >
             <i
-              className={`bi bi-three-dots-vertical flex justify-center items-center ${isOpen ? "-rotate-90" : "rotate-0"
-                } transition-all duration-300`}
+              className={`bi bi-three-dots-vertical flex justify-center items-center ${
+                isOpen ? "-rotate-90" : "rotate-0"
+              } transition-all duration-300`}
             ></i>
           </button>
           {isOpen && (
@@ -141,23 +158,40 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
               <li>
                 <button
                   onClick={showTaskId}
-                  className="hover:bg-custom-green-dark text-custom-green-dark btn btn-sm justify-start border-0 hover:text-white">
+                  className="hover:bg-custom-green-dark text-custom-green-dark btn btn-sm justify-start border-0 hover:text-white"
+                >
                   <i className="bi bi-fire flex justify-center items-center"></i>
                   <span>Important Task</span>
                 </button>
               </li>
-              <li className={`${userType === "staff" || userType === "client" ? "hidden" : ""}`}>
+              <li
+                className={`${
+                  userType === "staff" || userType === "client" ? "hidden" : ""
+                }`}
+              >
                 <button
-                  onClick={() => document.getElementById(`editTaskModal${task.id}`).showModal()}
-                  className={`hover:bg-custom-green-dark text-custom-green-dark btn btn-sm justify-start border-0 hover:text-white`}>
+                  onClick={() =>
+                    document
+                      .getElementById(`editTaskModal${task.id}`)
+                      .showModal()
+                  }
+                  className={`hover:bg-custom-green-dark text-custom-green-dark btn btn-sm justify-start border-0 hover:text-white`}
+                >
                   <i className="bi bi-pencil flex justify-center items-center"></i>
                   <span>Edit</span>
                 </button>
               </li>
-              <li className={`${userType === "staff" || userType === "client" ? "hidden" : ""}`}>
+              <li
+                className={`${
+                  userType === "staff" || userType === "client" ? "hidden" : ""
+                }`}
+              >
                 <button
-                  onClick={() => { deleteTask(task.id); }}
-                  className={`hover:bg-red-700 text-custom-green-dark hover:text-white btn btn-sm justify-start border-0`}>
+                  onClick={() => {
+                    deleteTask(task.id);
+                  }}
+                  className={`hover:bg-red-700 text-custom-green-dark hover:text-white btn btn-sm justify-start border-0`}
+                >
                   <i className="bi bi-trash flex justify-center items-center"></i>
                   <span>Delete</span>
                 </button>
@@ -165,12 +199,10 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
             </ul>
           )}
         </div>
-
       </div>
 
-
       <dialog id={`editTaskModal${task.id}`} className="modal">
-          <Toaster />
+        <Toaster />
         <div className="modal-box p-0 max-w-xl">
           {/* Modal header Start */}
           <form
@@ -191,36 +223,67 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
             <form onSubmit={TaskInfoEdit}>
               <div className="flex flex-col gap-3 px-5 py-4 text-custom-green-dark z-50">
                 <div className="flex gap-4">
-
-                  <label className={`w-[200px] py-3 flex justify-center items-center rounded-lg cursor-pointer bg-custom-green-15 text-custom-green-80 ${ taskInfo.file === null || taskInfo.file === "" ? "hover:bg-custom-green-dark hover:text-white" : ""} transition-all duration-150`}>
+                  <label
+                    className={`w-[200px] py-3 flex justify-center items-center rounded-lg cursor-pointer bg-custom-green-15 text-custom-green-80 ${
+                      taskInfo.file === null || taskInfo.file === ""
+                        ? "hover:bg-custom-green-dark hover:text-white"
+                        : ""
+                    } transition-all duration-150`}
+                  >
                     <input
                       className="hidden"
                       id="file-upload"
                       accept="*/*"
                       type="file"
-                    // multiple
-                    // accept=".jpg,.png,.rar,.zip"
+                      // multiple
+                      // accept=".jpg,.png,.rar,.zip"
                       onChange={handleFile}
                     />
 
-                    <div className={`flex flex-col items-center justify-center ${ taskInfo.file === null || taskInfo.file === "" ? "" : "hidden"}`}>
+                    <div
+                      className={`flex flex-col items-center justify-center ${
+                        taskInfo.file === null || taskInfo.file === ""
+                          ? ""
+                          : "hidden"
+                      }`}
+                    >
                       <i className="bi bi-cloud-arrow-up-fill text-2xl"></i>
                       <p className="text-xs text-center">
-                        <span className="font-semibold">Choose file to upload</span>
+                        <span className="font-semibold">
+                          Choose file to upload
+                        </span>
                         <br />
                         <span>Supported any formats</span>
                       </p>
                     </div>
 
-                    <div className={`${ taskInfo.file === null || taskInfo.file === "" ? "hidden" : ""} relative flex justify-center items-center h-full mx-3 bg-white rounded-md`}>
-                        <span onClick={(e) => { e.preventDefault(); removeFile(); }} className="absolute -right-2 -top-2 bg-white hover:bg-red-100 w-[25px] h-[25px] border border-red-100 rounded-full p-1 flex justify-center items-center text-[10px]">❌</span>
-                        {/* <ul className="flex justify-center items-center"> */}
-                            <li className="text-sm text-gray-700 flex flex-col justify-center items-center mx-2 relative gap-1">
-                              <span className="font-bold text-custom-green-90 text-[12px] absolute">{taskInfo?.fileType}</span>
-                              <i className="bi bi-file-earmark text-[65px] text-custom-green-90"></i>
-                              <span className="line-clamp-1 text-custom-green-dark font-semibold">{taskInfo?.fileName}</span>
-                            </li>
-                        {/* </ul> */}
+                    <div
+                      className={`${
+                        taskInfo.file === null || taskInfo.file === ""
+                          ? "hidden"
+                          : ""
+                      } relative flex justify-center items-center h-full mx-3 bg-white rounded-md`}
+                    >
+                      <span
+                        onClick={(e) => {
+                          e.preventDefault();
+                          removeFile();
+                        }}
+                        className="absolute -right-2 -top-2 bg-white hover:bg-red-100 w-[25px] h-[25px] border border-red-100 rounded-full p-1 flex justify-center items-center text-[10px]"
+                      >
+                        ❌
+                      </span>
+                      {/* <ul className="flex justify-center items-center"> */}
+                      <li className="text-sm text-gray-700 flex flex-col justify-center items-center mx-2 relative gap-1">
+                        <span className="font-bold text-custom-green-90 text-[12px] absolute">
+                          {taskInfo?.fileType}
+                        </span>
+                        <i className="bi bi-file-earmark text-[65px] text-custom-green-90"></i>
+                        <span className="line-clamp-1 text-custom-green-dark font-semibold">
+                          {taskInfo?.fileName}
+                        </span>
+                      </li>
+                      {/* </ul> */}
                     </div>
                   </label>
 
@@ -252,9 +315,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                         className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
                       />
                     </label>
-
                   </div>
-
                 </div>
 
                 <label className="w-full ">
@@ -270,7 +331,12 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                     rows={4}
                   ></textarea>
                 </label>
-                <button type="submit" className="w-full rounded-md h-9 bg-custom-green-dark text-blue-50 font-medium">Save</button>
+                <button
+                  type="submit"
+                  className="w-full rounded-md h-9 bg-custom-green-dark text-blue-50 font-medium"
+                >
+                  Save
+                </button>
               </div>
             </form>
           </>
@@ -279,7 +345,6 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
           <button>close</button>
         </form>
       </dialog>
-
     </>
   );
 };
