@@ -6,6 +6,8 @@ function ArchiveProjects() {
   const [projectsList, setProjectsList] = useState([]);
   const [selectArchiveProject, setSelectArchiveProject] = useState([]);
 
+  console.log(projectsList)
+
   const getProjectsList = () => {
     const headers = { Authorization: `Bearer ${localStorage.getItem("access")}`, };
     http
