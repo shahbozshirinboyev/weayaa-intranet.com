@@ -209,13 +209,15 @@ function TaskChat({ task }) {
                         const replyMessage = document.getElementById(message.reply_to);
                         if (replyMessage) {
                           replyMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                          // Orqa fonini qizil qilish
-                          replyMessage.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
-
-                          // 2 sekunddan so'ng orqa fonini asl holatiga qaytarish
-                          setTimeout(() => {
-                            replyMessage.style.backgroundColor = ''; // yoki asl rangni yozing
-                          }, 2000);
+                          let count = 0;
+                          const interval = setInterval(() => {
+                            replyMessage.style.backgroundColor = count % 2 === 0 ? 'rgba(255, 0, 0, 0.2)' : '';
+                            count++;
+                            if (count >= 8) { // 3 marta o'zgarish uchun 6 ta o'zgarish
+                              clearInterval(interval);
+                              replyMessage.style.backgroundColor = ''; // Asl rangga qaytish
+                            }
+                          }, 200); // Har bir o'zgarish 1 sekund davomida
                         }
                       }} className="cursor-pointer chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
 
