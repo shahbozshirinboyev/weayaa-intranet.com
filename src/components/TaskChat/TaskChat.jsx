@@ -183,6 +183,7 @@ function TaskChat({ task }) {
             <section className="px-4 chatcss overflow-y-auto h-[635px]">
               {messages.sort((b, a) => new Date(b.created_at) - new Date(a.created_at)).map((message) => (
                 <div
+                id={message.id}
                   key={message.id}
                   className={`chat group relative rounded-md hover:bg-custom-green-15  
                    ${String(message.sender) === String(userId) ? "chat-end" : "chat-start"}`}
@@ -204,7 +205,11 @@ function TaskChat({ task }) {
                     </div>
                     {/* Reply section -- start */}
                     {message.reply_to &&
-                      <div onClick={()=> { console.log(message.reply_to, message.id)}} className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
+                      <div onClick={() => { 
+                        const replyMessage = document.getElementById(message.reply_to); 
+                        if (replyMessage) {
+                            replyMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        } }} className="cursor-pointer chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
 
                         <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
                         <div>
