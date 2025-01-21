@@ -12,7 +12,7 @@ const [isButtonVisible, setIsButtonVisible] = useState(false);
   const [messages, setMessages] = useState([]);
   const chatServiceRef = useRef(null);
 
-  const [reply, setReply] = useState({ id: "", user: "", message: "" });
+  const [reply, setReply] = useState({ id: "", user: "",  speciality: "", message: "" });
   const [rows, setRows] = useState(1);
 
   const [file, setFile] = useState({ name: "", file: "", url: "" });
@@ -21,14 +21,16 @@ const [isButtonVisible, setIsButtonVisible] = useState(false);
   // useEffect(() => { console.log(messages) }, [messages])
 
   const activeReply = (message) => {
+    console.log(message)
     setReply({
       id: message.id,
       user: message.sender_details.full_name,
+      speciality: message.sender_details.speciality,
       message: message.content,
       file: message.file
     });
   };
-  const handleClearReply = () => { setReply({ id: "", user: "", message: "", file: "" }); };
+  const handleClearReply = () => { setReply({ id: "", user: "", speciality: "", message: "", file: "" }); };
 
   const endRef = useRef(null);
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
@@ -283,7 +285,7 @@ const [isButtonVisible, setIsButtonVisible] = useState(false);
 
             <button
   onClick={() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }}  
-  className={`border-0 active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center ${isButtonVisible ? 'hidden' : ''}`}>
+  className={`border-0 z-[99] active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center ${isButtonVisible ? 'hidden' : ''}`}>
   <i className="bi bi-chevron-left -rotate-90 flex justify-center items-center text-[20px]"></i>
 </button>
           </>
@@ -297,7 +299,7 @@ const [isButtonVisible, setIsButtonVisible] = useState(false);
                 <div className="w-full">
                   <div className="flex justify-between items-center w-full">
                     <span className="font-bold">{reply.user}</span>
-                    <span className="text-xs opacity-60 text-end">unknown</span>
+                    <span className="text-xs opacity-60 text-end">{reply.speciality}</span>
                   </div>
                   <span className="line-clamp-1">{reply.message}</span>
                   <span className={`line-clamp-1 ${reply.message === "" ? "" : "hidden"}`}>file</span>
