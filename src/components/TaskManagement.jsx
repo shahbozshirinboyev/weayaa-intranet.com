@@ -822,14 +822,14 @@ function TaskManagement() {
 
                                 <div className="w-full flex items-center">
                                   {/* Chat button START */}
-                                  <button onClick={() => { setTask(task); document.getElementById(`task_chat`).showModal(); }}>
+                                  <label htmlFor="task_chat"  onClick={() => { setTask(task) }}>
                                     <div className="flex">
                                       <div className="relative">
                                         <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"><i className="bi bi-chat-text"></i></div>
                                         <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
                                       </div>
                                     </div>
-                                  </button>
+                                  </label>
                                   {/* Chat button END */}
 
                                   <TaskFoother getActiveProjectTasks={getActiveProjectTasks} selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />

@@ -193,23 +193,24 @@ function TaskChat({ task }) {
   return (
     <>
       {/* TASK => Chat START */}
-      <dialog id={`task_chat`} className="modal">
+      <input type="checkbox" id="task_chat" className="modal-toggle" />
+      <div className="modal" role="dialog">
+
         <Toaster />
         <div className="modal-box h-full max-h-[750px] p-0 flex flex-col rounded-none relative">
           {/* Modal header Start */}
-          <form
-            method="dialog"
+          <div
             className="border-b-[2px] border-custom-green-80 h-[55px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
           >
             <span className="text-custom-green-dark font-bold">
               Chat (Task ID: {task.id})
             </span>
             <div className="text-end">
-              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+              <label htmlFor="task_chat" className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
                 <i className="bi bi-x-lg flex justify-center items-center"></i>
-              </button>
+              </label>
             </div>
-          </form>
+          </div>
           {/* Modal header End */}
 
           {/* Task Chat Body START */}
@@ -365,10 +366,8 @@ function TaskChat({ task }) {
 
           {/* Chat Input END */}
         </div>
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
+        <label className="modal-backdrop" htmlFor="task_chat">Close</label>
+      </div>
       {/* TASK => Chat END */}
     </>
   );
