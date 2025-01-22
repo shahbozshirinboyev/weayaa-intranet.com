@@ -14,7 +14,7 @@ function ArchiveProjects() {
       .get(`projects/`, { headers })
       .then((response) => {
         const responseData = response.data;
-        const filteredProjects = responseData.filter((project) => project.is_archived === true);
+        const filteredProjects = responseData.filter((project) => project?.is_archived === true);
         setProjectsList(filteredProjects);
       })
       .catch((error) => {
@@ -47,7 +47,15 @@ function ArchiveProjects() {
   };
   return (
     <>
-      <div className="overflow-x-auto">
+      {projectsList?.length === 0 &&
+        <div className="flex justify-center items-center p-6">
+          <span className="text-custom-green-dark font-semibold flex flex-col justify-center items-center gap-1">
+            <i className="bi bi-journal-x text-[25px]"></i>
+            <span>No archived projects</span>
+          </span>
+        </div>}
+
+      {projectsList?.length !== 0 && <div className="overflow-x-auto">
         <table className="table">
           <thead>
             <tr className="text-custom-green-dark uppercase">
@@ -90,7 +98,7 @@ function ArchiveProjects() {
             ))}
           </tbody>
         </table>
-      </div>
+      </div>}
 
       {/* unarchive modal - start */}
       <dialog id="my_unarchive_modal" className="modal">
@@ -105,7 +113,7 @@ function ArchiveProjects() {
               className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-red-700 hover:text-white border-transparent"
             >Yes</button>
             <button
-              onClick={() => document.getElementById("my_unarchive_modal").close() }
+              onClick={() => document.getElementById("my_unarchive_modal").close()}
               className="btn w-[70px] text-custom-green-dark bg-custom-green-15 hover:border-transparent hover:bg-custom-green-dark hover:text-white border-transparent"
             >No</button>
           </div>
