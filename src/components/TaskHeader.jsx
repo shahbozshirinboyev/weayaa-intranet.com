@@ -70,9 +70,6 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
       formData.append("file", taskInfo.file);
     }
 
-    // Patch so'rovi
-    console.log("FormData tarkibi:", Object.fromEntries(formData.entries())); // Debug uchun
-
     toast.promise(
       http.patch(`projects/tasks/${taskInfo.id}/`, formData, { headers }),
       {

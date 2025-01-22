@@ -14,6 +14,7 @@ import { FreeMode, Mousewheel } from "swiper/modules";
 import "swiper/css/free-mode";
 import "swiper/css";
 import TaskChat from "./TaskChat/TaskChat";
+import { Fragment } from "react";
 
 function TaskManagement() {
   const [divWidth, setDivWidth] = useState("100%");
@@ -384,6 +385,48 @@ function TaskManagement() {
 
   useEffect(() => { getActiveProjectTasks(); }, [activeProject]);
   // ===========> Get ActiveProjectTasks List END <=========== //
+
+  const renderContent = (content) => {
+      // Yangi qatorlarni ajratish
+      const lines = content.split('\n');
+  
+      return lines.map((line, lineIndex) => {
+        // Har bir qatorni bo'shliqlarga bo'lish
+        const words = line.split(' ');
+  
+        return (
+          <Fragment key={lineIndex}>
+            {words.map((word, wordIndex) => {
+              const urlMatch = word.match(/(https?:\/\/[^\s]+)/g);
+              if (urlMatch) {
+                const url = urlMatch[0];
+                const baseUrl = url.split('/').slice(0, 3).join('/'); // Asosiy URL
+                const shortUrl = `${baseUrl}/...`; // Qisqartirilgan ko'rinish
+  
+                return (
+                  <Fragment key={`${lineIndex}-${wordIndex}`}>
+                    <a href={url} className="text-sky-500" target="_blank" rel="noopener noreferrer">
+                      {shortUrl}
+                    </a>
+                  </Fragment>
+                );
+              }
+              // Agar so'z bo'sh bo'lmasa, uni ko'rsatamiz
+              if (word.trim()) {
+                return (
+                  <Fragment key={`${lineIndex}-${wordIndex}`}>
+                    {word}
+                  </Fragment>
+                );
+              }
+              // Agar so'z bo'sh bo'lsa, hech narsa qaytarmaymiz
+              return null;
+            }).reduce((prev, curr) => [prev, ' ', curr])}
+            <br /> {/* Har bir qator oxirida <br /> qo'shamiz */}
+          </Fragment>
+        );
+      });
+    };
 
   return (
     <>
@@ -814,7 +857,7 @@ function TaskManagement() {
 
                                 <div className="w-full flex items-start flex-col gap-1">
                                   <span className="text-[15.5px] font-medium text-custom-green-90"> {task.name} </span>
-                                  <span className="text-[13.5px] text-custom-green-80 break-all"> {task.description} </span>
+                                  <span className="text-[13.5px] text-custom-green-80 break-all"> {renderContent(task.description)} </span>
                                 </div>
 
                                 <div className="w-full">
