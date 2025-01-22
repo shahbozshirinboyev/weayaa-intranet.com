@@ -49,8 +49,8 @@ function ArchiveProjects() {
     <>
       {projectsList?.length === 0 &&
         <div className="flex justify-center items-center p-6">
-          <span className="text-custom-green-dark font-semibold flex flex-col justify-center items-center gap-1">
-            <i className="bi bi-journal-x text-[25px]"></i>
+          <span className="text-custom-green-80 font-semibold flex flex-col justify-center items-center gap-1">
+            <i className="bi bi-journal-x text-[55px]"></i>
             <span>No archived projects</span>
           </span>
         </div>}
