@@ -106,7 +106,8 @@ function StaffsList() {
                 scope="col"
                 className="px-6 py-3 hidden md:hidden lg:table-cell"
               >
-                Working Days
+                {/* Working Days */}
+                Active
               </th>
 
               <th scope="col" className="px-6 py-3">
@@ -163,7 +164,7 @@ function StaffsList() {
                   </td>
 
                   <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
-                    <div className="flex">
+                    {/* <div className="flex">
                       <div
                         className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
                           user.work_days[0]
@@ -227,7 +228,8 @@ function StaffsList() {
                       >
                         S
                       </div>
-                    </div>
+                    </div> */}
+                    <span className="font-semibold text-custom-green-dark">On</span>
                   </td>
 
                   <td className="px-6 py-4">
