@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import TaskFileControl from "../TaskFileControl";
 import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
+import { Fragment } from "react";
 
 function TaskChat({ task }) {
 
@@ -174,7 +175,7 @@ function TaskChat({ task }) {
       // Check if the scroll position is less than 700px from the bottom
       // setIsButtonVisible(scrollHeight < 700 || (scrollHeight - scrollTop - clientHeight < 700));
       setIsButtonVisible(scrollHeight - scrollTop - clientHeight < 700);
-      if(scrollTop === 0) {
+      if (scrollTop === 0) {
         setIsButtonVisible(true);
       }
     };
@@ -190,6 +191,49 @@ function TaskChat({ task }) {
       chatBody.removeEventListener('scroll', handleScroll);
     };
   }, [task]);
+
+  const renderContent = (content) => {
+    // Yangi qatorlarni ajratish
+    const lines = content.split('\n');
+
+    return lines.map((line, lineIndex) => {
+      // Har bir qatorni bo'shliqlarga bo'lish
+      const words = line.split(' ');
+
+      return (
+        <Fragment key={lineIndex}>
+          {words.map((word, wordIndex) => {
+            const urlMatch = word.match(/(https?:\/\/[^\s]+)/g);
+            if (urlMatch) {
+              const url = urlMatch[0];
+              const baseUrl = url.split('/').slice(0, 3).join('/'); // Asosiy URL
+              const shortUrl = `${baseUrl}/...`; // Qisqartirilgan ko'rinish
+
+              return (
+                <Fragment key={`${lineIndex}-${wordIndex}`}>
+                  <a href={url} className="text-sky-500" target="_blank" rel="noopener noreferrer">
+                    {shortUrl}
+                  </a>
+                </Fragment>
+              );
+            }
+            // Agar so'z bo'sh bo'lmasa, uni ko'rsatamiz
+            if (word.trim()) {
+              return (
+                <Fragment key={`${lineIndex}-${wordIndex}`}>
+                  {word}
+                </Fragment>
+              );
+            }
+            // Agar so'z bo'sh bo'lsa, hech narsa qaytarmaymiz
+            return null;
+          }).reduce((prev, curr) => [prev, ' ', curr])}
+          <br /> {/* Har bir qator oxirida <br /> qo'shamiz */}
+        </Fragment>
+      );
+    });
+  };
+  
   return (
     <>
       {/* TASK => Chat START */}
@@ -273,7 +317,9 @@ function TaskChat({ task }) {
                     <TaskFileControl fileUrl={message.file} />
                     {/* <TaskFileControl fileUrl={message.sender_details.image} /> */}
 
-                    <span>{message.content}</span>
+                    <span>
+                      {renderContent(message.content)}
+                    </span>
 
                     <p className="flex justify-end items-center gap-2 text-xs">
                       <span>{new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
