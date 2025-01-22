@@ -18,7 +18,7 @@ function TaskFileControl({ fileUrl }) {
       {fileUrl && fileUrl.endsWith(".jpg") && (
         <img
           src={fileUrl}
-          className="w-full max-h-[250px] rounded-lg object-cover my-1"
+          className="w-full max-h-[250px] rounded-lg object-cover my-1 border border-custom-green-10"
           onClick={() => { setOpen(true); }}
         />
       )}
@@ -26,7 +26,7 @@ function TaskFileControl({ fileUrl }) {
       {fileUrl && fileUrl.endsWith(".png") && (
         <img
           src={fileUrl}
-          className="w-full max-h-[250px] rounded-lg object-cover my-1"
+          className="w-full max-h-[250px] rounded-lg object-cover my-1 border border-custom-green-10"
           onClick={() => { setOpen(true); }}
         />
       )}
@@ -34,7 +34,7 @@ function TaskFileControl({ fileUrl }) {
       {fileUrl && fileUrl.endsWith(".jpeg") && (
         <img
           src={fileUrl}
-          className="w-full max-h-[200px] rounded-lg object-cover my-1"
+          className="w-full max-h-[200px] rounded-lg object-cover my-1 border border-custom-green-10"
           onClick={() => { setOpen(true); }}
         />
       )}
