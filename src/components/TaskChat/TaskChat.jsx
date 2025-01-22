@@ -194,7 +194,7 @@ function TaskChat({ task }) {
     <>
       {/* TASK => Chat START */}
       <input type="checkbox" id="task_chat" className="modal-toggle" />
-      <div className="modal" role="dialog">
+      <div className="modal z-[99999]" role="dialog">
 
         <Toaster />
         <div className="modal-box h-full max-h-[750px] p-0 flex flex-col rounded-none relative">
