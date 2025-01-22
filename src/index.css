@@ -31,3 +31,7 @@ select:-webkit-autofill:focus {
   scrollbar-color: #2e673498 #fff;
   scroll-behavior: smooth;
 }
+
+body {
+  unicode-bidi: plaintext;
+}
