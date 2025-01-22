@@ -46,24 +46,11 @@ function ProjectsList() {
             </div>
 
             <div className="p-2 h-full hidden md:flex">
-              <div className="flex h-full justify-start px-4 w-[265px]  items-center bg-custom-green-30 text-custom-green-dark font-semibold rounded-[5px]">
+              <div className="flex h-full justify-start px-4 w-[270px]  items-center bg-custom-green-30 text-custom-green-dark font-semibold rounded-[5px]">
                 <i className="bi bi-calendar4-week mr-4 text-[18px] flex justify-center items-center"></i>
                 <p>{project.deadline}</p>
-                <p
-                  className={`flex justify-center items-center whitespace-nowrap ml-4 px-2 py-1 rounded-[5px] w-[100px] ${
-                    Math.ceil(
-                      (new Date(project.deadline) - new Date()) /
-                        (1000 * 60 * 60 * 24)
-                    ) < 0
-                      ? "text-white bg-red-700"
-                      : "text-white bg-custom-green-dark "
-                  }`}
-                >
-                  {Math.ceil(
-                    (new Date(project.deadline) - new Date()) /
-                      (1000 * 60 * 60 * 24)
-                  )}{" "}
-                  days
+                <p className={`flex justify-center items-center whitespace-nowrap ml-4 px-2 py-1 rounded-[5px] w-[100px] ${ Math.ceil( (new Date(project.deadline) - new Date()) / (1000 * 60 * 60 * 24) ) < 0 ? "text-white bg-red-700" : "text-white bg-custom-green-dark"}`} >
+                  {Math.ceil( (new Date(project.deadline) - new Date()) / (1000 * 60 * 60 * 24) )}{" "}days
                 </p>
               </div>
             </div>
