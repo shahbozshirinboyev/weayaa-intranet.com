@@ -5,6 +5,7 @@ import MaskedInput from "react-text-mask";
 
 // http
 import http from "../services/http";
+import noneuser from "/img/noneuser.png";
 
 function AddStaff({ setCount }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -173,6 +174,7 @@ function AddStaff({ setCount }) {
             
             const randomNum = Math.floor(Math.random() * 100); // 0 dan 99 gacha bo'lgan random son
             setCount(randomNum);
+            handleClearFileUserImage();
 
             return <b>Add new User!</b>;
           },
@@ -220,7 +222,7 @@ function AddStaff({ setCount }) {
           </form>
           {/* Modal header End */}
           <section>
-            <div className="p-6 ">
+            <div className="p-6 text-custom-green-dark">
               {/* Show Condition MULTI FORM 1 - 2 - 3 START */}
               <div className="flex justify-center items-center transition-all duration-300">
                 {formArray.map((v, i) => (
@@ -256,16 +258,13 @@ function AddStaff({ setCount }) {
                 <div>
                   <div className="grid grid-cols-1 mt-2">
                     <div className="flex mt-2 gap-4 items-center">
-                      <div className="w-[100px] h-[100px] flex justify-center items-center">
-                        {userImage === null ? (
-                          <i className="bi bi-person-bounding-box text-[35px] text-custom-green-80"></i>
-                        ) : (
+
+                      <div className="w-[80px] h-[80px] border border-custom-green-15 rounded-full flex justify-center items-center flex-shrink-0">
                           <img
-                            src={userImage}
-                            alt="user-image"
-                            className="w-[100px] rounded-full"
+                            src={userImage || noneuser}
+                            alt="user-img"
+                            className="w-[80px] h-[80px] object-cover rounded-full"
                           />
-                        )}
                       </div>
 
                       <div className="w-full">
