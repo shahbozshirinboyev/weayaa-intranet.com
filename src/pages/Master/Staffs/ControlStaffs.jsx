@@ -16,7 +16,7 @@ import ClientProjects from "../../../components/ClientProjects";
 function ControlStaffs() {
   const [smlist, setSmlist] = useState("staff");
   const [users, setUsers] = useState([]);
-  console.log(users)
+  // console.log(users)
   const [usersCount, setUsersCount] = useState();
   const [clientId, setClientId] = useState('')
   const [clientIdProject, setClientIdProject] = useState('')
