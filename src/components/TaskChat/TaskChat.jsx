@@ -233,7 +233,7 @@ function TaskChat({ task }) {
       );
     });
   };
-  
+
   return (
     <>
       {/* TASK => Chat START */}
@@ -260,6 +260,14 @@ function TaskChat({ task }) {
           {/* Task Chat Body START */}
           <>
             <section className="px-4 chatcss overflow-y-auto h-[635px]">
+
+              { messages.length === 0 &&
+                <div className="w-full h-full flex flex-col justify-center items-center text-custom-green-80">
+                  <i className="bi bi-chat text-[55px]"></i>
+                  <span className="font-semibold">No messages here yet...</span>
+                </div>
+              }
+
               {messages.sort((b, a) => new Date(b.created_at) - new Date(a.created_at)).map((message) => (
                 <div
                   id={message.id}
