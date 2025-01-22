@@ -97,7 +97,7 @@ function TaskManagement() {
       .get(`projects/`, { headers })
       .then((response) => {
         const responseData = response.data;
-        const filteredProjects = responseData.filter( (project) => project.is_archived === false );
+        const filteredProjects = responseData.filter((project) => project.is_archived === false);
         setProjectsList(filteredProjects);
         if (response.data.length === 0) {
           setActiveProject([]);
@@ -387,46 +387,46 @@ function TaskManagement() {
   // ===========> Get ActiveProjectTasks List END <=========== //
 
   const renderContent = (content) => {
-      // Yangi qatorlarni ajratish
-      const lines = content.split('\n');
-  
-      return lines.map((line, lineIndex) => {
-        // Har bir qatorni bo'shliqlarga bo'lish
-        const words = line.split(' ');
-  
-        return (
-          <Fragment key={lineIndex}>
-            {words.map((word, wordIndex) => {
-              const urlMatch = word.match(/(https?:\/\/[^\s]+)/g);
-              if (urlMatch) {
-                const url = urlMatch[0];
-                const baseUrl = url.split('/').slice(0, 3).join('/'); // Asosiy URL
-                const shortUrl = `${baseUrl}/...`; // Qisqartirilgan ko'rinish
-  
-                return (
-                  <Fragment key={`${lineIndex}-${wordIndex}`}>
-                    <a href={url} className="text-sky-500" target="_blank" rel="noopener noreferrer">
-                      {shortUrl}
-                    </a>
-                  </Fragment>
-                );
-              }
-              // Agar so'z bo'sh bo'lmasa, uni ko'rsatamiz
-              if (word.trim()) {
-                return (
-                  <Fragment key={`${lineIndex}-${wordIndex}`}>
-                    {word}
-                  </Fragment>
-                );
-              }
-              // Agar so'z bo'sh bo'lsa, hech narsa qaytarmaymiz
-              return null;
-            }).reduce((prev, curr) => [prev, ' ', curr])}
-            <br /> {/* Har bir qator oxirida <br /> qo'shamiz */}
-          </Fragment>
-        );
-      });
-    };
+    // Yangi qatorlarni ajratish
+    const lines = content.split('\n');
+
+    return lines.map((line, lineIndex) => {
+      // Har bir qatorni bo'shliqlarga bo'lish
+      const words = line.split(' ');
+
+      return (
+        <Fragment key={lineIndex}>
+          {words.map((word, wordIndex) => {
+            const urlMatch = word.match(/(https?:\/\/[^\s]+)/g);
+            if (urlMatch) {
+              const url = urlMatch[0];
+              const baseUrl = url.split('/').slice(0, 3).join('/'); // Asosiy URL
+              const shortUrl = `${baseUrl}/...`; // Qisqartirilgan ko'rinish
+
+              return (
+                <Fragment key={`${lineIndex}-${wordIndex}`}>
+                  <a href={url} className="text-sky-500" target="_blank" rel="noopener noreferrer">
+                    {shortUrl}
+                  </a>
+                </Fragment>
+              );
+            }
+            // Agar so'z bo'sh bo'lmasa, uni ko'rsatamiz
+            if (word.trim()) {
+              return (
+                <Fragment key={`${lineIndex}-${wordIndex}`}>
+                  {word}
+                </Fragment>
+              );
+            }
+            // Agar so'z bo'sh bo'lsa, hech narsa qaytarmaymiz
+            return null;
+          }).reduce((prev, curr) => [prev, ' ', curr])}
+          <br /> {/* Har bir qator oxirida <br /> qo'shamiz */}
+        </Fragment>
+      );
+    });
+  };
 
   return (
     <>
@@ -577,8 +577,8 @@ function TaskManagement() {
                   <div
                     key={user.id}
                     className={`form-control rounded-md px-1 my-2 ${selectedUsers.includes(user.id)
-                        ? "bg-custom-green-15"
-                        : "bg-transparent"
+                      ? "bg-custom-green-15"
+                      : "bg-transparent"
                       }`}
                   >
                     <label className="cursor-pointer label">
@@ -651,8 +651,8 @@ function TaskManagement() {
                     <div
                       key={index}
                       className={`${selectedUsers.includes(user.id)
-                          ? "bg-white"
-                          : "bg-transparent"
+                        ? "bg-white"
+                        : "bg-transparent"
                         }`}
                     >
                       <label className="label">
@@ -866,7 +866,7 @@ function TaskManagement() {
 
                                 <div className="w-full flex items-center">
                                   {/* Chat button START */}
-                                  <label htmlFor="task_chat"  onClick={() => { setTask(task) }}>
+                                  <label htmlFor="task_chat" onClick={() => { setTask(task) }}>
                                     <div className="flex">
                                       <div className="relative">
                                         <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"><i className="bi bi-chat-text"></i></div>
@@ -1017,7 +1017,9 @@ function TaskManagement() {
         </form>
       </dialog>
 
-      <TaskChat task={task} />
+      <div>
+        <TaskChat task={task} />
+      </div>
     </>
   );
 }
