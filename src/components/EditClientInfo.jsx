@@ -73,7 +73,7 @@ function EditClientInfo({ clientId, setCount, setClientId }) {
     const formData = new FormData();
     formData.append("first_name", state.first_name);
     formData.append("last_name", state.last_name);
-    formData.append("phone_number", state.phone_number.replace(/\s+/g, ""));
+    // formData.append("phone_number", state.phone_number.replace(/\s+/g, ""));
     formData.append("email", state.email);
     formData.append("organization", state.organization);
     if (avatar.file !== null) {
