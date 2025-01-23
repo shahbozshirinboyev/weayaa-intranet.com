@@ -102,13 +102,7 @@ function StaffsList() {
                 Contact
               </th>
 
-              <th
-                scope="col"
-                className="px-6 py-3 hidden md:hidden lg:table-cell"
-              >
-                {/* Working Days */}
-                Active
-              </th>
+              
 
               <th scope="col" className="px-6 py-3">
                 Position
@@ -151,11 +145,18 @@ function StaffsList() {
                   </td>
 
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell lg:table-cell">
-                    <div className="text-base font-semibold text-custom-green-dark">
-                      {user.phone_number === null || user.phone_number === ""
-                        ? "+998 (--) --- -- --"
-                        : user.phone_number}
-                    </div>
+                  <a
+                      target="_blank"
+                      href={`https://t.me/${user?.address}`}
+                      className="btn btn-xs text-sm border-0 font-semibold text-custom-green-dark bg-custom-green-30 hover:text-white hover:bg-sky-600"
+                    >
+                      <i className="bi bi-telegram"></i>
+                      <span>
+                        {user.address === null || user.address === ""
+                          ? "telegram.undefined"
+                          : user.address}
+                      </span>
+                    </a>
                     <div className="font-normal text-custom-green-80">
                       {user.email === null || user.email === ""
                         ? "email.undefined"
@@ -163,74 +164,6 @@ function StaffsList() {
                     </div>
                   </td>
 
-                  <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
-                    {/* <div className="flex">
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[0]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        }  font-semibold`}
-                      >
-                        M
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[1]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        } font-semibold`}
-                      >
-                        T
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[2]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        } font-semibold`}
-                      >
-                        W
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[3]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        } font-semibold`}
-                      >
-                        T
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[4]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        } font-semibold`}
-                      >
-                        F
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[5]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        }  font-semibold`}
-                      >
-                        S
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${
-                          user.work_days[6]
-                            ? "bg-custom-green-dark text-white"
-                            : "bg-custom-green-30 text-custom-green-dark"
-                        } font-semibold`}
-                      >
-                        S
-                      </div>
-                    </div> */}
-                    <span className="font-semibold text-custom-green-dark">On</span>
-                  </td>
 
                   <td className="px-6 py-4">
                     <div className="flex items-center text-custom-green-dark font-semibold">
