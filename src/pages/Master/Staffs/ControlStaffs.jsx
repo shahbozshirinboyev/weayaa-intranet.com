@@ -290,7 +290,7 @@ function ControlStaffs() {
               </th>
 
               <th scope="col" className="px-6 py-3">
-                Type
+                 Work type
               </th>
 
               <th scope="col" className="px-6 py-3">

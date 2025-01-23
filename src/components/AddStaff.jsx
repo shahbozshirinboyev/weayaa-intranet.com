@@ -189,13 +189,13 @@ function AddStaff({ setCount }) {
                         "
                       />
                     </label>
-                    <span className="block mt-[5px] text-custom-green-80">
-                      An image of the person, it’s best if it has the same length and height.
-                      <br />
-                      <span className="text-custom-green-dark font-medium">
-                        Recommendation: 300x300px
+                    <span className="block text-[14px] mt-[5px] text-custom-green-80">
+                        An image of the person, it’s best if it has the same length and height.
+                        <br />
+                        <span className="text-custom-green-dark font-medium">
+                          Recommendation: 300x300px
+                        </span>
                       </span>
-                    </span>
                   </div>
                 </div>
 
