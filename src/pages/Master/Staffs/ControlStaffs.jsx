@@ -330,11 +330,10 @@ function ControlStaffs() {
                   </td>
 
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell lg:table-cell">
-                    <div className="text-base font-semibold text-custom-green-dark">
-                      {user.phone_number === null || user.phone_number === ""
-                        ? "+998 (--) --- -- --"
-                        : user.phone_number}
-                    </div>
+                    <a target="_blank" href={`https://t.me/${user?.address}`} className="btn btn-xs text-sm border-0 font-semibold text-custom-green-dark bg-custom-green-30 hover:text-white hover:bg-sky-600">
+                      <i className="bi bi-telegram"></i>
+                      <span>{user.address === null || user.address === "" ? "telegram.undefined" : user.address}</span>
+                    </a>
                     <div className="font-normal text-custom-green-80">
                       {user.email === null || user.email === ""
                         ? "email.undefined"
