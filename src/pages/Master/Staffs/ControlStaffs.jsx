@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import AddStaff from "../../../components/AddStaff";
 import MaskedInput from "react-text-mask";
-// nonuser img
 import noneuser from "/img/noneuser.png";
-// Base URL
 import http from "../../../services/http";
 import AddClient from "../../../components/AddClient";
 import EditClientInfo from "../../../components/EditClientInfo";
@@ -13,12 +11,13 @@ import ClientProjects from "../../../components/ClientProjects";
 function ControlStaffs() {
   const [smlist, setSmlist] = useState("staff");
   const [users, setUsers] = useState([]);
-  console.log(users)
   const [usersCount, setUsersCount] = useState();
-  const [clientId, setClientId] = useState('')
-  const [clientIdProject, setClientIdProject] = useState('')
-
+  const [clientId, setClientId] = useState("");
+  const [clientIdProject, setClientIdProject] = useState("");
   const [editUserId, setEditUserId] = useState("");
+
+  console.log(users);
+
   useEffect(() => {
     if (editUserId !== "") {
       console.log(editUserId);
@@ -52,8 +51,8 @@ function ControlStaffs() {
   }, [count]);
   // Get Users List END
 
+  // ===================================================================>
 
-  // =====================================================================================================================>
   const [editUserInfo, setEditUserInfo] = useState({
     address: "",
     email: "",
@@ -90,21 +89,18 @@ function ControlStaffs() {
         loading: "Loading ...",
         success: (response) => {
           console.log(response.data);
-
           setEditUserInfo(response.data);
           document.getElementById("editUserInfoModal").showModal();
-
           return <b>Success :)</b>;
         },
         error: (error) => {
           console.log(error.response.data);
-
           return <b>Error :(</b>;
         },
       }
     );
-    console.log("bu obyekt:" + editUserInfo);
-    setFirstImageValue(editUserInfo.image);
+    // console.log("bu obyekt:" + editUserInfo);
+    // setFirstImageValue(editUserInfo.image);
   };
 
   // Password hide/show function START
@@ -156,9 +152,9 @@ function ControlStaffs() {
     e.preventDefault();
     const updatedUserInfo =
       typeof editUserInfo.image === "string" &&
-        editUserInfo.image !== "" &&
-        editUserInfo.image !== null &&
-        editUserInfo.image.startsWith("https://")
+      editUserInfo.image !== "" &&
+      editUserInfo.image !== null &&
+      editUserInfo.image.startsWith("https://")
         ? (({ image, ...rest }) => rest)(editUserInfo) // image maydonini olib tashlaymiz
         : editUserInfo;
 
@@ -207,49 +203,80 @@ function ControlStaffs() {
 
   return (
     <>
-      <ClientProjects clientId={clientIdProject} setCount={setCount} setClientId={setClientIdProject} />
-      <EditClientInfo clientId={clientId} setCount={setCount} setClientId={setClientId} />
+      <ClientProjects
+        clientId={clientIdProject}
+        setCount={setCount}
+        setClientId={setClientIdProject}
+      />
+      <EditClientInfo
+        clientId={clientId}
+        setCount={setCount}
+        setClientId={setClientId}
+      />
       <div className="font-semibold bg-white pb-[15px]">
         <div className="grid grid-cols-2">
           <div className="flex justify-start items-start">
-
             <div className="mr-[5px] rounded-[10px] w-[390px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark">
-
               <div
                 className={`w-[130px] h-[35px] bg-custom-green-dark absolute rounded-[8px] transition-all duration-300 ease-in-out transform 
-                ${smlist === "staff" ? "translate-x-[-130px]" : smlist === "master" ? "translate-x-[0px]" : "translate-x-[130px]"}`}
+                ${
+                  smlist === "staff"
+                    ? "translate-x-[-130px]"
+                    : smlist === "master"
+                    ? "translate-x-[0px]"
+                    : "translate-x-[130px]"
+                }`}
               ></div>
 
               <button
-                onClick={() => { changeListToStaff("staff"); }}
-                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${smlist === "staff" ? "text-white" : ""}`}
+                onClick={() => {
+                  changeListToStaff("staff");
+                }}
+                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${
+                  smlist === "staff" ? "text-white" : ""
+                }`}
               >
                 <i className="bi bi-person text-[22px] mx-[5px]"></i>
-                <span className="mx-[5px] text-[14px] font-semibold">Staffs</span>
+                <span className="mx-[5px] text-[14px] font-semibold">
+                  Staffs
+                </span>
               </button>
 
               <button
-                onClick={() => { changeListToStaff("master"); }}
-                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${smlist === "master" ? "text-white" : ""}`}
+                onClick={() => {
+                  changeListToStaff("master");
+                }}
+                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${
+                  smlist === "master" ? "text-white" : ""
+                }`}
               >
                 <i className="bi bi-person-gear text-[22px] mx-[5px]"></i>
-                <span className="mx-[5px] text-[14px] font-semibold">Masters</span>
+                <span className="mx-[5px] text-[14px] font-semibold">
+                  Masters
+                </span>
               </button>
 
               <button
-                onClick={() => { changeListToStaff("client"); }}
-                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${smlist === "client" ? "text-white" : ""}`}
+                onClick={() => {
+                  changeListToStaff("client");
+                }}
+                className={`flex justify-center items-center w-full rounded-[8px] transform transition-all duration-300 ${
+                  smlist === "client" ? "text-white" : ""
+                }`}
               >
                 <i className="bi bi-person-check text-[22px] mx-[5px]"></i>
-                <span className="mx-[5px] text-[14px] font-semibold">Clients</span>
+                <span className="mx-[5px] text-[14px] font-semibold">
+                  Clients
+                </span>
               </button>
-
             </div>
 
             <button className="rounded-[10px] w-auto h-[35px] bg-custom-green-30 text-custom-green-dark cursor-default transition-all duration-150 hidden xl:block">
               <i className="bi bi-people pl-2 text-[22px] mx-[5px]"></i>
               <span className="text-[22px] mx-[5px]">{usersCount}</span>
-              <span className="text-[14px] pr-[10px] font-semibold">Members</span>
+              <span className="text-[14px] pr-[10px] font-semibold">
+                Members
+              </span>
             </button>
           </div>
 
@@ -263,7 +290,11 @@ function ControlStaffs() {
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className={`w-full text-sm text-left ${smlist === "client" ? "hidden" : ""}`}>
+        <table
+          className={`w-full text-sm text-left ${
+            smlist === "client" ? "hidden" : ""
+          }`}
+        >
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="text-[14px] text-custom-green-90 bg-custom-green-10">
               <th scope="col" className="px-6 py-3">
@@ -277,32 +308,26 @@ function ControlStaffs() {
                 Contact
               </th>
 
-              {/* <th
-                scope="col"
-                className="px-6 py-3 hidden md:hidden lg:table-cell"
-              >
-                Working Days
-                Active
-              </th> */}
-
               <th scope="col" className="px-6 py-3">
                 Position
               </th>
 
               <th scope="col" className="px-6 py-3">
-                 Work type
+                Work type
               </th>
 
               <th scope="col" className="px-6 py-3">
                 Setting
               </th>
-
             </tr>
           </thead>
 
           <tbody>
             {users
-              .filter((user) => user.user_type === smlist && user.user_type !== "client")
+              .filter(
+                (user) =>
+                  user.user_type === smlist && user.user_type !== "client"
+              )
               .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
               .map((user) => (
                 <tr
@@ -331,9 +356,17 @@ function ControlStaffs() {
                   </td>
 
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell lg:table-cell">
-                    <a target="_blank" href={`https://t.me/${user?.address}`} className="btn btn-xs text-sm border-0 font-semibold text-custom-green-dark bg-custom-green-30 hover:text-white hover:bg-sky-600">
+                    <a
+                      target="_blank"
+                      href={`https://t.me/${user?.address}`}
+                      className="btn btn-xs text-sm border-0 font-semibold text-custom-green-dark bg-custom-green-30 hover:text-white hover:bg-sky-600"
+                    >
                       <i className="bi bi-telegram"></i>
-                      <span>{user.address === null || user.address === "" ? "telegram.undefined" : user.address}</span>
+                      <span>
+                        {user.address === null || user.address === ""
+                          ? "telegram.undefined"
+                          : user.address}
+                      </span>
                     </a>
                     <div className="font-normal text-custom-green-80">
                       {user.email === null || user.email === ""
@@ -342,73 +375,11 @@ function ControlStaffs() {
                     </div>
                   </td>
 
-                  {/* <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
-                    <div className="flex">
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[0]
-                          ? "bg-custom-green-dark text-white"
-                          : "bg-custom-green-30 text-custom-green-dark"
-                          }  font-semibold`}
-                      >
-                        M
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[1]
-                          ? "bg-custom-green-dark text-white"
-                          : "bg-custom-green-30 text-custom-green-dark"
-                          } font-semibold`}
-                      >
-                        T
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[2]
-                          ? "bg-custom-green-dark text-white"
-                          : "bg-custom-green-30 text-custom-green-dark"
-                          } font-semibold`}
-                      >
-                        W
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[3]
-                          ? "bg-custom-green-dark text-white"
-                          : "bg-custom-green-30 text-custom-green-dark"
-                          } font-semibold`}
-                      >
-                        T
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[4]
-                          ? "bg-custom-green-dark text-white"
-                          : "bg-custom-green-30 text-custom-green-dark"
-                          } font-semibold`}
-                      >
-                        F
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[5]
-                          ? "bg-custom-green-dark text-white"
-                          : "bg-custom-green-30 text-custom-green-dark"
-                          }  font-semibold`}
-                      >
-                        S
-                      </div>
-                      <div
-                        className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[6]
-                          ? "bg-custom-green-dark text-white"
-                          : "bg-custom-green-30 text-custom-green-dark"
-                          } font-semibold`}
-                      >
-                        S
-                      </div>
-                    </div>
-                    <span className="font-semibold text-custom-green-dark">On</span>
-                  </td> */}
-
                   <td className="px-6 py-4">
                     <div className="flex items-center text-custom-green-dark font-semibold">
                       {user.speciality === null ||
-                        user.speciality === "" ||
-                        user.speciality === undefined
+                      user.speciality === "" ||
+                      user.speciality === undefined
                         ? "no.position"
                         : user.speciality}
                     </div>
@@ -425,16 +396,20 @@ function ControlStaffs() {
                   <td className="px-6 py-4 justify-start items-center">
                     <button
                       onClick={() => getInfoUser(user.id)}
-                      className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark bg-custom-green-30 hover:text-white border-0">
+                      className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark bg-custom-green-30 hover:text-white border-0"
+                    >
                       <i className="bi bi-sliders"></i>
                     </button>
                   </td>
-
                 </tr>
               ))}
           </tbody>
         </table>
-        <table className={`w-full text-sm text-left ${smlist === "client" ? "" : "hidden"}`}>
+        <table
+          className={`w-full text-sm text-left ${
+            smlist === "client" ? "" : "hidden"
+          }`}
+        >
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="text-[14px] text-custom-green-90 bg-custom-green-10">
               <th scope="col" className="px-6 py-3">
@@ -462,13 +437,14 @@ function ControlStaffs() {
               <th scope="col" className="px-6 py-3">
                 Setting
               </th>
-
             </tr>
           </thead>
-
           <tbody>
             {users
-              .filter((user) => user.user_type === smlist && user.user_type === "client")
+              .filter(
+                (user) =>
+                  user.user_type === smlist && user.user_type === "client"
+              )
               .map((user) => (
                 <tr
                   key={user.id}
@@ -494,14 +470,17 @@ function ControlStaffs() {
                   </td>
 
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell lg:table-cell">
-                    {/* <div className="text-base font-semibold text-custom-green-dark">
-                      {user.phone_number === null || user.phone_number === ""
-                        ? "+998 (--) --- -- --"
-                        : user.phone_number}
-                    </div> */}
-                    <a target="_blank" href={`https://t.me/${user?.address}`} className="btn btn-xs text-sm border-0 font-semibold text-custom-green-dark bg-custom-green-30 hover:text-white hover:bg-sky-600">
+                    <a
+                      target="_blank"
+                      href={`https://t.me/${user?.address}`}
+                      className="btn btn-xs text-sm border-0 font-semibold text-custom-green-dark bg-custom-green-30 hover:text-white hover:bg-sky-600"
+                    >
                       <i className="bi bi-telegram"></i>
-                      <span>{user.address === null || user.address === "" ? "telegram.undefined" : user.address}</span>
+                      <span>
+                        {user.address === null || user.address === ""
+                          ? "telegram.undefined"
+                          : user.address}
+                      </span>
                     </a>
                     <div className="font-normal text-custom-green-80">
                       {user.email === null || user.email === ""
@@ -517,7 +496,10 @@ function ControlStaffs() {
                   </td>
 
                   <td className="px-6 py-4">
-                    <button onClick={() => setClientIdProject(user.id)} className="btn btn-sm bg-custom-green-30 text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
+                    <button
+                      onClick={() => setClientIdProject(user.id)}
+                      className="btn btn-sm bg-custom-green-30 text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0"
+                    >
                       <i className="bi bi-folder-symlink"></i>
                       <span className="hidden xl:block">Projects Status</span>
                     </button>
@@ -525,12 +507,12 @@ function ControlStaffs() {
 
                   <td className="px-6 py-4 justify-start items-center">
                     {/* Button Client User Info Edit START */}
-                    <button onClick={() => setClientId(user.id)}
-                      className="btn btn-sm text-custom-green-dark bg-custom-green-30 hover:bg-custom-green-dark hover:text-white border-0">
+                    <button
+                      onClick={() => setClientId(user.id)}
+                      className="btn btn-sm text-custom-green-dark bg-custom-green-30 hover:bg-custom-green-dark hover:text-white border-0"
+                    >
                       <i className="bi bi-sliders"></i>
                     </button>
-                    {/* Button Client User Info Edit END */}
-                    {/* <EditClientInfo clientId={user.id} setCount={setCount} /> */}
                   </td>
                 </tr>
               ))}
@@ -587,7 +569,7 @@ function ControlStaffs() {
                       )}
                       <input
                         // value={editUserInfo.image}
-                        // textni transparent qilib qo'ydim orqaga qaytganda file name ni qayta topa olmayabdi
+                        // text is transparent
                         name="image"
                         onChange={handleFileUserImageChange}
                         type="file"
@@ -595,14 +577,13 @@ function ControlStaffs() {
                         className="text-[14px] text-transparent font-medium placeholder-custom-green-60 file:mr-4 file:py-1 file:px-2 file:w-[100px] file:rounded-[10px] file:border-0 file:text-sm file:font-semibold file:bg-custom-green-30 file:text-custom-green-dark hover:file:bg-custom-green-dark hover:file:text-white hover:file:transition-all"
                       />
                     </label>
-                    <span className="block mt-[5px] text-custom-green-80">
-                      An image of the person, it’s best if it has the same
-                      length and height.
-                      <br />
-                      <span className="text-custom-green-dark font-medium">
-                        Recommendation: 300x300px
+                    <span className="block text-[14px] mt-[5px] text-custom-green-80">
+                        An image of the person, it’s best if it has the same length and height.
+                        <br />
+                        <span className="text-custom-green-dark font-medium">
+                          Recommendation: 300x300px
+                        </span>
                       </span>
-                    </span>
                   </div>
                 </div>
 
@@ -731,27 +712,26 @@ function ControlStaffs() {
 
                 <div className="grid grid-cols-2 gap-2 mt-2">
                   <div>
-                    <label>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-telephone"></i> Phone Number
+                        <i className="bi bi-telegram mr-1"></i><span>Telegram</span>
                       </span>
-                      <MaskedInput
-                        // prettier-ignore
-                        mask={["+", "9", "9", "8", " ", "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, " ", /\d/, /\d/, " ", /\d/, /\d/,]}
-                        value={editUserInfo.phone_number}
-                        onChange={inputHandlePhone}
-                        name="phone_number"
-                        type="text"
-                        placeholder="+998 (--) --- -- --"
-                        // alwaysShowMask={true}
-                        className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                      />
-                    </label>
-                  </div>
+                      <label className="w-full grow p-2 border rounded-md outline-0 focus-within:border-custom-green-80 placeholder-custom-green-60 flex items-center gap-0">
+                        <span>t.me/</span>
+                        <input
+                          value={editUserInfo.address}
+                          onChange={inputHandle}
+                          name="address"
+                          type="text"
+                          placeholder="sh_shirinboyev"
+                          className="w-full grow outline-0 placeholder-custom-green-60"
+                        />
+                      </label>
+                    </div>
+
                   <div>
                     <label>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-envelope"></i> Email Address
+                        <i className="bi bi-envelope-fill mr-1"></i><span>Email Address</span>
                       </span>
                       <input
                         value={editUserInfo.email}
@@ -763,6 +743,7 @@ function ControlStaffs() {
                       />
                     </label>
                   </div>
+
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 mt-2">
@@ -840,70 +821,6 @@ function ControlStaffs() {
                   </div>
                 </div>
 
-                <div className="mt-2">
-                  <label>
-                    <span className="block text-custom-green-dark font-semibold text-[14px]">
-                      Address
-                    </span>
-                    <textarea
-                      value={editUserInfo.address}
-                      onChange={inputHandle}
-                      name="address"
-                      id=""
-                      rows="2"
-                      placeholder="Enter Staff Address here ..."
-                      className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                    ></textarea>
-                  </label>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 pointer-events-none cursor-not-allowed select-none opacity-80">
-                <div className="mt-2">
-                  <span className="text-custom-green-dark font-semibold text-[15px]">
-                    Working days:
-                  </span>
-                </div>
-
-                <div className="border border-custom-green-20 rounded-[5px] grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
-                  {[
-                    "Monday",
-                    "Tuesday",
-                    "Wednesday",
-                    "Thursday",
-                    "Friday",
-                    "Saturday",
-                    "Sunday",
-                  ].map((day, index) => (
-                    <div key={index}>
-                      <label
-                        className={`p-2 ${index < 5
-                          ? "border-custom-green-80"
-                          : "border-custom-green-60"
-                          } flex items-center`}
-                      >
-                        <input
-                          className="accent-custom-green-dark"
-                          type="checkbox"
-                          checked={
-                            editUserInfo.work_days &&
-                              editUserInfo.work_days[index] !== undefined
-                              ? editUserInfo.work_days[index]
-                              : false
-                          }
-                          onChange={inputHandleWorkDays}
-                          name={`work_days[${index}]`}
-                        />
-                        <span
-                          className={`text-custom-green-${index < 5 ? "dark" : "60"
-                            } font-semibold text-[15px] ml-[15px]`}
-                        >
-                          {day}
-                        </span>
-                      </label>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">

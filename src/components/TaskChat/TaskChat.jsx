@@ -13,6 +13,8 @@ function TaskChat({ task }) {
   const [messages, setMessages] = useState([]);
   const chatServiceRef = useRef(null);
 
+  console.log(messages)
+
   const [reply, setReply] = useState({ id: "", user: "", speciality: "", message: "" });
   const [rows, setRows] = useState(1);
 
