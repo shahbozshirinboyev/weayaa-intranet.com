@@ -277,7 +277,7 @@ function AddStaff({ setCount }) {
                   <div>
                     <label>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <span>Specialist Stuff</span>
+                        <span>Specialist Staff/Master</span>
                         <span className="text-red-700 font-bold">*</span>
                       </span>
                       <select
@@ -288,7 +288,7 @@ function AddStaff({ setCount }) {
                         placeholder="Select Specialist Stuff"
                         className="text-custom-green-dark transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                       >
-                        <option>Select Specialist Stuff</option>
+                        <option>Select specialist Staff/Master</option>
                         <option value="Coder">Coder</option>
                         <option value="Designer">Designer</option>
                         <option value="Manager">Manager</option>

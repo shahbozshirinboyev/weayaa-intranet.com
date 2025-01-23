@@ -207,7 +207,7 @@ function ControlStaffs() {
 
   return (
     <>
-    <ClientProjects clientId={clientIdProject} setCount={setCount} setClientId={setClientIdProject} />
+      <ClientProjects clientId={clientIdProject} setCount={setCount} setClientId={setClientIdProject} />
       <EditClientInfo clientId={clientId} setCount={setCount} setClientId={setClientId} />
       <div className="font-semibold bg-white pb-[15px]">
         <div className="grid grid-cols-2">
@@ -277,13 +277,13 @@ function ControlStaffs() {
                 Contact
               </th>
 
-              <th
+              {/* <th
                 scope="col"
                 className="px-6 py-3 hidden md:hidden lg:table-cell"
               >
-                {/* Working Days */}
+                Working Days
                 Active
-              </th>
+              </th> */}
 
               <th scope="col" className="px-6 py-3">
                 Position
@@ -294,8 +294,9 @@ function ControlStaffs() {
               </th>
 
               <th scope="col" className="px-6 py-3">
-                <span className="sr-only">Edit</span>
+                Setting
               </th>
+
             </tr>
           </thead>
 
@@ -341,8 +342,8 @@ function ControlStaffs() {
                     </div>
                   </td>
 
-                  <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
-                    {/* <div className="flex">
+                  {/* <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
+                    <div className="flex">
                       <div
                         className={` mr-[2px] w-[22px] h-[22px] rounded-full flex  justify-center items-center ${user.work_days[0]
                           ? "bg-custom-green-dark text-white"
@@ -399,9 +400,9 @@ function ControlStaffs() {
                       >
                         S
                       </div>
-                    </div> */}
+                    </div>
                     <span className="font-semibold text-custom-green-dark">On</span>
-                  </td>
+                  </td> */}
 
                   <td className="px-6 py-4">
                     <div className="flex items-center text-custom-green-dark font-semibold">
@@ -421,18 +422,14 @@ function ControlStaffs() {
                     </span>
                   </td>
 
-                  <td>
-                    <div className="tooltip" data-tip="Edit">
-                      <button
-                        onClick={() => {
-                          getInfoUser(user.id);
-                        }}
-                        className="border btn btn-sm border-custom-green-30 px-[5px] py-[3px] rounded-full text-custom-green-dark font-bold hover:bg-custom-green-30"
-                      >
-                        <i className="bi bi-person-gear text-[22px]"></i>
-                      </button>
-                    </div>
+                  <td className="px-6 py-4 justify-start items-center">
+                    <button
+                      onClick={() => getInfoUser(user.id)}
+                      className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark bg-custom-green-30 hover:text-white border-0">
+                      <i className="bi bi-sliders"></i>
+                    </button>
                   </td>
+
                 </tr>
               ))}
           </tbody>
@@ -502,9 +499,10 @@ function ControlStaffs() {
                         ? "+998 (--) --- -- --"
                         : user.phone_number}
                     </div> */}
-                    <div className="text-base font-semibold text-custom-green-dark">
-                      {user.address === null || user.address === "" ? "telegram.undefined" : user.address}
-                    </div>
+                    <a target="_blank" href={`https://t.me/${user?.address}`} className="btn btn-xs text-sm border-0 font-semibold text-custom-green-dark bg-custom-green-30 hover:text-white hover:bg-sky-600">
+                      <i className="bi bi-telegram"></i>
+                      <span>{user.address === null || user.address === "" ? "telegram.undefined" : user.address}</span>
+                    </a>
                     <div className="font-normal text-custom-green-80">
                       {user.email === null || user.email === ""
                         ? "email.undefined"
@@ -513,13 +511,13 @@ function ControlStaffs() {
                   </td>
 
                   <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
-                    <div className="flex text-custom-green-dark">
+                    <div className="flex text-custom-green-dark font-semibold">
                       <div>{user.organization || "org.undefined"}</div>
                     </div>
                   </td>
 
                   <td className="px-6 py-4">
-                    <button onClick={() => setClientIdProject(user.id)} className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
+                    <button onClick={() => setClientIdProject(user.id)} className="btn btn-sm bg-custom-green-30 text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
                       <i className="bi bi-folder-symlink"></i>
                       <span className="hidden xl:block">Projects Status</span>
                     </button>
@@ -528,7 +526,7 @@ function ControlStaffs() {
                   <td className="px-6 py-4 justify-start items-center">
                     {/* Button Client User Info Edit START */}
                     <button onClick={() => setClientId(user.id)}
-                      className="btn btn-sm text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
+                      className="btn btn-sm text-custom-green-dark bg-custom-green-30 hover:bg-custom-green-dark hover:text-white border-0">
                       <i className="bi bi-sliders"></i>
                     </button>
                     {/* Button Client User Info Edit END */}
