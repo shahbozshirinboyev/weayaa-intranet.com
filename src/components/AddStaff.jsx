@@ -98,7 +98,7 @@ function AddStaff({ setCount }) {
         {
           loading: "Adding...",
           success: (response) => {
-            console.log(response);
+            // console.log(response);
             document.getElementById("add_user_modal").close();
             const randomNum = Math.floor(Math.random() * 100);
             setCount(randomNum);
