@@ -429,7 +429,7 @@ function TaskManagement() {
   };
 
   return (
-    <>
+    <div>
       {/* <Line /> START */}
       <>
         <div className="bg-custom-green-5 h-[60px] max-h-5w-full rounded-[15px] flex gap-2 mb-[20px]">
@@ -1020,7 +1020,7 @@ function TaskManagement() {
       <div>
         <TaskChat task={task} />
       </div>
-    </>
+    </div>
   );
 }
 
