@@ -866,7 +866,14 @@ function TaskManagement() {
 
                                 <div className="w-full flex items-center">
                                   {/* Chat button START */}
-                                  <label htmlFor="task_chat" onClick={() => { setTask(task) }}>
+                                  <label htmlFor="task_chat" onClick={() => {
+                                    try {
+                                      console.log("Opening TaskChat for task:", task); // Log task info
+                                      setTask(task);
+                                    } catch (error) {
+                                      console.error("Error opening TaskChat modal:", error); // Log any errors
+                                    }
+                                  }}>
                                     <div className="flex">
                                       <div className="relative">
                                         <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"><i className="bi bi-chat-text"></i></div>
