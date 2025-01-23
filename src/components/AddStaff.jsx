@@ -3,7 +3,7 @@ import toast, { Toaster } from "react-hot-toast";
 import http from "../services/http";
 import noneuser from "/img/noneuser.png";
 
-function AddStaff( { setCount } ) {
+function AddStaff({ setCount }) {
   const [showPassword, setShowPassword] = useState(false);
   const [userImage, setUserImage] = useState(null);
   const [state, setState] = useState({
@@ -19,12 +19,14 @@ function AddStaff( { setCount } ) {
     userId: "",
     userPassword: "",
   });
-  console.log(state)
-  const inputHandle = (e) => { setState({ ...state, [e.target.name]: e.target.value, }); };
+
+  const inputHandle = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
 
   // Choose IMG file and render for visible START
   const handleFileUserImageChange = (e) => {
-    setState({ ...state, [e.target.name]: e.target.files[0], });
+    setState({ ...state, [e.target.name]: e.target.files[0] });
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -36,19 +38,36 @@ function AddStaff( { setCount } ) {
   };
   // Choose IMG file and render for visible END
 
-  // DELETE render ING file START
+  // DELETE render IMG file START
   const handleClearFileUserImage = () => {
     setUserImage(null);
     document.getElementById("user-image").value = "";
-    setState({ ...state, image: "", });
+    setState({ ...state, image: "" });
   };
-  // DELETE render ING file END
+  // DELETE render IMG file END
+
+  const handleClearUserState = () => {
+    setState({
+      ...state,
+      firstName: "",
+      lastName: "",
+      image: "",
+      email: "",
+      specialist: "",
+      label: "",
+      workType: "full_time",
+      address: "",
+      accountType: "staff",
+      userId: "",
+      userPassword: "",
+    });
+  };
 
   // Password hide/show function START
-  const togglePasswordVisibility = () => { setShowPassword(!showPassword); };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   // Password hide/show function END
-
-  const access = localStorage.getItem("access");
 
   // Submit Form START
   const finalSubmit = (e) => {
@@ -67,6 +86,7 @@ function AddStaff( { setCount } ) {
       formData.append("image", state.image);
       formData.append("user_type", state.accountType);
 
+      const access = localStorage.getItem("access");
       toast.promise(
         http.post("users/staff/", formData, {
           headers: {
@@ -80,10 +100,10 @@ function AddStaff( { setCount } ) {
           success: (response) => {
             console.log(response);
             document.getElementById("add_user_modal").close();
-            setState({ firstName: "", lastName: "", image: "", email: "", specialist: "", label: "", workType: "full_time", address: "", accountType: "staff", userId: "", userPassword: "", });
             const randomNum = Math.floor(Math.random() * 100);
             setCount(randomNum);
             handleClearFileUserImage();
+            handleClearUserState();
             return <span>Add new user :)</span>;
           },
           error: (error) => {
@@ -103,9 +123,12 @@ function AddStaff( { setCount } ) {
       {/* Modal Open Button START && Add New Staff*/}
       <button
         className="rounded-[10px] min-w-[125px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark transition-all duration-150"
-        onClick={() => document.getElementById("add_user_modal").showModal()}>
+        onClick={() => document.getElementById("add_user_modal").showModal()}
+      >
         <i className="bi bi-person-add text-[22px] mx-[10px]"></i>
-        <span className="ml-[5px] mr-[10px] text-[14px] font-semibold">Add Staff/Master</span>
+        <span className="ml-[5px] mr-[10px] text-[14px] font-semibold">
+          Add Staff/Master
+        </span>
       </button>
       {/* Modal Open Button END && Add New Staff */}
 
@@ -131,7 +154,6 @@ function AddStaff( { setCount } ) {
             <form onSubmit={finalSubmit}>
               <div className="grid grid-cols-1 mt-2">
                 <div className="flex mt-2 gap-4 items-center">
-
                   <div className="w-[80px] h-[80px] border border-custom-green-15 rounded-full flex justify-center items-center flex-shrink-0">
                     <img
                       src={userImage || noneuser}
@@ -168,8 +190,7 @@ function AddStaff( { setCount } ) {
                       />
                     </label>
                     <span className="block mt-[5px] text-custom-green-80">
-                      An image of the person, it’s best if it has the same
-                      length and height.
+                      An image of the person, it’s best if it has the same length and height.
                       <br />
                       <span className="text-custom-green-dark font-medium">
                         Recommendation: 300x300px
@@ -182,7 +203,7 @@ function AddStaff( { setCount } ) {
                   <div>
                     <label>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        First Name
+                        <span>First Name</span>
                         <span className="text-red-700 font-bold">*</span>
                       </span>
                       <input
@@ -199,7 +220,7 @@ function AddStaff( { setCount } ) {
                   <div>
                     <label>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        Last Name
+                        <span>Last Name</span>
                         <span className="text-red-700 font-bold">*</span>
                       </span>
                       <input
@@ -218,7 +239,8 @@ function AddStaff( { setCount } ) {
                 <div className="grid grid-cols-2 gap-2 mt-2">
                   <div>
                     <span className="block text-custom-green-dark font-semibold text-[14px]">
-                      <i className="bi bi-telegram mr-1"></i><span>Telegram</span>
+                      <i className="bi bi-telegram mr-1"></i>
+                      <span>Telegram</span>
                     </span>
                     <label className="w-full grow p-2 border rounded-md outline-0 focus-within:border-custom-green-80 placeholder-custom-green-60 flex items-center gap-0">
                       <span>t.me/</span>
@@ -236,7 +258,7 @@ function AddStaff( { setCount } ) {
                   <div>
                     <label>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-envelope"></i> Email Address
+                        <i className="bi bi-envelope-fill mr-1"></i><span>Last Name</span>
                       </span>
                       <input
                         value={state.email}
@@ -255,7 +277,7 @@ function AddStaff( { setCount } ) {
                   <div>
                     <label>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        Specialist Stuff
+                        <span>Specialist Stuff</span>
                         <span className="text-red-700 font-bold">*</span>
                       </span>
                       <select
@@ -286,6 +308,7 @@ function AddStaff( { setCount } ) {
                           type="radio"
                           name="workType"
                           value="full_time"
+                          className="accent-custom-green-dark"
                         />
                         <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                           Full Time
@@ -298,6 +321,7 @@ function AddStaff( { setCount } ) {
                           type="radio"
                           name="workType"
                           value="part_time"
+                          className="accent-custom-green-dark"
                         />
                         <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                           Part Time
@@ -325,7 +349,6 @@ function AddStaff( { setCount } ) {
                   </div>
                 </div>
 
-
                 <div>
                   <div className="text-custom-green-dark font-semibold text-[15px] mt-2">
                     <span>Account Type</span>
@@ -340,6 +363,7 @@ function AddStaff( { setCount } ) {
                           type="radio"
                           name="accountType"
                           value="staff"
+                          className="accent-custom-green-dark"
                         />
                         <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                           Staff Account
@@ -355,6 +379,7 @@ function AddStaff( { setCount } ) {
                           type="radio"
                           name="accountType"
                           value="master"
+                          className="accent-custom-green-dark"
                         />
                         <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                           Master Account
@@ -413,10 +438,15 @@ function AddStaff( { setCount } ) {
                       </label>
                     </div>
                   </div>
-                  <button type="submit" className="px-3 py-2 mt-4 text-[15px] rounded-[10px] w-full font-medium text-white bg-custom-green-80 hover:bg-custom-green-dark transition-all" > Save </button>
+                  <button
+                    type="submit"
+                    className="px-3 py-2 mt-4 text-[15px] rounded-[10px] w-full font-medium text-white bg-custom-green-80 hover:bg-custom-green-dark transition-all"
+                  >
+                    {" "}
+                    Save{" "}
+                  </button>
                 </div>
               </div>
-
             </form>
           </section>
         </div>
