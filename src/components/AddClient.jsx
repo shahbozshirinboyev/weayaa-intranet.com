@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import MaskedInput from "react-text-mask";
+import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-// http
 import http from "../services/http"
 
 function AddClient({ setCount }) {
@@ -9,7 +7,7 @@ function AddClient({ setCount }) {
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => { setShowPassword(!showPassword); };
   // Password hide/show function END
-  const [state, setState] = useState({ weayaa_id: "", password: "", first_name: "", last_name: "", phone_number: "", email: "", organization: "", image: "" })
+  const [state, setState] = useState({ weayaa_id: "", password: "", first_name: "", last_name: "", address: "", email: "", organization: "", image: "" })
   const inputHandle = (e) => { setState({ ...state, [e.target.name]: e.target.value, }); };
 
   const [avatar, setAvatar] = useState({ file: null, url: "" });
@@ -31,12 +29,13 @@ function AddClient({ setCount }) {
     formData.append("password", state.password);
     formData.append("first_name", state.first_name);
     formData.append("last_name", state.last_name);
-    formData.append("phone_number", state.phone_number.replace(/\s+/g, ""));
     formData.append("email", state.email);
+    formData.append("address", state.address);
     formData.append("organization", state.organization);
     formData.append("image", state.image);
 
     const access = localStorage.getItem("access");
+    console.log(state.address)
 
     toast.promise(
       http.post("users/clients/register/", formData, {
@@ -51,13 +50,13 @@ function AddClient({ setCount }) {
           const randomNum = Math.floor(Math.random() * 100); // 0 dan 99 gacha bo'lgan random son
           setCount(randomNum);
           document.getElementById("add_client_modal").close();
-          setState({ weayaa_id: "", password: "", first_name: "", last_name: "", phone_number: "", email: "", organization: "", image: "" })
+          setState({ weayaa_id: "", password: "", first_name: "", address: "", last_name: "", email: "", organization: "", image: "" })
           console.log(response.data);
           return <b>Add new User!</b>;
         },
         error: (error) => {
           console.log(error.response.data);
-          return <b>Something went wrong :(</b>;
+          return <span>Something went wrong :(</span>;
         },
       }
     );
@@ -124,14 +123,7 @@ function AddClient({ setCount }) {
                           onChange={handleAvatar}
                           type="file"
                           id="file"
-                          className="text-[14px] text-transparent font-medium placeholder-custom-green-60
-                                      file:mr-4 file:py-1 file:px-2 file:w-[100px]
-                                      file:rounded-[10px] file:border-0
-                                      file:text-sm file:font-semibold
-                                      file:bg-custom-green-30 file:text-custom-green-dark
-                                      hover:file:bg-custom-green-dark hover:file:text-white
-                                      hover:file:transition-all
-                        "
+                          className="text-[14px] text-transparent font-medium placeholder-custom-green-60 file:mr-4 file:py-1 file:px-2 file:w-[100px] file:rounded-[10px] file:border-0 file:text-sm file:font-semibold file:bg-custom-green-30 file:text-custom-green-dark hover:file:bg-custom-green-dark hover:file:text-white hover:file:transition-all"
                         />
                       </label>
                       <span className="block text-[14px] mt-[5px] text-custom-green-80">
@@ -148,8 +140,7 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          First Name
-                          <span className="text-red-700 font-bold">*</span>
+                          <span>First Name</span><span className="text-red-700 font-bold">*</span>
                         </span>
                         <input
                           value={state.first_name}
@@ -166,8 +157,7 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          Last Name
-                          <span className="text-red-700 font-bold">*</span>
+                          <span>Last Name</span><span className="text-red-700 font-bold">*</span>
                         </span>
                         <input
                           value={state.last_name}
@@ -184,27 +174,25 @@ function AddClient({ setCount }) {
 
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <div>
-                      <label>
-                        <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-telephone"></i> Phone Number
-                        </span>
-                        <MaskedInput
-                          // prettier-ignore
-                          mask={["+", "9", "9", "8", " ", "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, " ", /\d/, /\d/, " ", /\d/, /\d/,]}
-                          value={state.phone_number}
+                      <span className="block text-custom-green-dark font-semibold text-[14px]">
+                        <i className="bi bi-telegram mr-1"></i><span>Telegram</span>
+                      </span>
+                      <label className="w-full grow p-2 border rounded-md outline-0 focus-within:border-custom-green-80 placeholder-custom-green-60 flex items-center gap-0">
+                        <span>t.me/</span>
+                        <input
+                          value={state.address}
                           onChange={inputHandle}
-                          name="phone_number"
+                          name="address"
                           type="text"
-                          placeholder="+998 (--) --- -- --"
-                          // alwaysShowMask={true}
-                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                          placeholder="sh_shirinboyev"
+                          className="w-full grow outline-0 placeholder-custom-green-60"
                         />
                       </label>
                     </div>
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-envelope"></i> Email Address
+                          <i className="bi bi-envelope-at-fill mr-1"></i><span>Email Address</span>
                         </span>
                         <input
                           value={state.email}
@@ -222,7 +210,8 @@ function AddClient({ setCount }) {
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <div>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        Account Type
+                      <i className="bi bi-person-fill-gear mr-1"></i><span>Account Type</span>
+                        
                       </span>
                       <div className="grid grid-cols-1">
                         <label className="p-2 border rounded-md flex items-center accent-custom-green-dark">
@@ -239,8 +228,7 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          {/* <i className="bi bi-envelope"></i>  */}
-                          Organization
+                          <i className="bi bi-building-fill mr-1"></i><span>Organization</span>
                         </span>
                         <input
                           value={state.organization}
@@ -257,7 +245,7 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-person-check"></i> WeaYaa ID<span className="text-red-700 font-bold">*</span>
+                          <i className="bi bi-person-check-fill mr-1"></i><span>WeaYaa ID</span><span className="text-red-700 font-bold">*</span>
                         </span>
                         <input
                           value={state.weayaa_id}
@@ -274,7 +262,7 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-key"></i> Password<span className="text-red-700 font-bold">*</span>
+                          <i className="bi bi-key-fill mr-1"></i><span>Password</span><span className="text-red-700 font-bold">*</span>
                         </span>
                         <div className="relative">
                           <input

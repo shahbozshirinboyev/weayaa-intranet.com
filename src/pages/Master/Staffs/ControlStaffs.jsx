@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import AddStaff from "../../../components/AddStaff";
-
 import MaskedInput from "react-text-mask";
-
 // nonuser img
 import noneuser from "/img/noneuser.png";
-
 // Base URL
 import http from "../../../services/http";
 import AddClient from "../../../components/AddClient";
@@ -16,7 +13,7 @@ import ClientProjects from "../../../components/ClientProjects";
 function ControlStaffs() {
   const [smlist, setSmlist] = useState("staff");
   const [users, setUsers] = useState([]);
-  // console.log(users)
+  console.log(users)
   const [usersCount, setUsersCount] = useState();
   const [clientId, setClientId] = useState('')
   const [clientIdProject, setClientIdProject] = useState('')
@@ -501,10 +498,13 @@ function ControlStaffs() {
                   </td>
 
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell lg:table-cell">
-                    <div className="text-base font-semibold text-custom-green-dark">
+                    {/* <div className="text-base font-semibold text-custom-green-dark">
                       {user.phone_number === null || user.phone_number === ""
                         ? "+998 (--) --- -- --"
                         : user.phone_number}
+                    </div> */}
+                    <div className="text-base font-semibold text-custom-green-dark">
+                      {user.address === null || user.address === "" ? "telegram.undefined" : user.address}
                     </div>
                     <div className="font-normal text-custom-green-80">
                       {user.email === null || user.email === ""
