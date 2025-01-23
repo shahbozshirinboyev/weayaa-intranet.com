@@ -8,7 +8,7 @@ function EditClientInfo({ clientId, setCount, setClientId }) {
   const [state, setState] = useState({
     first_name: "",
     last_name: "",
-    phone_number: "",
+    address: "",
     email: "",
     organization: "",
     image: "",
@@ -74,6 +74,7 @@ function EditClientInfo({ clientId, setCount, setClientId }) {
     formData.append("first_name", state.first_name);
     formData.append("last_name", state.last_name);
     // formData.append("phone_number", state.phone_number.replace(/\s+/g, ""));
+    formData.append("address", state.address);
     formData.append("email", state.email);
     formData.append("organization", state.organization);
     if (avatar.file !== null) {
@@ -211,24 +212,23 @@ function EditClientInfo({ clientId, setCount, setClientId }) {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mt-2">
-                    <div>
-                      <label>
-                        <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-telephone"></i> Phone Number
-                        </span>
-                        <MaskedInput
-                          // prettier-ignore
-                          mask={["+", "9", "9", "8", " ", "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, " ", /\d/, /\d/, " ", /\d/, /\d/,]}
-                          value={state.phone_number}
+                  <div>
+                      <span className="block text-custom-green-dark font-semibold text-[14px]">
+                        <i className="bi bi-telegram mr-1"></i><span>Telegram</span>
+                      </span>
+                      <label className="w-full grow p-2 border rounded-md outline-0 focus-within:border-custom-green-80 placeholder-custom-green-60 flex items-center gap-0">
+                        <span>t.me/</span>
+                        <input
+                          value={state.address}
                           onChange={inputHandle}
-                          name="phone_number"
+                          name="address"
                           type="text"
-                          placeholder="+998 (--) --- -- --"
-                          // alwaysShowMask={true}
-                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                          placeholder="sh_shirinboyev"
+                          className="w-full grow outline-0 placeholder-custom-green-60"
                         />
                       </label>
                     </div>
+
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
