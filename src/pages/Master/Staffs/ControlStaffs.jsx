@@ -289,7 +289,7 @@ function ControlStaffs() {
         </div>
       </div>
 
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="overflow-x-auto shadow-md rounded-md">
         <table
           className={`w-full text-sm text-left ${
             smlist === "client" ? "hidden" : ""

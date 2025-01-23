@@ -55,37 +55,82 @@ function ArchiveProjects() {
           </span>
         </div>}
 
-      {projectsList?.length !== 0 && <div className="overflow-x-auto">
-        <table className="table">
-          <thead>
-            <tr className="text-custom-green-dark uppercase">
-              <th>Archive project Name</th>
-              <th>Archive date</th>
-              <th>The person who archived</th>
-              <th>Unarchive</th>
+      {projectsList?.length !== 0 && <div className="overflow-x-auto shadow-md rounded-md">
+
+       
+
+        <table className={`w-full text-sm text-left`}>
+
+          <thead className="text-xs uppercase bg-gray-50">
+            <tr className="text-[14px] text-custom-green-90 bg-custom-green-10">
+
+              <th scope="col" className="px-6 py-3">
+              Archive project Name
+              </th>
+
+              <th
+                scope="col"
+                className="px-6 py-3 hidden md:table-cell lg:table-cell"
+              >
+                Archive date
+              </th>
+
+              <th
+                scope="col"
+                className="px-6 py-3 hidden md:hidden lg:table-cell"
+              >
+                The person who archived
+              </th>
+
+              <th scope="col" className="px-6 py-3">
+                Unarchive
+              </th>
+
+              <th scope="col" className="px-6 py-3">
+                Show
+              </th>
             </tr>
           </thead>
 
-          <tbody className="text-custom-green-dark">
-            {projectsList?.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map((project) => (
-              <tr key={project.id}>
-                <td>
-                  <div className="flex items-center gap-3">
-                    <div className="avatar">
-                      <i className="bi bi-file-earmark-zip text-[30px]"></i>
-                    </div>
-                    <div>
-                      <div className="font-semibold">{project.name}</div>
-                      <div className="text-xs opacity-50 flex justify-start items-center gap-1">
-                        <i className="bi bi-people"></i>
-                        <span>{project.members.length}</span>
+          <tbody>
+            {projectsList.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map((project) => (
+                <tr
+                  key={project.id}
+                  className="bg-white border-b border-custom-green-30 hover:bg-custom-green-5"
+                >
+                  <td
+                    scope="row"
+                    className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {/* <img
+                      className="!w-12 !h-12 min-w-12 min-h-12 rounded-full object-cover border whitespace-nowrap"
+                      src={project.image ? user.image : noneuser}
+                      alt="user_image"
+                    /> */}
+                    <div className="ps-3">
+                      <div className="text-base font-semibold text-custom-green-dark">
+                      {project.name}
+                      </div>
+                      <div className="font-normal text-custom-green-80">
+                        Client
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td> <span className="font-semibold">{project?.archived_at}</span> </td>
-                <td> <span className="font-semibold">{project?.archived_by_name}</span> </td>
-                <th>
+                  </td>
+
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell lg:table-cell">
+                  <div className="flex text-custom-green-dark font-semibold">
+
+                    <span>{ project?.archived_at || "date.undefined" }</span>
+                    </div>
+                  </td>
+
+                  <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
+                    <div className="flex text-custom-green-dark font-semibold">
+                    <span>{project?.archived_by_name || "archived_by_name.undefined"}</span>
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-4">
                   <button
                     onClick={() => { document.getElementById("my_unarchive_modal").showModal(); setSelectArchiveProject(project) }}
                     className="btn btn-xs flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-10 hover:bg-custom-green-dark hover:text-white"
@@ -93,11 +138,22 @@ function ArchiveProjects() {
                     <i className="bi bi-folder-symlink"></i>
                     <span>Unarchive</span>
                   </button>
-                </th>
-              </tr>
-            ))}
+                  </td>
+
+                  <td className="px-6 py-4 justify-start items-center">
+                  <button
+                    onClick={() => { document.getElementById("my_unarchive_modal").showModal(); setSelectArchiveProject(project) }}
+                    className="btn btn-xs flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-10 hover:bg-custom-green-dark hover:text-white"
+                  >
+                    <i className="bi bi-folder-symlink"></i>
+                    <span>Unarchive</span>
+                  </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
+
       </div>}
 
       {/* unarchive modal - start */}
