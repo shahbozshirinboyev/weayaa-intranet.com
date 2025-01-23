@@ -288,7 +288,7 @@ function AddStaff({ setCount }) {
                         placeholder="Select Specialist Stuff"
                         className="text-custom-green-dark transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                       >
-                        <option>Select specialist Staff/Master</option>
+                        {/* <option className="text-custom-green-60">Select specialist Staff/Master</option> */}
                         <option value="Coder">Coder</option>
                         <option value="Designer">Designer</option>
                         <option value="Manager">Manager</option>
