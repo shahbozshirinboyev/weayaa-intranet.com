@@ -213,7 +213,7 @@ function TaskChat({ task }) {
 
               return (
                 <Fragment key={`${lineIndex}-${wordIndex}`}>
-                  <a href={url} className="text-sky-500" target="_blank" rel="noopener noreferrer">
+                  <a href={url} className="text-sky-600 hover:underline" target="_blank" rel="noopener noreferrer">
                     {shortUrl}
                   </a>
                 </Fragment>

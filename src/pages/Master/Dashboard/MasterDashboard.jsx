@@ -168,7 +168,7 @@ function MasterDashboard() {
                   <Fragment key={`${lineIndex}-${wordIndex}`}>
                     <a
                       href={url}
-                      className="text-sky-500"
+                      className="text-sky-600 hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -316,7 +316,7 @@ function MasterDashboard() {
         {/* Edit Modal START */}
         <dialog id="edit_news" className="modal">
           <Toaster />
-          <div className="modal-box !p-0">
+          <div className="modal-box !p-0 max-w-2xl">
             {/* Modal header Start */}
             <form
               method="dialog"
@@ -332,18 +332,14 @@ function MasterDashboard() {
               </div>
             </form>
             {/* Modal header End */}
-
-            <div className=" mb-0 flex justify-between items-center my-4 gap-2 p-2">
+            <div className="p-4">
+            <div className="flex justify-between items-center gap-2 mb-2">
               <div className="flex items-center space-x-2 border border-custom-green-dark rounded-lg px-2 py-2 w-full">
-                {editorDashAuthorImage === null ? (
-                  <i className="bi bi-person-circle text-[25px] text-custom-green-dark "></i>
-                ) : (
-                  <img
-                    src={editorDashAuthorImage}
-                    alt={editorDashAuthorFirstName}
-                    className="w-[35px] h-[35px] object-cover rounded-full"
-                  />
-                )}
+                <img
+                  src={editorDashAuthorImage || noneuser}
+                  alt={editorDashAuthorFirstName}
+                  className="w-[35px] h-[35px] object-cover rounded-full"
+                />
 
                 <div>
                   <p className="text-xs text-custom-green-80 ">
@@ -370,7 +366,7 @@ function MasterDashboard() {
             </div>
 
             <form onSubmit={editOldDashboard}>
-              <div className="mb-0 p-2">
+              <div className="mb-2">
                 <label
                   className="block text-custom-green-80 font-semibold mb-1"
                   htmlFor="title"
@@ -387,7 +383,7 @@ function MasterDashboard() {
                 />
               </div>
 
-              <div className="mb-0 p-2">
+              <div className="mb-2">
                 <label
                   className="block text-custom-green-80 font-semibold mb-1"
                   htmlFor="description"
@@ -398,19 +394,18 @@ function MasterDashboard() {
                   ref={editDashboardDescription}
                   defaultValue={editorDashDescription}
                   id="description"
-                  rows="4"
+                  rows="7"
                   required
                   className="w-full border border-custom-green-dark  rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"
                 ></textarea>
               </div>
 
-              <div className="flex justify-end p-2">
-                <button className="text-white font-semibold py-3 w-full  rounded-lg bg-custom-green-90 hover:bg-custom-green-dark flex items-center justify-center space-x-2">
+              <button className="btn border-0 btn-md w-full bg-custom-green-10 text-custom-green-dark hover:text-white hover:bg-custom-green-dark">
                   <i className="bi bi-file-arrow-up text-[19px] "></i>
-                  <span>Republish</span>
-                </button>
-              </div>
+                Publish
+              </button>
             </form>
+            </div>
           </div>
           <form method="dialog" className="modal-backdrop">
             <button>close</button>
@@ -420,7 +415,7 @@ function MasterDashboard() {
       </div>
       <dialog id="add_new_news" className="modal">
         <Toaster />
-        <div className="modal-box !p-0">
+        <div className="modal-box !p-0 max-w-2xl">
           {/* Modal header Start */}
           <form
             method="dialog"
@@ -435,8 +430,9 @@ function MasterDashboard() {
           </form>
           {/* Modal header End */}
 
-          <div className="">
-            <div className=" mb-0 flex justify-between items-center my-4 gap-2 p-2">
+          <div className="p-4">
+
+            <div className="flex justify-between items-center gap-2 mb-2">
               <div className="flex items-center space-x-2 border border-custom-green-30 rounded-lg px-2 py-2 w-full">
                 {userImage === null ? (
                   <i className="bi bi-person-circle text-[25px] text-custom-green-dark "></i>
@@ -473,7 +469,7 @@ function MasterDashboard() {
             </div>
 
             <form onSubmit={createNewDashboard}>
-              <div className="mb-0 p-2">
+              <div className="mb-2">
                 <label
                   className="block text-custom-green-80 font-semibold mb-1"
                   htmlFor="title"
@@ -489,7 +485,7 @@ function MasterDashboard() {
                 />
               </div>
 
-              <div className="mb-0 p-2">
+              <div className="mb-2">
                 <label
                   className="block text-custom-green-80 font-semibold mb-1"
                   htmlFor="description"
@@ -499,18 +495,17 @@ function MasterDashboard() {
                 <textarea
                   ref={newDashboardDescription}
                   id="description"
-                  rows="4"
+                  rows="7"
                   required
                   className="w-full border border-custom-green-30  rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-custom-green-dark text-custom-green-dark"
                 ></textarea>
               </div>
 
-              <div className="flex justify-end p-2">
-                <button className="text-white font-semibold py-2 w-full  rounded-lg bg-custom-green-90 hover:bg-custom-green-dark flex items-center justify-center space-x-2">
+              
+              <button className="btn border-0 btn-md w-full bg-custom-green-10 text-custom-green-dark hover:text-white hover:bg-custom-green-dark">
                   <i className="bi bi-file-arrow-up text-[19px] "></i>
-                  <span>Publish</span>
-                </button>
-              </div>
+                Publish
+              </button>
             </form>
           </div>
         </div>
