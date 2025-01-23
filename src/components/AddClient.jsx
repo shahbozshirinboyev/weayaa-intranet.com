@@ -125,6 +125,7 @@ function AddClient({ setCount }) {
             <form onSubmit={addClientUser}>
               <div className="px-6 py-4 text-custom-green-dark">
                 <div className="grid grid-cols-1">
+                  
                   <div className="flex gap-4 items-center">
                     <div className="w-[100px] h-[100px] flex justify-center items-center">
                       <img

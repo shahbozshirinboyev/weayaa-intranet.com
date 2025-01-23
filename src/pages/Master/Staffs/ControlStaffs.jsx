@@ -544,8 +544,20 @@ function ControlStaffs() {
 
             <form className="px-[24px]">
               <div className="grid grid-cols-1 mt-2">
+
                 <div className="flex mt-2 gap-4 items-center">
-                  <div className="w-[100px] h-[100px] min-w-[100px] min-h-[100px] flex justify-center items-center">
+
+                <div className="w-[100px] h-[100px] flex justify-center items-center">
+
+<img
+  src={editUserImage || noneuser}
+  alt="user-img"
+  className="w-[80px] h-[80px] rounded-full object-cover border border-custom-green-30"
+
+/>
+</div>
+
+                  {/* <div className="w-[100px] h-[100px] min-w-[100px] min-h-[100px] flex justify-center items-center">
                     {editUserImage === "" || editUserImage === null ? (
                       <i className="bi bi-person-bounding-box text-[35px] text-custom-green-80"></i>
                     ) : (
@@ -555,7 +567,7 @@ function ControlStaffs() {
                         className="w-[100px] h-[100px] min-w-[100px] min-h-[100px] object-cover rounded-full border"
                       />
                     )}
-                  </div>
+                  </div> */}
 
                   <div className="w-full">
                     <label htmlFor="">
@@ -578,7 +590,7 @@ function ControlStaffs() {
                         className="text-[14px] text-transparent font-medium placeholder-custom-green-60 file:mr-4 file:py-1 file:px-2 file:w-[100px] file:rounded-[10px] file:border-0 file:text-sm file:font-semibold file:bg-custom-green-30 file:text-custom-green-dark hover:file:bg-custom-green-dark hover:file:text-white hover:file:transition-all"
                       />
                     </label>
-                    <span className="block text-[14px] mt-[5px] text-custom-green-80">
+                    <span className="block text-[14px] mt-[5px] font-semibold text-custom-green-80">
                         An image of the person, it’s best if it has the same length and height.
                         <br />
                         <span className="text-custom-green-dark font-medium">
@@ -827,7 +839,7 @@ function ControlStaffs() {
               <div className="grid grid-cols-2 gap-4">
                 <button
                   type="submit"
-                  className="rounded-[5px] py-2 w-full my-4 bg-custom-green-30 text-custom-green-dark font-bold hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+                  className="rounded-[10px] py-2 w-full my-4 bg-custom-green-10 text-custom-green-dark font-bold hover:bg-custom-green-dark hover:text-white transition-all duration-300"
                   onClick={editUserInfoSubmit}
                 >
                   Save
@@ -837,7 +849,7 @@ function ControlStaffs() {
                   onClick={() => {
                     document.getElementById("editUserInfoModal").close();
                   }}
-                  className="border rounded-[5px] py-2 w-full my-4 bg-custom-green-30 text-custom-green-dark font-bold hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+                  className="border rounded-[10px] py-2 w-full my-4 bg-custom-green-10 text-custom-green-dark font-bold hover:bg-custom-green-dark hover:text-white transition-all duration-300"
                 >
                   Close
                 </button>

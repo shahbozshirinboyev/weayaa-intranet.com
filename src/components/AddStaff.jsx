@@ -150,15 +150,18 @@ function AddStaff({ setCount }) {
             </div>
           </form>
           {/* Modal header End */}
-          <section className="p-6 text-custom-green-dark">
+          <section className="px-6 py-4 text-custom-green-dark">
             <form onSubmit={finalSubmit}>
-              <div className="grid grid-cols-1 mt-2">
-                <div className="flex mt-2 gap-4 items-center">
-                  <div className="w-[80px] h-[80px] border border-custom-green-15 rounded-full flex justify-center items-center flex-shrink-0">
+
+                <div className="flex gap-4 items-center">
+                  
+                <div className="w-[100px] h-[100px] flex justify-center items-center">
+
                     <img
                       src={userImage || noneuser}
                       alt="user-img"
-                      className="w-[80px] h-[80px] object-cover rounded-full"
+                      className="w-[80px] h-[80px] rounded-full object-cover border border-custom-green-30"
+
                     />
                   </div>
 
@@ -438,15 +441,14 @@ function AddStaff({ setCount }) {
                       </label>
                     </div>
                   </div>
-                  <button
-                    type="submit"
-                    className="px-3 py-2 mt-4 text-[15px] rounded-[10px] w-full font-medium text-white bg-custom-green-80 hover:bg-custom-green-dark transition-all"
-                  >
-                    {" "}
-                    Save{" "}
-                  </button>
+                  
                 </div>
-              </div>
+                <button
+                    type="submit"
+                    className="px-3 py-2 text-[15px] rounded-[10px] w-full font-medium text-custom-green-dark hover:text-white bg-custom-green-10 hover:bg-custom-green-dark transition-all mt-3"
+                  >
+                    Save
+                  </button>
             </form>
           </section>
         </div>
