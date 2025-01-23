@@ -164,7 +164,7 @@ function EditClientInfo({ clientId, setCount, setClientId }) {
                         "
                         />
                       </label>
-                      <span className="block text-[14px] mt-[5px] text-custom-green-80">
+                      <span className="block text-[14px] mt-[5px] text-custom-green-80 font-semibold">
                         An image of the person, it’s best if it has the same
                         length and height.
                         <br />
@@ -179,7 +179,7 @@ function EditClientInfo({ clientId, setCount, setClientId }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          First Name
+                          <span>First Name</span>
                           <span className="text-red-700 font-bold">*</span>
                         </span>
                         <input
@@ -196,7 +196,7 @@ function EditClientInfo({ clientId, setCount, setClientId }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          Last Name
+                          <span>Last Name</span>
                           <span className="text-red-700 font-bold">*</span>
                         </span>
                         <input
@@ -212,9 +212,10 @@ function EditClientInfo({ clientId, setCount, setClientId }) {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mt-2">
-                  <div>
+                    <div>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-telegram mr-1"></i><span>Telegram</span>
+                        <i className="bi bi-telegram mr-1"></i>
+                        <span>Telegram</span>
                       </span>
                       <label className="w-full grow p-2 border rounded-md outline-0 focus-within:border-custom-green-80 placeholder-custom-green-60 flex items-center gap-0">
                         <span>t.me/</span>
@@ -232,7 +233,8 @@ function EditClientInfo({ clientId, setCount, setClientId }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-envelope"></i> Email Address
+                          <i className="bi bi-envelope-at-fill mr-1"></i>
+                          <span>Email Address</span>
                         </span>
                         <input
                           value={state.email}
@@ -251,8 +253,8 @@ function EditClientInfo({ clientId, setCount, setClientId }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          {/* <i className="bi bi-envelope"></i>  */}
-                          Organization
+                          <i className="bi bi-building-fill mr-1"></i>
+                          <span>Organization</span>
                         </span>
                         <input
                           value={state.organization}

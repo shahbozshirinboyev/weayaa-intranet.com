@@ -1,29 +1,44 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import http from "../services/http"
+import http from "../services/http";
 
 function AddClient({ setCount }) {
   // Password hide/show function START
   const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => { setShowPassword(!showPassword); };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   // Password hide/show function END
-  const [state, setState] = useState({ weayaa_id: "", password: "", first_name: "", last_name: "", address: "", email: "", organization: "", image: "" })
-  const inputHandle = (e) => { setState({ ...state, [e.target.name]: e.target.value, }); };
+  const [state, setState] = useState({
+    weayaa_id: "",
+    password: "",
+    first_name: "",
+    last_name: "",
+    address: "",
+    email: "",
+    organization: "",
+    image: "",
+  });
+  const inputHandle = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
 
   const [avatar, setAvatar] = useState({ file: null, url: "" });
-  const clearAvatar = () => { setAvatar({ file: null, url: "" }) }
+  const clearAvatar = () => {
+    setAvatar({ file: null, url: "" });
+  };
   const handleAvatar = (e) => {
     if (e.target.files[0]) {
       setAvatar({
         file: e.target.files[0],
         url: URL.createObjectURL(e.target.files[0]),
       });
-      setState({ ...state, image: e.target.files[0], });
+      setState({ ...state, image: e.target.files[0] });
     }
   };
 
   const addClientUser = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const formData = new FormData();
     formData.append("weayaa_id", state.weayaa_id);
     formData.append("password", state.password);
@@ -35,7 +50,7 @@ function AddClient({ setCount }) {
     formData.append("image", state.image);
 
     const access = localStorage.getItem("access");
-    console.log(state.address)
+    console.log(state.address);
 
     toast.promise(
       http.post("users/clients/register/", formData, {
@@ -50,7 +65,17 @@ function AddClient({ setCount }) {
           const randomNum = Math.floor(Math.random() * 100); // 0 dan 99 gacha bo'lgan random son
           setCount(randomNum);
           document.getElementById("add_client_modal").close();
-          setState({ weayaa_id: "", password: "", first_name: "", address: "", last_name: "", email: "", organization: "", image: "" })
+          setState({
+            weayaa_id: "",
+            password: "",
+            first_name: "",
+            address: "",
+            last_name: "",
+            email: "",
+            organization: "",
+            image: "",
+          });
+          clearAvatar();
           console.log(response.data);
           return <b>Add new User!</b>;
         },
@@ -60,9 +85,7 @@ function AddClient({ setCount }) {
         },
       }
     );
-
-
-  }
+  };
 
   return (
     <>
@@ -70,7 +93,9 @@ function AddClient({ setCount }) {
       <div className="ml-[10px]">
         <button
           className="rounded-[10px] min-w-[125px] h-[35px] flex justify-center items-center bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark transition-all duration-150"
-          onClick={() => document.getElementById("add_client_modal").showModal()}
+          onClick={() =>
+            document.getElementById("add_client_modal").showModal()
+          }
         >
           <i className="bi bi-person-add text-[22px] mx-[5px]"></i>
           <span className="mx-[5px] text-[14px] font-semibold">Add Client</span>
@@ -99,7 +124,6 @@ function AddClient({ setCount }) {
           <>
             <form onSubmit={addClientUser}>
               <div className="px-6 py-4 text-custom-green-dark">
-
                 <div className="grid grid-cols-1">
                   <div className="flex gap-4 items-center">
                     <div className="w-[100px] h-[100px] flex justify-center items-center">
@@ -127,7 +151,8 @@ function AddClient({ setCount }) {
                         />
                       </label>
                       <span className="block text-[14px] mt-[5px] text-custom-green-80">
-                        An image of the person, it’s best if it has the same length and height.
+                        An image of the person, it’s best if it has the same
+                        length and height.
                         <br />
                         <span className="text-custom-green-dark font-medium">
                           Recommendation: 300x300px
@@ -140,7 +165,8 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <span>First Name</span><span className="text-red-700 font-bold">*</span>
+                          <span>First Name</span>
+                          <span className="text-red-700 font-bold">*</span>
                         </span>
                         <input
                           value={state.first_name}
@@ -157,7 +183,8 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <span>Last Name</span><span className="text-red-700 font-bold">*</span>
+                          <span>Last Name</span>
+                          <span className="text-red-700 font-bold">*</span>
                         </span>
                         <input
                           value={state.last_name}
@@ -175,7 +202,8 @@ function AddClient({ setCount }) {
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <div>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                        <i className="bi bi-telegram mr-1"></i><span>Telegram</span>
+                        <i className="bi bi-telegram mr-1"></i>
+                        <span>Telegram</span>
                       </span>
                       <label className="w-full grow p-2 border rounded-md outline-0 focus-within:border-custom-green-80 placeholder-custom-green-60 flex items-center gap-0">
                         <span>t.me/</span>
@@ -192,7 +220,8 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-envelope-at-fill mr-1"></i><span>Email Address</span>
+                          <i className="bi bi-envelope-at-fill mr-1"></i>
+                          <span>Email Address</span>
                         </span>
                         <input
                           value={state.email}
@@ -210,15 +239,12 @@ function AddClient({ setCount }) {
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <div>
                       <span className="block text-custom-green-dark font-semibold text-[14px]">
-                      <i className="bi bi-person-fill-gear mr-1"></i><span>Account Type</span>
-                        
+                        <i className="bi bi-person-fill-gear mr-1"></i>
+                        <span>Account Type</span>
                       </span>
                       <div className="grid grid-cols-1">
                         <label className="p-2 border rounded-md flex items-center accent-custom-green-dark">
-                          <input
-                            type="radio"
-                            defaultChecked
-                          />
+                          <input type="radio" defaultChecked />
                           <span className="text-custom-green-dark font-semibold text-[15px] ml-[15px]">
                             Client
                           </span>
@@ -228,7 +254,8 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-building-fill mr-1"></i><span>Organization</span>
+                          <i className="bi bi-building-fill mr-1"></i>
+                          <span>Organization</span>
                         </span>
                         <input
                           value={state.organization}
@@ -245,7 +272,9 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-person-check-fill mr-1"></i><span>WeaYaa ID</span><span className="text-red-700 font-bold">*</span>
+                          <i className="bi bi-person-check-fill mr-1"></i>
+                          <span>WeaYaa ID</span>
+                          <span className="text-red-700 font-bold">*</span>
                         </span>
                         <input
                           value={state.weayaa_id}
@@ -262,7 +291,9 @@ function AddClient({ setCount }) {
                     <div>
                       <label>
                         <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          <i className="bi bi-key-fill mr-1"></i><span>Password</span><span className="text-red-700 font-bold">*</span>
+                          <i className="bi bi-key-fill mr-1"></i>
+                          <span>Password</span>
+                          <span className="text-red-700 font-bold">*</span>
                         </span>
                         <div className="relative">
                           <input
@@ -290,7 +321,10 @@ function AddClient({ setCount }) {
                       </label>
                     </div>
                   </div>
-                  <button type="submit" className="px-3 py-2 text-[15px] rounded-[10px] w-full font-medium text-custom-green-dark hover:text-white bg-custom-green-10 hover:bg-custom-green-dark transition-all mt-3">
+                  <button
+                    type="submit"
+                    className="px-3 py-2 text-[15px] rounded-[10px] w-full font-medium text-custom-green-dark hover:text-white bg-custom-green-10 hover:bg-custom-green-dark transition-all mt-3"
+                  >
                     Save
                   </button>
                 </div>
