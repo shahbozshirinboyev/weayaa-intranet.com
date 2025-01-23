@@ -431,7 +431,7 @@ function ControlStaffs() {
               </th>
 
               <th scope="col" className="px-6 py-3">
-                Project
+                Projects Status
               </th>
 
               <th scope="col" className="px-6 py-3">
@@ -441,6 +441,7 @@ function ControlStaffs() {
           </thead>
           <tbody>
             {users
+            .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
               .filter(
                 (user) =>
                   user.user_type === smlist && user.user_type === "client"
@@ -501,7 +502,7 @@ function ControlStaffs() {
                       className="btn btn-sm bg-custom-green-30 text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0"
                     >
                       <i className="bi bi-folder-symlink"></i>
-                      <span className="hidden xl:block">Projects Status</span>
+                      <span className="hidden xl:block">Projects</span>
                     </button>
                   </td>
 

@@ -77,11 +77,12 @@ function StaffsList() {
               </button>
             </div>
 
-            <button className="rounded-[10px] w-[125px] h-[35px] bg-custom-green-30 text-custom-green-dark cursor-default transition-all duration-150 hidden md:hidden lg:block">
-              <span className="text-[22px] mx-[5px]">
-                {usersCount ? usersCount : "0"}
+            <button className="rounded-[10px] w-auto h-[35px] bg-custom-green-30 text-custom-green-dark cursor-default transition-all duration-150 hidden xl:block">
+              <i className="bi bi-people pl-2 text-[22px] mx-[5px]"></i>
+              <span className="text-[22px] mx-[5px]">{usersCount ? usersCount : "0"}</span>
+              <span className="text-[14px] pr-[10px] font-semibold">
+                Members
               </span>
-              <span className="text-[14px] font-semibold">Staffs</span>
             </button>
           </div>
         </div>
