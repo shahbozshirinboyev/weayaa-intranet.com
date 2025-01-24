@@ -2,11 +2,15 @@ import { useState, useEffect } from "react";
 import http from "../../../services/http";
 import toast, { Toaster } from "react-hot-toast";
 import archivefoldericon from "/img/archive-folder.png";
-import TaskManagement from "../../../components/TaskManagement";
+import TaskFileControl from "../../../components/TaskFileControl";
+import { Fragment } from "react";
+import TaskChat from "../../../components/TaskChat/TaskChat";
 
 function ArchiveProjects() {
   const [projectsList, setProjectsList] = useState([]);
   const [selectArchiveProject, setSelectArchiveProject] = useState([]);
+
+  const [task, setTask] = useState([]);
 
   const getProjectsList = () => {
     const headers = {
@@ -71,10 +75,10 @@ function ArchiveProjects() {
       items: [],
     },
   });
-  console.log("columns: ", columns);
+  // console.log("columns: ", columns);
 
   const getProjectTasks = (id) => {
-    console.log("project_id: ", id);
+    // console.log("project_id: ", id);
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     };
@@ -106,6 +110,53 @@ function ArchiveProjects() {
       });
   };
   // ===========> Get ProjectTasks List END <=========== //
+
+  const renderContent = (content) => {
+    // Yangi qatorlarni ajratish
+    const lines = content.split("\n");
+
+    return lines.map((line, lineIndex) => {
+      // Har bir qatorni bo'shliqlarga bo'lish
+      const words = line.split(" ");
+
+      return (
+        <Fragment key={lineIndex}>
+          {words
+            .map((word, wordIndex) => {
+              const urlMatch = word.match(/(https?:\/\/[^\s]+)/g);
+              if (urlMatch) {
+                const url = urlMatch[0];
+                const baseUrl = url.split("/").slice(0, 3).join("/"); // Asosiy URL
+                const shortUrl = `${baseUrl}/...`; // Qisqartirilgan ko'rinish
+
+                return (
+                  <Fragment key={`${lineIndex}-${wordIndex}`}>
+                    <a
+                      href={url}
+                      className="text-sky-500"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {shortUrl}
+                    </a>
+                  </Fragment>
+                );
+              }
+              // Agar so'z bo'sh bo'lmasa, uni ko'rsatamiz
+              if (word.trim()) {
+                return (
+                  <Fragment key={`${lineIndex}-${wordIndex}`}>{word}</Fragment>
+                );
+              }
+              // Agar so'z bo'sh bo'lsa, hech narsa qaytarmaymiz
+              return null;
+            })
+            .reduce((prev, curr) => [prev, " ", curr])}
+          <br /> {/* Har bir qator oxirida <br /> qo'shamiz */}
+        </Fragment>
+      );
+    });
+  };
 
   return (
     <>
@@ -240,7 +291,88 @@ function ArchiveProjects() {
         </div>
       )}
 
-      {!table && <div>Tasks</div>}
+      {!table && (
+        <>
+          <div className="grid grid-cols-4 gap-4 p-4 bg-custom-green-10 rounded-[10px] min-w-[1400px]">
+            {Object.entries(columns).map(([columnId, column]) => (
+              <div className="flex flex-col" key={columnId}>
+                {/* Column Header */}
+                <div className="grid grid-cols gap-3 items-center mb-4 w-full">
+                  <div className="flex justify-between p-2 py-[10px] w-full bg-white rounded-lg shadow-sm text-custom-green-dark text-[15px] font-extrabold">
+                    <span>{column.name}</span>
+                    <div className="bg-custom-green-30 text-center text-custom-green-dark rounded-md">
+                      <span className="px-2 py-1">{column.items.length}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tasks */}
+                <div className="flex flex-col gap-3">
+                  {column.items?.map((task) => (
+                    <div
+                      className="w-full p-3 bg-white flex flex-col justify-between gap-3 items-start shadow-sm rounded-lg"
+                      key={task.id}
+                    >
+                      {/* Task Header */}
+                      <div className="flex justify-between w-full">
+                        <div className="flex items-center space-x-2">
+                          <div className="flex items-center justify-center bg-custom-green-15 text-custom-green-dark text-sm font-semibold px-2 py-1 rounded-md">
+                            <i className="bi bi-calendar-week mr-2 flex justify-center items-center"></i>
+                            <span>{task.deadline}</span>
+                          </div>
+                        </div>
+
+                        <div>
+                          {/* Task Chat */}
+                          <div className="w-full flex items-center">
+                            <label
+                              htmlFor="task_chat"
+                              onClick={() => {
+                                try {
+                                  setTask(task);
+                                } catch (error) {
+                                  console.error(
+                                    "Error opening TaskChat modal:",
+                                    error
+                                  );
+                                }
+                              }}
+                            >
+                              <div className="flex">
+                                <div className="relative">
+                                  <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center">
+                                    <i className="bi bi-chat-text"></i>
+                                  </div>
+                                  <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
+                                </div>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Task Body */}
+                      <div className="w-full flex items-start flex-col gap-1">
+                        <span className="text-[15.5px] font-medium text-custom-green-90">
+                          {task.name}
+                        </span>
+                        <span className="text-[13.5px] text-custom-green-80 break-all">
+                          {renderContent(task.description)}
+                        </span>
+                      </div>
+
+                      {/* Task Footer */}
+                      <div className="w-full">
+                        <TaskFileControl fileUrl={task.file} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* unarchive modal - start */}
       <dialog id="my_unarchive_modal" className="modal">
@@ -274,6 +406,8 @@ function ArchiveProjects() {
         </form>
       </dialog>
       {/* unarchive modal - start */}
+
+      <TaskChat task={task} />
     </>
   );
 }
