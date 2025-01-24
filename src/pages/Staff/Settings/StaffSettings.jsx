@@ -215,74 +215,55 @@ function StaffSettings() {
               </div>
             </div>
 
-            <div className="px-6">
-              <span className="font-semibold text-[14px] opacity-60">
-                First name
+            <div className="col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-2">
+           <div className="flex justify-between items-center px-4 py-2">
+              <span className="opacity-80 flex items-center gap-2 text-[14px]">
+                <i class="bi bi-person-lines-fill flex justify-center items-center font-medium text-2xl"></i>
+                <span className="font-medium">Full name</span>
               </span>
-              <p className="font-semibold text-[18px]">
-                {personalInfo.first_name}
-              </p>
+              <p className="font-medium opacity-90">{personalInfo.first_name} {personalInfo.last_name}</p>
             </div>
 
-            <div className="px-6">
-              <span className="font-semibold text-[14px] opacity-60">
-                Last name
+            <div className="flex justify-between items-center px-4 py-2">
+              <span className="opacity-80 flex items-center gap-2 text-[14px]">
+                <i class="bi  bi-person-vcard-fill flex justify-center items-center font-medium text-2xl"></i>
+                <span className="font-medium">Speciality</span>
               </span>
-              <p className="font-semibold text-[18px]">
-                {personalInfo.last_name}
-              </p>
+              <p className="font-medium opacity-90">{personalInfo.speciality || "speciality.undefined"}</p>
             </div>
 
-            <div className="px-6">
-              <span className="font-semibold text-[14px] opacity-60">
-                Phone number:
+            <div className="flex justify-between items-center px-4 py-2">
+              <span className="opacity-80 flex items-center gap-2 text-[14px]">
+                <i class="bi  bi-envelope-at-fill flex justify-center items-center font-medium text-2xl"></i>
+                <span className="font-medium">Email</span>
               </span>
-              <p className="font-semibold text-[18px]">
-                {personalInfo.phone_number}
-              </p>
+              <p className="font-medium opacity-90">{personalInfo.email || "email.undefined"}</p>
             </div>
 
-            <div className="px-6">
-              <span className="font-semibold text-[14px] opacity-60">
-                Email Address
+            <div className="flex justify-between items-center px-4 py-2">
+              <span className="opacity-80 flex items-center gap-2 text-[14px]">
+                <i class="bi  bi-clock-fill flex justify-center items-center font-medium text-2xl"></i>
+                <span className="font-medium">Work type</span>
               </span>
-              <p className="font-semibold text-[18px]">{personalInfo.email}</p>
+              <p className="font-medium opacity-90 uppercase bg-custom-green-30 px-2 py-1 rounded-lg text-xs">{personalInfo.work_type === "full_time" ? "full time" : "part time" || "work_type.undefined"}</p>
             </div>
 
-            <div className="px-6">
-              <span className="font-semibold text-[14px] opacity-60">
-                Specialist
+            <div className="flex justify-between items-center px-4 py-2">
+              <span className="opacity-80 flex items-center gap-2 text-[14px]">
+                <i class="bi  bi-telegram flex justify-center items-center font-medium text-2xl"></i>
+                <span className="font-medium">Telegram</span>
               </span>
-              <p className="font-semibold text-[18px]">
-                {personalInfo.speciality}
-              </p>
+              <p className="font-medium opacity-90">{`@${personalInfo.address}` || "telegram.undefined"}</p>
             </div>
 
-            <div className="px-6">
-              <span className="font-semibold text-[14px] opacity-60">
-                Job time
+            <div className="flex justify-between items-center px-4 py-2">
+              <span className="opacity-80 flex items-center gap-2 text-[14px]">
+                <i class="bi  bi-person-fill-gear flex justify-center items-center font-medium text-2xl"></i>
+                <span className="font-medium">Account type</span>
               </span>
-              <p className="font-semibold text-[18px]">
-                {personalInfo.work_type === "part_time"
-                  ? "PART-TIME"
-                  : personalInfo.work_type === "full_time"
-                  ? "FULL-TIME"
-                  : ""}
-              </p>
+              <p className="font-medium opacity-90 uppercase bg-custom-green-30 px-2 py-1 rounded-lg text-xs">{personalInfo.user_type ? personalInfo.user_type.replace(/^./, (char) => char.toUpperCase() ) : "user_type.undefined"}</p>
             </div>
-
-            <div className="px-6">
-              <span className="font-semibold text-[14px] opacity-60">
-                Account type
-              </span>
-              <p className="font-semibold text-[18px]">
-                {personalInfo.user_type
-                  ? personalInfo.user_type.replace(/^./, (char) =>
-                      char.toUpperCase()
-                    )
-                  : ""}
-              </p>
-            </div>
+           </div>
           </div>
         </div>
       </div>
