@@ -67,7 +67,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
       formData.append("file", taskInfo.file);
     }
 
-    console.log(taskInfo.file);
+    // console.log(taskInfo.file);
 
     toast.promise(
       http.patch(`projects/tasks/${taskInfo.id}/`, formData, { headers }),
