@@ -58,7 +58,7 @@ function ArchiveProjects() {
 
       {projectsList?.length !== 0 && <div className="overflow-x-auto shadow-md rounded-md">
 
-       
+
 
         <table className={`w-full text-sm text-left`}>
 
@@ -66,7 +66,7 @@ function ArchiveProjects() {
             <tr className="text-[14px] text-custom-green-90 bg-custom-green-10">
 
               <th scope="col" className="px-6 py-3">
-              Archive project Name
+                Archive project Name
               </th>
 
               <th
@@ -95,44 +95,43 @@ function ArchiveProjects() {
 
           <tbody>
             {projectsList.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map((project) => (
-                <tr
-                  key={project.id}
-                  className="bg-white border-b border-custom-green-30 hover:bg-custom-green-5"
+              <tr
+                key={project.id}
+                className="bg-white border-b border-custom-green-30 hover:bg-custom-green-5"
+              >
+                <td
+                  scope="row"
+                  className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  <td
-                    scope="row"
-                    className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    <img
-                      className="!w-10 !h-10 min-w-10 min-h-10  object-cover whitespace-nowrap"
-                      src={archivefoldericon}
-                      alt="archivefoldericon"
-                    />
-                    <div className="ps-3">
-                      <div className="text-base font-semibold text-custom-green-dark">
+                  <img
+                    className="!w-10 !h-10 min-w-10 min-h-10  object-cover whitespace-nowrap"
+                    src={archivefoldericon}
+                    alt="archivefoldericon"
+                  />
+                  <div className="ps-3">
+                    <div className="text-base font-semibold text-custom-green-dark">
                       {project.name}
-                      </div>
-                      <div className="font-medium text-custom-green-80 flex justify-start items-center gap-1">
+                    </div>
+                    <div className="font-medium text-custom-green-80 text-xs flex justify-start items-center gap-1">
                       <i className="bi bi-people-fill"></i>
-                        <span>{project.members.length}</span>
-                      </div>
+                      <span>{project.members.length}</span>
                     </div>
-                  </td>
+                  </div>
+                </td>
 
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell lg:table-cell">
+                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell lg:table-cell">
                   <div className="flex text-custom-green-dark font-semibold">
+                    <span> {project?.archived_at ? new Date(project.archived_at).toLocaleDateString("uz-UZ", { day: "2-digit", month: "2-digit", year: "numeric", }) : "date.undefined"} </span>
+                  </div>
+                </td>
 
-                    <span>{ project?.archived_at || "date.undefined" }</span>
-                    </div>
-                  </td>
-
-                  <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
-                    <div className="flex text-custom-green-dark font-semibold">
+                <td className="px-6 h-full py-4 hidden md:hidden lg:table-cell ">
+                  <div className="flex text-custom-green-dark font-semibold">
                     <span>{project?.archived_by_name || "archived_by_name.undefined"}</span>
-                    </div>
-                  </td>
+                  </div>
+                </td>
 
-                  <td className="px-6 py-4">
+                <td className="px-6 py-4">
                   <button
                     onClick={() => { document.getElementById("my_unarchive_modal").showModal(); setSelectArchiveProject(project) }}
                     className="btn btn-sm flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-30 hover:bg-custom-green-dark hover:text-white"
@@ -140,20 +139,20 @@ function ArchiveProjects() {
                     <i className="bi bi-folder-symlink"></i>
                     <span>Unarchive</span>
                   </button>
-                  </td>
+                </td>
 
-                  <td className="px-6 py-4 justify-start items-center">
+                <td className="px-6 py-4 justify-start items-center">
                   <button
                     // onClick={() => { document.getElementById("my_unarchive_modal").showModal(); setSelectArchiveProject(project) }}
-                    onClick={() => {toast( "WeaYaa Admin\nThe function is progress ...", { duration: 3000, });}}
+                    onClick={() => { toast("WeaYaa Admin\nThe function is progress ...", { duration: 3000, }); }}
                     className="btn btn-sm flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-30 hover:bg-custom-green-dark hover:text-white"
                   >
                     <i className="bi bi-grid-1x2"></i>
                     <span>Tasks</span>
                   </button>
-                  </td>
-                </tr>
-              ))}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
 
