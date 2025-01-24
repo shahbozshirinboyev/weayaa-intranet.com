@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import AddStaff from "../../../components/AddStaff";
-import MaskedInput from "react-text-mask";
 import noneuser from "/img/noneuser.png";
 import http from "../../../services/http";
 import AddClient from "../../../components/AddClient";

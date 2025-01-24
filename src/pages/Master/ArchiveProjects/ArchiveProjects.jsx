@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import http from "../../../services/http";
 import toast, { Toaster } from "react-hot-toast";
+import archivefoldericon from "/img/archive-folder.png";
 
 function ArchiveProjects() {
   const [projectsList, setProjectsList] = useState([]);
@@ -102,11 +103,11 @@ function ArchiveProjects() {
                     scope="row"
                     className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {/* <img
-                      className="!w-12 !h-12 min-w-12 min-h-12 rounded-full object-cover border whitespace-nowrap"
-                      src={project.image ? user.image : noneuser}
-                      alt="user_image"
-                    /> */}
+                    <img
+                      className="!w-10 !h-10 min-w-10 min-h-10  object-cover whitespace-nowrap"
+                      src={archivefoldericon}
+                      alt="archivefoldericon"
+                    />
                     <div className="ps-3">
                       <div className="text-base font-semibold text-custom-green-dark">
                       {project.name}
@@ -133,7 +134,7 @@ function ArchiveProjects() {
                   <td className="px-6 py-4">
                   <button
                     onClick={() => { document.getElementById("my_unarchive_modal").showModal(); setSelectArchiveProject(project) }}
-                    className="btn btn-xs flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-10 hover:bg-custom-green-dark hover:text-white"
+                    className="btn btn-sm flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-30 hover:bg-custom-green-dark hover:text-white"
                   >
                     <i className="bi bi-folder-symlink"></i>
                     <span>Unarchive</span>
@@ -142,11 +143,12 @@ function ArchiveProjects() {
 
                   <td className="px-6 py-4 justify-start items-center">
                   <button
-                    onClick={() => { document.getElementById("my_unarchive_modal").showModal(); setSelectArchiveProject(project) }}
-                    className="btn btn-xs flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-10 hover:bg-custom-green-dark hover:text-white"
+                    // onClick={() => { document.getElementById("my_unarchive_modal").showModal(); setSelectArchiveProject(project) }}
+                    onClick={() => {toast( "WeaYaa Admin\nThe function is progress ...", { duration: 3000, });}}
+                    className="btn btn-sm flex flex-nowrap gap-2 text-custom-green-dark border-0 bg-custom-green-30 hover:bg-custom-green-dark hover:text-white"
                   >
-                    <i className="bi bi-folder-symlink"></i>
-                    <span>Unarchive</span>
+                    <i className="bi bi-grid-1x2"></i>
+                    <span>Tasks</span>
                   </button>
                   </td>
                 </tr>
