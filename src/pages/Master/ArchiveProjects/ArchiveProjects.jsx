@@ -112,8 +112,9 @@ function ArchiveProjects() {
                       <div className="text-base font-semibold text-custom-green-dark">
                       {project.name}
                       </div>
-                      <div className="font-normal text-custom-green-80">
-                        Client
+                      <div className="font-medium text-custom-green-80 flex justify-start items-center gap-1">
+                      <i className="bi bi-people-fill"></i>
+                        <span>{project.members.length}</span>
                       </div>
                     </div>
                   </td>

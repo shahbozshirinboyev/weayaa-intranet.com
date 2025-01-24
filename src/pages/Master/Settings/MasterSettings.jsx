@@ -177,50 +177,36 @@ function MasterSettings() {
 
         <div>
           <div className="flex border-[2px] border-custom-green-15 rounded-[5px] gap-4 mt-[25px] p-3 items-center">
-            <div className="flex justify-center items-center w-[80px] h-[80px]">
-              {/* <i className="bi bi-person-bounding-box text-[35px]"></i> */}
-              <img
-                src={personalInfo.image ? personalInfo.image : noneuser}
-                className="rounded-full w-[80px] h-[80px] object-cover p-1"
-                alt={personalInfo.speciality}
-              />
-            </div>
-
-            <div className="items-center">
-              <div>
-                <p className="font-bold text-[14px] md:text-[18px] lg:text-[20px] mb-3">
-                  Image must be 300x300px - max 1 MB
-                </p>
-              </div>
-              <div>
-                <form action="" className="inline-block">
-                  <label className=" flex border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
-                    <i className="bi bi-upload mr-2"></i> Upload Image
-                    <input
-                      type="file"
-                      className="hidden"
-                      onChange={handleFileUpload}
-                    />
-                  </label>
-                </form>
-                {/* <button className="border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 hover:bg-custom-green-dark hover:text-white  transition-all duration-300">
-                  <i className="bi bi-upload mr-2"></i>
-                  <span>Upload Image</span>
-                </button> */}
-                <button
-                  onClick={() =>
-                    document.getElementById("deleteUserImg").showModal()
-                  }
-                  className={`border px-2 py-1 bg-custom-green-30 font-semibold rounded-[5px] mr-2 text-red-500 hover:bg-custom-green-dark hover:text-white  transition-all duration-300 ${
-                    personalInfo.image ? "" : "hidden"
-                  }`}
-                >
-                  <i className="bi bi-trash3 mr-2"></i>
-                  <span>Delete Image</span>
-                </button>
-              </div>
-            </div>
-          </div>
+                      <div className="flex justify-center items-center w-[80px] h-[80px]">
+                        <img
+                          src={personalInfo.image ? personalInfo.image : noneuser}
+                          className="w-[80px] h-[80px] rounded-full object-cover border border-custom-green-10"
+                          alt={personalInfo.speciality}
+                        />
+                      </div>
+          
+                      <div className="flex flex-col gap-2">
+                       
+                          <div className="flex flex-col -gap-1">
+                          <p className="font-bold text-[18px]">Your profile image</p>
+                          <p className="font-medium text-xs">Image must be 300x300px - max 1 MB </p>
+                          </div>
+                        
+                        <div className="flex gap-2">
+                          <form>
+                            <label className="btn btn-sm w-[140px] bg-custom-green-30 text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0">
+                              <i className="bi bi-upload flex justify-center items-center"></i><span>Upload Image</span>
+                              <input type="file" className="hidden" onChange={handleFileUpload} />
+                            </label>
+                          </form>
+                          <button
+                            onClick={() => document.getElementById("deleteUserImg").showModal() }
+                            className={`${personalInfo.image ? "" : "hidden"} btn btn-sm w-[140px] bg-red-300 text-red-600 hover:bg-red-600 hover:text-white border-0`}>
+                            <i className="bi bi-trash3 flex justify-center items-center"></i><span>Delete Image</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
 
           <div className="grid grid-cols-2 border-[2px] border-custom-green-15 rounded-[5px] gap-4 mt-[25px] p-3 items-center">
             <div className="col-span-2 text-[18px] font-bold grid grid-cols-2">

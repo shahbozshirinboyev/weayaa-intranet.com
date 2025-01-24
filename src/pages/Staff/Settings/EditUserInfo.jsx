@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import MaskedInput from "react-text-mask";
 import http from "../../../services/http";
 
 export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
@@ -48,13 +47,16 @@ export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
   };
   const EditPersonalInformation = (e) => {
     e.preventDefault();
-  
+
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     };
-    const sanitizedPhoneNumber = editPersonalInfo.phone_number.replace(/\s+/g, "");
+    const sanitizedPhoneNumber = editPersonalInfo.phone_number.replace(
+      /\s+/g,
+      ""
+    );
     // console.log(sanitizedPhoneNumber)
-  
+
     // FormData obyektini yaratamiz
     const formData = new FormData();
     formData.append("first_name", editPersonalInfo.first_name);
@@ -65,51 +67,45 @@ export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
     formData.append("label", editPersonalInfo.label);
     formData.append("speciality", editPersonalInfo.speciality);
     formData.append("work_type", editPersonalInfo.work_type);
-  
-    toast.promise(
-      http.patch(`users/profile/`, formData, { headers }),
-      {
-        loading: "Edit Your Personal Info ...",
-        success: (response) => {
-          // console.log(response.data);
-          document.getElementById("editPersonalInfo").close();
-          getPersonalInfo();
-          setEditPersonalInfo({
-            address: "",
-            email: "",
-            first_name: "",
-            id: "",
-            image: "",
-            label: "",
-            last_name: "",
-            phone_number: "",
-            speciality: "",
-            user_type: "",
-            weayaa_id: "",
-            work_days: "",
-            work_type: "",
-          })
-          return <b>Done :)</b>;
-        },
-        error: (error) => {
-          console.log(error.response.data);
-          return <b>Error :(</b>;
-        },
-      }
-    );
+
+    toast.promise(http.patch(`users/profile/`, formData, { headers }), {
+      loading: "Edit Your Personal Info ...",
+      success: (response) => {
+        // console.log(response.data);
+        document.getElementById("editPersonalInfo").close();
+        getPersonalInfo();
+        setEditPersonalInfo({
+          address: "",
+          email: "",
+          first_name: "",
+          id: "",
+          image: "",
+          label: "",
+          last_name: "",
+          phone_number: "",
+          speciality: "",
+          user_type: "",
+          weayaa_id: "",
+          work_days: "",
+          work_type: "",
+        });
+        return <b>Done :)</b>;
+      },
+      error: (error) => {
+        console.log(error.response.data);
+        return <b>Error :(</b>;
+      },
+    });
   };
-  
-  
-  
 
   return (
     <>
       <button
         onClick={() => document.getElementById("editPersonalInfo").showModal()}
-        className="justify-end flex py-1 px-2 rounded-[5px] font-semibold bg-custom-green-30 hover:bg-custom-green-dark hover:text-white transition-all duration-300"
+        className="btn btn-sm bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark border-0"
       >
-        <i className="bi bi-pencil mr-2"></i>
-        Edit
+        <i className="bi bi-pencil flex justify-center items-center"></i>
+        <span>Edit</span>
       </button>
 
       <dialog id="editPersonalInfo" className="modal">
@@ -132,14 +128,18 @@ export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
           {/* Modal header End */}
           <section className="text-[14px]">
             <div className="p-4 md:p-5">
-              <form className="space-y-4" action="#" onSubmit={EditPersonalInformation}>
+              <form
+                className="space-y-4"
+                action="#"
+                onSubmit={EditPersonalInformation}
+              >
                 <div>
-                  <div className="grid grid-cols-1 mt-2">
-                    <div className="grid grid-cols-2 gap-2 mt-2">
+                  <div className="grid grid-cols-1">
+                    <div className="grid grid-cols-2 gap-2">
                       <div>
                         <label>
-                          <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            First Name
+                          <span className="text-custom-green-dark font-semibold text-[14px] flex items-center">
+                            <span>First Name</span>
                             <span className="text-red-700 font-bold">*</span>
                           </span>
                           <input
@@ -154,8 +154,8 @@ export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
                       </div>
                       <div>
                         <label>
-                          <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            Last Name
+                          <span className="text-custom-green-dark font-semibold text-[14px] flex items-center">
+                            <span>Last Name</span>
                             <span className="text-red-700 font-bold">*</span>
                           </span>
                           <input
@@ -172,46 +172,27 @@ export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
 
                     <div className="grid grid-cols-2 gap-2 mt-2">
                       <div>
-                        <label>
-                          <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            <i className="bi bi-telephone"></i> Phone Number
-                          </span>
-                          <MaskedInput
-                            mask={[
-                              "+",
-                              "9",
-                              "9",
-                              "8",
-                              " ",
-                              "(",
-                              /\d/,
-                              /\d/,
-                              ")",
-                              " ",
-                              /\d/,
-                              /\d/,
-                              /\d/,
-                              " ",
-                              /\d/,
-                              /\d/,
-                              " ",
-                              /\d/,
-                              /\d/,
-                            ]}
-                            value={editPersonalInfo.phone_number}
+                        <span className="block text-custom-green-dark font-semibold text-[14px]">
+                          <i className="bi bi-telegram mr-1"></i>
+                          <span>Telegram</span>
+                        </span>
+                        <label className="w-full grow p-2 border rounded-md outline-0 focus-within:border-custom-green-80 placeholder-custom-green-60 flex items-center gap-0">
+                          <span>t.me/</span>
+                          <input
+                            value={editPersonalInfo.address}
                             onChange={inputHandle}
-                            name="phone_number"
+                            name="address"
                             type="text"
-                            placeholder="+998 (--) --- -- --"
-                            // alwaysShowMask={true}
-                            className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
+                            placeholder="sh_shirinboyev"
+                            className="w-full grow outline-0 placeholder-custom-green-60"
                           />
                         </label>
                       </div>
                       <div>
                         <label>
-                          <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            <i className="bi bi-envelope"></i> Email Address
+                          <span className="text-custom-green-dark font-semibold text-[14px] gap-1 flex items-center">
+                            <i className="bi bi-envelope-fill"></i>
+                            <span>Email Address</span>
                           </span>
                           <input
                             name="email"
@@ -228,8 +209,8 @@ export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
                     <div className="grid grid-cols-2 gap-2 mt-2">
                       <div>
                         <label>
-                          <span className="block text-custom-green-dark font-semibold text-[14px]">
-                            Specialist Stuff
+                          <span className="text-custom-green-dark font-semibold text-[14px] flex items-center">
+                            <span>Specialist Stuff</span>
                             <span className="text-red-700 font-bold">*</span>
                           </span>
                           <select
@@ -239,7 +220,6 @@ export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
                             placeholder="Select Specialist Stuff"
                             className="text-custom-green-dark bg-transparent transition-all w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
                           >
-                            <option>Select Specialist Stuff</option>
                             <option value="Coder">Coder</option>
                             <option value="Designer">Designer</option>
                             <option value="Manager">Manager</option>
@@ -303,26 +283,10 @@ export default function EditUserInfo({ personalInfo, getPersonalInfo }) {
                         </label>
                       </div>
                     </div>
-
-                    <div className="mt-2">
-                      <label>
-                        <span className="block text-custom-green-dark font-semibold text-[14px]">
-                          Address
-                        </span>
-                        <textarea
-                          name="address"
-                          value={editPersonalInfo.address}
-                          onChange={inputHandle}
-                          rows="3"
-                          placeholder="Enter Staff Address here ..."
-                          className="w-full p-2 border rounded-md outline-0 focus:border-custom-green-80 placeholder-custom-green-60"
-                        ></textarea>
-                      </label>
-                    </div>
                   </div>
                   {/* Next Button Start */}
-                  <div className="gap-4 grid grid-cols-1 justify-center items-center inset-x-0 bottom-[20px]">
-                    <button className="px-3 py-2 text-[15px] rounded-[10px] w-full font-medium text-white bg-custom-green-80 hover:bg-custom-green-dark transition-all">
+                  <div className="grid grid-cols-1 justify-center items-center mt-4">
+                    <button className="btn btn-sm bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark border-0">
                       Save
                     </button>
                   </div>
