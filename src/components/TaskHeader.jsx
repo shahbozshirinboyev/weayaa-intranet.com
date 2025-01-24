@@ -32,7 +32,6 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
   };
 
   const handleFile = (e) => {
-    console.log(e.target.files[0].name);
     setTaskInfo((prevState) => ({
       ...prevState,
       file: e.target.files[0],
@@ -64,11 +63,11 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
     formData.append("deadline", taskInfo.deadline);
     formData.append("description", taskInfo.description);
 
-    if (taskInfo.file === "") {
-      formData.append("file", taskInfo.file);
-    } else if (!(typeof taskInfo.file === "string")) {
+    if (taskInfo.file instanceof File || taskInfo.file === "") {
       formData.append("file", taskInfo.file);
     }
+
+    console.log(taskInfo.file);
 
     toast.promise(
       http.patch(`projects/tasks/${taskInfo.id}/`, formData, { headers }),
