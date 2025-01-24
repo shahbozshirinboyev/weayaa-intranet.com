@@ -551,205 +551,6 @@ function TaskManagement() {
             </div>
           )}
         </div>
-        {/* Add User Modal */}
-        <dialog id="adduser" className="modal">
-          <Toaster />
-          <div className="modal-box p-0">
-            {/* Modal header Start */}
-            <form
-              method="dialog"
-              className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-            >
-              <span className="text-custom-green-dark font-bold">
-                Add Staff for this Project
-              </span>
-              <div className="text-end">
-                <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                  <i className="bi bi-x-lg flex justify-center items-center"></i>
-                </button>
-              </div>
-            </form>
-            {/* Modal header End */}
-
-            <form action="" onSubmit={submitSelectedUsers}>
-              <div className="p-4">
-                {membersInfo.map((user) => (
-                  <div
-                    key={user.id}
-                    className={`form-control rounded-md px-1 my-2 ${selectedUsers.includes(user.id)
-                      ? "bg-custom-green-15"
-                      : "bg-transparent"
-                      }`}
-                  >
-                    <label className="cursor-pointer label">
-                      <div className="flex">
-                        <img
-                          src={user.image || noneuser}
-                          alt=""
-                          className="w-[45px] h-[45px] object-cover rounded-full"
-                        />
-                        <div className="ml-4">
-                          <p className="font-bold text-custom-green-dark">
-                            {user.first_name} {user.last_name}
-                          </p>
-                          <p className="text-custom-green-60">
-                            {user.speciality}
-                          </p>
-                        </div>
-                      </div>
-                      <input
-                        type="checkbox"
-                        className="checkbox border-custom-green-80 [--chkbg:theme(colors.custom-green-dark)] [--chkfg:white] checked:border-border-custom-green-dark"
-                        onChange={() => handleUserSelect(user.id)}
-                        checked={selectedUsers.includes(user.id)}
-                      />
-                    </label>
-                  </div>
-                ))}
-              </div>
-              <div className="px-4 pb-4">
-                <button
-                  type="submit"
-                  className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
-
-        {/* See User Modal */}
-        <dialog id="addedUsersList" className="modal">
-          <Toaster />
-          <div className="modal-box p-0">
-            {/* Modal header Start */}
-            <form
-              method="dialog"
-              className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-            >
-              <span className="text-custom-green-dark font-bold">
-                Added Users List
-              </span>
-              <div className="text-end">
-                <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                  <i className="bi bi-x-lg flex justify-center items-center"></i>
-                </button>
-              </div>
-            </form>
-            {/* Modal header End */}
-
-            <div className="p-3">
-              {activeProject.length !== 0 &&
-                activeProject.members.map((userId, index) => {
-                  const user = membersInfo.find((m) => m.id === userId);
-
-                  return user ? (
-                    <div
-                      key={index}
-                      className={`${selectedUsers.includes(user.id)
-                        ? "bg-white"
-                        : "bg-transparent"
-                        }`}
-                    >
-                      <label className="label">
-                        <div className="flex">
-                          {/* Display user image */}
-                          <img
-                            src={user.image || noneuser}
-                            alt={`${user.first_name} ${user.last_name}`}
-                            className="w-[45px] h-[45px] object-cover rounded-full"
-                          />
-                          <div className="ml-4">
-                            {/* Display user first and last name */}
-                            <p className="font-bold text-custom-green-dark">
-                              {user.first_name} {user.last_name}
-                            </p>
-                            {/* Display user label */}
-                            <p className="text-custom-green-60">{user.label}</p>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                  ) : null;
-                })}
-            </div>
-          </div>
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
-
-        {/* New Project Modal */}
-        <dialog id="new_project" className="modal text-custom-green-dark">
-          <Toaster />
-
-          <div className="modal-box p-0">
-            {/* Modal header Start */}
-            <form
-              method="dialog"
-              className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-            >
-              <span className="text-custom-green-dark font-bold">
-                Add News Project
-              </span>
-              <div className="text-end">
-                <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
-                  <i className="bi bi-x-lg flex justify-center items-center"></i>
-                </button>
-              </div>
-            </form>
-            {/* Modal header End */}
-
-            <div className="p-4">
-              <form
-                action=""
-                onSubmit={createProject}
-                className="text-custom-green-dark"
-              >
-                <div className="mt-0">
-                  <label className="w-full mt-2">
-                    <span className="">Project name:</span>
-                    <input
-                      type="text"
-                      name="projectName"
-                      required
-                      value={formData.projectName}
-                      onChange={handleChange}
-                      placeholder="Title type here"
-                      className="border border-custom-green-30 px-3 py-2 w-full placeholder:text-custom-green-60 rounded-md"
-                    />
-                  </label>
-                </div>
-                <div className="mt-2">
-                  <label className="w-full">
-                    <span className="">Project deadline:</span>
-                    <input
-                      type="date"
-                      name="projectDeadline"
-                      required
-                      value={formData.projectDeadline}
-                      onChange={handleChange}
-                      placeholder="Title type here"
-                      className="border border-custom-green-30 px-3 py-2 w-full placeholder:text-custom-green-60 rounded-md"
-                    />
-                  </label>
-                </div>
-
-                <button className="w-full mt-6 bg-custom-green-15 font-bold text-custom-green-dark py-2 rounded-[10px] hover:bg-custom-green-dark hover:text-white transition-all duration-300">
-                  Save
-                </button>
-              </form>
-            </div>
-          </div>
-
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
       </>
       {/* <Line /> END */}
 
@@ -900,6 +701,8 @@ function TaskManagement() {
         </DragDropContext>
       )}
 
+      <TaskChat task={task} />
+
       <dialog id="deleteProjectModal" className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg text-custom-green-dark text-center">
@@ -1023,9 +826,206 @@ function TaskManagement() {
         </form>
       </dialog>
 
-      <div>
-        <TaskChat task={task} />
-      </div>
+      {/* Add User Modal */}
+      <dialog id="adduser" className="modal">
+        <Toaster />
+        <div className="modal-box p-0">
+          {/* Modal header Start */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Add Staff for this Project
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
+            </div>
+          </form>
+          {/* Modal header End */}
+
+          <form action="" onSubmit={submitSelectedUsers}>
+            <div className="p-4">
+              {membersInfo.map((user) => (
+                <div
+                  key={user.id}
+                  className={`form-control rounded-md px-1 my-2 ${selectedUsers.includes(user.id)
+                    ? "bg-custom-green-15"
+                    : "bg-transparent"
+                    }`}
+                >
+                  <label className="cursor-pointer label">
+                    <div className="flex">
+                      <img
+                        src={user.image || noneuser}
+                        alt=""
+                        className="w-[45px] h-[45px] object-cover rounded-full"
+                      />
+                      <div className="ml-4">
+                        <p className="font-bold text-custom-green-dark">
+                          {user.first_name} {user.last_name}
+                        </p>
+                        <p className="text-custom-green-60">
+                          {user.speciality}
+                        </p>
+                      </div>
+                    </div>
+                    <input
+                      type="checkbox"
+                      className="checkbox border-custom-green-80 [--chkbg:theme(colors.custom-green-dark)] [--chkfg:white] checked:border-border-custom-green-dark"
+                      onChange={() => handleUserSelect(user.id)}
+                      checked={selectedUsers.includes(user.id)}
+                    />
+                  </label>
+                </div>
+              ))}
+            </div>
+            <div className="px-4 pb-4">
+              <button
+                type="submit"
+                className="w-full btn bg-custom-green-15 text-custom-green-dark border-transparent hover:text-white hover:bg-custom-green-dark transition-all duration-300"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
+      {/* See User Modal */}
+      <dialog id="addedUsersList" className="modal">
+        <Toaster />
+        <div className="modal-box p-0">
+          {/* Modal header Start */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Added Users List
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
+            </div>
+          </form>
+          {/* Modal header End */}
+
+          <div className="p-3">
+            {activeProject.length !== 0 &&
+              activeProject.members.map((userId, index) => {
+                const user = membersInfo.find((m) => m.id === userId);
+
+                return user ? (
+                  <div
+                    key={index}
+                    className={`${selectedUsers.includes(user.id)
+                      ? "bg-white"
+                      : "bg-transparent"
+                      }`}
+                  >
+                    <label className="label">
+                      <div className="flex">
+                        {/* Display user image */}
+                        <img
+                          src={user.image || noneuser}
+                          alt={`${user.first_name} ${user.last_name}`}
+                          className="w-[45px] h-[45px] object-cover rounded-full"
+                        />
+                        <div className="ml-4">
+                          {/* Display user first and last name */}
+                          <p className="font-bold text-custom-green-dark">
+                            {user.first_name} {user.last_name}
+                          </p>
+                          {/* Display user label */}
+                          <p className="text-custom-green-60">{user.label}</p>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                ) : null;
+              })}
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
+      {/* New Project Modal */}
+      <dialog id="new_project" className="modal text-custom-green-dark">
+        <Toaster />
+
+        <div className="modal-box p-0">
+          {/* Modal header Start */}
+          <form
+            method="dialog"
+            className="border-b-[2px] border-custom-green-80 h-[60px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
+          >
+            <span className="text-custom-green-dark font-bold">
+              Add News Project
+            </span>
+            <div className="text-end">
+              <button className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <i className="bi bi-x-lg flex justify-center items-center"></i>
+              </button>
+            </div>
+          </form>
+          {/* Modal header End */}
+
+          <div className="p-4">
+            <form
+              action=""
+              onSubmit={createProject}
+              className="text-custom-green-dark"
+            >
+              <div className="mt-0">
+                <label className="w-full mt-2">
+                  <span className="">Project name:</span>
+                  <input
+                    type="text"
+                    name="projectName"
+                    required
+                    value={formData.projectName}
+                    onChange={handleChange}
+                    placeholder="Title type here"
+                    className="border border-custom-green-30 px-3 py-2 w-full placeholder:text-custom-green-60 rounded-md"
+                  />
+                </label>
+              </div>
+              <div className="mt-2">
+                <label className="w-full">
+                  <span className="">Project deadline:</span>
+                  <input
+                    type="date"
+                    name="projectDeadline"
+                    required
+                    value={formData.projectDeadline}
+                    onChange={handleChange}
+                    placeholder="Title type here"
+                    className="border border-custom-green-30 px-3 py-2 w-full placeholder:text-custom-green-60 rounded-md"
+                  />
+                </label>
+              </div>
+
+              <button className="w-full mt-6 bg-custom-green-15 font-bold text-custom-green-dark py-2 rounded-[10px] hover:bg-custom-green-dark hover:text-white transition-all duration-300">
+                Save
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
     </div>
   );
 }
