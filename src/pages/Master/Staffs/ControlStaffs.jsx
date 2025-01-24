@@ -15,7 +15,7 @@ function ControlStaffs() {
   const [clientIdProject, setClientIdProject] = useState("");
   const [editUserId, setEditUserId] = useState("");
 
-  console.log(users);
+  // console.log(users);
 
   useEffect(() => {
     if (editUserId !== "") {

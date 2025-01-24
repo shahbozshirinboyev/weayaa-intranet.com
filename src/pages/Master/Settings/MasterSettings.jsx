@@ -32,7 +32,7 @@ function MasterSettings() {
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       })
       .then((response) => {
-        console.log("Get data:", response.data);
+        // console.log("Get data:", response.data);
         setPersonalInfo(response.data);
       })
       .catch((error) => {
@@ -224,7 +224,7 @@ function MasterSettings() {
            <div className="col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-2">
            <div className="flex justify-between items-center px-4 py-2">
               <span className="opacity-80 flex items-center gap-2 text-[14px]">
-                <i class="bi bi-person-lines-fill flex justify-center items-center font-medium text-2xl"></i>
+                <i className="bi bi-person-lines-fill flex justify-center items-center font-medium text-2xl"></i>
                 <span className="font-medium">Full name</span>
               </span>
               <p className="font-medium opacity-90">{personalInfo.first_name} {personalInfo.last_name}</p>
@@ -232,7 +232,7 @@ function MasterSettings() {
 
             <div className="flex justify-between items-center px-4 py-2">
               <span className="opacity-80 flex items-center gap-2 text-[14px]">
-                <i class="bi  bi-person-vcard-fill flex justify-center items-center font-medium text-2xl"></i>
+                <i className="bi  bi-person-vcard-fill flex justify-center items-center font-medium text-2xl"></i>
                 <span className="font-medium">Speciality</span>
               </span>
               <p className="font-medium opacity-90">{personalInfo.speciality || "speciality.undefined"}</p>
@@ -240,7 +240,7 @@ function MasterSettings() {
 
             <div className="flex justify-between items-center px-4 py-2">
               <span className="opacity-80 flex items-center gap-2 text-[14px]">
-                <i class="bi  bi-envelope-at-fill flex justify-center items-center font-medium text-2xl"></i>
+                <i className="bi  bi-envelope-at-fill flex justify-center items-center font-medium text-2xl"></i>
                 <span className="font-medium">Email</span>
               </span>
               <p className="font-medium opacity-90">{personalInfo.email || "email.undefined"}</p>
@@ -248,7 +248,7 @@ function MasterSettings() {
 
             <div className="flex justify-between items-center px-4 py-2">
               <span className="opacity-80 flex items-center gap-2 text-[14px]">
-                <i class="bi  bi-clock-fill flex justify-center items-center font-medium text-2xl"></i>
+                <i className="bi  bi-clock-fill flex justify-center items-center font-medium text-2xl"></i>
                 <span className="font-medium">Work type</span>
               </span>
               <p className="font-medium opacity-90 uppercase bg-custom-green-30 px-2 py-1 rounded-lg text-xs">{personalInfo.work_type === "full_time" ? "full time" : "part time" || "work_type.undefined"}</p>
@@ -256,7 +256,7 @@ function MasterSettings() {
 
             <div className="flex justify-between items-center px-4 py-2">
               <span className="opacity-80 flex items-center gap-2 text-[14px]">
-                <i class="bi  bi-telegram flex justify-center items-center font-medium text-2xl"></i>
+                <i className="bi  bi-telegram flex justify-center items-center font-medium text-2xl"></i>
                 <span className="font-medium">Telegram</span>
               </span>
               <p className="font-medium opacity-90">{`@${personalInfo.address}` || "telegram.undefined"}</p>
@@ -264,7 +264,7 @@ function MasterSettings() {
 
             <div className="flex justify-between items-center px-4 py-2">
               <span className="opacity-80 flex items-center gap-2 text-[14px]">
-                <i class="bi  bi-person-fill-gear flex justify-center items-center font-medium text-2xl"></i>
+                <i className="bi  bi-person-fill-gear flex justify-center items-center font-medium text-2xl"></i>
                 <span className="font-medium">Account type</span>
               </span>
               <p className="font-medium opacity-90 uppercase bg-custom-green-30 px-2 py-1 rounded-lg text-xs">{personalInfo.user_type ? personalInfo.user_type.replace(/^./, (char) => char.toUpperCase() ) : "user_type.undefined"}</p>

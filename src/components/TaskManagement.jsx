@@ -868,7 +868,6 @@ function TaskManagement() {
                                   {/* Chat button START */}
                                   <label htmlFor="task_chat" onClick={() => {
                                     try {
-                                      console.log("Opening TaskChat for task:", task); // Log task info
                                       setTask(task);
                                     } catch (error) {
                                       console.error("Error opening TaskChat modal:", error); // Log any errors
