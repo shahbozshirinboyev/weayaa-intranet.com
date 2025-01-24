@@ -75,6 +75,26 @@ function ArchiveProjects() {
       items: [],
     },
   });
+  const clearColumns = () => {
+    setColumns({
+      to_do: {
+        name: "To Do",
+        items: [],
+      },
+      in_progress: {
+        name: "In Progress",
+        items: [],
+      },
+      review: {
+        name: "Review",
+        items: [],
+      },
+      complete: {
+        name: "Complete",
+        items: [],
+      },
+    })
+  }
   // console.log("columns: ", columns);
 
   const getProjectTasks = (id) => {
@@ -293,6 +313,15 @@ function ArchiveProjects() {
 
       {!table && (
         <>
+        <div className="bg-custom-green-10 h-[50px] w-full rounded-[10px] p-2 mb-[20px] flex justify-end items-center">
+        <button
+          onClick={() => { setTable(true); clearColumns(); }}
+          className="btn btn-sm border-0 bg-custom-green-30 text-custom-green-dark hover:text-white hover:bg-custom-green-dark"
+        >
+          <i className="bi bi-arrow-left-circle flex justify-center items-center"></i>
+          <span className="pr-1">Back</span>
+        </button>
+      </div>
           <div className="grid grid-cols-4 gap-4 p-4 bg-custom-green-10 rounded-[10px] min-w-[1400px]">
             {Object.entries(columns).map(([columnId, column]) => (
               <div className="flex flex-col" key={columnId}>

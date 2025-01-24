@@ -581,7 +581,7 @@ function TaskManagement() {
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start gap-4">
               {projectsList.map((project) => (
                 <div
-                  className={`flex justify-start items-center border border-custom-green-10 px-2 rounded-lg hover:bg-custom-green-15 ${userType === "staff" ? "py-2" : "py-0"}`}
+                  className={`flex justify-start items-center bg-custom-green-10 border border-custom-green-10 px-2 rounded-lg hover:bg-custom-green-30 ${userType === "staff" ? "py-2" : "py-0"}`}
                   key={project.id}
                 >
                   <div
