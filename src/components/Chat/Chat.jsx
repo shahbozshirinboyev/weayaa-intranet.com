@@ -174,35 +174,38 @@ function Chat({chatOpen, setChatOpen, task}) {
       return chat;
     }
 
-    const chatBody = document.querySelector('.chatcss');
+    const chatBody = document?.querySelector('.chatcss');
 
-    const handleScroll = () => {
-      const scrollTop = chatBody.scrollTop;
-      const scrollHeight = chatBody.scrollHeight;
-      const clientHeight = chatBody.clientHeight;
-
-      // console.log('scrollTop', scrollTop);
-      // console.log('scrollHeight', scrollHeight);
-      // console.log('clientHeight', clientHeight);
-
-      // Check if the scroll position is less than 700px from the bottom
-      // setIsButtonVisible(scrollHeight < 700 || (scrollHeight - scrollTop - clientHeight < 700));
-      setIsButtonVisible(scrollHeight - scrollTop - clientHeight < 700);
-      if (scrollTop === 0) {
-        setIsButtonVisible(true);
+    if(chatBody) {
+      const handleScroll = () => {
+        const scrollTop = chatBody.scrollTop;
+        const scrollHeight = chatBody.scrollHeight;
+        const clientHeight = chatBody.clientHeight;
+  
+        // console.log('scrollTop', scrollTop);
+        // console.log('scrollHeight', scrollHeight);
+        // console.log('clientHeight', clientHeight);
+  
+        // Check if the scroll position is less than 700px from the bottom
+        // setIsButtonVisible(scrollHeight < 700 || (scrollHeight - scrollTop - clientHeight < 700));
+        setIsButtonVisible(scrollHeight - scrollTop - clientHeight < 700);
+        if (scrollTop === 0) {
+          setIsButtonVisible(true);
+        }
+      };
+      // error section action
+      handleScroll();
+  
+      if (task && task.id) {
+        initializeChat(task.id);
+        chatBody.addEventListener('scroll', handleScroll);
       }
-    };
-    // error section action
-    handleScroll();
-
-    if (task && task.id) {
-      initializeChat(task.id);
-      chatBody.addEventListener('scroll', handleScroll);
+  
+      return () => {
+        chatBody.removeEventListener('scroll', handleScroll);
+      };
     }
 
-    return () => {
-      chatBody.removeEventListener('scroll', handleScroll);
-    };
   }, [task]);
 
   const renderContent = (content) => {
@@ -261,7 +264,7 @@ function Chat({chatOpen, setChatOpen, task}) {
                 Chat (Task ID: {task.id})
               </span>
               <div className="text-end">
-                <label htmlFor="task_chat" className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <label onClick={()=>{ setChatOpen(false); }} className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
                   <i className="bi bi-x-lg flex justify-center items-center"></i>
                 </label>
               </div>
@@ -270,7 +273,7 @@ function Chat({chatOpen, setChatOpen, task}) {
 
             {/* Task Chat Body START */}
             <>
-              <section className="px-4 chatcss overflow-y-auto h-[635px]">
+              <section className="px-4 chatcss overflow-y-auto w-[570px] h-[635px]">
 
                 {messages.length === 0 &&
                   <div className="w-full h-full flex flex-col justify-center items-center text-custom-green-80">
