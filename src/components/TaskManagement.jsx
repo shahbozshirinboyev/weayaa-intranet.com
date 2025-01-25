@@ -15,11 +15,13 @@ import "swiper/css/free-mode";
 import "swiper/css";
 import TaskChat from "./TaskChat/TaskChat";
 import { Fragment } from "react";
+import Chat from "./Chat/Chat";
 
 function TaskManagement() {
   const [divWidth, setDivWidth] = useState("100%");
   const divRef = useRef(null);
   const [task, setTask] = useState([])
+  const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
     const updateWidth = () => {
@@ -667,13 +669,7 @@ function TaskManagement() {
 
                                 <div className="w-full flex items-center">
                                   {/* Chat button START */}
-                                  <label htmlFor="task_chat" onClick={() => {
-                                    try {
-                                      setTask(task);
-                                    } catch (error) {
-                                      console.error("Error opening TaskChat modal:", error); // Log any errors
-                                    }
-                                  }}>
+                                  <label htmlFor="task_chat" onClick={() => { try { setTask(task); } catch (error) { console.error("Error opening TaskChat modal:", error); } }}>
                                     <div className="flex">
                                       <div className="relative">
                                         <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"><i className="bi bi-chat-text"></i></div>
@@ -682,6 +678,12 @@ function TaskManagement() {
                                     </div>
                                   </label>
                                   {/* Chat button END */}
+
+                                  <button
+                                    className="btn w-8 h-8 btn-sm rounded-full flex-shrink-0 text-sky-700 border border-sky-700"
+                                    onClick={() => { setChatOpen(true); setTask(task); }}>
+                                    <i className="bi bi-chat"></i>
+                                  </button>
 
                                   <TaskFoother getActiveProjectTasks={getActiveProjectTasks} selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
                                 </div>
@@ -702,6 +704,8 @@ function TaskManagement() {
       )}
 
       <TaskChat task={task} />
+
+      <Chat chatOpen={chatOpen} setChatOpen={setChatOpen} task={task} />
 
       <dialog id="deleteProjectModal" className="modal">
         <div className="modal-box">
