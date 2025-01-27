@@ -680,9 +680,10 @@ function TaskManagement() {
                                   {/* Chat button END */}
 
                                   <button
-                                    className="btn w-8 h-8 btn-sm rounded-full flex-shrink-0 text-sky-700 border border-sky-700"
+                                    className="btn !w-8 !h-8 btn-sm rounded-full flex justify-center items-center relative bg-custom-green-10 text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0"
                                     onClick={() => { setChatOpen(true); setTask(task); }}>
-                                    <i className="bi bi-chat"></i>
+                                    <i className="bi bi-chat-text flex justify-center items-center"></i>
+                                    {/* <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div> */}
                                   </button>
 
                                   <TaskFoother getActiveProjectTasks={getActiveProjectTasks} selectedUsers={selectedUsers} task={task} membersInfo={membersInfo} />
