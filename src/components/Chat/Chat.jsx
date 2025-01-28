@@ -506,12 +506,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 file.name === "" ? "hidden" : ""
               } bg-white`}
             >
-              <div className="bg-custom-green-dark px-3 py-2">
+              <div className="bg-custom-green-dark px-3 py-2 h-[45px] flex justify-between items-center">
                 <span className="text-white">{file.name}</span>
-                <button
-                  className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white absolute right-3"
-                  onClick={handleClearFile}
-                >
+                <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white absolute right-3" onClick={handleClearFile} >
                   <i className="bi bi-x-lg flex justify-center items-center"></i>
                 </button>
               </div>
