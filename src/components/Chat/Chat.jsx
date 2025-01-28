@@ -6,40 +6,25 @@ import noneuser from "/img/noneuser.png";
 function Chat({ chatOpen, setChatOpen, task }) {
   useEffect(() => {
     if (chatOpen) {
-      document.body.style.overflow = "hidden"; // Skrollni o'chirish
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset"; // Skrollni tiklash
+      document.body.style.overflow = "unset";
     }
-
-    return () => {
-      document.body.style.overflow = "unset"; // Komponent o'chirilganda skrollni tiklash
-    };
+    return () => { document.body.style.overflow = "unset"; };
   }, [chatOpen]);
 
-  // Inside the TaskChat function, add this state
   const [isButtonVisible, setIsButtonVisible] = useState(false);
 
   const userId = localStorage.getItem("userId");
   const [messages, setMessages] = useState([]);
   const chatServiceRef = useRef(null);
 
-  // console.log(messages)
-
-  const [reply, setReply] = useState({
-    id: "",
-    user: "",
-    speciality: "",
-    message: "",
-  });
+  const [reply, setReply] = useState({ id: "", user: "", speciality: "", message: "", });
   const [rows, setRows] = useState(1);
-
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
 
-  // useEffect(() => { console.log(messages) }, [messages])
-
   const activeReply = (message) => {
-    console.log(message);
     setReply({
       id: message.id,
       user: message.sender_details.full_name,
@@ -49,10 +34,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
     });
   };
 
-  // Progress ko'rsatish funksiyasi
   function updateProgress(fileId, progress) {
     console.log(fileId, progress);
-    // Progress elementini topish
     const progressElement = document.querySelector(`#progress-file`);
     if (progressElement) {
       progressElement.style.width = `${progress}%`;
@@ -60,17 +43,15 @@ function Chat({ chatOpen, setChatOpen, task }) {
     }
   }
 
-  const CHUNK_SIZE = 1024 * 1024; // 1MB hajmdagi bo'laklar
-  const MAX_FILE_SIZE = 100 * 1024 * 1024; // Maksimal fayl hajmi 100MB
+  const CHUNK_SIZE = 1024 * 1024; 
+  const MAX_FILE_SIZE = 100 * 1024 * 1024;
 
   const handleClearReply = () => {
     setReply({ id: "", user: "", speciality: "", message: "", file: "" });
   };
 
   const endRef = useRef(null);
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -131,15 +112,10 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
         switch (data.type) {
           case "upload_progress":
-            // Progress ko'rsatish
             updateProgress(data.file_id, data.progress);
             break;
 
           case "message":
-            // Yangi xabar keldi
-            // handleNewMessage(data.message);
-
-            // console.log(data)
             const progressElement = document.querySelector(`#progress-file`);
             progressElement.textContent = ``;
             progressElement.style.width = ``;
@@ -148,8 +124,6 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
           case "error":
             console.log(data);
-            // Xatolik yuz berdi
-            // handleError(data.error);
             break;
         }
       };
@@ -180,11 +154,6 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
     sendMessage = async (content, file, reply) => {
       // console.log(content, file, reply);
-      console.log({
-        type: "message",
-        content: content,
-        reply_to: reply.id !== "" ? reply.id : null,
-      });
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
         if (file.name === "") {
           this.ws.send(
@@ -195,30 +164,20 @@ function Chat({ chatOpen, setChatOpen, task }) {
             })
           );
         } else {
-          console.log(file);
 
           if (file.file.size > MAX_FILE_SIZE) {
-            toast.error(`File size must not exceed 100 MB.`);
-            throw new Error(
-              `Fayl hajmi ${
-                MAX_FILE_SIZE / (1024 * 1024)
-              }MB dan oshmasligi kerak`
-            );
+            toast.error(`File size must not exceed ${ MAX_FILE_SIZE / (1024 * 1024) } MB.`);
+            throw new Error( `File size must not exceed ${ MAX_FILE_SIZE / (1024 * 1024) }MB.` );
           }
 
-          // Fayl uchun unikal ID yaratish
           const fileId = Math.random().toString(36).substring(7);
-
-          // Jami bo'laklar sonini hisoblash
           const totalChunks = Math.ceil(file.file.size / CHUNK_SIZE);
-
-          // Har bir bo'lakni alohida yuklash
+          
           for (let chunkNumber = 0; chunkNumber < totalChunks; chunkNumber++) {
             const start = chunkNumber * CHUNK_SIZE;
             const end = Math.min(start + CHUNK_SIZE, file.file.size);
             const chunk = file.file.slice(start, end);
 
-            // Bo'lakni o'qish
             const base64Chunk = await new Promise((resolve) => {
               const reader = new FileReader();
               reader.onload = () => {
@@ -228,7 +187,6 @@ function Chat({ chatOpen, setChatOpen, task }) {
               reader.readAsDataURL(chunk);
             });
 
-            // Bo'lakni yuborish
             const message = {
               type: "message",
               reply_to: reply.id !== "" ? reply.id : null,
@@ -241,8 +199,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
             };
 
             this.ws.send(JSON.stringify(message));
-
-            // Serverga yuklash uchun ozgina kutish vaqti
+            
             await new Promise((resolve) => setTimeout(resolve, 100));
           }
         }
@@ -251,11 +208,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
         toast.error("Please, re-enter the Chat Room!");
       }
     };
-    disconnect() {
-      if (this.ws) {
-        this.ws.close();
-      }
-    }
+    disconnect() { if (this.ws) { this.ws.close(); } }
   }
 
   useEffect(() => {
@@ -271,22 +224,15 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
     if (chatBody) {
       const handleScroll = () => {
+
         const scrollTop = chatBody.scrollTop;
         const scrollHeight = chatBody.scrollHeight;
         const clientHeight = chatBody.clientHeight;
 
-        // console.log('scrollTop', scrollTop);
-        // console.log('scrollHeight', scrollHeight);
-        // console.log('clientHeight', clientHeight);
-
-        // Check if the scroll position is less than 700px from the bottom
-        // setIsButtonVisible(scrollHeight < 700 || (scrollHeight - scrollTop - clientHeight < 700));
         setIsButtonVisible(scrollHeight - scrollTop - clientHeight < 700);
-        if (scrollTop === 0) {
-          setIsButtonVisible(true);
-        }
+        if (scrollTop === 0) { setIsButtonVisible(true); }
       };
-      // error section action
+
       handleScroll();
 
       if (task && task.id) {
@@ -294,18 +240,16 @@ function Chat({ chatOpen, setChatOpen, task }) {
         chatBody.addEventListener("scroll", handleScroll);
       }
 
-      return () => {
-        chatBody.removeEventListener("scroll", handleScroll);
-      };
+      return () => { chatBody.removeEventListener("scroll", handleScroll); };
     }
   }, [task]);
 
   const renderContent = (content) => {
-    // Yangi qatorlarni ajratish
+
     const lines = content.split("\n");
 
     return lines.map((line, lineIndex) => {
-      // Har bir qatorni bo'shliqlarga bo'lish
+
       const words = line.split(" ");
 
       return (
@@ -315,33 +259,26 @@ function Chat({ chatOpen, setChatOpen, task }) {
               const urlMatch = word.match(/(https?:\/\/[^\s]+)/g);
               if (urlMatch) {
                 const url = urlMatch[0];
-                const baseUrl = url.split("/").slice(0, 3).join("/"); // Asosiy URL
-                const shortUrl = `${baseUrl}/...`; // Qisqartirilgan ko'rinish
+                const baseUrl = url.split("/").slice(0, 3).join("/");
+                const shortUrl = `${baseUrl}/...`;
 
                 return (
                   <Fragment key={`${lineIndex}-${wordIndex}`}>
-                    <a
-                      href={url}
-                      className="text-sky-600 hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={url} className="text-sky-600 hover:underline" target="_blank" rel="noopener noreferrer" >
                       {shortUrl}
                     </a>
                   </Fragment>
                 );
               }
-              // Agar so'z bo'sh bo'lmasa, uni ko'rsatamiz
               if (word.trim()) {
                 return (
                   <Fragment key={`${lineIndex}-${wordIndex}`}>{word}</Fragment>
                 );
               }
-              // Agar so'z bo'sh bo'lsa, hech narsa qaytarmaymiz
               return null;
             })
             .reduce((prev, curr) => [prev, " ", curr])}
-          <br /> {/* Har bir qator oxirida <br /> qo'shamiz */}
+          <br />
         </Fragment>
       );
     });
@@ -358,10 +295,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 Chat (Task ID: {task.id})
               </span>
               <div className="text-end">
-                <label
-                  onClick={() => {
-                    setChatOpen(false);
-                  }}
+                <label onClick={() => { setChatOpen(false); }}
                   className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30"
                 >
                   <i className="bi bi-x-lg flex justify-center items-center"></i>
@@ -444,11 +378,10 @@ function Chat({ chatOpen, setChatOpen, task }) {
                                       : "";
                                   count++;
                                   if (count >= 8) {
-                                    // 3 marta o'zgarish uchun 6 ta o'zgarish
                                     clearInterval(interval);
-                                    replyMessage.style.backgroundColor = ""; // Asl rangga qaytish
+                                    replyMessage.style.backgroundColor = ""; 
                                   }
-                                }, 200); // Har bir o'zgarish 1 sekund davomida
+                                }, 200);
                               }
                             }}
                             className="cursor-pointer chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark"
@@ -459,7 +392,6 @@ function Chat({ chatOpen, setChatOpen, task }) {
                                 <span className="font-bold">
                                   {message.reply_to_details.sender}
                                 </span>
-                                {/* <span className="text-xs opacity-60 text-end"> 12:45 AM </span> */}
                               </div>
                               <span className="line-clamp-1">
                                 {message.reply_to_details.content}
@@ -479,7 +411,6 @@ function Chat({ chatOpen, setChatOpen, task }) {
                         {/* Reply section -- end */}
 
                         <TaskFileControl fileUrl={message.file} />
-                        {/* <TaskFileControl fileUrl={message.sender_details.image} /> */}
 
                         <span>{renderContent(message.content)}</span>
 
