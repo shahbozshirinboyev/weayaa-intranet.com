@@ -130,6 +130,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
             // handleNewMessage(data.message);
 
             // console.log(data)
+            const progressElement = document.querySelector(`#progress-file`);
+            progressElement.textContent = ``;
+            progressElement.style.width = ``;
             this.handleMessage(data);
             break;
 
@@ -477,7 +480,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
             <div className="min-h-[60px] bg-white relative w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
 
-            <div id="progress-file" className={`bg-custom-green-30 h-full absolute top-0 left-0 flex justify-center items-center transition-all duration-300`}></div>
+            <div id="progress-file" className={`bg-custom-green-30 text-custom-green-dark font-bold h-full absolute top-0 left-0 flex justify-center items-center transition-all duration-300`}></div>
 
               <form onSubmit={sendMessage} action="" className="flex w-full gap-2" >
                 <div className="flex items-center gap-4">
