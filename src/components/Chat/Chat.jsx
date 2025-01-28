@@ -49,11 +49,11 @@ function Chat({ chatOpen, setChatOpen, task }) {
   function updateProgress(fileId, progress) {
     console.log(fileId, progress)
     // Progress elementini topish
-    // const progressElement = document.querySelector(`#progress-${fileId}`);
-    // if (progressElement) {
-    //   progressElement.style.width = `${progress}%`;
-    //   progressElement.textContent = `${Math.round(progress)}%`;
-    // }
+    const progressElement = document.querySelector(`#progress-file`);
+    if (progressElement) {
+      progressElement.style.width = `${progress}%`;
+      progressElement.textContent = `${Math.round(progress)}%`;
+    }
   }
 
   const CHUNK_SIZE = 1024 * 1024; // 1MB hajmdagi bo'laklar
@@ -475,7 +475,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
             </div>
             {/* selected file show section --- end */}
 
-            <div className="min-h-[60px] bg-white w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
+            <div className="min-h-[60px] bg-white relative w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
+
+            <div id="progress-file" className={`bg-custom-green-30 h-full absolute top-0 left-0 flex justify-center items-center transition-all duration-300`}></div>
 
               <form onSubmit={sendMessage} action="" className="flex w-full gap-2" >
                 <div className="flex items-center gap-4">
@@ -491,7 +493,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
                   value={message.message}
                   onChange={inputHandle}
                   onKeyDown={inputHandle}
-                  className="flex-grow px-2 py-1 outline-none resize-none text-sm text-custom-green-dark placeholder:text-custom-green-60"
+                  className="flex-grow px-2 py-1 bg-transparent outline-none resize-none text-sm text-custom-green-dark placeholder:text-custom-green-60"
                   placeholder="Write a message..."
                 />
                 <button className="px-2 py-1 cursor-pointer" type="submit">
