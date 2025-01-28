@@ -4,29 +4,33 @@ import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
 
 function Chat({ chatOpen, setChatOpen, task }) {
-
   useEffect(() => {
     if (chatOpen) {
-      document.body.style.overflow = 'hidden'; // Skrollni o'chirish
+      document.body.style.overflow = "hidden"; // Skrollni o'chirish
     } else {
-      document.body.style.overflow = 'unset'; // Skrollni tiklash
+      document.body.style.overflow = "unset"; // Skrollni tiklash
     }
 
     return () => {
-      document.body.style.overflow = 'unset'; // Komponent o'chirilganda skrollni tiklash
+      document.body.style.overflow = "unset"; // Komponent o'chirilganda skrollni tiklash
     };
   }, [chatOpen]);
 
   // Inside the TaskChat function, add this state
   const [isButtonVisible, setIsButtonVisible] = useState(false);
 
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem("userId");
   const [messages, setMessages] = useState([]);
   const chatServiceRef = useRef(null);
 
   // console.log(messages)
 
-  const [reply, setReply] = useState({ id: "", user: "", speciality: "", message: "" });
+  const [reply, setReply] = useState({
+    id: "",
+    user: "",
+    speciality: "",
+    message: "",
+  });
   const [rows, setRows] = useState(1);
 
   const [file, setFile] = useState({ name: "", file: "", url: "" });
@@ -35,19 +39,19 @@ function Chat({ chatOpen, setChatOpen, task }) {
   // useEffect(() => { console.log(messages) }, [messages])
 
   const activeReply = (message) => {
-    console.log(message)
+    console.log(message);
     setReply({
       id: message.id,
       user: message.sender_details.full_name,
       speciality: message.sender_details.speciality,
       message: message.content,
-      file: message.file
+      file: message.file,
     });
   };
 
   // Progress ko'rsatish funksiyasi
   function updateProgress(fileId, progress) {
-    console.log(fileId, progress)
+    console.log(fileId, progress);
     // Progress elementini topish
     const progressElement = document.querySelector(`#progress-file`);
     if (progressElement) {
@@ -59,10 +63,14 @@ function Chat({ chatOpen, setChatOpen, task }) {
   const CHUNK_SIZE = 1024 * 1024; // 1MB hajmdagi bo'laklar
   const MAX_FILE_SIZE = 100 * 1024 * 1024; // Maksimal fayl hajmi 100MB
 
-  const handleClearReply = () => { setReply({ id: "", user: "", speciality: "", message: "", file: "" }); };
+  const handleClearReply = () => {
+    setReply({ id: "", user: "", speciality: "", message: "", file: "" });
+  };
 
   const endRef = useRef(null);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -76,7 +84,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
   };
 
   const inputHandle = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage(e);
       setFile({ name: "", file: "", url: "" });
@@ -114,18 +122,20 @@ function Chat({ chatOpen, setChatOpen, task }) {
       this.ws = null;
     }
     connect() {
-      this.ws = new WebSocket(`wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}`);
+      this.ws = new WebSocket(
+        `wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}`
+      );
 
       this.ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
 
         switch (data.type) {
-          case 'upload_progress':
+          case "upload_progress":
             // Progress ko'rsatish
             updateProgress(data.file_id, data.progress);
             break;
 
-          case 'message':
+          case "message":
             // Yangi xabar keldi
             // handleNewMessage(data.message);
 
@@ -136,8 +146,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
             this.handleMessage(data);
             break;
 
-          case 'error':
-            console.log(data)
+          case "error":
+            console.log(data);
             // Xatolik yuz berdi
             // handleError(data.error);
             break;
@@ -154,17 +164,19 @@ function Chat({ chatOpen, setChatOpen, task }) {
     }
     handleMessage(data) {
       switch (data.type) {
-        case "connection_established": console.log("Successfully connected to chat room");
+        case "connection_established":
+          console.log("Successfully connected to chat room");
           break;
-        case "chat_message": console.log("Received message:", data.content);
+        case "chat_message":
+          console.log("Received message:", data.content);
           break;
-        case "error": console.error("Error:", data.message);
+        case "error":
+          console.error("Error:", data.message);
           break;
-        default: setMessages((prevMessages) => [...prevMessages, data.message]);
+        default:
+          setMessages((prevMessages) => [...prevMessages, data.message]);
       }
     }
-
-
 
     sendMessage = async (content, file, reply) => {
       // console.log(content, file, reply);
@@ -172,9 +184,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
         type: "message",
         content: content,
         reply_to: reply.id !== "" ? reply.id : null,
-      })
+      });
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-        if (file.name === '') {
+        if (file.name === "") {
           this.ws.send(
             JSON.stringify({
               type: "message",
@@ -184,10 +196,14 @@ function Chat({ chatOpen, setChatOpen, task }) {
           );
         } else {
           console.log(file);
-          
+
           if (file.file.size > MAX_FILE_SIZE) {
             toast.error(`File size must not exceed 100 MB.`);
-            throw new Error(`Fayl hajmi ${MAX_FILE_SIZE / (1024 * 1024)}MB dan oshmasligi kerak`);
+            throw new Error(
+              `Fayl hajmi ${
+                MAX_FILE_SIZE / (1024 * 1024)
+              }MB dan oshmasligi kerak`
+            );
           }
 
           // Fayl uchun unikal ID yaratish
@@ -206,7 +222,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
             const base64Chunk = await new Promise((resolve) => {
               const reader = new FileReader();
               reader.onload = () => {
-                const base64Content = reader.result.split(',')[1];
+                const base64Content = reader.result.split(",")[1];
                 resolve(base64Content);
               };
               reader.readAsDataURL(chunk);
@@ -221,21 +237,25 @@ function Chat({ chatOpen, setChatOpen, task }) {
               file_name: file.name,
               chunk_number: chunkNumber,
               total_chunks: totalChunks,
-              file_id: fileId
+              file_id: fileId,
             };
 
             this.ws.send(JSON.stringify(message));
 
             // Serverga yuklash uchun ozgina kutish vaqti
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise((resolve) => setTimeout(resolve, 100));
           }
         }
       } else {
         console.error("WebSocket is not connected");
-        toast.error("Please, re-enter the Chat Room!")
+        toast.error("Please, re-enter the Chat Room!");
+      }
+    };
+    disconnect() {
+      if (this.ws) {
+        this.ws.close();
       }
     }
-    disconnect() { if (this.ws) { this.ws.close(); } }
   }
 
   useEffect(() => {
@@ -247,7 +267,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
       return chat;
     }
 
-    const chatBody = document?.querySelector('.chatcss');
+    const chatBody = document?.querySelector(".chatcss");
 
     if (chatBody) {
       const handleScroll = () => {
@@ -271,52 +291,56 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
       if (task && task.id) {
         initializeChat(task.id);
-        chatBody.addEventListener('scroll', handleScroll);
+        chatBody.addEventListener("scroll", handleScroll);
       }
 
       return () => {
-        chatBody.removeEventListener('scroll', handleScroll);
+        chatBody.removeEventListener("scroll", handleScroll);
       };
     }
-
   }, [task]);
 
   const renderContent = (content) => {
     // Yangi qatorlarni ajratish
-    const lines = content.split('\n');
+    const lines = content.split("\n");
 
     return lines.map((line, lineIndex) => {
       // Har bir qatorni bo'shliqlarga bo'lish
-      const words = line.split(' ');
+      const words = line.split(" ");
 
       return (
         <Fragment key={lineIndex}>
-          {words.map((word, wordIndex) => {
-            const urlMatch = word.match(/(https?:\/\/[^\s]+)/g);
-            if (urlMatch) {
-              const url = urlMatch[0];
-              const baseUrl = url.split('/').slice(0, 3).join('/'); // Asosiy URL
-              const shortUrl = `${baseUrl}/...`; // Qisqartirilgan ko'rinish
+          {words
+            .map((word, wordIndex) => {
+              const urlMatch = word.match(/(https?:\/\/[^\s]+)/g);
+              if (urlMatch) {
+                const url = urlMatch[0];
+                const baseUrl = url.split("/").slice(0, 3).join("/"); // Asosiy URL
+                const shortUrl = `${baseUrl}/...`; // Qisqartirilgan ko'rinish
 
-              return (
-                <Fragment key={`${lineIndex}-${wordIndex}`}>
-                  <a href={url} className="text-sky-600 hover:underline" target="_blank" rel="noopener noreferrer">
-                    {shortUrl}
-                  </a>
-                </Fragment>
-              );
-            }
-            // Agar so'z bo'sh bo'lmasa, uni ko'rsatamiz
-            if (word.trim()) {
-              return (
-                <Fragment key={`${lineIndex}-${wordIndex}`}>
-                  {word}
-                </Fragment>
-              );
-            }
-            // Agar so'z bo'sh bo'lsa, hech narsa qaytarmaymiz
-            return null;
-          }).reduce((prev, curr) => [prev, ' ', curr])}
+                return (
+                  <Fragment key={`${lineIndex}-${wordIndex}`}>
+                    <a
+                      href={url}
+                      className="text-sky-600 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {shortUrl}
+                    </a>
+                  </Fragment>
+                );
+              }
+              // Agar so'z bo'sh bo'lmasa, uni ko'rsatamiz
+              if (word.trim()) {
+                return (
+                  <Fragment key={`${lineIndex}-${wordIndex}`}>{word}</Fragment>
+                );
+              }
+              // Agar so'z bo'sh bo'lsa, hech narsa qaytarmaymiz
+              return null;
+            })
+            .reduce((prev, curr) => [prev, " ", curr])}
           <br /> {/* Har bir qator oxirida <br /> qo'shamiz */}
         </Fragment>
       );
@@ -325,19 +349,21 @@ function Chat({ chatOpen, setChatOpen, task }) {
   return (
     <>
       {chatOpen && (
-        <div className='fixed inset-0 bg-black bg-opacity-50 z-[99999] flex justify-center items-center'>
-
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[99999] flex justify-center items-center">
           <Toaster />
           <div className="bg-white flex flex-col rounded-none relative">
             {/* Modal header Start */}
-            <div
-              className="border-b-[2px] border-custom-green-80 h-[55px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10"
-            >
+            <div className="border-b-[2px] border-custom-green-80 h-[55px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10">
               <span className="text-custom-green-dark font-bold">
                 Chat (Task ID: {task.id})
               </span>
               <div className="text-end">
-                <label onClick={() => { setChatOpen(false); }} className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30">
+                <label
+                  onClick={() => {
+                    setChatOpen(false);
+                  }}
+                  className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30"
+                >
                   <i className="bi bi-x-lg flex justify-center items-center"></i>
                 </label>
               </div>
@@ -347,88 +373,147 @@ function Chat({ chatOpen, setChatOpen, task }) {
             {/* Task Chat Body START */}
             <>
               <section className="px-4 chatcss overflow-y-auto w-[570px] h-[635px]">
-
-                {messages.length === 0 &&
+                {messages.length === 0 && (
                   <div className="w-full h-full flex flex-col justify-center items-center text-custom-green-80">
                     <i className="bi bi-chat text-[55px]"></i>
-                    <span className="font-semibold">No messages here yet...</span>
+                    <span className="font-semibold">
+                      No messages here yet...
+                    </span>
                   </div>
-                }
+                )}
 
-                {messages.sort((b, a) => new Date(b.created_at) - new Date(a.created_at)).map((message) => (
-                  <div
-                    id={message.id}
-                    key={message.id}
-                    className={`chat group relative rounded-md hover:bg-custom-green-15  
-                   ${String(message.sender) === String(userId) ? "chat-end" : "chat-start"}`}
-                  >
-                    {String(message.sender) !== String(userId) && (
-                      <div className="chat-image avatar">
-                        <div className="w-10 rounded-full">
-                          <img
-                            alt={message.sender_details.full_name}
-                            src={message.sender_details.image || noneuser}
-                          />
-                        </div>
-                      </div>
-                    )}
-                    <div className={`chat-bubble border-0 ${String(message.sender) === String(userId) ? "bg-custom-green-dark text-white" : "bg-custom-green-30 text-custom-green-dark"}`} >
-                      <div className="flex justify-between text-xs items-center pb-1 gap-4">
-                        <span className="font-bold">{message.sender_details.full_name}</span>
-                        <span className="opacity-80 text-end">{String(message.sender) === String(userId) ? "You" : message.sender_details.speciality}</span>
-                      </div>
-                      {/* Reply section -- start */}
-                      {message.reply_to &&
-                        <div onClick={() => {
-                          const replyMessage = document.getElementById(message.reply_to);
-                          if (replyMessage) {
-                            replyMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            let count = 0;
-                            const interval = setInterval(() => {
-                              replyMessage.style.backgroundColor = count % 2 === 0 ? 'rgba(255, 0, 0, 0.2)' : '';
-                              count++;
-                              if (count >= 8) { // 3 marta o'zgarish uchun 6 ta o'zgarish
-                                clearInterval(interval);
-                                replyMessage.style.backgroundColor = ''; // Asl rangga qaytish
-                              }
-                            }, 200); // Har bir o'zgarish 1 sekund davomida
-                          }
-                        }} className="cursor-pointer chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark">
-
-                          <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
-                          <div>
-                            <div className="flex justify-between">
-                              <span className="font-bold">{message.reply_to_details.sender}</span>
-                              {/* <span className="text-xs opacity-60 text-end"> 12:45 AM </span> */}
-                            </div>
-                            <span className="line-clamp-1">{message.reply_to_details.content}</span>
-                            <span className={`line-clamp-1 ${message.reply_to_details.file !== null ? "" : "hidden"}`}>file</span>
+                {messages
+                  .sort(
+                    (b, a) => new Date(b.created_at) - new Date(a.created_at)
+                  )
+                  .map((message) => (
+                    <div
+                      id={message.id}
+                      key={message.id}
+                      className={`chat group relative rounded-md hover:bg-custom-green-15  
+                   ${
+                     String(message.sender) === String(userId)
+                       ? "chat-end"
+                       : "chat-start"
+                   }`}
+                    >
+                      {String(message.sender) !== String(userId) && (
+                        <div className="chat-image avatar">
+                          <div className="w-10 rounded-full">
+                            <img
+                              alt={message.sender_details.full_name}
+                              src={message.sender_details.image || noneuser}
+                            />
                           </div>
-
                         </div>
-                      }
-                      {/* Reply section -- end */}
+                      )}
+                      <div
+                        className={`chat-bubble border-0 ${
+                          String(message.sender) === String(userId)
+                            ? "bg-custom-green-dark text-white"
+                            : "bg-custom-green-30 text-custom-green-dark"
+                        }`}
+                      >
+                        <div className="flex justify-between text-xs items-center pb-1 gap-4">
+                          <span className="font-bold">
+                            {message.sender_details.full_name}
+                          </span>
+                          <span className="opacity-80 text-end">
+                            {String(message.sender) === String(userId)
+                              ? "You"
+                              : message.sender_details.speciality}
+                          </span>
+                        </div>
+                        {/* Reply section -- start */}
+                        {message.reply_to && (
+                          <div
+                            onClick={() => {
+                              const replyMessage = document.getElementById(
+                                message.reply_to
+                              );
+                              if (replyMessage) {
+                                replyMessage.scrollIntoView({
+                                  behavior: "smooth",
+                                  block: "center",
+                                });
+                                let count = 0;
+                                const interval = setInterval(() => {
+                                  replyMessage.style.backgroundColor =
+                                    count % 2 === 0
+                                      ? "rgba(255, 0, 0, 0.2)"
+                                      : "";
+                                  count++;
+                                  if (count >= 8) {
+                                    // 3 marta o'zgarish uchun 6 ta o'zgarish
+                                    clearInterval(interval);
+                                    replyMessage.style.backgroundColor = ""; // Asl rangga qaytish
+                                  }
+                                }, 200); // Har bir o'zgarish 1 sekund davomida
+                              }
+                            }}
+                            className="cursor-pointer chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark"
+                          >
+                            <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
+                            <div>
+                              <div className="flex justify-between">
+                                <span className="font-bold">
+                                  {message.reply_to_details.sender}
+                                </span>
+                                {/* <span className="text-xs opacity-60 text-end"> 12:45 AM </span> */}
+                              </div>
+                              <span className="line-clamp-1">
+                                {message.reply_to_details.content}
+                              </span>
+                              <span
+                                className={`line-clamp-1 ${
+                                  message.reply_to_details.file !== null
+                                    ? ""
+                                    : "hidden"
+                                }`}
+                              >
+                                file
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                        {/* Reply section -- end */}
 
-                      <TaskFileControl fileUrl={message.file} />
-                      {/* <TaskFileControl fileUrl={message.sender_details.image} /> */}
+                        <TaskFileControl fileUrl={message.file} />
+                        {/* <TaskFileControl fileUrl={message.sender_details.image} /> */}
 
-                      <span>
-                        {renderContent(message.content)}
-                      </span>
+                        <span>{renderContent(message.content)}</span>
 
-                      <p className="flex justify-end items-center gap-2 text-xs">
-                        <span>{new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
-                      </p>
-
-                    </div>
-                    <div onClick={() => { activeReply(message); console.log(message) }}
-                      className={`btn btn-sm rounded-full border-0 hidden group-hover:flex justify-center items-center
+                        <p className="flex justify-end items-center gap-2 text-xs">
+                          <span>
+                            {new Date(message.created_at).toLocaleTimeString(
+                              [],
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: false,
+                              }
+                            )}
+                          </span>
+                        </p>
+                      </div>
+                      <div
+                        onClick={() => {
+                          activeReply(message);
+                          console.log(message);
+                        }}
+                        className={`btn btn-sm rounded-full border-0 hidden group-hover:flex justify-center items-center
                                           absolute bottom-1 bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
-                                          ${String(message.sender) === String(userId) ? "left-1" : "right-0"}`}>
-                      <i className="bi bi-reply"></i>
+                                          ${
+                                            String(message.sender) ===
+                                            String(userId)
+                                              ? "left-1"
+                                              : "right-0"
+                                          }`}
+                      >
+                        <i className="bi bi-reply"></i>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
 
                 {/* scroll to END => START */}
                 <div ref={endRef}></div>
@@ -436,28 +521,48 @@ function Chat({ chatOpen, setChatOpen, task }) {
               </section>
 
               <button
-                onClick={() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }}
-                className={`border-0 z-[99] active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center ${isButtonVisible ? 'hidden' : ''}`}>
+                onClick={() => {
+                  endRef.current?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className={`border-0 z-[99] active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center ${
+                  isButtonVisible ? "hidden" : ""
+                }`}
+              >
                 <i className="bi bi-chevron-left -rotate-90 flex justify-center items-center text-[20px]"></i>
               </button>
             </>
             {/* Task Chat Body END */}
             {/* Chat Input START */}
             {/* selected relpy message show --- start */}
-            <div className={`justify-between items-center transition-all duration-300 w-full ${reply.id === "" ? "hidden" : ""} bg-white`} >
+            <div
+              className={`justify-between items-center transition-all duration-300 w-full ${
+                reply.id === "" ? "hidden" : ""
+              } bg-white`}
+            >
               <div className="bg-custom-green-dark p-1 flex gap-1 items-center justify-center">
                 <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark w-full">
                   <div className="w-[4px] max-h-full bg-custom-green-dark rounded-md"></div>
                   <div className="w-full">
                     <div className="flex justify-between items-center w-full">
                       <span className="font-bold">{reply.user}</span>
-                      <span className="text-xs opacity-60 text-end">{reply.speciality}</span>
+                      <span className="text-xs opacity-60 text-end">
+                        {reply.speciality}
+                      </span>
                     </div>
                     <span className="line-clamp-1">{reply.message}</span>
-                    <span className={`line-clamp-1 ${reply.message === "" ? "" : "hidden"}`}>file</span>
+                    <span
+                      className={`line-clamp-1 ${
+                        reply.message === "" ? "" : "hidden"
+                      }`}
+                    >
+                      file
+                    </span>
                   </div>
                 </div>
-                <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white" onClick={handleClearReply} >
+                <button
+                  className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white"
+                  onClick={handleClearReply}
+                >
                   <i className="bi bi-x-lg flex justify-center items-center"></i>
                 </button>
               </div>
@@ -465,7 +570,11 @@ function Chat({ chatOpen, setChatOpen, task }) {
             {/* selected relpy inso show --- end */}
 
             {/* selected file show section --- start */}
-            <div className={`justify-between items-center transition-all duration-300 w-full ${file.name === "" ? "hidden" : ""} bg-white`} >
+            <div
+              className={`justify-between items-center transition-all duration-300 w-full ${
+                file.name === "" ? "hidden" : ""
+              } bg-white`}
+            >
               <div className="bg-custom-green-dark px-3 py-2">
                 <span className="text-white">{file.name}</span>
                 <button
@@ -479,15 +588,29 @@ function Chat({ chatOpen, setChatOpen, task }) {
             {/* selected file show section --- end */}
 
             <div className="min-h-[60px] bg-white relative w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
+              <div
+                id="progress-file"
+                className={`bg-custom-green-30 text-custom-green-dark font-bold h-full absolute top-0 left-0 flex justify-center items-center transition-all duration-300`}
+              ></div>
 
-            <div id="progress-file" className={`bg-custom-green-30 text-custom-green-dark font-bold h-full absolute top-0 left-0 flex justify-center items-center transition-all duration-300`}></div>
-
-              <form onSubmit={sendMessage} action="" className="flex w-full gap-2" >
+              <form
+                onSubmit={sendMessage}
+                action=""
+                className="flex w-full gap-2"
+              >
                 <div className="flex items-center gap-4">
-                  <label htmlFor={`fileInput${task.id}`} className="px-2 py-1 h-full cursor-pointer" >
+                  <label
+                    htmlFor={`fileInput${task.id}`}
+                    className="px-2 py-1 h-full cursor-pointer"
+                  >
                     <i className="bi bi-paperclip flex justify-center text-custom-green-dark items-center h-full text-[20px]"></i>
                   </label>
-                  <input type="file" id={`fileInput${task.id}`} className="hidden" onChange={handleFileChange} />
+                  <input
+                    type="file"
+                    id={`fileInput${task.id}`}
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
                 </div>
                 <textarea
                   rows={rows}
@@ -500,21 +623,25 @@ function Chat({ chatOpen, setChatOpen, task }) {
                   placeholder="Write a message..."
                 />
                 <button className="px-2 py-1 cursor-pointer" type="submit">
-                  <i className={`bi ${message.message === "" ? "bi-send" : "bi-send-fill rotate-45"} 
+                  <i
+                    className={`bi ${
+                      message.message === ""
+                        ? "bi-send"
+                        : "bi-send-fill rotate-45"
+                    } 
                 transition-all duration-300 flex justify-center items-center text-custom-green-dark  
-                text-[20px]`} ></i>
+                text-[20px]`}
+                  ></i>
                 </button>
               </form>
             </div>
 
             {/* Chat Input END */}
           </div>
-
-
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default Chat
+export default Chat;
