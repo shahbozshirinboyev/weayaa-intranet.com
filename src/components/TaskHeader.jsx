@@ -49,6 +49,20 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
     }));
   };
 
+  const truncateFileNameWithExtension = (fileName, maxLength) => {
+
+    if (!fileName) { return "null"; }
+    
+    const fileParts = fileName.split(".");
+    const extension = fileParts.length > 1 ? `.${fileParts.pop()}` : "";
+    const baseName = fileParts.join(".");
+    
+    if (baseName.length > maxLength) {
+      return `${baseName.substring(0, maxLength)}...${extension}`;
+    }
+    return fileName;
+  };
+
   const TaskInfoEdit = (e) => {
     e.preventDefault();
 
@@ -276,7 +290,7 @@ const TaskHeader = ({ task, getActiveProjectTasks }) => {
                         </span>
                         <i className="bi bi-file-earmark text-[65px] text-custom-green-90"></i>
                         <span className="line-clamp-1 text-custom-green-dark font-semibold">
-                          {taskInfo?.fileName}
+                          {truncateFileNameWithExtension(taskInfo?.fileName, 10)}
                         </span>
                       </li>
                       {/* </ul> */}
