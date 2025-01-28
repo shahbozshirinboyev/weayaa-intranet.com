@@ -501,11 +501,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
             {/* selected relpy inso show --- end */}
 
             {/* selected file show section --- start */}
-            <div
-              className={`justify-between items-center transition-all duration-300 w-full ${
-                file.name === "" ? "hidden" : ""
-              } bg-white`}
-            >
+            <div id="progress-file" className={`bg-custom-green-30 text-custom-green-dark h-[45px] font-bold flex justify-center items-center transition-all duration-300`} ></div>
+
+            <div className={`justify-between items-center transition-all duration-300 w-full ${ file.name === "" ? "hidden" : "" } bg-white`}>
               <div className="bg-custom-green-dark px-3 py-2 h-[45px] flex justify-between items-center">
                 <span className="text-white">{file.name}</span>
                 <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white absolute right-3" onClick={handleClearFile} >
@@ -515,11 +513,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
             </div>
             {/* selected file show section --- end */}
 
-            <div className="min-h-[60px] bg-white relative w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
-              <div
-                id="progress-file"
-                className={`bg-custom-green-30 text-custom-green-dark font-bold h-full absolute top-0 left-0 flex justify-center items-center transition-all duration-300`}
-              ></div>
+            <div className="min-h-[60px] bg-white w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
+              
 
               <form
                 onSubmit={sendMessage}
