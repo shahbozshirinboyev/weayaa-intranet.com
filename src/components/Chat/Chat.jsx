@@ -17,7 +17,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
   const userId = localStorage.getItem("userId");
   const [messages, setMessages] = useState([]);
-  console.log(messages);
+  // console.log(messages);
+  useEffect(() => { console.log(messages) }, [messages])
   const chatServiceRef = useRef(null);
 
   const [reply, setReply] = useState({ id: "", user: "", speciality: "", message: "", });
@@ -104,29 +105,11 @@ function Chat({ chatOpen, setChatOpen, task }) {
       this.ws = null;
     }
     connect() {
-      this.ws = new WebSocket(
-        `wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}`
-      );
+      this.ws = new WebSocket(`wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}`);
 
       this.ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-
-        switch (data.type) {
-          case "upload_progress":
-            updateProgress(data.file_id, data.progress);
-            break;
-
-          case "message":
-            const progressElement = document.querySelector(`#progress-file`);
-            progressElement.textContent = ``;
-            progressElement.style.width = ``;
-            this.handleMessage(data);
-            break;
-
-          case "error":
-            console.log(data);
-            break;
-        }
+        this.handleMessage(data);
       };
 
       this.ws.onerror = (error) => {
@@ -139,24 +122,25 @@ function Chat({ chatOpen, setChatOpen, task }) {
     }
     handleMessage(data) {
       switch (data.type) {
-        case "connection_established":
-          console.log("Successfully connected to chat room");
+        case "connection_established": console.log("Successfully connected to chat room");
           break;
-        case "chat_message":
-          console.log("Received message:", data.content);
+        case "chat_message": console.log("Received message:", data.content);
           break;
-        case "error":
-          console.error("Error:", data.message);
+        case "error": console.error("Error:", data.message);
           break;
-        default:
-          setMessages((prevMessages) => [...prevMessages, data.message]);
+        default: setMessages((prevMessages) => [...prevMessages, data.message]);
       }
     }
 
-    sendMessage = async (content, file, reply) => {
+    sendMessage(content, file, reply) {
       // console.log(content, file, reply);
+      console.log({
+        type: "message",
+        content: content,
+        reply_to: reply.id !== "" ? reply.id : null,
+      })
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-        if (file.name === "") {
+        if (file.name === '') {
           this.ws.send(
             JSON.stringify({
               type: "message",
@@ -165,50 +149,25 @@ function Chat({ chatOpen, setChatOpen, task }) {
             })
           );
         } else {
-
-          if (file.file.size > MAX_FILE_SIZE) {
-            toast.error(`File size must not exceed ${ MAX_FILE_SIZE / (1024 * 1024) } MB.`);
-            throw new Error( `File size must not exceed ${ MAX_FILE_SIZE / (1024 * 1024) }MB.` );
-          }
-
-          const fileId = Math.random().toString(36).substring(7);
-          const totalChunks = Math.ceil(file.file.size / CHUNK_SIZE);
-
-          for (let chunkNumber = 0; chunkNumber < totalChunks; chunkNumber++) {
-            const start = chunkNumber * CHUNK_SIZE;
-            const end = Math.min(start + CHUNK_SIZE, file.file.size);
-            const chunk = file.file.slice(start, end);
-
-            const base64Chunk = await new Promise((resolve) => {
-              const reader = new FileReader();
-              reader.onload = () => {
-                const base64Content = reader.result.split(",")[1];
-                resolve(base64Content);
-              };
-              reader.readAsDataURL(chunk);
-            });
-
+          const reader = new FileReader();
+          reader.readAsDataURL(file.file);
+          reader.onload = () => {
+            const base64Content = reader.result.split(',')[1];
             const message = {
               type: "message",
               reply_to: reply.id !== "" ? reply.id : null,
               content: content,
-              file: base64Chunk,
-              file_name: file.name,
-              chunk_number: chunkNumber,
-              total_chunks: totalChunks,
-              file_id: fileId,
+              file: base64Content,
+              file_name: file.name
             };
-
             this.ws.send(JSON.stringify(message));
-
-            await new Promise((resolve) => setTimeout(resolve, 100));
           }
         }
       } else {
         console.error("WebSocket is not connected");
-        toast.error("Please, re-enter the Chat Room!");
+        toast.error("Please, re-enter the Chat Room!")
       }
-    };
+    }
     disconnect() { if (this.ws) { this.ws.close(); } }
   }
 
@@ -502,7 +461,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
             {/* selected relpy inso show --- end */}
 
             {/* selected file show section --- start */}
-            <div id="progress-file" className={`bg-custom-green-30 text-custom-green-dark h-[45px] font-bold flex justify-center items-center transition-all duration-300`} ></div>
+            {/* <div id="progress-file" className={`bg-custom-green-30 text-custom-green-dark h-[45px] font-bold flex justify-center items-center transition-all duration-300`} ></div>
 
             <div className={`justify-between items-center transition-all duration-300 w-full ${ file.name === "" ? "hidden" : "" } bg-white`}>
               <div className="bg-custom-green-dark px-3 py-2 h-[45px] flex justify-between items-center">
@@ -511,7 +470,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
                   <i className="bi bi-x-lg flex justify-center items-center"></i>
                 </button>
               </div>
-            </div>
+            </div> */}
             {/* selected file show section --- end */}
 
             <div className="min-h-[60px] bg-white w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
