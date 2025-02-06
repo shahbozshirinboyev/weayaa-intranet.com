@@ -253,7 +253,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
       {chatOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[99999] flex justify-center items-center">
           <Toaster />
-          <div className="bg-white flex flex-col rounded-none relative shadow-md h-[850px]">
+          <div className="bg-white flex flex-col rounded-none relative shadow-md h-[800px]">
             {/* Modal header Start */}
             <div className="border-b-[2px] border-custom-green-80 grid p-3 grid-cols-2 items-center bg-custom-green-10">
               <span className="text-custom-green-dark font-bold">
