@@ -4,38 +4,30 @@ import "yet-another-react-lightbox/styles.css";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 
 function TaskFileControl({ fileUrl }) {
-
-  if (!fileUrl) { return; }
-
+  if (!fileUrl) { return null; }
   const [open, setOpen] = useState(false);
+  const getCleanFileName = (url) => {
+    try {
+      const pathPart = url.split('?')[0];
+      const fileName = pathPart.split('/').pop();
+      return decodeURIComponent(fileName);
+    } catch (error) {
+      return 'file';
+    }
+  };
 
-  const fileName = fileUrl.split("/").pop();
-  const fileType = fileUrl.split(".").pop().toUpperCase();
-
+  const fileName = getCleanFileName(fileUrl);
+  const fileType = fileName.split(".").pop().toUpperCase();
+  const isImage = /\.(jpg|jpeg|png)$/i.test(fileName);
 
   return (
     <>
-      {fileUrl && fileUrl.endsWith(".jpg") && (
+      {isImage && (
         <img
           src={fileUrl}
+          alt={fileName}
           className="w-full max-h-[250px] rounded-lg object-cover my-1 border border-custom-green-10"
-          onClick={() => { setOpen(true); }}
-        />
-      )}
-
-      {fileUrl && fileUrl.endsWith(".png") && (
-        <img
-          src={fileUrl}
-          className="w-full max-h-[250px] rounded-lg object-cover my-1 border border-custom-green-10"
-          onClick={() => { setOpen(true); }}
-        />
-      )}
-
-      {fileUrl && fileUrl.endsWith(".jpeg") && (
-        <img
-          src={fileUrl}
-          className="w-full max-h-[200px] rounded-lg object-cover my-1 border border-custom-green-10"
-          onClick={() => { setOpen(true); }}
+          onClick={() => setOpen(true)}
         />
       )}
 
