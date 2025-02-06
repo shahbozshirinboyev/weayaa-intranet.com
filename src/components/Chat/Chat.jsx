@@ -248,9 +248,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
       {chatOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[99999] flex justify-center items-center">
           <Toaster />
-          <div className="bg-white flex flex-col rounded-none relative">
+          <div className="bg-white flex flex-col rounded-none relative shadow-md h-[750px]">
             {/* Modal header Start */}
-            <div className="border-b-[2px] border-custom-green-80 h-[55px] grid grid-cols-2 items-center px-[24px] bg-custom-green-10">
+            <div className="border-b-[2px] border-custom-green-80 grid p-3 grid-cols-2 items-center bg-custom-green-10">
               <span className="text-custom-green-dark font-bold">
                 Chat (Task ID: {task.id})
               </span>
@@ -266,7 +266,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
             {/* Task Chat Body START */}
             <>
-              <section className="px-4 chatcss overflow-y-auto w-[570px] h-[635px]">
+              <section className="px-4 chatcss overflow-y-auto w-[570px] h-full">
                 {messages.length === 0 && (
                   <div className="w-full h-full flex flex-col justify-center items-center text-custom-green-80">
                     <i className="bi bi-chat text-[55px]"></i>
@@ -473,9 +473,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
             </div>
             {/* selected file show section --- end */}
 
-            <div className="min-h-[60px] bg-white w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
-
-
+            <div className="h-fit bg-white w-full p-3 border-t-[2px] items-center flex border-custom-green-80">
               <form
                 onSubmit={sendMessage}
                 action=""
