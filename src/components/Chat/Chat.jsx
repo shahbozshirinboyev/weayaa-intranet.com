@@ -96,6 +96,11 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
   const handleClearFile = () => {
     setFile({ ...file, name: "", file: "", url: "" });
+    // Reset the file input element
+    const fileInput = document.getElementById(`fileInput${task.id}`);
+    if (fileInput) {
+      fileInput.value = "";
+    }
   };
 
   class ChatService {
