@@ -461,7 +461,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
             {/* selected relpy inso show --- end */}
 
             {/* selected file show section --- start */}
-            {/* <div id="progress-file" className={`bg-custom-green-30 text-custom-green-dark h-[45px] font-bold flex justify-center items-center transition-all duration-300`} ></div>
+             {/* <div id="progress-file" className={`bg-custom-green-30 text-custom-green-dark h-[45px] font-bold flex justify-center items-center transition-all duration-300`} ></div> */}
 
             <div className={`justify-between items-center transition-all duration-300 w-full ${ file.name === "" ? "hidden" : "" } bg-white`}>
               <div className="bg-custom-green-dark px-3 py-2 h-[45px] flex justify-between items-center">
@@ -470,7 +470,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
                   <i className="bi bi-x-lg flex justify-center items-center"></i>
                 </button>
               </div>
-            </div> */}
+            </div>
             {/* selected file show section --- end */}
 
             <div className="min-h-[60px] bg-white w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
