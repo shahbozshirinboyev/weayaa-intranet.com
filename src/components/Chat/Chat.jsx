@@ -17,6 +17,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
   const userId = localStorage.getItem("userId");
   const [messages, setMessages] = useState([]);
+  console.log(messages);
   const chatServiceRef = useRef(null);
 
   const [reply, setReply] = useState({ id: "", user: "", speciality: "", message: "", });
@@ -43,7 +44,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
     }
   }
 
-  const CHUNK_SIZE = 1024 * 1024; 
+  const CHUNK_SIZE = 1024 * 1024;
   const MAX_FILE_SIZE = 100 * 1024 * 1024;
 
   const handleClearReply = () => {
@@ -172,7 +173,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
           const fileId = Math.random().toString(36).substring(7);
           const totalChunks = Math.ceil(file.file.size / CHUNK_SIZE);
-          
+
           for (let chunkNumber = 0; chunkNumber < totalChunks; chunkNumber++) {
             const start = chunkNumber * CHUNK_SIZE;
             const end = Math.min(start + CHUNK_SIZE, file.file.size);
@@ -199,7 +200,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
             };
 
             this.ws.send(JSON.stringify(message));
-            
+
             await new Promise((resolve) => setTimeout(resolve, 100));
           }
         }
@@ -324,7 +325,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
                     <div
                       id={message.id}
                       key={message.id}
-                      className={`chat group relative rounded-md hover:bg-custom-green-15  
+                      className={`chat group relative rounded-md hover:bg-custom-green-15
                    ${
                      String(message.sender) === String(userId)
                        ? "chat-end"
@@ -379,7 +380,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
                                   count++;
                                   if (count >= 8) {
                                     clearInterval(interval);
-                                    replyMessage.style.backgroundColor = ""; 
+                                    replyMessage.style.backgroundColor = "";
                                   }
                                 }, 200);
                               }
@@ -514,7 +515,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
             {/* selected file show section --- end */}
 
             <div className="min-h-[60px] bg-white w-full bottom-0 py-2 px-3 border-t-[2px] items-center flex border-custom-green-80">
-              
+
 
               <form
                 onSubmit={sendMessage}
@@ -551,8 +552,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
                       message.message === ""
                         ? "bi-send"
                         : "bi-send-fill rotate-45"
-                    } 
-                transition-all duration-300 flex justify-center items-center text-custom-green-dark  
+                    }
+                transition-all duration-300 flex justify-center items-center text-custom-green-dark
                 text-[20px]`}
                   ></i>
                 </button>

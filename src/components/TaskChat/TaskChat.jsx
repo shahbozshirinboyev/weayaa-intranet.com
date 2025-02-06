@@ -275,7 +275,7 @@ function TaskChat({ task }) {
                   <div
                     id={message.id}
                     key={message.id}
-                    className={`chat group relative rounded-md hover:bg-custom-green-15  
+                    className={`chat group relative rounded-md hover:bg-custom-green-15
                    ${String(message.sender) === String(userId) ? "chat-end" : "chat-start"}`}
                   >
                     {String(message.sender) !== String(userId) && (
@@ -414,8 +414,8 @@ function TaskChat({ task }) {
                   placeholder="Write a message..."
                 />
                 <button className="px-2 py-1 cursor-pointer" type="submit">
-                  <i className={`bi ${message.message === "" ? "bi-send" : "bi-send-fill rotate-45"} 
-                transition-all duration-300 flex justify-center items-center text-custom-green-dark  
+                  <i className={`bi ${message.message === "" ? "bi-send" : "bi-send-fill rotate-45"}
+                transition-all duration-300 flex justify-center items-center text-custom-green-dark
                 text-[20px]`} ></i>
                 </button>
               </form>
