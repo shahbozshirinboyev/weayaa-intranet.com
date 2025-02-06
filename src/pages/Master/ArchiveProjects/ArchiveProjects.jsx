@@ -4,9 +4,11 @@ import toast, { Toaster } from "react-hot-toast";
 import archivefoldericon from "/img/archive-folder.png";
 import TaskFileControl from "../../../components/TaskFileControl";
 import { Fragment } from "react";
-import TaskChat from "../../../components/TaskChat/TaskChat";
+import Chat from "../../../components/Chat/Chat";
 
 function ArchiveProjects() {
+
+  const [chatOpen, setChatOpen] = useState(false);
   const [projectsList, setProjectsList] = useState([]);
   const [selectArchiveProject, setSelectArchiveProject] = useState([]);
 
@@ -352,32 +354,14 @@ function ArchiveProjects() {
                         </div>
 
                         <div>
-                          {/* Task Chat */}
-                          <div className="w-full flex items-center">
-                            <label
-                              htmlFor="task_chat"
-                              onClick={() => {
-                                try {
-                                  setTask(task);
-                                } catch (error) {
-                                  console.error(
-                                    "Error opening TaskChat modal:",
-                                    error
-                                  );
-                                }
-                              }}
-                            >
-                              <div className="flex">
-                                <div className="relative">
-                                  <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center">
-                                    <i className="bi bi-chat-text"></i>
-                                  </div>
-                                  <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
-                                </div>
-                              </div>
-                            </label>
-                          </div>
+                        <button
+                                    className="btn !w-8 !h-8 btn-sm rounded-full flex justify-center items-center relative bg-custom-green-10 text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0"
+                                    onClick={() => { setChatOpen(true); setTask(task); }}>
+                                    <i className="bi bi-chat-text flex justify-center items-center"></i>
+                                    {/* <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div> */}
+                                  </button>
                         </div>
+
                       </div>
 
                       {/* Task Body */}
@@ -436,7 +420,7 @@ function ArchiveProjects() {
       </dialog>
       {/* unarchive modal - start */}
 
-      <TaskChat task={task} />
+      <Chat chatOpen={chatOpen} setChatOpen={setChatOpen} task={task} />
     </>
   );
 }

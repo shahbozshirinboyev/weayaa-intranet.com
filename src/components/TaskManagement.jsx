@@ -13,7 +13,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Mousewheel } from "swiper/modules";
 import "swiper/css/free-mode";
 import "swiper/css";
-import TaskChat from "./TaskChat/TaskChat";
 import { Fragment } from "react";
 import Chat from "./Chat/Chat";
 
@@ -668,16 +667,6 @@ function TaskManagement() {
                                 </div>
 
                                 <div className="w-full flex items-center gap-2">
-                                  {/* Chat button START */}
-                                  <label htmlFor="task_chat" onClick={() => { try { setTask(task); } catch (error) { console.error("Error opening TaskChat modal:", error); } }}>
-                                    <div className="flex">
-                                      <div className="relative">
-                                        <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center"><i className="bi bi-chat-text"></i></div>
-                                        <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></div>
-                                      </div>
-                                    </div>
-                                  </label>
-                                  {/* Chat button END */}
 
                                   <button
                                     className="btn !w-8 !h-8 btn-sm rounded-full flex justify-center items-center relative bg-custom-green-10 text-custom-green-dark hover:bg-custom-green-dark hover:text-white border-0"
