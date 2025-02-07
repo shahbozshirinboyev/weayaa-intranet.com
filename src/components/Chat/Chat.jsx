@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, Fragment } from "react";
 import TaskFileControl from "../TaskFileControl";
 import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
+import http from "../../services/http"
 
 function Chat({ chatOpen, setChatOpen, task }) {
   useEffect(() => {
@@ -131,7 +132,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
           break;
         case "chat_message": console.log("Received message:", data.content);
           break;
-        case "error": console.error("Error:", data.message);
+        case "error": console.error("Error:", data);
           break;
         default: setMessages((prevMessages) => [...prevMessages, data.message]);
       }
@@ -154,19 +155,34 @@ function Chat({ chatOpen, setChatOpen, task }) {
             })
           );
         } else {
-          const reader = new FileReader();
-          reader.readAsDataURL(file.file);
-          reader.onload = () => {
-            const base64Content = reader.result.split(',')[1];
-            const message = {
-              type: "message",
-              reply_to: reply.id !== "" ? reply.id : null,
-              content: content,
-              file: base64Content,
-              file_name: file.name
-            };
-            this.ws.send(JSON.stringify(message));
+          const taskId = task.id
+          async function uploadChatFile(taskId, file, content, reply) {
+            console.log(file);
+            const formData = new FormData();
+            formData.append('file', file.file);
+            if (content) {
+                formData.append('content', content);
+            }
+            if (reply) {
+              console.log(reply);
+              formData.append( "reply_to", reply.id !== "" ? reply.id : null,);
           }
+
+            try {
+                const response = await http.post(`/chat/upload/${taskId}/`, formData, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem("access")}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                console.log(response.data);
+                return response.data;
+            } catch (error) {
+                console.error("Faylni yuklashda xatolik:", error);
+                throw error.response.data;
+            }
+        }
+        uploadChatFile(taskId, file, content);
         }
       } else {
         console.error("WebSocket is not connected");
@@ -395,7 +411,6 @@ function Chat({ chatOpen, setChatOpen, task }) {
                       <div
                         onClick={() => {
                           activeReply(message);
-                          console.log(message);
                         }}
                         className={`btn btn-sm rounded-full border-0 hidden group-hover:flex justify-center items-center
                                           absolute bottom-1 bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
