@@ -163,9 +163,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
             if (content) {
                 formData.append('content', content);
             }
-            if (reply) {
-              console.log(reply);
-              formData.append( "reply_to", reply.id !== "" ? reply.id : null,);
+            if (reply.id !== "") {
+              console.log(reply.id);
+              formData.append( "reply_to", reply.id);
           }
 
             try {
@@ -182,7 +182,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 throw error.response.data;
             }
         }
-        uploadChatFile(taskId, file, content);
+        uploadChatFile(taskId, file, content, reply);
         }
       } else {
         console.error("WebSocket is not connected");
