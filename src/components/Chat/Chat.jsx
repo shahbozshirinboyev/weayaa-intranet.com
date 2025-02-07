@@ -82,25 +82,32 @@ function Chat({ chatOpen, setChatOpen, task }) {
   };
 
   const handleFileChange = (event) => {
-    if (event.target.files.length > 0) {
-      const selectedFile = event.target.files[0];
+    const fileInput = event.target;
+    if (fileInput.files.length > 0) {
+      const selectedFile = fileInput.files[0];
       setFile({
-        ...file,
         name: selectedFile.name,
         file: selectedFile,
         url: URL.createObjectURL(selectedFile),
       });
     } else {
-      setFile({ ...file, name: "", file: "" });
+      handleClearFile();
     }
   };
 
   const handleClearFile = () => {
-    setFile({ ...file, name: "", file: "", url: "" });
-    // Reset the file input element
+    // Reset the file state
+    setFile({ name: "", file: "", url: "" });
+    
+    // Reset the file input value
     const fileInput = document.getElementById(`fileInput${task.id}`);
     if (fileInput) {
       fileInput.value = "";
+    }
+    
+    // If there was a URL created, revoke it to free up memory
+    if (file.url) {
+      URL.revokeObjectURL(file.url);
     }
   };
 
@@ -205,6 +212,13 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 });
                 toast.success('File uploaded successfully!', { id: toastId });
                 console.log(response.data);
+                
+                // Reset file input after successful upload
+                const fileInput = document.getElementById(`fileInput${taskId}`);
+                if (fileInput) {
+                    fileInput.value = "";
+                }
+                
                 return response.data;
             } catch (error) {
                 toast.error('There was an error uploading the file.', { id: toastId });
@@ -212,7 +226,14 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 throw error.response.data;
             }
         }
-        uploadChatFile(taskId, file, content, reply);
+        uploadChatFile(taskId, file, content, reply)
+          .then(() => {
+            // Clear file state after successful upload
+            handleClearFile();
+          })
+          .catch((error) => {
+            console.error("Error in uploadChatFile:", error);
+          });
         }
       } else {
         console.error("WebSocket is not connected");
