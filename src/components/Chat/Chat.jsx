@@ -73,12 +73,13 @@ function Chat({ chatOpen, setChatOpen, task }) {
       sendMessage(e);
       setFile({ name: "", file: "", url: "" });
       setMessage({ message: "" });
+      setRows(1); // Explicitly reset rows to 1 after sending message
     } else {
       setMessage({ ...message, [e.target.name]: e.target.value });
+      const text = e.target.value;
+      const lineBreaks = text.split("\n").length;
+      setRows(Math.min(Math.max(lineBreaks, 1), 5));
     }
-    const text = e.target.value;
-    const lineBreaks = text.split("\n").length;
-    setRows(Math.min(Math.max(lineBreaks, 1), 5));
   };
 
   const handleFileChange = (event) => {
