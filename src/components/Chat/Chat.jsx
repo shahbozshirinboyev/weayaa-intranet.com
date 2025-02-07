@@ -104,6 +104,23 @@ function Chat({ chatOpen, setChatOpen, task }) {
     }
   };
 
+  const UploadProgress = ({ progress }) => {
+    return (
+      <div className="w-64">
+        <div className="flex items-center justify-between mb-2">
+          <div className="text-sm font-semibold text-custom-green-dark">Uploading file...</div>
+          <div className="text-sm font-semibold text-custom-green-dark">{progress}%</div>
+        </div>
+        <div className="w-full h-2 bg-custom-green-10 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-custom-green-dark transition-all duration-300 rounded-full"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+    );
+  };
+
   class ChatService {
     constructor() {
       this.taskId = task.id;
@@ -168,17 +185,30 @@ function Chat({ chatOpen, setChatOpen, task }) {
               formData.append( "reply_to", reply.id);
           }
 
+            const toastId = toast.loading(
+              <UploadProgress progress={0} />
+            );
+
             try {
                 const response = await http.post(`/chat/upload/${taskId}/`, formData, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem("access")}`,
                         'Content-Type': 'multipart/form-data'
+                    },
+                    onUploadProgress: (progressEvent) => {
+                        const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                        toast.loading(
+                          <UploadProgress progress={progress} />,
+                          { id: toastId }
+                        );
                     }
                 });
+                toast.success('File uploaded successfully!', { id: toastId });
                 console.log(response.data);
                 return response.data;
             } catch (error) {
-                console.error("Faylni yuklashda xatolik:", error);
+                toast.error('There was an error uploading the file.', { id: toastId });
+                console.error("There was an error uploading the file:", error);
                 throw error.response.data;
             }
         }
