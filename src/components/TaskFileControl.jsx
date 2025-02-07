@@ -23,12 +23,18 @@ function TaskFileControl({ fileUrl }) {
   return (
     <>
       {isImage && (
-        <img
-          src={fileUrl}
-          alt={fileName}
-          className="w-full max-h-[250px] rounded-lg object-cover my-1 border border-custom-green-10"
-          onClick={() => setOpen(true)}
-        />
+        <div className="relative">
+          <div onClick={() => setOpen(true)}
+            className="w-full h-full opacity-0 hover:opacity-100 bg-black rounded-lg bg-opacity-55 absolute top-0 left-0 flex justify-center items-center transition-all duration-300">
+            <i className="bi bi-search text-white text-[20px]"></i>
+          </div>
+          <img
+            src={fileUrl}
+            alt={fileName}
+            className="w-full max-h-[250px] rounded-lg object-cover my-1 border border-custom-green-10"
+            onClick={() => setOpen(true)}
+          />
+        </div>
       )}
 
       <div className="w-full px-2 py-[5px] border flex justify-between items-center rounded-md border-custom-green-10 bg-white">
