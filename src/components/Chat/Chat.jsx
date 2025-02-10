@@ -37,18 +37,6 @@ function Chat({ chatOpen, setChatOpen, task }) {
     });
   };
 
-  function updateProgress(fileId, progress) {
-    console.log(fileId, progress);
-    const progressElement = document.querySelector(`#progress-file`);
-    if (progressElement) {
-      progressElement.style.width = `${progress}%`;
-      progressElement.textContent = `${Math.round(progress)}%`;
-    }
-  }
-
-  const CHUNK_SIZE = 1024 * 1024;
-  const MAX_FILE_SIZE = 100 * 1024 * 1024;
-
   const handleClearReply = () => {
     setReply({ id: "", user: "", speciality: "", message: "", file: "" });
   };
@@ -99,13 +87,13 @@ function Chat({ chatOpen, setChatOpen, task }) {
   const handleClearFile = () => {
     // Reset the file state
     setFile({ name: "", file: "", url: "" });
-    
+
     // Reset the file input value
     const fileInput = document.getElementById(`fileInput${task.id}`);
     if (fileInput) {
       fileInput.value = "";
     }
-    
+
     // If there was a URL created, revoke it to free up memory
     if (file.url) {
       URL.revokeObjectURL(file.url);
@@ -180,8 +168,13 @@ function Chat({ chatOpen, setChatOpen, task }) {
             })
           );
         } else {
+          const MAX_FILE_SIZE = 100 * 1024 * 1024;
           const taskId = task.id
           async function uploadChatFile(taskId, file, content, reply) {
+            if (file.file.size > MAX_FILE_SIZE) {
+              toast.error("File too large! Max: 100MB");
+              return;
+            }
             console.log(file);
             const formData = new FormData();
             formData.append('file', file.file);
@@ -213,13 +206,13 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 });
                 toast.success('File uploaded successfully!', { id: toastId });
                 console.log(response.data);
-                
+
                 // Reset file input after successful upload
                 const fileInput = document.getElementById(`fileInput${taskId}`);
                 if (fileInput) {
                     fileInput.value = "";
                 }
-                
+
                 return response.data;
             } catch (error) {
                 toast.error('There was an error uploading the file.', { id: toastId });
