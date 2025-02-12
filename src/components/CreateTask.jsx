@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import http from "../services/http";
 import toast, { Toaster } from "react-hot-toast";
 
 const CreateTask = ({ getActiveProjectTasks }) => {
+  const formRef = useRef(null); // Form uchun reference
   const userType = localStorage.getItem("userType");
   const activeProjectInfo = JSON.parse(localStorage.getItem("activeProject"));
   const activeProjectId = activeProjectInfo ? activeProjectInfo.id : null;
@@ -21,6 +22,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
   };
 
   const [file, setFile] = useState([]);
+  const [fileprogress, setFileProgress] = useState(0);
 
   useEffect(() => {
     setTaskData({ ...taskData, file: file });
@@ -47,37 +49,50 @@ const CreateTask = ({ getActiveProjectTasks }) => {
       formData.append(key, taskData[key]);
     });
 
-    toast.promise(http.post(`projects/tasks/`, formData, { headers }), {
-      loading: "Adding ...",
-      success: (response) => {
-        // console.log(response);
-        setTaskData({
-          name: "",
-          project: activeProjectId,
-          description: "",
-          deadline: "",
-          status: "todo",
-          file: [],
-        });
-        setFile([]);
-        getActiveProjectTasks();
-        document.getElementById("createTask").close();
-        return <b>Add New Task :)</b>;
-      },
-      error: (error) => {
-        console.log(error.response.data);
-        return <b>Error :(</b>;
-      },
-    });
+    toast.promise(
+      http.post(`projects/tasks/`, formData, {
+        headers,
+        onUploadProgress: (progressEvent) => {
+          let percent = Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100
+          );
+          console.log(`${percent}`);
+          setFileProgress(percent);
+        },
+      }),
+      {
+        loading: "Adding ...",
+        success: (response) => {
+          // console.log(response);
+          setTaskData({
+            name: "",
+            project: activeProjectId,
+            description: "",
+            deadline: "",
+            status: "todo",
+            file: [],
+          });
+          setFile([]);
+          setFileProgress(0);
+          if (formRef.current) {
+            formRef.current.reset(); // Formni reset qilish
+          }
+          getActiveProjectTasks();
+          document.getElementById("createTask").close();
+          return <b>Add New Task :)</b>;
+        },
+        error: (error) => {
+          console.log(error.response.data);
+          return <b>Error :(</b>;
+        },
+      }
+    );
   };
 
   return (
     <>
       {/* Button ===> START */}
-      <div
-        onClick={() => {
-          document.getElementById("createTask").showModal();
-        }}
+      <div onClick={() => { document.getElementById("createTask").showModal(); }}
         className={`${
           userType === "staff" || userType === "client" ? "hidden" : ""
         } flex cursor-pointer btn border-0  items-center justify-center text-custom-green-dark hover:bg-custom-green-dark hover:text-white transition-all duration-300 gap-2 w-full bg-white rounded-lg shadow-sm font-medium text-[15px]`}
@@ -107,7 +122,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
           {/* Modal header End */}
 
           <>
-            <form action="" onSubmit={createNewTask}>
+            <form ref={formRef} action="" onSubmit={createNewTask}>
               <div className="rounded-md shadow-md z-50 flex flex-col gap-3 px-5 py-4 text-custom-green-dark">
                 <label className="w-full">
                   <span className="text-custom-green-80 font-medium text-[14px]">
@@ -152,7 +167,17 @@ const CreateTask = ({ getActiveProjectTasks }) => {
                 </label>
 
                 <div className="flex items-center w-full">
-                  <label className="w-full text-center py-3 rounded-lg cursor-pointer bg-custom-green-10  transition-all duration-300 text-custom-green-80 hover:text-custom-green-dark hover:bg-custom-green-15">
+                  <label className="w-full text-center py-3 rounded-lg cursor-pointer relative bg-custom-green-10  transition-all duration-300 text-custom-green-80 hover:text-custom-green-dark hover:bg-custom-green-15">
+                    <div
+                      style={{ width: `${fileprogress}%` }}
+                      className="bg-custom-green-60 h-full top-0 left-0 rounded-lg absolute transition-all duration-300 flex justify-center items-center"
+                    >
+                      {fileprogress !== 0 && (
+                        <span className="text-white font-bold">
+                          {fileprogress}%
+                        </span>
+                      )}
+                    </div>
                     {taskData.file.length === 0 && (
                       <div className="flex flex-col w-full items-center justify-center">
                         <i className="bi bi-cloud-arrow-up-fill text-2xl"></i>
