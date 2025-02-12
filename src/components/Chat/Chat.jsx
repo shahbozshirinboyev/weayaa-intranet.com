@@ -18,8 +18,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
   const userId = localStorage.getItem("userId");
   const [messages, setMessages] = useState([]);
-  // console.log(messages);
-  useEffect(() => { console.log(messages) }, [messages])
+
   const chatServiceRef = useRef(null);
 
   const [reply, setReply] = useState({ id: "", user: "", speciality: "", message: "", });
@@ -238,37 +237,40 @@ function Chat({ chatOpen, setChatOpen, task }) {
   }
 
   useEffect(() => {
-    setMessages([]);
-    async function initializeChat() {
-      const chat = new ChatService();
-      chat.connect();
-      chatServiceRef.current = chat;
-      return chat;
-    }
-
-    const chatBody = document?.querySelector(".chatcss");
-
-    if (chatBody) {
-      const handleScroll = () => {
-
-        const scrollTop = chatBody.scrollTop;
-        const scrollHeight = chatBody.scrollHeight;
-        const clientHeight = chatBody.clientHeight;
-
-        setIsButtonVisible(scrollHeight - scrollTop - clientHeight < 700);
-        if (scrollTop === 0) { setIsButtonVisible(true); }
-      };
-
-      handleScroll();
-
-      if (task && task.id) {
-        initializeChat(task.id);
-        chatBody.addEventListener("scroll", handleScroll);
+    if (chatOpen && task && task.id) {
+      setMessages([]);
+      async function initializeChat() {
+        const chat = new ChatService();
+        chat.connect();
+        chatServiceRef.current = chat;
+        return chat;
       }
 
-      return () => { chatBody.removeEventListener("scroll", handleScroll); };
+      const chatBody = document?.querySelector(".chatcss");
+
+      if (chatBody) {
+        const handleScroll = () => {
+          const scrollTop = chatBody.scrollTop;
+          const scrollHeight = chatBody.scrollHeight;
+          const clientHeight = chatBody.clientHeight;
+
+          setIsButtonVisible(scrollHeight - scrollTop - clientHeight < 700);
+          if (scrollTop === 0) { setIsButtonVisible(true); }
+        };
+
+        handleScroll();
+        initializeChat();
+        chatBody.addEventListener("scroll", handleScroll);
+
+        return () => { 
+          chatBody.removeEventListener("scroll", handleScroll);
+          if (chatServiceRef.current) {
+            chatServiceRef.current.disconnect();
+          }
+        };
+      }
     }
-  }, [task]);
+  }, [chatOpen, task]);
 
   const renderContent = (content) => {
 
@@ -309,6 +311,30 @@ function Chat({ chatOpen, setChatOpen, task }) {
       );
     });
   };
+
+  const handleCloseChat = () => {
+    // Close the modal
+    setChatOpen(false);
+
+    // Clear all messages
+    setMessages([]);
+
+    // Clear any active reply
+    handleClearReply();
+
+    // Clear any file upload state
+    handleClearFile();
+
+    // Clear message input
+    setMessage({ message: "" });
+
+    // Disconnect WebSocket
+    if (chatServiceRef.current) {
+      chatServiceRef.current.disconnect();
+      chatServiceRef.current = null;
+    }
+  };
+
   return (
     <>
       {chatOpen && (
@@ -321,7 +347,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 Chat (Task ID: {task.id})
               </span>
               <div className="text-end">
-                <label onClick={() => { setChatOpen(false); }}
+                <label onClick={handleCloseChat}
                   className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30"
                 >
                   <i className="bi bi-x-lg flex justify-center items-center"></i>
