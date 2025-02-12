@@ -56,7 +56,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
           let percent = Math.round(
             (progressEvent.loaded / progressEvent.total) * 100
           );
-          console.log(`${percent}`);
+          // console.log(`${percent}`);
           setFileProgress(percent);
         },
       }),
@@ -92,7 +92,10 @@ const CreateTask = ({ getActiveProjectTasks }) => {
   return (
     <>
       {/* Button ===> START */}
-      <div onClick={() => { document.getElementById("createTask").showModal(); }}
+      <div
+        onClick={() => {
+          document.getElementById("createTask").showModal();
+        }}
         className={`${
           userType === "staff" || userType === "client" ? "hidden" : ""
         } flex cursor-pointer btn border-0  items-center justify-center text-custom-green-dark hover:bg-custom-green-dark hover:text-white transition-all duration-300 gap-2 w-full bg-white rounded-lg shadow-sm font-medium text-[15px]`}
