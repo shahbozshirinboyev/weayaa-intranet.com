@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-// http
 import http from "../services/http";
-// react hot toast
 import toast, { Toaster } from "react-hot-toast";
 
 const CreateTask = ({ getActiveProjectTasks }) => {
@@ -16,21 +14,28 @@ const CreateTask = ({ getActiveProjectTasks }) => {
     status: "todo",
     file: [],
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTaskData({ ...taskData, [name]: value });
   };
 
-  const [files, setFiles] = useState([]);
+  const [file, setFile] = useState([]);
 
   useEffect(() => {
-    setTaskData({ ...taskData, file: files });
-  }, [files]);
+    setTaskData({ ...taskData, file: file });
+  }, [file]);
 
   const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    setFiles(selectedFiles);
+    setFile(e.target.files.length > 0 ? e.target.files[0] : []);
   };
+
+  const handleRemoveFile = (e) => {
+    setFile([]);
+    document.getElementById("file-upload").value = "";
+    e.preventDefault();
+  };
+
   const createNewTask = (e) => {
     e.preventDefault();
     const headers = {
@@ -40,10 +45,6 @@ const CreateTask = ({ getActiveProjectTasks }) => {
 
     Object.keys(taskData).forEach((key) => {
       formData.append(key, taskData[key]);
-    });
-
-    files.forEach((file) => {
-      formData.append("file", file);
     });
 
     toast.promise(http.post(`projects/tasks/`, formData, { headers }), {
@@ -58,7 +59,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
           status: "todo",
           file: [],
         });
-        setFiles([]);
+        setFile([]);
         getActiveProjectTasks();
         document.getElementById("createTask").close();
         return <b>Add New Task :)</b>;
@@ -74,11 +75,14 @@ const CreateTask = ({ getActiveProjectTasks }) => {
     <>
       {/* Button ===> START */}
       <div
-        onClick={() => { document.getElementById("createTask").showModal(); }}
-        className={`${ userType === "staff" || userType === "client" ? "hidden" : "" } flex cursor-pointer items-center justify-center text-custom-green-dark hover:bg-custom-green-dark hover:text-white transition-all duration-300 gap-1 py-[10px] w-full bg-white rounded-lg shadow-sm font-medium text-[15px]`}
+        onClick={() => {
+          document.getElementById("createTask").showModal();
+        }}
+        className={`${
+          userType === "staff" || userType === "client" ? "hidden" : ""
+        } flex cursor-pointer btn border-0  items-center justify-center text-custom-green-dark hover:bg-custom-green-dark hover:text-white transition-all duration-300 gap-2 w-full bg-white rounded-lg shadow-sm font-medium text-[15px]`}
       >
         <i className="bi bi-plus-lg flex justify-center items-center"></i>
-        &nbsp;
         <span className="flex justify-center items-center">Add Task</span>
       </div>
       {/* Button ===> END */}
@@ -115,7 +119,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
                     required
                     value={taskData.name}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
+                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-80 focus:ring-0 text-sm font-medium"
                   />
                 </label>
 
@@ -128,7 +132,7 @@ const CreateTask = ({ getActiveProjectTasks }) => {
                     value={taskData.description}
                     required
                     onChange={handleChange}
-                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
+                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-80 focus:ring-0 text-sm font-medium"
                     rows={4}
                   ></textarea>
                 </label>
@@ -143,20 +147,59 @@ const CreateTask = ({ getActiveProjectTasks }) => {
                     required
                     value={taskData.deadline}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-60 focus:ring-0 text-sm font-medium"
+                    className="w-full px-3 py-2 outline-none rounded-md border border-custom-green-80 focus:ring-0 text-sm font-medium"
                   />
                 </label>
 
                 <div className="flex items-center w-full">
-                  <label className="w-full text-center rounded-lg cursor-pointer bg-custom-green-15  hover:bg-custom-green-30 py-3">
-                    <div className="flex flex-col w-full items-center justify-center">
-                      <i className="bi bi-cloud-arrow-up-fill text-2xl text-custom-green-60"></i>
+                  <label className="w-full text-center py-3 rounded-lg cursor-pointer bg-custom-green-10  transition-all duration-300 text-custom-green-80 hover:text-custom-green-dark hover:bg-custom-green-15">
+                    {taskData.file.length === 0 && (
+                      <div className="flex flex-col w-full items-center justify-center">
+                        <i className="bi bi-cloud-arrow-up-fill text-2xl"></i>
+                        <p>
+                          <span className="text-sm font-semibold">
+                            Choose file to upload
+                          </span>
+                          <br />
+                          <span className="text-sm">
+                            Supported formats: JPG, PNG, RAR, ZIP, ...
+                          </span>
+                        </p>
+                      </div>
+                    )}
 
-                      <p className="text-sm text-custom-green-60 font-bold">
-                        Choose file to upload <br /> Supported formats: JPG,
-                        PNG, RAR, ZIP
-                      </p>
-                    </div>
+                    {taskData.file.length !== 0 && (
+                      <div className="flex justify-between w-full items-center px-3">
+                        <div className="text-sm flex items-center gap-2">
+                          <i className="bi bi-file-earmark-fill text-3xl"></i>
+                          <span className="flex flex-col justify-start">
+                            <span className="flex gap-1">
+                              <span className="font-semibold">File name:</span>
+                              <span className="truncate max-w-[250px] md:max-w-[300px] lg:max-w-[400px] ">
+                                {" "}
+                                {taskData.file.name}{" "}
+                              </span>
+                            </span>
+                            <span className="text-[13px] flex gap-1 justify-start items-center">
+                              <span className="font-semibold">File size:</span>
+                              <span className="truncate">
+                                {(taskData.file.size / (1024 * 1024)).toFixed(
+                                  2
+                                )}{" "}
+                                MB
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+
+                        <span
+                          className="btn btn-sm bg-red-700 bg-opacity-60 hover:bg-opacity-100 flex justify-center items-center border-0 shadow-none text-white transition-all duration-300 hover:bg-red-700"
+                          onClick={handleRemoveFile}
+                        >
+                          <i className="bi bi-x-lg flex justify-center items-center"></i>
+                        </span>
+                      </div>
+                    )}
 
                     <input
                       id="file-upload"
@@ -167,20 +210,9 @@ const CreateTask = ({ getActiveProjectTasks }) => {
                       accept="*/*"
                       onChange={handleFileChange}
                     />
-
-                    <div>
-                      {files.length > 0 && (
-                        <ul className="space-y-2">
-                          {files.map((file, index) => (
-                            <li key={index} className="text-sm text-gray-700">
-                              {file.name}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
                   </label>
                 </div>
+
                 <button
                   type="submit"
                   className="w-full rounded-md h-9 bg-custom-green-dark text-blue-50 font-medium"
