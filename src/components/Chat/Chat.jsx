@@ -55,7 +55,16 @@ function Chat({ chatOpen, setChatOpen, task }) {
   };
 
   const deleteMessage = (message) => {
-    console.log("delete__id:", message.id);
+    toast((t) => (
+      <span className="flex items-center justify-center gap-1 text-custom-green-dark">
+        <span className="">Delete this message?</span>
+        <button onClick={() => {toast.dismiss(t.id); console.log("delete__id:", message.id);}} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark">Yes</button>
+        <button onClick={() => toast.dismiss(t.id)} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark">Cancel</button>
+      </span>
+    ), {
+      duration: 10000
+    });
+    
     // e.preventDefault();
     // if (chatServiceRef.current) {
     //   chatServiceRef.current.sendMessage(message.message, file, reply);
