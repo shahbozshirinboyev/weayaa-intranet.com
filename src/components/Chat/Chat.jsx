@@ -54,6 +54,18 @@ function Chat({ chatOpen, setChatOpen, task }) {
     setRows(1);
   };
 
+  const deleteMessage = (message) => {
+    console.log("delete__id:", message.id);
+    // e.preventDefault();
+    // if (chatServiceRef.current) {
+    //   chatServiceRef.current.sendMessage(message.message, file, reply);
+    // }
+    // setFile({ name: "", file: "", url: "" });
+    // setMessage({ message: "" });
+    // handleClearReply();
+    // setRows(1);
+  };
+
   const inputHandle = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -487,7 +499,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
                         <i className="bi bi-reply flex justify-center items-center text-[13px]"></i>
                       </button> */}
                       <button
-                        onClick={() => { activeReply(message); }}
+                        onClick={() => { deleteMessage(message); }}
                         className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9 
                                     absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
                                   ${ String(message.sender) === String(userId) ? "left-1 bottom-11" : "right-0" }`}>
