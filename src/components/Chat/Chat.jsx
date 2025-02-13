@@ -479,6 +479,20 @@ function Chat({ chatOpen, setChatOpen, task }) {
                           </span>
                         </p>
                       </div>
+                      {/* <button
+                        onClick={() => { activeReply(message); }}
+                        className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9 
+                                    absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
+                                  ${ String(message.sender) === String(userId) ? "left-1 bottom-[84px]" : "right-0" }`}>
+                        <i className="bi bi-reply flex justify-center items-center text-[13px]"></i>
+                      </button> */}
+                      <button
+                        onClick={() => { activeReply(message); }}
+                        className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9 
+                                    absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
+                                  ${ String(message.sender) === String(userId) ? "left-1 bottom-11" : "right-0" }`}>
+                        <i className="bi bi-trash flex justify-center items-center text-[13px]"></i>
+                      </button>
                       <button
                         onClick={() => { activeReply(message); }}
                         className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9 
