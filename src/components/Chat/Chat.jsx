@@ -26,6 +26,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
 
+  const [shouldScroll, setShouldScroll] = useState(true);
+
   const activeReply = (message) => {
     setReply({
       id: message.id,
@@ -41,7 +43,11 @@ function Chat({ chatOpen, setChatOpen, task }) {
   };
 
   const endRef = useRef(null);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+  useEffect(() => {
+    if (shouldScroll) {
+      endRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, shouldScroll]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -154,19 +160,26 @@ function Chat({ chatOpen, setChatOpen, task }) {
     }
     handleMessage(data) {
       switch (data.type) {
-        case "connection_established": console.log("Successfully connected to chat room");
+        case "connection_established":
+          console.log("Successfully connected to chat room");
           break;
-        case "chat_message": console.log("Received message:", data.content);
+        case "chat_message":
+          console.log("Received message:", data.content);
           break;
-        case "error": console.error("Error:", data);
+        case "error":
+          toast.error(data.error);
+          console.error(data);
           break;
-          case 'message_deleted':
-            // Remove the message from UI
-            // removeMessageFromUI(data.message_id);
-            console.log("deleye message _____")
-            console.log(data);
-            break;
-        default: setMessages((prevMessages) => [...prevMessages, data.message]);
+        case 'message_deleted':
+          toast.success("Message deleted!");
+          console.log(data);
+          setShouldScroll(false); 
+          setMessages(prevMessages => prevMessages.filter(msg => msg.id !== data.message_id));
+          setTimeout(() => setShouldScroll(true), 100); 
+          break;
+        default:
+          setShouldScroll(true);
+          setMessages((prevMessages) => [...prevMessages, data.message]);
       }
     }
 
