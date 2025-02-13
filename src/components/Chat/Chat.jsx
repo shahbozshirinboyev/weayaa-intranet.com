@@ -55,24 +55,17 @@ function Chat({ chatOpen, setChatOpen, task }) {
   };
 
   const deleteMessage = (message) => {
-    toast((t) => (
-      <span className="flex items-center justify-center gap-1 text-custom-green-dark">
-        <span className="">Delete this message?</span>
-        <button onClick={() => {toast.dismiss(t.id); console.log("delete__id:", message.id);}} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark">Yes</button>
-        <button onClick={() => toast.dismiss(t.id)} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark">Cancel</button>
-      </span>
-    ), {
-      duration: 10000
-    });
-    
-    // e.preventDefault();
-    // if (chatServiceRef.current) {
-    //   chatServiceRef.current.sendMessage(message.message, file, reply);
-    // }
-    // setFile({ name: "", file: "", url: "" });
-    // setMessage({ message: "" });
-    // handleClearReply();
-    // setRows(1);
+    if (chatServiceRef.current) {
+      toast((t) => (
+        <span className="flex items-center justify-center gap-1 text-custom-green-dark">
+          <span className="">Delete this message?</span>
+          <button onClick={() => {toast.dismiss(t.id); chatServiceRef.current.deleteMessage(message.id);}} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark">Yes</button>
+          <button onClick={() => toast.dismiss(t.id)} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark">Cancel</button>
+        </span>
+      ), {
+        duration: 10000
+      });
+    }
   };
 
   const inputHandle = (e) => {
@@ -171,13 +164,22 @@ function Chat({ chatOpen, setChatOpen, task }) {
       }
     }
 
+    deleteMessage(id) {
+      console.log("delete__id:", id);
+      // if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      //     this.ws.send(
+      //       JSON.stringify({
+      //         type: "delete_message",
+      //         message_id: id,
+      //       })
+      //     );
+      // } else {
+      //   console.error("WebSocket is not connected");
+      //   toast.error("Please, re-enter the Chat Room!")
+      // }
+    }
+
     sendMessage(content, file, reply) {
-      // console.log(content, file, reply);
-      console.log({
-        type: "message",
-        content: content,
-        reply_to: reply.id !== "" ? reply.id : null,
-      })
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
         if (file.name === '') {
           this.ws.send(
