@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, Fragment } from "react";
 import TaskFileControl from "../TaskFileControl";
 import toast, { Toaster } from "react-hot-toast";
 import noneuser from "/img/noneuser.png";
-import http from "../../services/http"
+import http from "../../services/http";
 
 function Chat({ chatOpen, setChatOpen, task }) {
   useEffect(() => {
@@ -11,7 +11,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
     } else {
       document.body.style.overflow = "unset";
     }
-    return () => { document.body.style.overflow = "unset"; };
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [chatOpen]);
 
   const [isButtonVisible, setIsButtonVisible] = useState(false);
@@ -21,7 +23,12 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
   const chatServiceRef = useRef(null);
 
-  const [reply, setReply] = useState({ id: "", user: "", speciality: "", message: "", });
+  const [reply, setReply] = useState({
+    id: "",
+    user: "",
+    speciality: "",
+    message: "",
+  });
   const [rows, setRows] = useState(1);
   const [file, setFile] = useState({ name: "", file: "", url: "" });
   const [message, setMessage] = useState({ message: "" });
@@ -62,15 +69,31 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
   const deleteMessage = (message) => {
     if (chatServiceRef.current) {
-      toast((t) => (
-        <span className="flex items-center justify-center gap-1 text-custom-green-dark">
-          <span className="">Delete this message?</span>
-          <button onClick={() => {toast.dismiss(t.id); chatServiceRef.current.deleteMessage(message.id);}} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark">Yes</button>
-          <button onClick={() => toast.dismiss(t.id)} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark">Cancel</button>
-        </span>
-      ), {
-        duration: 10000
-      });
+      toast(
+        (t) => (
+          <span className="flex items-center justify-center gap-1 text-custom-green-dark">
+            <span className="">Delete this message?</span>
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                chatServiceRef.current.deleteMessage(message.id);
+              }}
+              className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark"
+            >
+              Cancel
+            </button>
+          </span>
+        ),
+        {
+          duration: 10000,
+        }
+      );
     }
   };
 
@@ -123,8 +146,12 @@ function Chat({ chatOpen, setChatOpen, task }) {
     return (
       <div className="w-64">
         <div className="flex items-center justify-between mb-2">
-          <div className="text-sm font-semibold text-custom-green-dark">Uploading file...</div>
-          <div className="text-sm font-semibold text-custom-green-dark">{progress}%</div>
+          <div className="text-sm font-semibold text-custom-green-dark">
+            Uploading file...
+          </div>
+          <div className="text-sm font-semibold text-custom-green-dark">
+            {progress}%
+          </div>
         </div>
         <div className="w-full h-2 bg-custom-green-10 rounded-full overflow-hidden">
           <div
@@ -143,7 +170,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
       this.ws = null;
     }
     connect() {
-      this.ws = new WebSocket(`wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}`);
+      this.ws = new WebSocket(
+        `wss://weayaa-intranet.com/ws/chat/task/${this.taskId}/?token=${this.token}`
+      );
 
       this.ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
@@ -170,12 +199,14 @@ function Chat({ chatOpen, setChatOpen, task }) {
           toast.error(data.error);
           console.error(data);
           break;
-        case 'message_deleted':
+        case "message_deleted":
           toast.success("Message deleted!");
           console.log(data);
-          setShouldScroll(false); 
-          setMessages(prevMessages => prevMessages.filter(msg => msg.id !== data.message_id));
-          setTimeout(() => setShouldScroll(true), 100); 
+          setShouldScroll(false);
+          setMessages((prevMessages) =>
+            prevMessages.filter((msg) => msg.id !== data.message_id)
+          );
+          setTimeout(() => setShouldScroll(true), 100);
           break;
         default:
           setShouldScroll(true);
@@ -186,21 +217,21 @@ function Chat({ chatOpen, setChatOpen, task }) {
     deleteMessage(id) {
       console.log("delete__id:", id);
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-          this.ws.send(
-            JSON.stringify({
-              type: "delete_message",
-              message_id: id,
-            })
-          );
+        this.ws.send(
+          JSON.stringify({
+            type: "delete_message",
+            message_id: id,
+          })
+        );
       } else {
         console.error("WebSocket is not connected");
-        toast.error("Please, re-enter the Chat Room!")
+        toast.error("Please, re-enter the Chat Room!");
       }
     }
 
     sendMessage(content, file, reply) {
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-        if (file.name === '') {
+        if (file.name === "") {
           this.ws.send(
             JSON.stringify({
               type: "message",
@@ -210,7 +241,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
           );
         } else {
           const MAX_FILE_SIZE = 100 * 1024 * 1024;
-          const taskId = task.id
+          const taskId = task.id;
           async function uploadChatFile(taskId, file, content, reply) {
             if (file.file.size > MAX_FILE_SIZE) {
               toast.error("File too large! Max: 100MB");
@@ -218,64 +249,73 @@ function Chat({ chatOpen, setChatOpen, task }) {
             }
             console.log(file);
             const formData = new FormData();
-            formData.append('file', file.file);
+            formData.append("file", file.file);
             if (content) {
-                formData.append('content', content);
+              formData.append("content", content);
             }
             if (reply.id !== "") {
               console.log(reply.id);
-              formData.append( "reply_to", reply.id);
-          }
+              formData.append("reply_to", reply.id);
+            }
 
-            const toastId = toast.loading(
-              <UploadProgress progress={0} />
-            );
+            const toastId = toast.loading(<UploadProgress progress={0} />);
 
             try {
-                const response = await http.post(`/chat/upload/${taskId}/`, formData, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem("access")}`,
-                        'Content-Type': 'multipart/form-data'
-                    },
-                    onUploadProgress: (progressEvent) => {
-                        const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                        toast.loading(
-                          <UploadProgress progress={progress} />,
-                          { id: toastId }
-                        );
-                    }
-                });
-                toast.success('File uploaded successfully!', { id: toastId });
-                console.log(response.data);
-
-                // Reset file input after successful upload
-                const fileInput = document.getElementById(`fileInput${taskId}`);
-                if (fileInput) {
-                    fileInput.value = "";
+              const response = await http.post(
+                `/chat/upload/${taskId}/`,
+                formData,
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access")}`,
+                    "Content-Type": "multipart/form-data",
+                  },
+                  onUploadProgress: (progressEvent) => {
+                    const progress = Math.round(
+                      (progressEvent.loaded * 100) / progressEvent.total
+                    );
+                    toast.loading(<UploadProgress progress={progress} />, {
+                      id: toastId,
+                    });
+                  },
                 }
+              );
+              toast.success("File uploaded successfully!", { id: toastId });
+              console.log(response.data);
 
-                return response.data;
+              // Reset file input after successful upload
+              const fileInput = document.getElementById(`fileInput${taskId}`);
+              if (fileInput) {
+                fileInput.value = "";
+              }
+
+              return response.data;
             } catch (error) {
-                toast.error('There was an error uploading the file.', { id: toastId });
-                console.error("There was an error uploading the file:", error);
-                throw error.response.data;
+              toast.error("There was an error uploading the file.", {
+                id: toastId,
+              });
+              console.error("There was an error uploading the file:", error);
+              throw error.response.data;
             }
-        }
-        uploadChatFile(taskId, file, content, reply)
-          .then(() => {
-            // Clear file state after successful upload
-            handleClearFile();
-          })
-          .catch((error) => {
-            console.error("Error in uploadChatFile:", error);
-          });
+          }
+          uploadChatFile(taskId, file, content, reply)
+            .then(() => {
+              // Clear file state after successful upload
+              handleClearFile();
+            })
+            .catch((error) => {
+              console.error("Error in uploadChatFile:", error);
+            });
         }
       } else {
         console.error("WebSocket is not connected");
-        toast.error("Please, re-enter the Chat Room!")
+        toast.error("Please, re-enter the Chat Room!");
       }
     }
-    disconnect() { if (this.ws) { this.ws.close(); } }
+    disconnect() {
+      if (this.ws) {
+        this.ws.close();
+      }
+    }
   }
 
   useEffect(() => {
@@ -297,14 +337,16 @@ function Chat({ chatOpen, setChatOpen, task }) {
           const clientHeight = chatBody.clientHeight;
 
           setIsButtonVisible(scrollHeight - scrollTop - clientHeight < 700);
-          if (scrollTop === 0) { setIsButtonVisible(true); }
+          if (scrollTop === 0) {
+            setIsButtonVisible(true);
+          }
         };
 
         handleScroll();
         initializeChat();
         chatBody.addEventListener("scroll", handleScroll);
 
-        return () => { 
+        return () => {
           chatBody.removeEventListener("scroll", handleScroll);
           if (chatServiceRef.current) {
             chatServiceRef.current.disconnect();
@@ -315,11 +357,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
   }, [chatOpen, task]);
 
   const renderContent = (content) => {
-
     const lines = content.split("\n");
 
     return lines.map((line, lineIndex) => {
-
       const words = line.split(" ");
 
       return (
@@ -334,7 +374,12 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
                 return (
                   <Fragment key={`${lineIndex}-${wordIndex}`}>
-                    <a href={url} className="text-sky-600 hover:underline" target="_blank" rel="noopener noreferrer" >
+                    <a
+                      href={url}
+                      className="text-sky-600 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {shortUrl}
                     </a>
                   </Fragment>
@@ -389,7 +434,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 Chat (Task ID: {task.id})
               </span>
               <div className="text-end">
-                <label onClick={handleCloseChat}
+                <label
+                  onClick={handleCloseChat}
                   className="btn btn-sm border-0 btn-circle text-center items-center text-custom-green-dark bg-custom-green-10 hover:bg-custom-green-30"
                 >
                   <i className="bi bi-x-lg flex justify-center items-center"></i>
@@ -419,11 +465,10 @@ function Chat({ chatOpen, setChatOpen, task }) {
                       id={message.id}
                       key={message.id}
                       className={`chat group relative rounded-md hover:bg-custom-green-15
-                   ${
-                     String(message.sender) === String(userId)
-                       ? "chat-end"
-                       : "chat-start"
-                   }`}
+                   ${String(message.sender) === String(userId)
+                          ? "chat-end"
+                          : "chat-start"
+                        }`}
                     >
                       {String(message.sender) !== String(userId) && (
                         <div className="chat-image avatar">
@@ -436,11 +481,10 @@ function Chat({ chatOpen, setChatOpen, task }) {
                         </div>
                       )}
                       <div
-                        className={`chat-bubble border-0 ${
-                          String(message.sender) === String(userId)
+                        className={`chat-bubble border-0 ${String(message.sender) === String(userId)
                             ? "bg-custom-green-dark text-white"
                             : "bg-custom-green-30 text-custom-green-dark"
-                        }`}
+                          }`}
                       >
                         <div className="flex justify-between text-xs items-center pb-1 gap-4">
                           <span className="font-bold">
@@ -491,11 +535,10 @@ function Chat({ chatOpen, setChatOpen, task }) {
                                 {message.reply_to_details.content}
                               </span>
                               <span
-                                className={`line-clamp-1 ${
-                                  message.reply_to_details.file !== null
+                                className={`line-clamp-1 ${message.reply_to_details.file !== null
                                     ? ""
                                     : "hidden"
-                                }`}
+                                  }`}
                               >
                                 file
                               </span>
@@ -523,23 +566,35 @@ function Chat({ chatOpen, setChatOpen, task }) {
                       </div>
                       {/* <button
                         onClick={() => { activeReply(message); }}
-                        className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9 
+                        className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9
                                     absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
                                   ${ String(message.sender) === String(userId) ? "left-1 bottom-[84px]" : "right-0" }`}>
                         <i className="bi bi-reply flex justify-center items-center text-[13px]"></i>
                       </button> */}
                       <button
-                        onClick={() => { deleteMessage(message); }}
-                        className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9 
+                        onClick={() => {
+                          deleteMessage(message);
+                        }}
+                        className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9
                                     absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
-                                  ${ String(message.sender) === String(userId) ? "left-1 bottom-11" : "right-0" }`}>
+                                  ${String(message.sender) === String(userId)
+                            ? "left-1 bottom-11"
+                            : "right-0"
+                          }`}
+                      >
                         <i className="bi bi-trash flex justify-center items-center text-[13px]"></i>
                       </button>
                       <button
-                        onClick={() => { activeReply(message); }}
-                        className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9 
+                        onClick={() => {
+                          activeReply(message);
+                        }}
+                        className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9
                                     absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
-                                  ${ String(message.sender) === String(userId) ? "left-1 bottom-1" : "right-0" }`}>
+                                  ${String(message.sender) === String(userId)
+                            ? "left-1 bottom-1"
+                            : "right-0"
+                          }`}
+                      >
                         <i className="bi bi-reply flex justify-center items-center text-[13px]"></i>
                       </button>
                     </div>
@@ -554,9 +609,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 onClick={() => {
                   endRef.current?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className={`border-0 z-[99] active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center ${
-                  isButtonVisible ? "hidden" : ""
-                }`}
+                className={`border-0 z-[99] active:scale-90 shadow-md p-3 bg-white absolute translate-all duration-200 bottom-20 right-6 rounded-full hover:bg-custom-green-dark text-custom-green-dark hover:text-white flex justify-center items-center ${isButtonVisible ? "hidden" : ""
+                  }`}
               >
                 <i className="bi bi-chevron-left -rotate-90 flex justify-center items-center text-[20px]"></i>
               </button>
@@ -565,9 +619,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
             {/* Chat Input START */}
             {/* selected relpy message show --- start */}
             <div
-              className={`justify-between items-center transition-all duration-300 w-full ${
-                reply.id === "" ? "hidden" : ""
-              } bg-white`}
+              className={`justify-between items-center transition-all duration-300 w-full ${reply.id === "" ? "hidden" : ""
+                } bg-white`}
             >
               <div className="bg-custom-green-dark p-1 flex gap-1 items-center justify-center">
                 <div className="chat-header rounded-md bg-white p-2 flex gap-1 text-custom-green-dark w-full">
@@ -581,9 +634,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
                     </div>
                     <span className="line-clamp-1">{reply.message}</span>
                     <span
-                      className={`line-clamp-1 ${
-                        reply.message === "" ? "" : "hidden"
-                      }`}
+                      className={`line-clamp-1 ${reply.message === "" ? "" : "hidden"
+                        }`}
                     >
                       file
                     </span>
@@ -600,12 +652,18 @@ function Chat({ chatOpen, setChatOpen, task }) {
             {/* selected relpy inso show --- end */}
 
             {/* selected file show section --- start */}
-             {/* <div id="progress-file" className={`bg-custom-green-30 text-custom-green-dark h-[45px] font-bold flex justify-center items-center transition-all duration-300`} ></div> */}
+            {/* <div id="progress-file" className={`bg-custom-green-30 text-custom-green-dark h-[45px] font-bold flex justify-center items-center transition-all duration-300`} ></div> */}
 
-            <div className={`justify-between items-center transition-all duration-300 w-full ${ file.name === "" ? "hidden" : "" } bg-white`}>
+            <div
+              className={`justify-between items-center transition-all duration-300 w-full ${file.name === "" ? "hidden" : ""
+                } bg-white`}
+            >
               <div className="bg-custom-green-dark px-3 py-2 h-[45px] flex justify-between items-center">
                 <span className="text-white">{file.name}</span>
-                <button className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white absolute right-3" onClick={handleClearFile} >
+                <button
+                  className="btn btn-xs border-0 bg-white hover:bg-red-700 hover:text-white absolute right-3"
+                  onClick={handleClearFile}
+                >
                   <i className="bi bi-x-lg flex justify-center items-center"></i>
                 </button>
               </div>
@@ -644,11 +702,10 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 />
                 <button className="px-2 py-1 cursor-pointer" type="submit">
                   <i
-                    className={`bi ${
-                      message.message === ""
+                    className={`bi ${message.message === ""
                         ? "bi-send"
                         : "bi-send-fill rotate-45"
-                    }
+                      }
                 transition-all duration-300 flex justify-center items-center text-custom-green-dark
                 text-[20px]`}
                   ></i>
