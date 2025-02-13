@@ -201,12 +201,10 @@ function Chat({ chatOpen, setChatOpen, task }) {
           break;
         case "message_deleted":
           toast.success("Message deleted!");
-          console.log(data);
           setShouldScroll(false);
           setMessages((prevMessages) =>
             prevMessages.filter((msg) => msg.id !== data.message_id)
           );
-          setTimeout(() => setShouldScroll(true), 100);
           break;
         default:
           setShouldScroll(true);
