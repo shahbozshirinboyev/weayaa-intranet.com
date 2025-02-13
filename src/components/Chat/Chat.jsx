@@ -160,23 +160,29 @@ function Chat({ chatOpen, setChatOpen, task }) {
           break;
         case "error": console.error("Error:", data);
           break;
+          case 'message_deleted':
+            // Remove the message from UI
+            // removeMessageFromUI(data.message_id);
+            console.log("deleye message _____")
+            console.log(data);
+            break;
         default: setMessages((prevMessages) => [...prevMessages, data.message]);
       }
     }
 
     deleteMessage(id) {
       console.log("delete__id:", id);
-      // if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      //     this.ws.send(
-      //       JSON.stringify({
-      //         type: "delete_message",
-      //         message_id: id,
-      //       })
-      //     );
-      // } else {
-      //   console.error("WebSocket is not connected");
-      //   toast.error("Please, re-enter the Chat Room!")
-      // }
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+          this.ws.send(
+            JSON.stringify({
+              type: "delete_message",
+              message_id: id,
+            })
+          );
+      } else {
+        console.error("WebSocket is not connected");
+        toast.error("Please, re-enter the Chat Room!")
+      }
     }
 
     sendMessage(content, file, reply) {
