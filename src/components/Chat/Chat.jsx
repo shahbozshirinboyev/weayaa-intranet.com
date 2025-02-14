@@ -87,7 +87,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
   };
 
   const editMessage = (message) => {
-    console.log(message);
+    // console.log(message);
     setEditMessageStatus(true);
     setEditMessageId(message.id);
     setMessage({ message: message.content });
@@ -121,6 +121,12 @@ const inputHandle = (e) => {
     setRows(Math.min(Math.max(lineBreaks, 1), 5));
   }
 };
+
+const editMessageStatusClear = () => {
+  setEditMessageStatus(false);
+  setMessage({ message: "" });
+  setRows(1);
+}
 
   const handleFileChange = (event) => {
     const fileInput = event.target;
@@ -232,7 +238,7 @@ const inputHandle = (e) => {
     }
 
     deleteMessage(id) {
-      console.log("delete__id:", id);
+      // console.log("delete__id:", id);
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
         this.ws.send(
           JSON.stringify({
@@ -247,7 +253,7 @@ const inputHandle = (e) => {
     }
 
     editMessage(id, content) {
-      console.log("edit__message__id:", id);
+      // console.log("edit__message__id:", id);
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
         this.ws.send(JSON.stringify({
           type: 'edit_message',
@@ -707,6 +713,14 @@ const inputHandle = (e) => {
                     className="hidden"
                     onChange={handleFileChange}
                   />
+                </div>
+                <div className={`${editMessageStatus ? "flex":"hidden"} items-center justify-center`}>
+                  <label
+                    onClick={editMessageStatusClear}
+                    className="px-2 py-1 h-full cursor-pointer"
+                  >
+                    <i className="bi bi-x flex justify-center text-custom-green-dark items-center h-full text-[20px]"></i>
+                  </label>
                 </div>
                 <textarea
                   rows={rows}
