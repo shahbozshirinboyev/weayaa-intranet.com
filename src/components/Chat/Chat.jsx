@@ -562,15 +562,15 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
                         <span className={`${message.content === "" ? "hidden" : ""}`}>{renderContent(message.content)}</span>
 
-                        <div className="flex justify-between items-center mt-1">
+                        <div className="flex justify-end group-hover:justify-between  items-center mt-1">
                           <button
                             onClick={() => { activeReply(message); }}
-                            className={`flex justify-center items-center w-5 h-5 rounded-full
+                            className={`hidden group-hover:flex justify-center items-center w-5 h-5 rounded-full
                              hover:bg-white hover:text-custom-green-dark transition-all duration-300 active:scale-90
                              ${ String(message.sender) === String(userId) ? "text-white" : "text-custom-green-dark" }`}>
                             <i className="bi bi-reply-fill flex justify-center items-center text-[14px]"></i>
                           </button>
-                          <span className="text-xs font-semibold">{new Date(message.created_at).toLocaleTimeString( [], { hour: "2-digit", minute: "2-digit", hour12: false, } )}</span>
+                          <span className="text-xs font-semibold mt-1">{new Date(message.created_at).toLocaleTimeString( [], { hour: "2-digit", minute: "2-digit", hour12: false, } )}</span>
                         </div>
 
                       </div>
