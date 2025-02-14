@@ -103,20 +103,24 @@ function Chat({ chatOpen, setChatOpen, task }) {
     setEditMessageId("")
   };
 
-  const inputHandle = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
+const inputHandle = (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    if (editMessageStatus) {
+      editMessageFinal(e);
+    } else {
       sendMessage(e);
       setFile({ name: "", file: "", url: "" });
-      setMessage({ message: "" });
-      setRows(1); // Explicitly reset rows to 1 after sending message
-    } else {
-      setMessage({ ...message, [e.target.name]: e.target.value });
-      const text = e.target.value;
-      const lineBreaks = text.split("\n").length;
-      setRows(Math.min(Math.max(lineBreaks, 1), 5));
     }
-  };
+    setMessage({ message: "" });
+    setRows(1);
+  } else {
+    setMessage({ ...message, [e.target.name]: e.target.value });
+    const text = e.target.value;
+    const lineBreaks = text.split("\n").length;
+    setRows(Math.min(Math.max(lineBreaks, 1), 5));
+  }
+};
 
   const handleFileChange = (event) => {
     const fileInput = event.target;
