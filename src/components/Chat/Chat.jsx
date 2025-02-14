@@ -206,10 +206,13 @@ function Chat({ chatOpen, setChatOpen, task }) {
           console.error(data);
           break;
           case 'message_updated':
-            // Update the message in UI
-            // updateMessageInUI(data.message);
-            console.log("Message__edit__success")
-            console.log(data)
+          toast.success("Message edited!");
+            setShouldScroll(false);
+            setMessages((prevMessages) =>
+              prevMessages.map((msg) =>
+                msg.id === data.message.id ? { ...msg, ...data.message } : msg
+              )
+            );
             break;
         case "message_deleted":
           toast.success("Message deleted!");
