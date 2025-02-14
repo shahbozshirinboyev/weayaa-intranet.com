@@ -97,6 +97,19 @@ function Chat({ chatOpen, setChatOpen, task }) {
     }
   };
 
+  const editMessage = (message) => {
+    if (chatServiceRef.current) {
+      toast((t) => (
+        <span className="text-custom-green-dark flex justify-center items-center gap-2">
+          <i>The function is still in progress.</i>
+          <button onClick={() => toast.dismiss(t.id)}
+                  className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark"
+                  >Okay</button>
+        </span>
+      ));
+    }
+  };
+
   const inputHandle = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -547,45 +560,32 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
                         <TaskFileControl fileUrl={message.file} />
 
-                        <span>{renderContent(message.content)}</span>
+                        <span className={`${message.content === "" ? "hidden" : ""}`}>{renderContent(message.content)}</span>
 
-                        <p className="flex justify-end items-center gap-2 text-xs">
-                          <span>
-                            {new Date(message.created_at).toLocaleTimeString(
-                              [],
-                              {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: false,
-                              }
-                            )}
-                          </span>
-                        </p>
+                        <div className="flex justify-between items-center mt-1">
+                          <button
+                            onClick={() => { activeReply(message); }}
+                            className={`flex justify-center items-center w-5 h-5 rounded-full
+                             hover:bg-white hover:text-custom-green-dark transition-all duration-300 active:scale-90
+                             ${ String(message.sender) === String(userId) ? "text-white" : "text-custom-green-dark" }`}>
+                            <i className="bi bi-reply-fill flex justify-center items-center text-[14px]"></i>
+                          </button>
+                          <span className="text-xs font-semibold">{new Date(message.created_at).toLocaleTimeString( [], { hour: "2-digit", minute: "2-digit", hour12: false, } )}</span>
+                        </div>
+
                       </div>
-                      {/* <button
-                        onClick={() => { activeReply(message); }}
-                        className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9
-                                    absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
-                                  ${ String(message.sender) === String(userId) ? "left-1 bottom-[84px]" : "right-0" }`}>
-                        <i className="bi bi-reply flex justify-center items-center text-[13px]"></i>
-                      </button> */}
+                      {/* Edit button start ---- */}
                       <button
-                        onClick={() => {
-                          deleteMessage(message);
-                        }}
+                        onClick={() => { editMessage(message); }}
                         className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9
                                     absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
-                                  ${String(message.sender) === String(userId)
-                            ? "left-1 bottom-11"
-                            : "right-1 bottom-11"
-                          }`}
-                      >
-                        <i className="bi bi-trash flex justify-center items-center text-[13px]"></i>
+                                  ${ String(message.sender) === String(userId) ? "left-1 bottom-11" : "right-1 bottom-11" }`}>
+                        <i className="bi bi-pencil flex justify-center items-center text-[13px]"></i>
                       </button>
+                      {/* Edit button end ---- */}
+                      {/* Delete button start ---- */}
                       <button
-                        onClick={() => {
-                          activeReply(message);
-                        }}
+                        onClick={() => { deleteMessage(message); }}
                         className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9
                                     absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
                                   ${String(message.sender) === String(userId)
@@ -593,8 +593,9 @@ function Chat({ chatOpen, setChatOpen, task }) {
                             : "right-1 bottom-1"
                           }`}
                       >
-                        <i className="bi bi-reply flex justify-center items-center text-[13px]"></i>
+                        <i className="bi bi-trash flex justify-center items-center text-[13px]"></i>
                       </button>
+                      {/* Delete button end ---- */}
                     </div>
                   ))}
 
