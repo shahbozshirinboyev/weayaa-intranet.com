@@ -20,6 +20,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
   const userId = localStorage.getItem("userId");
   const [messages, setMessages] = useState([]);
+  const [editMessageStatus, setEditMessageStatus] = useState(false);
+  const [editMessageId, setEditMessageId] = useState("");
 
   const chatServiceRef = useRef(null);
 
@@ -73,21 +75,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
         (t) => (
           <span className="flex items-center justify-center gap-1 text-custom-green-dark">
             <span className="">Delete this message?</span>
-            <button
-              onClick={() => {
-                toast.dismiss(t.id);
-                chatServiceRef.current.deleteMessage(message.id);
-              }}
-              className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark"
-            >
-              Yes
-            </button>
-            <button
-              onClick={() => toast.dismiss(t.id)}
-              className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark"
-            >
-              Cancel
-            </button>
+            <button onClick={() => { toast.dismiss(t.id); chatServiceRef.current.deleteMessage(message.id); }} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark" > Yes </button>
+            <button onClick={() => toast.dismiss(t.id)} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark" > Cancel </button>
           </span>
         ),
         {
@@ -99,11 +88,19 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
   const editMessage = (message) => {
     console.log(message);
-    toast.success("message");
+    setEditMessageStatus(true);
+    setEditMessageId(message.id);
+    setMessage({ message: message.content });
+  };
+
+  const editMessageFinal = (e) => {
+    e.preventDefault();
     if (chatServiceRef.current) {
-      // qanaqadur funksiya yozish kerak
-      // chatServiceRef.current.deleteMessage(message.id, updatedContent);
+      chatServiceRef.current.editMessage(editMessageId, message.message);
     }
+    setEditMessageStatus(false);
+    setMessage({ message: "" })
+    setEditMessageId("")
   };
 
   const inputHandle = (e) => {
@@ -208,6 +205,12 @@ function Chat({ chatOpen, setChatOpen, task }) {
           toast.error(data.error);
           console.error(data);
           break;
+          case 'message_updated':
+            // Update the message in UI
+            // updateMessageInUI(data.message);
+            console.log("Message__edit__success")
+            console.log(data)
+            break;
         case "message_deleted":
           toast.success("Message deleted!");
           setShouldScroll(false);
@@ -239,7 +242,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
     editMessage(id, content) {
       console.log("edit__message__id:", id);
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({
+        this.ws.send(JSON.stringify({
           type: 'edit_message',
           message_id: id,
           content: content,
@@ -681,11 +684,10 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
             <div className="h-fit bg-white w-full p-3 border-t-[2px] items-center flex border-custom-green-80">
               <form
-                onSubmit={sendMessage}
-                action=""
+                onSubmit={editMessageStatus ? editMessageFinal : sendMessage }
                 className="flex w-full gap-2"
               >
-                <div className="flex items-center gap-4">
+                <div className={`${editMessageStatus ? "hidden":"flex"} items-center justify-center`}>
                   <label
                     htmlFor={`fileInput${task.id}`}
                     className="px-2 py-1 h-full cursor-pointer"
