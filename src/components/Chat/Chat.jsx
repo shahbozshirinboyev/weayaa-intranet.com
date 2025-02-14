@@ -603,9 +603,9 @@ const editMessageStatusClear = () => {
                       {/* Edit button start ---- */}
                       <button
                         onClick={() => { editMessage(message); }}
-                        className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9
+                        className={`btn btn-sm hidden justify-center items-center border-0 rounded-full w-9 h-9
                                     absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
-                                  ${ String(message.sender) === String(userId) ? "left-1 bottom-11" : "right-1 bottom-11" }`}>
+                                  ${ String(message.sender) === String(userId) ? "left-1 bottom-11 group-hover:flex" : "right-1 bottom-11 group-hover:hidden" }`}>
                         <i className="bi bi-pencil flex justify-center items-center text-[13px]"></i>
                       </button>
                       {/* Edit button end ---- */}
@@ -614,10 +614,7 @@ const editMessageStatusClear = () => {
                         onClick={() => { deleteMessage(message); }}
                         className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9
                                     absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
-                                  ${String(message.sender) === String(userId)
-                            ? "left-1 bottom-1"
-                            : "right-1 bottom-1"
-                          }`}
+                                  ${String(message.sender) === String(userId) ? "left-1 bottom-1 group-hover:flex" : "right-1 bottom-1 group-hover:hidden" }`}
                       >
                         <i className="bi bi-trash flex justify-center items-center text-[13px]"></i>
                       </button>
