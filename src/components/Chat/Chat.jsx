@@ -284,7 +284,7 @@ const editMessageStatusClear = () => {
               toast.error("File too large! Max: 100MB");
               return;
             }
-            console.log(file);
+            // console.log(file);
             const formData = new FormData();
             formData.append("file", file.file);
             if (content) {
@@ -317,7 +317,7 @@ const editMessageStatusClear = () => {
                 }
               );
               toast.success("File uploaded successfully!", { id: toastId });
-              console.log(response.data);
+              // console.log(response.data);
 
               // Reset file input after successful upload
               const fileInput = document.getElementById(`fileInput${taskId}`);
