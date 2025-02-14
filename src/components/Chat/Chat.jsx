@@ -98,15 +98,11 @@ function Chat({ chatOpen, setChatOpen, task }) {
   };
 
   const editMessage = (message) => {
+    console.log(message);
+    toast.success("message");
     if (chatServiceRef.current) {
-      toast((t) => (
-        <span className="text-custom-green-dark flex justify-center items-center gap-2">
-          <i>The function is still in progress.</i>
-          <button onClick={() => toast.dismiss(t.id)}
-                  className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark"
-                  >Okay</button>
-        </span>
-      ));
+      // qanaqadur funksiya yozish kerak
+      // chatServiceRef.current.deleteMessage(message.id, updatedContent);
     }
   };
 
@@ -234,6 +230,20 @@ function Chat({ chatOpen, setChatOpen, task }) {
             message_id: id,
           })
         );
+      } else {
+        console.error("WebSocket is not connected");
+        toast.error("Please, re-enter the Chat Room!");
+      }
+    }
+
+    editMessage(id, content) {
+      console.log("edit__message__id:", id);
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({
+          type: 'edit_message',
+          message_id: id,
+          content: content,
+      }));
       } else {
         console.error("WebSocket is not connected");
         toast.error("Please, re-enter the Chat Room!");
