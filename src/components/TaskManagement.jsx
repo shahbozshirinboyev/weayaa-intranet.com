@@ -436,9 +436,9 @@ function TaskManagement() {
         <div className="bg-custom-green-5 h-[60px] max-h-5w-full rounded-[15px] flex gap-2 mb-[20px]">
           <div className="h-full w-full p-2 flex gap-2 items-center">
             {/* Deadline --- start */}
-            <button className={`btn btn-sm ${activeProject.deadline ? "" : "hidden"} border-0 rounded-md w-[125px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`} >
+            <button className={`btn btn-sm w-fit ${activeProject.deadline ? "" : "hidden"} border-0 rounded-md w-[125px] bg-custom-green-30 text-custom-green-dark font-medium hover:bg-custom-green-dark hover:text-white cursor-pointer`} >
               <i className="bi bi-calendar2-week font-medium"></i>
-              <span className="whitespace-nowrap"> {activeProject.deadline} </span>
+              <span className="whitespace-nowrap"> {activeProject.deadline}</span>
             </button>
             {/* Deadline --- end */}
 
