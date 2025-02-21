@@ -598,13 +598,13 @@ const editMessageStatusClear = () => {
                             <i className="bi bi-reply-fill flex justify-center items-center text-[14px]"></i>
                           </button>
 
-                          {/* Tooltip section */}
+                          {/* message date section */}
                           <span
-                            className="text-xs font-semibold mt-1 tooltip tooltip-success"
-                            data-tip={new Date(message.created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" })}>
+                            className="text-xs font-semibold mt-1">
                             {new Date(message.created_at).toLocaleTimeString( [], { hour: "2-digit", minute: "2-digit", hour12: false, } )}
+                            {/* false => 24-hours | true => 12-hours */}
                           </span>
-                          {/* /Tooltip section */}
+                          {/* /message date section */}
 
 
                         </div>
