@@ -589,6 +589,7 @@ const editMessageStatusClear = () => {
                         <span className={`${message.content === "" ? "hidden" : ""}`}>{renderContent(message.content)}</span>
 
                         <div className="flex justify-end group-hover:justify-between  items-center mt-1">
+
                           <button
                             onClick={() => { activeReply(message); }}
                             className={`hidden group-hover:flex justify-center items-center w-5 h-5 rounded-full
@@ -596,7 +597,16 @@ const editMessageStatusClear = () => {
                              ${ String(message.sender) === String(userId) ? "text-white" : "text-custom-green-dark" }`}>
                             <i className="bi bi-reply-fill flex justify-center items-center text-[14px]"></i>
                           </button>
-                          <span className="text-xs font-semibold mt-1">{new Date(message.created_at).toLocaleTimeString( [], { hour: "2-digit", minute: "2-digit", hour12: false, } )}</span>
+
+                          {/* Tooltip section */}
+                          <span
+                            className="text-xs font-semibold mt-1 tooltip tooltip-success"
+                            data-tip={new Date(message.created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" })}>
+                            {new Date(message.created_at).toLocaleTimeString( [], { hour: "2-digit", minute: "2-digit", hour12: false, } )}
+                          </span>
+                          {/* /Tooltip section */}
+
+
                         </div>
 
                       </div>
