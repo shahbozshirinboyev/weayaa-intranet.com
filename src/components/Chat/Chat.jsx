@@ -75,8 +75,17 @@ function Chat({ chatOpen, setChatOpen, task }) {
         (t) => (
           <span className="flex items-center justify-center gap-1 text-custom-green-dark">
             <span className="">Delete this message?</span>
-            <button onClick={() => { toast.dismiss(t.id); chatServiceRef.current.deleteMessage(message.id); }} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark" > Yes </button>
-            <button onClick={() => toast.dismiss(t.id)} className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark" > Cancel </button>
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                chatServiceRef.current.deleteMessage(message.id);
+              }}
+              className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark"
+            >Yes</button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="btn btn-sm hover:bg-custom-green-dark hover:text-white border-0 bg-custom-green-30 text-custom-green-dark"
+            >Cancel</button>
           </span>
         ),
         {
@@ -99,8 +108,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
       chatServiceRef.current.editMessage(editMessageId, message.message);
     }
     setEditMessageStatus(false);
-    setMessage({ message: "" })
-    setEditMessageId("")
+    setMessage({ message: "" });
+    setEditMessageId("");
   };
 
   const inputHandle = (e) => {
@@ -126,7 +135,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
     setEditMessageStatus(false);
     setMessage({ message: "" });
     setRows(1);
-  }
+  };
 
   const handleFileChange = (event) => {
     const fileInput = event.target;
@@ -215,7 +224,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
           toast.error(data.error);
           console.error(data);
           break;
-        case 'message_updated':
+        case "message_updated":
           toast.success("Message edited!");
           setShouldScroll(false);
           setMessages((prevMessages) =>
@@ -255,11 +264,13 @@ function Chat({ chatOpen, setChatOpen, task }) {
     editMessage(id, content) {
       // console.log("edit__message__id:", id);
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-        this.ws.send(JSON.stringify({
-          type: 'edit_message',
-          message_id: id,
-          content: content,
-        }));
+        this.ws.send(
+          JSON.stringify({
+            type: "edit_message",
+            message_id: id,
+            content: content,
+          })
+        );
       } else {
         console.error("WebSocket is not connected");
         toast.error("Please, re-enter the Chat Room!");
@@ -459,6 +470,19 @@ function Chat({ chatOpen, setChatOpen, task }) {
     }
   };
 
+  const groupedMessages = messages.reduce((acc, message) => {
+    const dateKey = new Date(message.created_at).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+
+    if (!acc[dateKey]) acc[dateKey] = [];
+    acc[dateKey].push(message);
+
+    return acc;
+  }, {});
+
   return (
     <>
       {chatOpen && (
@@ -495,23 +519,23 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 )}
                 {/* /if messages = 0 */}
 
-                {messages
-                  .sort((b, a) => new Date(b.created_at) - new Date(a.created_at))
-                  .map((message, index, arr) => {
-                    // Hozirgi va oldingi xabar sanasini olish
-                    const messageDate = new Date(message.created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" });
-                    const prevMessageDate = index > 0 ? new Date(arr[index - 1].created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }) : null;
-                    return (
-                      <div key={message.id}>
-                        {/* Agar yangi kun boshlansa, sanani chiqarish */}
-                        {messageDate !== prevMessageDate && (
-                          <div className="flex justify-between items-center my-2 px-4">
-                            <hr className="border w-[35%] rounded-full border-custom-green-30" />
-                            <span className="text-custom-green-dark text-sm rounded-full px-2 py-1 bg-custom-green-30 font-semibold">{messageDate}</span>
-                            <hr className="border w-[35%] rounded-full border-custom-green-30" />
-                          </div>
-                        )}
+                {Object.entries(groupedMessages).map(([date, messages]) => (
+                  <div key={date}>
+                    {/* Sticky Sana Ko'rsatilishi */}
+                    <div className="flex justify-between items-center my-2 px-4 z-10 sticky top-2">
+                      <hr className="border w-[38%] rounded-full border-custom-green-30" />
+                      <span className="text-white text-sm rounded-full px-2 py-1 bg-custom-green-90 backdrop-blur-md font-mono">
+                        {date}
+                      </span>
+                      <hr className="border w-[38%] rounded-full border-custom-green-30" />
+                    </div>
 
+                    {messages
+                      .sort(
+                        (b, a) =>
+                          new Date(b.created_at) - new Date(a.created_at)
+                      )
+                      .map((message) => (
                         <div
                           id={message.id}
                           key={message.id}
@@ -533,8 +557,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
                           )}
                           <div
                             className={`chat-bubble border-0 ${String(message.sender) === String(userId)
-                              ? "bg-custom-green-dark text-white"
-                              : "bg-custom-green-30 text-custom-green-dark"
+                                ? "bg-custom-green-dark text-white"
+                                : "bg-custom-green-30 text-custom-green-dark"
                               }`}
                           >
                             <div className="flex justify-between text-xs items-center pb-1 gap-4">
@@ -587,8 +611,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
                                   </span>
                                   <span
                                     className={`line-clamp-1 ${message.reply_to_details.file !== null
-                                      ? ""
-                                      : "hidden"
+                                        ? ""
+                                        : "hidden"
                                       }`}
                                   >
                                     file
@@ -600,53 +624,76 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
                             <TaskFileControl fileUrl={message.file} />
 
-                            <span className={`${message.content === "" ? "hidden" : ""}`}>{renderContent(message.content)}</span>
+                            <span
+                              className={`${message.content === "" ? "hidden" : ""
+                                }`}
+                            >
+                              {renderContent(message.content)}
+                            </span>
 
                             <div className="flex justify-end group-hover:justify-between  items-center mt-1">
-
                               <button
-                                onClick={() => { activeReply(message); }}
+                                onClick={() => {
+                                  activeReply(message);
+                                }}
                                 className={`hidden group-hover:flex justify-center items-center w-5 h-5 rounded-full
                              hover:bg-white hover:text-custom-green-dark transition-all duration-300 active:scale-90
-                             ${String(message.sender) === String(userId) ? "text-white" : "text-custom-green-dark"}`}>
+                             ${String(message.sender) === String(userId)
+                                    ? "text-white"
+                                    : "text-custom-green-dark"
+                                  }`}
+                              >
                                 <i className="bi bi-reply-fill flex justify-center items-center text-[14px]"></i>
                               </button>
 
                               {/* message date section */}
-                              <span
-                                className="text-xs font-semibold mt-1">
-                                {new Date(message.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, })}
+                              <span className="text-xs font-semibold mt-1">
+                                {new Date(
+                                  message.created_at
+                                ).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                })}
                                 {/* false => 24-hours | true => 12-hours */}
                               </span>
                               {/* /message date section */}
-
-
                             </div>
-
                           </div>
                           {/* Edit button start ---- */}
                           <button
-                            onClick={() => { editMessage(message); }}
+                            onClick={() => {
+                              editMessage(message);
+                            }}
                             className={`btn btn-sm hidden justify-center items-center border-0 rounded-full w-9 h-9
                                     absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
-                                  ${String(message.sender) === String(userId) ? "left-1 bottom-11 group-hover:flex" : "right-1 bottom-11 group-hover:hidden"}`}>
+                                  ${String(message.sender) === String(userId)
+                                ? "left-1 bottom-11 group-hover:flex"
+                                : "right-1 bottom-11 group-hover:hidden"
+                              }`}
+                          >
                             <i className="bi bi-pencil flex justify-center items-center text-[13px]"></i>
                           </button>
                           {/* Edit button end ---- */}
                           {/* Delete button start ---- */}
                           <button
-                            onClick={() => { deleteMessage(message); }}
+                            onClick={() => {
+                              deleteMessage(message);
+                            }}
                             className={`btn btn-sm hidden group-hover:flex justify-center items-center border-0 rounded-full w-9 h-9
                                     absolute bg-custom-green-dark text-white hover:bg-custom-green-30 hover:text-custom-green-dark
-                                  ${String(message.sender) === String(userId) ? "left-1 bottom-1 group-hover:flex" : "right-1 bottom-1 group-hover:hidden"}`}
+                                  ${String(message.sender) === String(userId)
+                                ? "left-1 bottom-1 group-hover:flex"
+                                : "right-1 bottom-1 group-hover:hidden"
+                              }`}
                           >
                             <i className="bi bi-trash flex justify-center items-center text-[13px]"></i>
                           </button>
                           {/* Delete button end ---- */}
                         </div>
-                      </div>
-                    )
-                  })}
+                      ))}
+                  </div>
+                ))}
 
                 {/* scroll to END => START */}
                 <div ref={endRef}></div>
@@ -723,7 +770,10 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 onSubmit={editMessageStatus ? editMessageFinal : sendMessage}
                 className="flex w-full gap-2"
               >
-                <div className={`${editMessageStatus ? "hidden" : "flex"} items-center justify-center`}>
+                <div
+                  className={`${editMessageStatus ? "hidden" : "flex"
+                    } items-center justify-center`}
+                >
                   <label
                     htmlFor={`fileInput${task.id}`}
                     className="px-2 py-1 h-full cursor-pointer"
@@ -737,7 +787,10 @@ function Chat({ chatOpen, setChatOpen, task }) {
                     onChange={handleFileChange}
                   />
                 </div>
-                <div className={`${editMessageStatus ? "flex" : "hidden"} items-center justify-center`}>
+                <div
+                  className={`${editMessageStatus ? "flex" : "hidden"
+                    } items-center justify-center`}
+                >
                   <label
                     onClick={editMessageStatusClear}
                     className="px-2 py-1 h-full cursor-pointer"
@@ -758,8 +811,8 @@ function Chat({ chatOpen, setChatOpen, task }) {
                 <button className="px-2 py-1 cursor-pointer" type="submit">
                   <i
                     className={`bi ${message.message === ""
-                      ? "bi-send"
-                      : "bi-send-fill rotate-45"
+                        ? "bi-send"
+                        : "bi-send-fill rotate-45"
                       }
                 transition-all duration-300 flex justify-center items-center text-custom-green-dark
                 text-[20px]`}
