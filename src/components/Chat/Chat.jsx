@@ -497,16 +497,12 @@ function Chat({ chatOpen, setChatOpen, task }) {
 
                 {messages
                   .sort((b, a) => new Date(b.created_at) - new Date(a.created_at))
-
                   .map((message, index, arr) => {
-
-
                     // Hozirgi va oldingi xabar sanasini olish
                     const messageDate = new Date(message.created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" });
                     const prevMessageDate = index > 0 ? new Date(arr[index - 1].created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }) : null;
-
                     return (
-                      <>
+                      <div key={message.id}>
                         {/* Agar yangi kun boshlansa, sanani chiqarish */}
                         {messageDate !== prevMessageDate && (
                           <div className="flex justify-between items-center my-2 px-4">
@@ -648,7 +644,7 @@ function Chat({ chatOpen, setChatOpen, task }) {
                           </button>
                           {/* Delete button end ---- */}
                         </div>
-                      </>
+                      </div>
                     )
                   })}
 
