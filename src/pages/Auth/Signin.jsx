@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { useState, useRef } from "react";
 //logo and background
@@ -62,7 +63,12 @@ function Signin({ setAccess, setRefresh, setUserType }) {
         className="w-full h-screen flex items-center justify-center bg-cover bg-center"
         style={{ backgroundImage: `url(${background})` }}
       >
-        <div className="w-[370px] md:w-[480px]  lg:w-[600px]  h-[450px] md:h-[530px] lg:h-[680px] backdrop-blur-md bg-white/30 border border-white/20 shadow-lg">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="w-[370px] md:w-[480px] rounded-xl  lg:w-[600px]  h-[450px] md:h-[530px] lg:h-[680px] backdrop-blur-md bg-white/30 border border-white/20 shadow-lg"
+        >
           <div className="mt-[35px] md:mt-[50px] lg:mt-[80px] mb-[20px] md:mb-[40px] lg:mb-[80px] flex justify-center items-center">
             <img className="h-7 md:h-8 lg:h-11" src={logo} alt="" />
           </div>
@@ -155,12 +161,10 @@ function Signin({ setAccess, setRefresh, setUserType }) {
 
           <div className="mx-[20px] md:mx-[35px] lg:mx-[74px] my-[20px] md:my-[35px] lg:my-[77px] text-center">
             <p className="text-custom-green-dark font-semibold text-[11px] md:text-[12px] lg:text-[12px]">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque,
-              officia similique autem repudiandae inventore iste animi. Dolorum
-              enim saepe vitae?
+            Your operations, always in control — wherever you are, whenever you need.
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );
