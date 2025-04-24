@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 //logo and background
 import background from "../../../public/img/background.png";
 import logo from "../../../public/img/logo_long.png";
@@ -7,6 +7,7 @@ import logo from "../../../public/img/logo_long.png";
 import http from "../../services/http";
 
 function Signin({ setAccess, setRefresh, setUserType }) {
+  const [showPassword, setShowPassword] = useState(false);
   const loginInput = useRef(null);
   const passInput = useRef(null);
 
@@ -120,9 +121,9 @@ function Signin({ setAccess, setRefresh, setUserType }) {
               <div className="relative flex-auto">
                 <input
                   ref={passInput}
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="floating_password"
-                  className="block px-2.5 pb-2.5 pt-5 w-full text-[14px] font-bold  text-custom-green-dark appearance-none bg-transparent focus:outline-none focus:ring-0 peer"
+                  className="block px-2.5 pb-2.5 pt-5 w-full text-[14px] font-bold text-custom-green-dark appearance-none bg-transparent focus:outline-none focus:ring-0 peer"
                   placeholder=""
                   required
                   autoComplete="off"
@@ -133,6 +134,17 @@ function Signin({ setAccess, setRefresh, setUserType }) {
                 >
                   Password
                 </label>
+
+                {/* 👁 Toggle Button */}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute end-3 top-1/2 -translate-y-1/2 text-[18px] text-custom-green-dark"
+                >
+                  <i
+                    className={`bi ${showPassword ? "bi-eye" : "bi-eye-slash"}`}
+                  ></i>
+                </button>
               </div>
             </div>
 
