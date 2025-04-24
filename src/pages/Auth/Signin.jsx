@@ -1,83 +1,48 @@
 import { toast } from "react-hot-toast";
 import { useRef } from "react";
-
 //logo and background
 import background from "../../../public/img/background.png";
 import logo from "../../../public/img/logo_long.png";
-
 // Base URL
 import http from "../../services/http";
 
 function Signin({ setAccess, setRefresh, setUserType }) {
-
   const loginInput = useRef(null);
   const passInput = useRef(null);
-
-  // const onSignin = (e) => {
-  //   e.preventDefault();
-  //   http.post("token/", {
-  //       weayaa_id: loginInput.current.value,
-  //       password: passInput.current.value
-  //     })
-  //     .then((res) => {
-  //       setAccess(res.data.access);
-  //       setRefresh(res.data.refresh);
-  //       localStorage.setItem("access", res.data.access);
-  //       localStorage.setItem("refresh", res.data.refresh);
-  //       toast.success("You have successfully sign in!");
-  //       // user_type start
-  //       const access = localStorage.getItem("access");
-  //       http.get("users/profile/", {
-  //           headers: {
-  //             'Authorization': `Bearer ${access}`
-  //           }
-  //         })
-  //         .then((response) => {
-  //           setUserType(response.data.user_type);
-  //           localStorage.setItem("userType", response.data.user_type);
-  //         })
-  //         .catch(() => {
-  //           toast.error("Foydalanuvchi turi topilmadi :(");
-  //         });
-  //       // user_type end
-  //     })
-  //     .catch((error) => {
-  //       toast.error("ID or Password went wrong :(");
-  //     });
-  // };
 
   const onSignin = (e) => {
     e.preventDefault();
     const loginPromise = http.post("token/", {
       weayaa_id: loginInput.current.value,
-      password: passInput.current.value
+      password: passInput.current.value,
     });
-    // toast.promise yordamida yuklanish va'dasi boshqariladi
-    toast.promise(loginPromise,
-      {
-        loading: "Loading...", // API javobi kelguncha ko'rsatish
-        success: "Welcome to WeaYaa!", // Muvaffaqiyatli javob
-        error: "Oops! ID or Password went wrong :(" // Xatolik holati
-      });
-    // Login API va user type ni olish
+    toast.promise(loginPromise, {
+      loading: "Loading...",
+      success: "Welcome to WeaYaa!",
+      error: "Oops! ID or Password went wrong :(",
+    });
     loginPromise
       .then((res) => {
-
         const endTimeAccessToken = new Date().getTime() + 30 * 60 * 1000;
-        localStorage.setItem('endTimeAccessToken', endTimeAccessToken.toString());
+        localStorage.setItem(
+          "endTimeAccessToken",
+          endTimeAccessToken.toString()
+        );
 
-        const endTimeRefreshToken = new Date().getTime() + 30 * 24 * 60 * 60 * 1000;
-        localStorage.setItem('endTimeRefreshToken', endTimeRefreshToken.toString());
+        const endTimeRefreshToken =
+          new Date().getTime() + 30 * 24 * 60 * 60 * 1000;
+        localStorage.setItem(
+          "endTimeRefreshToken",
+          endTimeRefreshToken.toString()
+        );
 
-        // Access va refresh tokenlarni saqlash
         setAccess(res.data.access);
         setRefresh(res.data.refresh);
         localStorage.setItem("access", res.data.access);
         localStorage.setItem("refresh", res.data.refresh);
         localStorage.setItem("activeProject", JSON.stringify([]));
-        // Foydalanuvchi turi (user_type) uchun API chaqiruv
         return http.get("users/profile/", {
-          headers: {'Authorization': `Bearer ${res.data.access}`}
+          headers: { Authorization: `Bearer ${res.data.access}` },
         });
       })
       .then((response) => {
@@ -86,11 +51,9 @@ function Signin({ setAccess, setRefresh, setUserType }) {
         localStorage.setItem("userId", response.data.id);
       })
       .catch((error) => {
-        // toast.error("User type not found :(");
-        console.log("User type not found!")
+        console.log("User type not found!");
       });
   };
-  
 
   return (
     <>
@@ -98,7 +61,7 @@ function Signin({ setAccess, setRefresh, setUserType }) {
         className="w-full h-screen flex items-center justify-center bg-cover bg-center"
         style={{ backgroundImage: `url(${background})` }}
       >
-        <div className="w-[370px] md:w-[480px]  lg:w-[600px]  h-[450px] md:h-[530px] lg:h-[680px] bg-white shadow-md">
+        <div className="w-[370px] md:w-[480px]  lg:w-[600px]  h-[450px] md:h-[530px] lg:h-[680px] backdrop-blur-md bg-white/30 border border-white/20 shadow-lg">
           <div className="mt-[35px] md:mt-[50px] lg:mt-[80px] mb-[20px] md:mb-[40px] lg:mb-[80px] flex justify-center items-center">
             <img className="h-7 md:h-8 lg:h-11" src={logo} alt="" />
           </div>
@@ -125,7 +88,6 @@ function Signin({ setAccess, setRefresh, setUserType }) {
               </div>
 
               <div className="h-[38px] rounded-[1px] border-[1px] border-custom-green-15"></div>
-
 
               <div className="relative flex-auto">
                 <input
